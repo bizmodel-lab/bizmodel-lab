@@ -55,11 +55,33 @@ echo "✅ Node.js $(node -v) / npm $(npm -v)"
 # ---------- 4. 拉取代码 ----------
 echo ""
 echo "[4/8] 克隆代码仓库..."
-if [ -d "$APP_DIR" ]; then
-  echo "⚠️  $APP_DIR 已存在,拉取最新代码..."
-  cd "$APP_DIR" && git pull origin main || true
-else
-  git clone "$REPO_URL" "$APP_DIR"
+clone_repo() {
+  # 已有代码且非 git 仓库(手动上传场景) → 直接使用
+  if [ -d "$APP_DIR" ] && [ -f "$APP_DIR/server.js" ] && [ ! -d "$APP_DIR/.git" ]; then
+    echo "检测到手动上传的代码目录,跳过克隆"
+    return 0
+  fi
+  local attempt=1
+  while [ $attempt -le 5 ]; do
+    if [ -d "$APP_DIR/.git" ]; then
+      cd "$APP_DIR" && git pull origin main && return 0
+    else
+      rm -rf "$APP_DIR"
+      if git clone "$REPO_URL" "$APP_DIR"; then return 0; fi
+    fi
+    echo "⚠️  克隆失败(第 ${attempt} 次),5 秒后重试..."
+    sleep 5
+    attempt=$((attempt+1))
+  done
+  return 1
+}
+if ! clone_repo; then
+  echo "❌ 连续 5 次克隆失败。可能是服务器访问 GitHub 不稳定。"
+  echo "   解决办法 1:重新执行本脚本再试一次"
+  echo "   解决办法 2:手动下载 zip 上传:在本地电脑打包项目为 bizmodel-lab.zip,"
+  echo "             通过浏览器上传到服务器(控制台「文件上传」),解压到 /opt/bizlab 后执行:"
+  echo "             cd /opt/bizlab && bash scripts/install-on-tencent.sh skip-clone 8700"
+  exit 1
 fi
 cd "$APP_DIR"
 echo "✅ 代码路径: $APP_DIR"
