@@ -1,16 +1,55 @@
-## Hi there 👋
+# 创见 BizLab 2.0 · 商业模式设计实训系统
 
-<!--
-**bizmodel-lab/bizmodel-lab** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+覆盖「机会开发 → 完整商业计划」全流程的师生实训系统。零依赖（纯 Node.js 内置模块），数据以 JSON 文件持久化。
 
-Here are some ideas to get you started:
+## 快速启动
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+```bash
+node server.js        # 默认端口 8700，可用 PORT=3000 node server.js 覆盖
+```
+
+启动后浏览器访问 **http://localhost:8700**
+
+- 首次使用：注册「学生」账号无需任何码；注册「教师」账号需填写**教师注册码**（见服务启动日志，或用环境变量 `TEACHER_CODE` 自定义）
+- 教师创建课程 → 复制邀请码发给学生
+- 学生在「我的课程」页输入邀请码加入课程
+
+## 功能总览
+
+### 学生端
+- 注册 / 登录，邀请码加入课程
+- 六大阶段学习（知识精讲 / 实战工具 / 实训任务 / 阶段自测）；阶段按序解锁（前一阶段提交后开放下一阶段）
+- 阶段自测自动判分（判分在服务端完成，答案不随题目下发，教师可见成绩）
+- 逐阶段提交实训成果：任务文本 + 机会评估矩阵（阶段 1，5 维打分）+ 画布（价值主张画布 / 商业模式画布）+ 假设清单（阶段 4）+ 财务测算参数 + 商业计划书（阶段 6）
+- 查看教师批改结果（分数 / 评语 / 通过 / 退回），退回后可修改重新提交（教师端保留旧成绩快照）
+- 案例库：Airbnb / Costco / Netflix / 拼多多四大经典商业模式画布级拆解
+
+### 教师端
+- 创建课程（自动生成六阶段标准模板）、编辑课程信息与各阶段任务
+- 邀请码管理（重置使旧码失效）、学生管理（进度 / 平均分 / 自测正确率 / 移除）
+- 评阅中心：按阶段与状态筛选，查看学生提交的完整成果（机会评估矩阵、画布渲染、假设清单、财务快照、计划书全文），打分（0–100）+ 评语，通过或退回修改；学生重新提交会保留旧成绩快照并标记「已重交」
+- 进度看板：各阶段提交率、平均分、成绩分布、自测正确率
+- 一键导出全班成绩表 CSV（Excel 直接打开）
+
+### 安全
+- 教师注册需注册码，防止学生自助提权
+- 同账号连续登录失败 5 次锁定 10 分钟
+
+## 技术架构
+
+```
+bizmodel-lab-v2/
+├── server.js           # HTTP 服务 + REST API（零依赖）
+├── db.js               # JSON 文件数据库（data/db.json）
+├── default-course.js   # 六阶段标准课程模板
+├── data/               # 运行时自动创建
+└── public/             # 前端 SPA
+    ├── index.html      # 登录 / 注册页
+    ├── app.html        # 主应用（学生端 + 教师端）
+    ├── css/style.css
+    └── js/app.js
+```
+
+- 认证：scrypt 密码哈希 + Bearer Token（30 天有效）
+- 数据：`data/db.json` 单文件存储，重启不丢失；备份即复制该文件
+- 1.0 版纯静态站点（`../bizmodel-lab/`）仍保留，作为无需登录的宣传演示版

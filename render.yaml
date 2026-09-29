@@ -1,0 +1,25 @@
+# Render 部署声明式配置
+# 用法：把整个 bizmodel-lab-v2 仓库推到 GitHub 后，在 Render 控制台
+# "New +" -> "Blueprint" -> 选择此仓库，Render 会按本文件自动创建服务。
+#
+# 重要:Render 免费层没有持久磁盘,数据存放在容器临时区,
+# 每次自动重启 / 重新部署后数据会被重置。如需持久化请使用 Starter($7/月)及以上。
+
+services:
+  - type: web
+    name: bizmodel-lab
+    runtime: node
+    plan: free                  # 免费层；闲置 15 分钟会休眠,下次访问需等 ~30 秒唤醒
+    rootDir: .                  # 仓库根即为项目根
+    buildCommand: echo "no build step (pure node)"
+    startCommand: node server.js
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: NODE_ENV
+        value: production
+      # 教师注册邀请码,改成你自己好记的(默认自动生成随机码)
+      - key: TEACHER_CODE
+        value: BVS2AE
