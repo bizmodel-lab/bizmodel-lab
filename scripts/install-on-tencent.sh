@@ -9,6 +9,7 @@ set -e
 
 REPO_URL="${1:-}"
 PORT="${2:-8700}"
+TEACHER_CODE="${TEACHER_CODE:-BVS2AE}"   # 可用环境变量覆盖教师注册码
 
 if [ -z "$REPO_URL" ]; then
   echo "❌ 错误：请提供 Git 仓库 URL"
@@ -103,14 +104,8 @@ fi
 echo ""
 echo "[6/8] 配置环境..."
 mkdir -p "$APP_DIR/data"
-cat > "$APP_DIR/.env" <<EOF
-PORT=$APP_PORT
-DATA_DIR=$APP_DIR/data
-NODE_ENV=production
-# 教师注册邀请码 - 可改为自定义的,默认自动生成
-TEACHER_CODE=BVS2AE
-EOF
-echo "✅ 已写入 .env (PORT=$APP_PORT, DATA_DIR=$APP_DIR/data)"
+# server.js 只认进程环境变量(不读 .env),启动时通过 env 前缀注入(见第 7 步)
+echo "✅ 数据目录: $APP_DIR/data (PORT=$APP_PORT)"
 
 # ---------- 7. 安装 pm2 并启动 ----------
 echo ""
@@ -122,9 +117,10 @@ fi
 # 停止可能残留的进程
 pm2 delete "$SERVICE_NAME" > /dev/null 2>&1 || true
 
-# 启动
+# 启动(环境变量通过 env 前缀注入进程)
 cd "$APP_DIR"
-pm2 start server.js --name "$SERVICE_NAME" --time
+PORT="$APP_PORT" DATA_DIR="$APP_DIR/data" NODE_ENV=production TEACHER_CODE="${TEACHER_CODE:-}" \
+  pm2 start server.js --name "$SERVICE_NAME" --time
 pm2 save
 
 # 配置开机自启
@@ -173,5 +169,5 @@ echo "   pm2 logs $SERVICE_NAME  # 实时日志"
 echo "   pm2 restart $SERVICE_NAME  # 重启"
 echo "   pm2 stop $SERVICE_NAME  # 停止"
 echo ""
-echo " 教师注册码: BVS2AE (首次启动会在日志打印)"
+echo " 教师注册码: $TEACHER_CODE"
 echo "============================================================"
