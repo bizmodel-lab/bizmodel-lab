@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡6-06 · 战略匹配度—资源缺口矩阵</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 双维度 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=6">第 6 章 · 创业资源</a><span class="card-nav-meta">卡 6-06 · 战略匹配度—资源缺口矩阵</span><a class="card-nav-prev" href="卡6-05-资源组合优势框架.html">← 卡 6-05</a><a class="card-nav-next" href="卡6-07-四大核心张力与资源风险监控.html">卡 6-07 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 6-06</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>战略匹配度—资源缺口矩阵</h1>
+  <div class="oneliner">两把尺子定四类决策：投、缓、转、弃——给所有待投资源事项排座次。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业公司的资源永远不够，而想做的事永远排队。最常见的失败姿势不是"选错了项目"，而是<b>"平均用力"</b>——每个项目都投一点，每个项目都投不够，最后哪个都没做成。</p>
+    <p>优先级管理把"什么都想要"变成"排好队、分清楚"：先用<b>战略匹配度</b>问"重不重要"，再用<b>资源缺口</b>问"够不够得着"，两个答案一交叉，四类决策自动浮出。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">从想要到排队</div>
+        <div class="vd">资源有限、需求无限，优先级是资源配置的第一道闸门。</div>
+      </div>
+      <div class="value">
+        <div class="vt">双维快速筛检</div>
+        <div class="vd">两个问题定四类决策，不扯皮、不反复、不留模糊地带。</div>
+      </div>
+      <div class="value">
+        <div class="vt">动态纠偏</div>
+        <div class="vd">矩阵是活表：战略与缺口一变，座次跟着重排。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 462" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">战略匹配度 × 资源缺口：给所有待投事项排队</text>
+
+        <!-- Y 轴 -->
+        <text transform="translate(34,194) rotate(-90)" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">资源缺口</text>
+        <text x="56" y="133" text-anchor="end" font-size="11" fill="#94a3b8">缺口小</text>
+        <text x="56" y="263" text-anchor="end" font-size="11" fill="#94a3b8">缺口大</text>
+
+        <!-- 矩阵外框与中线 -->
+        <rect x="70" y="64" width="560" height="263.4" fill="none" stroke="#cbd5e1"/>
+        <line x1="350" y1="64" x2="350" y2="324" stroke="#cbd5e1"/>
+        <line x1="70" y1="194" x2="630" y2="194" stroke="#cbd5e1"/>
+
+        <!-- ===== 左上：副业或外包 ===== -->
+        <rect x="70" y="64" width="280" height="30" fill="#64748b"/>
+        <text x="210" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">副业或外包</text>
+        <text x="336" y="83" text-anchor="end" font-size="11" fill="#e2e8f0">低匹配 · 小缺口</text>
+        <text x="88" y="118" font-size="12" fill="#334155">顺手能做好，但不是战略要地</text>
+        <text x="88" y="138" font-size="12" fill="#334155">以副业方式低成本保留</text>
+        <text x="88" y="158" font-size="12" fill="#334155">或外包出去，不占主力资源</text>
+        <text x="88" y="178" font-size="11" fill="#94a3b8">警惕"顺手"悄悄吃掉主力时间</text>
+
+        <!-- ===== 右上：优先投入 ===== -->
+        <rect x="350" y="64" width="280" height="30" fill="#059669"/>
+        <text x="490" y="84" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">优先投入</text>
+        <text x="616" y="83" text-anchor="end" font-size="11" fill="#d1fae5">高匹配 · 小缺口</text>
+        <text x="368" y="118" font-size="12" fill="#334155">战略要地，且现有资源够得着</text>
+        <text x="368" y="138" font-size="12" fill="#334155">集中最好的人、钱、时间</text>
+        <text x="368" y="158" font-size="12" fill="#334155">一次做透，形成局部优势</text>
+        <text x="368" y="178" font-size="11" fill="#94a3b8">资源配置的默认第一去向</text>
+
+        <!-- ===== 左下：果断放弃 ===== -->
+        <rect x="70" y="194" width="280" height="30" fill="#dc2626"/>
+        <text x="210" y="213.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">果断放弃</text>
+        <text x="336" y="223" text-anchor="end" font-size="11" fill="#fecaca">低匹配 · 大缺口</text>
+        <text x="88" y="258" font-size="12" fill="#334155">既不是战略要地，又够不着</text>
+        <text x="88" y="278" font-size="12" fill="#334155">果断放弃，及时止损</text>
+        <text x="88" y="298" font-size="12" fill="#334155">"舍不得"往往是最贵的成本</text>
+        <text x="88" y="316" font-size="11" fill="#94a3b8">腾出的资源转投优势象限</text>
+
+        <!-- ===== 右下：暂缓或外部融资 ===== -->
+        <rect x="350" y="194" width="280" height="30" fill="#3b82f6"/>
+        <text x="490" y="213.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">暂缓或外部融资</text>
+        <text x="616" y="223" text-anchor="end" font-size="11" fill="#dbeafe">高匹配 · 大缺口</text>
+        <text x="368" y="258" font-size="12" fill="#334155">战略要地，但缺口太大</text>
+        <text x="368" y="278" font-size="12" fill="#334155">先暂缓，或引入外部资源</text>
+        <text x="368" y="298" font-size="12" fill="#334155">融资、合作补上缺口再进</text>
+        <text x="368" y="316" font-size="11" fill="#94a3b8">缺口补足后，升级为优先投入</text>
+
+        <!-- X 轴 -->
+        <text x="210" y="346" text-anchor="middle" font-size="11" fill="#94a3b8">匹配度低</text>
+        <text x="490" y="346" text-anchor="middle" font-size="11" fill="#94a3b8">匹配度高</text>
+        <text x="350" y="368" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">战略匹配度</text>
+
+        <!-- 配套前提 -->
+        <rect x="70" y="384" width="560" height="67.5" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="86" y="406" font-size="12" font-weight="700" fill="#d97706">两个配套前提</text>
+        <text x="86" y="424" font-size="11.5" fill="#475569">① 动态排序：矩阵是快照不是判决——战略调整、缺口变化时定期重排</text>
+        <text x="86" y="440" font-size="11.5" fill="#475569">② 可逆性：同等收益下优先选可逆的投入——错了退得回来，决策就敢做</text>
+      </svg>
+      <div class="caption">图 1　"战略匹配度—资源缺口"矩阵：四象限四类决策 × 动态排序 × 可逆性前提</div>
+    </div>
+    <div class="quote">
+      匹配度问"<b>该不该做</b>"，缺口问"<b>吃不吃得下</b>"——两个都答"是"的事项才配得到最好的资源；两个都答"否"的事项，<b>果断放弃</b>不是损失，是止损。
+    </div>
+  </section>
+
+  <!-- ============ 两个维度 ============ -->
+  <section>
+    <h2>先看清两把尺子</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">横轴 · 战略匹配度</span>
+        <h4>这件事与核心战略的关联程度</h4>
+        <p>它直接服务核心价值主张与主航道目标吗？是"绕不开的一环"，还是"顺便可以做"？匹配度高的投入会强化战略，匹配度低的投入会稀释战略。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">纵轴 · 资源缺口</span>
+        <h4>以现有资源拿下它还差多少</h4>
+        <p>人、钱、能力、关系，逐项对表：都够得着，缺口小；关键一项或几项明显不够，缺口大。缺口要用评估结果说话（承接卡 6-02），不要凭感觉拍。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 四象限详解 ============ -->
+  <section>
+    <h2>四象限决策详解</h2>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">高匹配 · 小缺口</span>
+        <h3>优先投入</h3>
+        <span class="role">资源配置：<b>第一优先</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"哪里值得把最好的资源全押上？"</b></div>
+      <dl class="kv">
+        <dt>核心判断</dt>
+        <dd>与核心战略高度匹配，且现有资源够得着——<b>要地在手，能打下来</b>。这样的机会不会常有，出现了就要抓住。</dd>
+        <dt>行动要点</dt>
+        <dd>集中最好的人、钱、时间，<b>一次做透</b>，率先形成局部优势，而不是又开一条消耗线。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">注意</div>
+        <div class="trap"><span class="tn">高估家底</span><span class="td">"够得着"要用资源评估说话——把缺口小的判断建立在乐观估计上，投入一半才发现吃不下。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">高匹配 · 大缺口</span>
+        <h3>暂缓或外部融资</h3>
+        <span class="role">资源配置：<b>蓄势待发</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"重要但吃不下的事怎么办？"</b></div>
+      <dl class="kv">
+        <dt>核心判断</dt>
+        <dd>战略上该做，但缺口太大，硬上会拖垮全局——它值得做，但不是现在这个姿势做。</dd>
+        <dt>行动要点</dt>
+        <dd>两条路：<b>暂缓</b>启动，等资源到位；或先<b>外部融资、引入合作</b>把缺口补上。缺口一旦补足，升级为"优先投入"。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">注意</div>
+        <div class="trap"><span class="tn">暂缓变搁置</span><span class="td">暂缓不是扔进抽屉——设定复核时点，缺口状况一变就重新落格。</span></div>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="sn">低匹配 · 小缺口</span>
+        <h3>副业或外包</h3>
+        <span class="role">资源配置：<b>轻装保留</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"顺手能做、但不是要地的事怎么处理？"</b></div>
+      <dl class="kv">
+        <dt>核心判断</dt>
+        <dd>做起来不费劲，但与核心战略关联弱——做，不值得投入主力；扔，又有点可惜。</dd>
+        <dt>行动要点</dt>
+        <dd>以<b>副业</b>方式低成本保留，或干脆<b>外包</b>出去：不占用主力资源，也不占用管理带宽。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">注意</div>
+        <div class="trap"><span class="tn">温水占用</span><span class="td">"顺手"事项最会悄悄膨胀，定期检查它吃掉的时间与注意力是否已经越界。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">低匹配 · 大缺口</span>
+        <h3>果断放弃</h3>
+        <span class="role">资源配置：<b>及时止损</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"既不重要、又吃不下的事还留吗？"</b></div>
+      <dl class="kv">
+        <dt>核心判断</dt>
+        <dd>与战略关联弱，缺口又大——每一分投入都同时违背两把尺子，是四个象限里最该快刀斩乱麻的一格。</dd>
+        <dt>行动要点</dt>
+        <dd><b>果断放弃、及时止损</b>，把腾出来的资源转投"优先投入"象限——放弃的是事项，换来的是弹药。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">注意</div>
+        <div class="trap"><span class="tn">沉没成本绑架</span><span class="td">"已经投了这么多"恰恰是最该停的理由，而不是继续投的理由——过去的投入不该绑架当下的配置。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列总清单。</b>把手头所有待投入的资源事项列成一张总清单：项目、渠道、招人、研发、市场动作……一项不漏。</li>
+      <li><b>逐项问匹配度。</b>"它直接服务核心战略和价值主张吗？"按高、低两档标注——拿不准的，问"砍掉它战略会受损吗"。</li>
+      <li><b>逐项估缺口。</b>"以现有资源能拿下吗？"对照资源评估结果，按缺口小、大两档标注。</li>
+      <li><b>落格定策。</b>两个标注一交叉，四类决策对号入座：优先投入、暂缓或外部融资、副业或外包、果断放弃——按象限执行，不搞例外。</li>
+      <li><b>动态重排。</b>战略调整、缺口变化、新事项冒头时，重新过一遍矩阵；新投入在同等收益下优先选<b>可逆性高</b>的方案。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>资源紧张需要排优先级——<b>多数创业公司的常态</b></li>
+          <li>年度/季度规划中的<b>资源配置研讨</b>：团队同一张表、同一把尺</li>
+          <li>决定"要不要接这个新项目/新客户"的<b>单点决策</b></li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>战略本身未定时，匹配度无从谈起——先明确战略，再上矩阵</li>
+          <li>高、低两档划分偏粗糙，重大决策可在两档之间加"中"档细化，但档位越多越难果断</li>
+          <li>矩阵是快照不是判决，<b>切勿一次定型、永不复查</b>——昨天的放弃项，可能因缺口补足而翻案</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-02</div>
+        <h4>资源评估三步（必要性—掌控度矩阵）</h4>
+        <p>与本卡组成"资源双矩阵"：那张管"已有的资源怎么处置"，这张管"待投的事项怎么排队"。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>"大缺口"象限的第三条路：不一定要等融资——拼凑、杠杆、网络、合作都能把缺口补小。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-07</div>
+        <h4>四大核心张力＋资源风险监控</h4>
+        <p>定完"往哪投"只是开始：投入之后的动态平衡与风险盯防，交给这张卡接着管。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 6 章，第 169—170 页</span>
+    <span>方法论卡 6-06 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡6-04 · 资源整合四阶段模型</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 阶段详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=6">第 6 章 · 创业资源</a><span class="card-nav-meta">卡 6-04 · 资源整合四阶段模型</span><a class="card-nav-prev" href="卡6-03-创造性获取四策略.html">← 卡 6-03</a><a class="card-nav-next" href="卡6-05-资源组合优势框架.html">卡 6-05 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 6-04</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>资源整合四阶段模型</h1>
+  <div class="oneliner">让零散资源历经四阶段，从碎片走向进化。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>拿到资源不等于用好资源。许多团队融资之后<b>钱躺着睡大觉</b>、工具买来闲置、人招来错配——资源到位那天热热闹闹，三个月后一切照旧，钱花完了，能力却没长出来。</p>
+    <p>本模型回答的问题是：资源到手之后，如何让它<b>协同运转并持续进化</b>。它把资源整合拆成四个可操作的阶段，每阶段有明确的动作清单，让"用好资源"不再靠自觉，而靠节奏。这张卡带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">到手 ≠ 生效</div>
+        <div class="vd">融到的钱、买来的工具、招来的人，不经整合只是账面数字与成本。</div>
+      </div>
+      <div class="value">
+        <div class="vt">四阶段有节奏</div>
+        <div class="vd">结构化、能力化、常规化、更新重构，每步都有明确动作可执行。</div>
+      </div>
+      <div class="value">
+        <div class="vt">循环而非终点</div>
+        <div class="vd">资源体系在循环中持续进化，从简陋走向复杂、从僵硬走向敏捷。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 Z" fill="#94a3b8"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部横幅 -->
+        <rect x="10" y="6" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="13" fill="#475569">融资到账 ≠ 资源生效：让零散资源历经四阶段循环，从碎片走向进化</text>
+
+        <!-- 循环箭头（顺时针） -->
+        <path d="M 440,150 Q 515,168 545,222" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+        <path d="M 545,350 Q 515,408 440,428" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+        <path d="M 240,428 Q 165,408 135,350" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+        <path d="M 135,222 Q 165,168 240,150" stroke="#94a3b8" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+
+        <!-- 阶段一：结构化（上） -->
+        <rect x="246" y="46" width="188" height="123.4" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="76" text-anchor="middle" font-size="15" font-weight="700" fill="#3b82f6">① 结构化</text>
+        <text x="340" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">从碎片到系统</text>
+        <text x="340" y="124" text-anchor="middle" font-size="11" fill="#334155">归集零散资源，建立秩序与联系</text>
+        <text x="340" y="141" text-anchor="middle" font-size="11" fill="#334155">定流程、定决策权、定接口标准</text>
+        <text x="340" y="158" text-anchor="middle" font-size="11" fill="#94a3b8">模式验证期尤为关键</text>
+
+        <!-- 阶段二：能力化（右） -->
+        <rect x="460" y="226" width="170" height="123.4" rx="12" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="545" y="256" text-anchor="middle" font-size="15" font-weight="700" fill="#059669">② 能力化</text>
+        <text x="545" y="280" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">从拥有到可用</text>
+        <text x="545" y="304" text-anchor="middle" font-size="11" fill="#334155">技能转移培训、权限激励配套</text>
+        <text x="545" y="321" text-anchor="middle" font-size="11" fill="#334155">小范围试运行与调试优化</text>
+        <text x="545" y="338" text-anchor="middle" font-size="11" fill="#94a3b8">让工具真正被用起来</text>
+
+        <!-- 阶段三：常规化（下） -->
+        <rect x="246" y="386" width="188" height="123.4" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="416" text-anchor="middle" font-size="15" font-weight="700" fill="#d97706">③ 常规化</text>
+        <text x="340" y="440" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">从可用到好用</text>
+        <text x="340" y="464" text-anchor="middle" font-size="11" fill="#334155">使用成为肌肉记忆与组织惯例</text>
+        <text x="340" y="481" text-anchor="middle" font-size="11" fill="#334155">资源间形成稳定协同关系</text>
+        <text x="340" y="498" text-anchor="middle" font-size="11" fill="#dc2626">警惕僵化：保持定期审视</text>
+
+        <!-- 阶段四：更新重构（左） -->
+        <rect x="50" y="226" width="170" height="123.4" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="135" y="256" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">④ 更新重构</text>
+        <text x="135" y="280" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">从好用向进化</text>
+        <text x="135" y="304" text-anchor="middle" font-size="11" fill="#334155">剥离、升级、重构资源组合</text>
+        <text x="135" y="321" text-anchor="middle" font-size="11" fill="#334155">培育新链接与新能力</text>
+        <text x="135" y="338" text-anchor="middle" font-size="11" fill="#94a3b8">响应瓶颈、颠覆与新市场</text>
+
+        <!-- 中心循环 -->
+        <circle cx="340" cy="281" r="58" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+        <text x="340" y="272" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">循环往复</text>
+        <text x="340" y="292" text-anchor="middle" font-size="11" fill="#64748b">从简陋走向复杂</text>
+        <text x="340" y="308" text-anchor="middle" font-size="11" fill="#64748b">从僵硬走向敏捷</text>
+      </svg>
+      <div class="caption">图 1　资源整合四阶段模型：结构化 → 能力化 → 常规化 → 更新重构，循环往复</div>
+    </div>
+    <div class="quote">
+      四个阶段<b>"循环往复，推动创业企业的资源体系从简陋走向复杂、从僵硬走向敏捷"</b>。整合不是一次性项目，而是随业务成长不断重跑的管理节奏。
+    </div>
+  </section>
+
+  <!-- ============ 逐阶段详解 ============ -->
+  <section>
+    <h2>逐阶段详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">阶段一</span>
+        <h3>结构化</h3>
+        <span class="role">转化口号：<b>从碎片到系统</b></span>
+      </div>
+      <div class="q">本阶段回答的问题：<b>"这些资源彼此是什么关系？谁说了算？"</b></div>
+      <dl class="kv">
+        <dt>核心任务</dt>
+        <dd>为零散资源<b>建立秩序与联系</b>，让"一堆东西"变成"一套系统"。</dd>
+        <dt>行动清单</dt>
+        <dd>① 物理或逻辑归集，同类资源放在一起；② 建立初步流程，<b>定义资源如何使用、谁有权决策</b>；③ 定义接口标准，确保资源能够协同应用。</dd>
+        <dt>时机提示</dt>
+        <dd>此阶段在<b>模式验证期尤为关键</b>——它是"从'手工作坊'转向'可重复流程'的第一步"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">阶段二</span>
+        <h3>能力化</h3>
+        <span class="role">转化口号：<b>从拥有到可用</b></span>
+      </div>
+      <div class="q">本阶段回答的问题：<b>"资源到位了，组织会不会用、愿不愿用？"</b></div>
+      <dl class="kv">
+        <dt>核心任务</dt>
+        <dd>通过赋能使资源<b>真正产生价值</b>——"拥有"不等于"可用"。</dd>
+        <dt>行动清单</dt>
+        <dd>① 知识与技能转移，通过培训掌握新设备、新系统；② 权限与激励配套，让会用的人有动力用；③ 试运行与调试，小范围优化资源配置。</dd>
+        <dt>示例</dt>
+        <dd>融资后应<b>立即开会对齐资金使用计划，而非把钱存进银行</b>；引入新的 SaaS 工具需全员培训，<b>"确保工具真正被用起来，而非闲置"</b>。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">阶段三</span>
+        <h3>常规化</h3>
+        <span class="role">转化口号：<b>从可用到好用</b></span>
+      </div>
+      <div class="q">本阶段回答的问题：<b>"用这套资源，还需要特别叮嘱吗？"</b></div>
+      <dl class="kv">
+        <dt>成熟标志</dt>
+        <dd>资源使用成为<b>"肌肉记忆"</b>、无需额外思考；资源间产生稳定协同，并开始形成<b>路径依赖</b>，沉淀为组织独特的工作方式。</dd>
+        <dt>管理重点</dt>
+        <dd><b>"防止常规化演变为僵化"</b>——惯例是效率的来源，也可能是创新的敌人，必须保持定期审视。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">惯例变枷锁</span><span class="td">"我们一直都是这么干的"成为拒绝改进的理由，资源组合悄悄僵化。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">阶段四</span>
+        <h3>更新重构</h3>
+        <span class="role">转化口号：<b>从好用向进化</b></span>
+      </div>
+      <div class="q">本阶段回答的问题：<b>"环境变了，这套资源组合还成立吗？"</b></div>
+      <dl class="kv">
+        <dt>触发信号</dt>
+        <dd>① 增长瓶颈出现；② 新技术颠覆；③ 竞争格局变化；④ 进入新市场。</dd>
+        <dt>行动清单</dt>
+        <dd>① <b>资源剥离</b>——淘汰或外包不再创造核心价值的资源；② <b>资源升级</b>——寻找更优替代；③ <b>资源重构</b>——打破原有组合，建立新链接，培育新能力。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>四阶段是循环，不是单行道。</b>重构之后资源体系回到新的"结构化"起点，随业务再走一轮。团队应把四阶段做成<b>例行管理节奏</b>：每轮资源到位后检视结构化与能力化，每季度审视常规化的僵化苗头，每个战略节点扫描更新重构的触发信号。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>归集定序。</b>新资源一到手先归集同类，明确使用流程与决策权限，再定接口标准——先有秩序，才谈协同。</li>
+      <li><b>赋能配套。</b>开展技能转移培训，配套权限与激励，并小范围试运行、调试优化配置，让资源从"买到了"变成"会用"。</li>
+      <li><b>观察常规化。</b>留意资源使用是否已成为无需指令的日常惯例、资源之间是否形成稳定协同——这是"好用"的判据。</li>
+      <li><b>监控触发信号。</b>盯住增长瓶颈、新技术颠覆、竞争格局变化、进入新市场四类信号，一旦命中即启动剥离、升级或重构。</li>
+      <li><b>循环迭代。</b>把四阶段做成例行管理节奏，让资源体系随业务持续进化，而不是等出了问题再补救。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>每轮资源到位后的<b>管理动作设计</b>（融资、招人、上新系统之后）</li>
+          <li>对现有资源体系做<b>成熟度诊断</b>：逐阶段对照，找到卡壳处</li>
+          <li><b>模式验证期与规模化期</b>尤为关键</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>阶段推进以<b>资源类型相对明确</b>为前提，极早期的模糊探索不勉强套用</li>
+          <li>不同资源可能处于<b>不同阶段</b>，需分层管理，不能一刀切</li>
+          <li>模型不解决"获取何种资源"，须与识别、评估工具配套使用</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>整合哪些资源？先用三步法沿价值流程锁定命门与灵魂，整合才有主次。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-02</div>
+        <h4>必要性—掌控度矩阵</h4>
+        <p>整合的优先级由矩阵决定：核心优势先结构化，可忽略项直接剔除。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持—调优—重构</h4>
+        <p>本卡第四阶段"更新重构"的触发与判断，可衔接卡14的三分决策框架。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 6 章，第 168 页</span>
+    <span>方法论卡 6-04 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

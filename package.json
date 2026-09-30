@@ -1,7 +1,7 @@
 {
   "name": "bizmodel-lab-v2",
   "version": "2.0.0",
-  "description": "创见 BizLab · 商业模式设计实训系统（零依赖 Node 服务）",
+  "description": "mAtlas BizLab · 创业实训系统（零依赖 Node 服务）",
   "main": "server.js",
   "engines": {
     "node": ">=18.0.0"

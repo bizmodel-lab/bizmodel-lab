@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-03 · 画布三功能递进</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 灯色图例 ===== */
+  .lights{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .light{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;display:flex;align-items:center;gap:12px;
+  }
+  .light .dot{width:22px;height:22px;border-radius:50%;flex:none;}
+  .light .lg{font-size:13px;font-weight:700;}
+  .light .ld{font-size:12px;color:var(--ink-3);}
+  .light .lt b{display:block;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.lights,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.light,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-03 · 画布三功能递进（红黄绿灯确信度/活画布）</span><a class="card-nav-prev" href="卡8-02-九模块创业情境化改造.html">← 卡 8-02</a><a class="card-nav-next" href="卡8-04-双维度商业模式六类型矩阵.html">卡 8-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-03</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>画布三功能递进</h1>
+  <div class="oneliner">描述现状 → 设计未来 → 记录演进——同一张画布，三种递进用法，配红黄绿灯确信度标注。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>多数团队用画布的方式是"一次性填表"：开一场工作坊，把九个格子填满，拍照存档，然后画布再也没被打开过。教材指出，画布的价值不在"填完"，而在<b>三种递进的功能</b>——它是暴露假设的镜子、推演战略的沙盘、记录学习的档案。</p>
+    <p>这张卡把三种功能连同"红黄绿灯确信度标注"和"活画布"实践一起给出，带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看见盲区</div>
+        <div class="vd">灯色标注把团队"以为知道"和"其实不知道"区分开，认知盲区可视化。</div>
+      </div>
+      <div class="value">
+        <div class="vt">推演在前</div>
+        <div class="vd">改一个模块前先沙盘推演其他模块的联动，避免按下葫芦浮起瓢。</div>
+      </div>
+      <div class="value">
+        <div class="vt">留下档案</div>
+        <div class="vd">版本迭代记录沉淀团队学习历程，人走了经验也留得下。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 510" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部横幅 -->
+        <rect x="10" y="8" width="660" height="32" rx="16" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="12.5" fill="#475569">同一张画布，三种递进功能——从静态填空文档，变成动态管理工具</text>
+
+        <!-- 红黄绿灯图例 -->
+        <text x="150" y="66" text-anchor="end" font-size="12" font-weight="700" fill="#475569">便利贴确信度标注：</text>
+        <circle cx="176" cy="62" r="8" fill="#059669"/>
+        <text x="190" y="66" font-size="11.5" fill="#334155">已验证</text>
+        <circle cx="262" cy="62" r="8" fill="#d97706"/>
+        <text x="276" y="66" font-size="11.5" fill="#334155">假设</text>
+        <circle cx="330" cy="62" r="8" fill="#dc2626"/>
+        <text x="344" y="66" font-size="11.5" fill="#334155">未知</text>
+        <text x="670" y="66" text-anchor="end" font-size="11" fill="#94a3b8">红灯 = 认知盲区所在</text>
+
+        <!-- ===== 阶梯一：现状描述 ===== -->
+        <rect x="25" y="290" width="200" height="140" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="25" y="290" width="200" height="26" rx="10" fill="#3b82f6"/>
+        <rect x="25" y="304" width="200" height="12" fill="#3b82f6"/>
+        <text x="125" y="308" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">功能一 · 现状描述</text>
+        <text x="39" y="338" font-size="12.5" font-weight="700" fill="#3b82f6">暴露隐性假设</text>
+        <text x="39" y="362" font-size="11" fill="#334155">逐模块填写当前</text>
+        <text x="39" y="378" font-size="11" fill="#334155">真实状态，每张</text>
+        <text x="39" y="394" font-size="11" fill="#334155">便利贴标注灯色，</text>
+        <text x="39" y="410" font-size="11" fill="#334155">使认知盲区可视化</text>
+
+        <!-- ===== 阶梯二：未来设计 ===== -->
+        <rect x="250" y="210" width="200" height="220" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="250" y="210" width="200" height="26" rx="10" fill="#d97706"/>
+        <rect x="250" y="224" width="200" height="12" fill="#d97706"/>
+        <text x="350" y="228" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">功能二 · 未来设计</text>
+        <text x="264" y="258" font-size="12.5" font-weight="700" fill="#d97706">推演战略选项</text>
+        <text x="264" y="282" font-size="11" fill="#334155">沙盘推演：假设某一</text>
+        <text x="264" y="298" font-size="11" fill="#334155">模块发生变化，其他</text>
+        <text x="264" y="314" font-size="11" fill="#334155">模块应如何联动调整</text>
+        <text x="264" y="338" font-size="11" fill="#64748b">先在画布上改，</text>
+        <text x="264" y="354" font-size="11" fill="#64748b">再到市场上改；</text>
+        <text x="264" y="370" font-size="11" fill="#64748b">纸面推演的成本</text>
+        <text x="264" y="386" font-size="11" fill="#64748b">远低于试错</text>
+
+        <!-- ===== 阶梯三：迭代演进 ===== -->
+        <rect x="475" y="130" width="195" height="300" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="475" y="130" width="195" height="26" rx="10" fill="#059669"/>
+        <rect x="475" y="144" width="195" height="12" fill="#059669"/>
+        <text x="572" y="148" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">功能三 · 迭代演进</text>
+        <text x="489" y="178" font-size="12.5" font-weight="700" fill="#059669">记录学习进程</text>
+        <text x="489" y="202" font-size="11" fill="#334155">用不同颜色标记</text>
+        <text x="489" y="218" font-size="11" fill="#334155">新增、修改或删除</text>
+        <text x="489" y="234" font-size="11" fill="#334155">的假设</text>
+        <text x="489" y="258" font-size="11" fill="#64748b">画布的版本迭代记录</text>
+        <text x="489" y="274" font-size="11" fill="#64748b">本身就是团队</text>
+        <text x="489" y="290" font-size="11" fill="#64748b">学习历程的档案</text>
+        <text x="489" y="314" font-size="11" fill="#64748b">每次改动都可追溯：</text>
+        <text x="489" y="330" font-size="11" fill="#64748b">改了什么、为什么改、</text>
+        <text x="489" y="346" font-size="11" fill="#64748b">依据哪条证据</text>
+
+        <!-- 递进箭头 -->
+        <line x1="227" y1="330" x2="246" y2="330" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="452" y1="330" x2="471" y2="330" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 底部活画布 -->
+        <rect x="10" y="446" width="660" height="34" rx="17" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="468" text-anchor="middle" font-size="12" fill="#3b82f6">配套实践「活画布」：把画布做成大幅海报，用便利贴实时更新——贴在墙上，天天见面</text>
+        <text x="340" y="498" text-anchor="middle" font-size="11" fill="#94a3b8">三功能依次递进：先如实描述，再推演设计，最后把演进过程沉淀为档案</text>
+      </svg>
+      <div class="caption">图 1　画布三功能递进阶梯 × 红黄绿灯确信度标注 × 活画布实践</div>
+    </div>
+    <div class="quote">
+      关于迭代演进，教材的原文值得整句记住：<b>"画布的版本迭代记录本身就是团队学习历程的档案。"</b>
+    </div>
+  </section>
+
+  <!-- ============ 灯色图例 ===== -->
+  <section>
+    <h2>红黄绿灯：确信度标注法</h2>
+    <div class="lights">
+      <div class="light">
+        <span class="dot" style="background:#059669;"></span>
+        <div class="lt"><b class="lg" style="color:#059669;">绿灯 · 已验证</b><span class="ld">拿到过市场证据的内容，可以放心作为决策依据。</span></div>
+      </div>
+      <div class="light">
+        <span class="dot" style="background:#d97706;"></span>
+        <div class="lt"><b class="lg" style="color:#d97706;">黄灯 · 假设</b><span class="ld">有理由相信但未经检验，是下一轮验证的候选清单。</span></div>
+      </div>
+      <div class="light">
+        <span class="dot" style="background:#dc2626;"></span>
+        <div class="lt"><b class="lg" style="color:#dc2626;">红灯 · 未知</b><span class="ld">连假设都还立不住的地方——团队认知盲区的精确坐标。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 逐功能详解 ============ -->
+  <section>
+    <h2>逐功能详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">功能一</span>
+        <h3>现状描述</h3>
+        <span class="role">核心作用：<b>暴露隐性假设</b></span>
+      </div>
+      <div class="q">填画布的第一原则是<b>如实，而不是好看</b>。</div>
+      <dl class="kv">
+        <dt>怎么做</dt>
+        <dd>逐模块写下当前的真实状态，<b>用便利贴标注"确信度"</b>：绿灯已验证、黄灯假设、红灯未知。</dd>
+        <dt>为什么</dt>
+        <dd>不标灯色的画布，会把"猜的"和"知道的"混在一起，团队讨论时黑白通吃；标了灯色，<b>团队的认知盲区即刻可视化</b>。</dd>
+        <dt>产出</dt>
+        <dd>一张布满灯色的现状画布——红灯和黄灯的分布，就是下一步行动的地图。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">功能二</span>
+        <h3>未来设计</h3>
+        <span class="role">核心作用：<b>推演战略选项</b></span>
+      </div>
+      <div class="q">在纸上改画布，比在市场上改便宜一百倍。</div>
+      <dl class="kv">
+        <dt>怎么做</dt>
+        <dd><b>沙盘推演：假设某一模块发生变化，其他模块应如何联动调整。</b>例如"若客户细分从企业客户转向个人客户"，渠道、关系、收入三格要跟着怎么变？</dd>
+        <dt>为什么</dt>
+        <dd>九模块是相互咬合的系统，单格改动必然牵动全局——先推演联动，再动手，能避免"改对了这一格、改坏了那一格"。</dd>
+        <dt>产出</dt>
+        <dd>若干个逻辑自洽的战略选项画布，供团队比较后择一进入验证。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">功能三</span>
+        <h3>迭代演进</h3>
+        <span class="role">核心作用：<b>记录学习进程</b></span>
+      </div>
+      <div class="q">画布的第三重身份：<b>团队的学习档案。</b></div>
+      <dl class="kv">
+        <dt>怎么做</dt>
+        <dd>每次修改画布时，<b>用不同颜色标记新增、修改或删除的假设</b>，并注明改动依据（哪次访谈、哪组数据触发了改动）。</dd>
+        <dt>为什么</dt>
+        <dd>创业的核心产出之一是认知。没有版本记录，认知增量随人员流动而流失；有了记录，<b>画布的版本迭代记录本身就是团队学习历程的档案</b>。</dd>
+        <dt>产出</dt>
+        <dd>一条可回溯的演进链：从初版画布到当前版本，每一跳都对应一次真实的学习。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>上墙。</b>把画布打印成大幅海报贴在办公区，配便利贴（可按模块分色）——这就是"活画布"的物理形态。</li>
+      <li><b>标灯。</b>逐模块填入现状，每张便利贴角上标注红黄绿灯；团队对灯色有分歧时，一律就低不就高。</li>
+      <li><b>攻红灯。</b>每周例会挑出最要害的红灯与黄灯，为其设计验证动作——灯色的升级必须靠证据，不靠争论。</li>
+      <li><b>做推演。</b>考虑任何模块调整时，先用"假设此模块变化 → 其余模块如何联动"的句式做沙盘推演，再决定动不动。</li>
+      <li><b>记版本。</b>每次改动用颜色标记新增、修改、删除，注明依据；重大节点给画布拍照编号，形成版本史。</li>
+      <li><b>看演进。</b>月度复盘时回看版本链：红灯是否在变绿？假设被证实还是证伪？学习速度本身就是健康指标。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>团队共创对齐：灯色让"谁在猜、谁在赌"摊在桌面上</li>
+          <li>周会 / 月度复盘的固定仪式：看灯色变化定下一步验证</li>
+          <li>向投资人或导师展示：版本演进记录是<b>学习能力的直接证据</b></li>
+          <li>远程团队：可用在线白板替代实体海报，方法不变</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>灯色是团队的<b>主观估计</b>，只能升不能"口头转正"——绿灯必须有市场证据背书</li>
+          <li>画布更新频率要与验证节奏匹配，<b>只改不验的画布会退化为装饰品</b></li>
+          <li>三功能有先后依赖：现状没描述清楚就急着推演未来，推演建立在流沙上</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-02</div>
+        <h4>九模块创业情境化改造</h4>
+        <p>画布里填什么、按什么规则填——九个模块的初创情境判定标准。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-11</div>
+        <h4>耦合假设提取法</h4>
+        <p>红灯和黄灯怎么变成可检验的命题："若模块A以X方式运作，模块B是否产生预期响应？"</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持 / 调优 / 重构三分决策</h4>
+        <p>画布改到什么程度算够：模块参数微调还是连接方式重构，用这张卡定夺。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 209 页</span>
+    <span>方法论卡 8-03 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

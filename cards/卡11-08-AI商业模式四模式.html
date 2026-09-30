@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-08 · AI商业模式四模式</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 模式详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--ink-3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--ink-3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-08 · AI商业模式四模式（MaaS/订阅赋能/AaaS/垂直方案）</span><a class="card-nav-prev" href="卡11-07-AI创业三层机会图谱.html">← 卡 11-07</a><a class="card-nav-next" href="卡11-09-数字文化四维机会框架.html">卡 11-09 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-08</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>AI商业模式四模式</h1>
+  <div class="oneliner">从卖工具到卖结果：用"价值计量方式"这条主线，看懂 AI 商业模式的四种形态。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多 AI 创业者的困惑是："我的产品明明有用，为什么收不到钱？"问题往往不在产品，而在<b>价值计量方式</b>——你按什么单位向客户收费，决定了客户为什么付钱、付多少、付多久。</p>
+    <p>教材把这个问题提炼成一条总纲，并展开为四种模式。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">一条主线</div>
+        <div class="vd">"价值计量方式的重构"贯穿四模式，讲授与选型都有统一抓手。</div>
+      </div>
+      <div class="value">
+        <div class="vt">四种形态</div>
+        <div class="vd">MaaS、订阅赋能、AaaS、垂直方案——谱系清晰，对号入座。</div>
+      </div>
+      <div class="value">
+        <div class="vt">从工具到结果</div>
+        <div class="vd">看清楚收费逻辑正从"按资源消耗"滑向"按价值产出"。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 485" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <linearGradient id="spec" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#3b82f6"/>
+            <stop offset="1" stop-color="#059669"/>
+          </linearGradient>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="56" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">总纲：大模型时代的商业模式创新，本质上是价值计量方式的重构</text>
+        <text x="340" y="50" text-anchor="middle" font-size="12" fill="#dc2626">—— 从按资源消耗收费转向按价值产出收费，从卖工具转向卖结果</text>
+
+        <!-- ===== 模式一 ===== -->
+        <rect x="10" y="80" width="330" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,110 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#3b82f6"/>
+        <text x="175" y="117" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">① MaaS · 模型即服务</text>
+        <text x="34" y="150" font-size="12" fill="#334155">将模型能力封装为 API，</text>
+        <text x="34" y="168" font-size="12" fill="#334155">按使用量（词元数、API 调用次数）</text>
+        <text x="34" y="186" font-size="12" fill="#334155">或订阅周期收费</text>
+
+        <!-- ===== 模式二 ===== -->
+        <rect x="340" y="80" width="330" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M340,110 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#d97706"/>
+        <text x="505" y="117" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">② 订阅制赋能</text>
+        <text x="364" y="150" font-size="12" fill="#334155">让软件从"记录系统"进化为</text>
+        <text x="364" y="168" font-size="12" fill="#334155">"行动系统"，能直接产出结果</text>
+        <text x="364" y="186" font-size="12" fill="#334155">——用户为"持续产出"付费</text>
+
+        <!-- ===== 模式三 ===== -->
+        <rect x="10" y="220" width="330" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,250 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#059669"/>
+        <text x="175" y="257" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">③ 智能体即服务 AaaS</text>
+        <text x="34" y="290" font-size="12" fill="#334155">收费从"按工具使用"转变为</text>
+        <text x="34" y="308" font-size="12" fill="#334155">"按业务成果"</text>
+        <text x="34" y="326" font-size="12" fill="#334155">须明确约定"成功"的定义与计量</text>
+
+        <!-- ===== 模式四 ===== -->
+        <rect x="340" y="220" width="330" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M340,250 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#475569"/>
+        <text x="505" y="257" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">④ 垂直领域解决方案</text>
+        <text x="364" y="290" font-size="12" fill="#334155">不追求通用性，</text>
+        <text x="364" y="308" font-size="12" fill="#334155">在特定领域做到极致</text>
+        <text x="364" y="326" font-size="12" fill="#334155">深度即壁垒</text>
+
+        <!-- ===== 价值计量光谱 ===== -->
+        <text x="150" y="392" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e293b">MaaS</text>
+        <text x="340" y="392" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e293b">订阅制赋能</text>
+        <text x="530" y="392" text-anchor="middle" font-size="11.5" font-weight="700" fill="#1e293b">AaaS</text>
+        <rect x="50" y="400" width="580" height="24" rx="12" fill="url(#spec)"/>
+        <circle cx="150" cy="412" r="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5"/>
+        <circle cx="340" cy="412" r="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5"/>
+        <circle cx="530" cy="412" r="5" fill="#ffffff" stroke="#1e293b" stroke-width="1.5"/>
+        <text x="50" y="444" font-size="11.5" fill="#64748b">按资源消耗收费 · 卖工具</text>
+        <text x="630" y="444" text-anchor="end" font-size="11.5" fill="#64748b">按价值产出收费 · 卖结果</text>
+        <text x="340" y="468" text-anchor="middle" font-size="11.5" fill="#475569">垂直领域解决方案可与光谱上任一计量方式叠加：深度定生存，计量定增长</text>
+      </svg>
+      <div class="caption">图 1　AI 商业模式四模式 × 价值计量光谱（从卖工具到卖结果）</div>
+    </div>
+    <div class="quote">
+      <b>"大模型时代的商业模式创新，本质上是价值计量方式的重构——从按资源消耗收费转向按价值产出收费，从卖工具转向卖结果。"</b>四模式不是并列的四个菜单，而是这条光谱上的不同落点。
+    </div>
+  </section>
+
+  <!-- ============ 逐模式详解 ============ -->
+  <section>
+    <h2>逐模式详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">模式一</span>
+        <h3>MaaS 模型即服务</h3>
+        <span class="role">计量方式：<b>按使用量 / 订阅周期</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"模型能力如何变成可计费的标准商品？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd>把模型能力<b>封装为 API</b>，客户随取随用，像用水用电一样消费智能。</dd>
+        <dt>盈利方式</dt>
+        <dd><b>按使用量（词元数、API 调用次数）或订阅周期收费</b>——计量单位清晰，账单可预期。</dd>
+        <dt>教材注</dt>
+        <dd>教材脚注标明，MaaS 概念早在 2012 年即已提出，并非大模型时代的新词；今天的关键差异在于被封装的模型能力本身。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">模式二</span>
+        <h3>订阅制赋能</h3>
+        <span class="role">计量方式：<b>订阅周期</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"用户每个月续费的到底是什么？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd>让软件从"记录系统"进化为<b>"行动系统"</b>——不再只是记录数据，而是<b>能直接产出结果</b>。</dd>
+        <dt>盈利方式</dt>
+        <dd>按订阅周期收费。用户续费的理由从"数据存在这里"变成<b>"每个月都替我干出了结果"</b>。</dd>
+        <dt>检验标准</dt>
+        <dd>自问一句：如果下个月软件停用，用户损失的是"历史记录"还是"正在干活的手"？后者才留得住订阅。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">模式三</span>
+        <h3>智能体即服务 AaaS</h3>
+        <span class="role">计量方式：<b>按业务成果</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"能不能干脆按成果收钱？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd>智能体自主完成任务，收费模式从"按工具使用"转变为<b>"按业务成果"</b>——客户只为干成的活买单。</dd>
+        <dt>落地要点</dt>
+        <dd>必须与客户<b>明确约定"成功"的定义和计量方式</b>：什么算完成、如何核验、何时结算。约定不清，此类模式必然纠纷不断——这是它的生死线。</dd>
+        <dt>教学延伸</dt>
+        <dd>教材思考题 5 即为此设计了一道合同设计练习，可直接用作实训题：给一份按成果计费的合同补上"成功"条款。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">模式四</span>
+        <h3>垂直领域解决方案</h3>
+        <span class="role">计量方式：<b>可与前三者叠加</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"通吃，还是扎根？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd><b>不追求通用性，而是在特定领域做到极致</b>——把一个行业的流程、术语、边界条件吃透。</dd>
+        <dt>与光谱的关系</dt>
+        <dd>它不占据光谱上的某个固定点，而是<b>给前三种计量方式叠加"深度"</b>：按量、订阅、按成果皆可，深度决定定价权。</dd>
+        <dt>护城河提示</dt>
+        <dd>教材提醒：聚焦场景理解、数据积累、用户体验等"慢变量"，构建<b>超越模型本身的价值护城河</b>。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>画光谱。</b>先画出"按资源消耗收费 → 按价值产出收费"这条线，标出自己当前收费方式的落点，再看要不要往右移。</li>
+      <li><b>对号入座。</b>对照四模式特征判断自己最接近哪一种；混合模式要写明主模式与辅助模式，不能"都算一点"。</li>
+      <li><b>设计计量。</b>越靠近"卖结果"一端，越要先书面明确"成功"的定义与计量方式——这一步没做，后面全是纠纷。</li>
+      <li><b>叠加深度。</b>用"在特定领域做到极致"检验模式是否够聚焦：如果客户换个行业也能用，说明深度还不够。</li>
+      <li><b>修慢变量。</b>把场景理解、数据积累、用户体验列入长期投入清单——模型能力会贬值，慢变量才是护城河。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>AI 产品<b>收费模式设计</b>：定价、计费单位与套餐结构的选型依据</li>
+          <li>培训讲授"从卖工具到卖结果"主线时的<b>结构化框架</b></li>
+          <li>商业计划书中<b>价值计量方式的论证</b>：说清按什么收费、为什么成立</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>AaaS 按成果付费<b>对计量与交付约定要求极高</b>，"成功"定义不清即不可签约</li>
+          <li>单纯转售模型能力难以形成壁垒，<b>MaaS 层竞争激烈</b>，需配垂直深度</li>
+          <li>四模式是谱系不是菜单，<b>可组合、可演进</b>，切忌机械挑选后一成不变</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-07</div>
+        <h4>AI创业三层机会图谱</h4>
+        <p>先定层，再定模式——两卡构成 AI 创业"位置 × 模式"的双维选型。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-04</div>
+        <h4>六类型矩阵</h4>
+        <p>把 AI 四模式放回通用商业模式类型谱系中对照理解，看清它继承与改变了什么。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-01</div>
+        <h4>四段式专题分析框架</h4>
+        <p>模式选择嵌在"趋势—机会—模式—挑战"的完整分析里，配合使用不漏环节。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 308—310 页</span>
+    <span>方法论卡 11-08 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-13 · 最小可行系统（MVS）三闭环</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 闭环详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 对照提示 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--s1);
+    border:1px solid var(--s1);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-13 · 最小可行系统MVS三闭环</span><a class="card-nav-prev" href="卡8-12-财务三链检验.html">← 卡 8-12</a><a class="card-nav-next" href="卡8-14-四种系统测试.html">卡 8-14 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-13</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>最小可行系统（MVS）三闭环</h1>
+  <div class="oneliner">搭建一个五脏俱全的最小商业模式来跑通验证。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业者的方案往往只验证了<b>"产品有人要"，却没验证"生意转得起来"</b>。机会验证阶段的 MVP（属精益创业方法体系）回答的是产品假设；而商业模式是一个由多个模块咬合传动的系统，需要被<b>整体测试</b>——每个零件单独看都没问题，合在一起可能根本转不动。</p>
+    <p>MVS 提供了一个<b>最小化但结构完整的实验单元</b>，让创业者在投入大规模资源前，检验整个商业模式能否自转。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">系统整体被测试</div>
+        <div class="vd">商业模式是模块咬合传动的系统，MVS 让整个系统进入实验，而不是只测某个零件。</div>
+      </div>
+      <div class="value">
+        <div class="vt">最小成本跑验证</div>
+        <div class="vd">每个模块选"够用即可"的最便宜实现，验证系统不等于烧钱建全套设施。</div>
+      </div>
+      <div class="value">
+        <div class="vt">闭环即判据</div>
+        <div class="vd">三条闭环各对应一类验证问题，缺一环就有一类问题根本验不了。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 612" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">MVS＝最小化但结构完整的商业模式原型：够用即可，但必须闭环</text>
+
+        <!-- 三个相互咬合的圆环（先画底部增长环） -->
+        <circle cx="340" cy="368" r="118" fill="#ecfdf5" fill-opacity="0.75" stroke="#059669" stroke-width="6"/>
+        <circle cx="232" cy="205" r="118" fill="#eff6ff" fill-opacity="0.75" stroke="#3b82f6" stroke-width="6"/>
+        <circle cx="448" cy="205" r="118" fill="#fffbeb" fill-opacity="0.75" stroke="#d97706" stroke-width="6"/>
+
+        <!-- 价值闭环 -->
+        <text x="232" y="128" text-anchor="middle" font-size="14" font-weight="700" fill="#3b82f6">① 价值闭环</text>
+        <text x="232" y="152" text-anchor="middle" font-size="12" fill="#334155">价值主张→渠道通路</text>
+        <text x="232" y="172" text-anchor="middle" font-size="12" fill="#334155">→客户细分→价值感知</text>
+        <rect x="168" y="188" width="128" height="30.2" rx="11" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="232" y="207.3" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">定位是否精准？</text>
+
+        <!-- 交易闭环 -->
+        <text x="448" y="128" text-anchor="middle" font-size="14" font-weight="700" fill="#d97706">② 交易闭环</text>
+        <text x="448" y="152" text-anchor="middle" font-size="12" fill="#334155">客户细分→收入来源</text>
+        <text x="448" y="172" text-anchor="middle" font-size="12" fill="#334155">→成本结构→边际贡献</text>
+        <rect x="384" y="188" width="128" height="30.2" rx="11" fill="#ffffff" stroke="#fde68a"/>
+        <text x="448" y="207.3" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">经济是否可行？</text>
+
+        <!-- 增长闭环 -->
+        <text x="340" y="352" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">③ 增长闭环</text>
+        <text x="340" y="378" text-anchor="middle" font-size="12" fill="#334155">客户获取→客户关系</text>
+        <text x="340" y="398" text-anchor="middle" font-size="12" fill="#334155">→复购/推荐→成本摊薄</text>
+        <rect x="276" y="414" width="128" height="30.2" rx="11" fill="#ffffff" stroke="#a7f3d0"/>
+        <text x="340" y="433.3" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">扩张是否可持续？</text>
+
+        <!-- 中心徽标：三环咬合 -->
+        <circle cx="340" cy="258" r="37" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+        <text x="340" y="252" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">MVS</text>
+        <text x="340" y="271" text-anchor="middle" font-size="11" fill="#475569">三环咬合</text>
+
+        <!-- 底部：可极度简化的替代件 -->
+        <text x="340" y="522" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">设计原则：可极度简化——但三个闭环缺一不可</text>
+        <rect x="12" y="534" width="204" height="34" rx="17" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="114" y="556" text-anchor="middle" font-size="12" fill="#3b82f6">微信群 替代 APP</text>
+        <rect x="238" y="534" width="204" height="34" rx="17" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="556" text-anchor="middle" font-size="12" fill="#d97706">人工服务 替代 自动化</text>
+        <rect x="464" y="534" width="204" height="34" rx="17" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="566" y="556" text-anchor="middle" font-size="12" fill="#059669">第三方工具 替代 自研系统</text>
+
+        <!-- 底部对照注 -->
+        <text x="340" y="592" text-anchor="middle" font-size="12" fill="#94a3b8">对照：MVP 验证产品假设 ｜ MVS 验证最小商业模式闭环</text>
+      </svg>
+      <div class="caption">图 1　MVS 三闭环：价值 / 交易 / 增长三环相互咬合，每环可极度简化、缺一不可</div>
+    </div>
+    <div class="quote">
+      教材设计原则：<b>"够用即可，但必须闭环。可以极度简化——用微信群替代APP、用人工服务替代自动化、用第三方工具替代自研系统，但三个闭环缺一不可。"</b>
+    </div>
+  </section>
+
+  <!-- ============ 三闭环详解 ============ -->
+  <section>
+    <h2>三闭环详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">闭环 ①</span>
+        <h3>价值闭环</h3>
+        <span class="role">验证对象：<b>定位</b></span>
+      </div>
+      <div class="q">本环回答的问题：<b>"用户是否通过指定渠道准确理解价值主张的独特性？"</b></div>
+      <dl class="kv">
+        <dt>闭环链路</dt>
+        <dd>价值主张 → 渠道通路 → 客户细分 → 价值感知。</dd>
+        <dt>验证要点</dt>
+        <dd>用户拿到的是不是你想传达的那个"独特性"，<b>定位是否精准</b>——而不是你讲了什么，而是对方感知到了什么。</dd>
+        <dt>缺环后果</dt>
+        <dd>缺价值闭环，<b>无法验证定位</b>：产品做得再好，用户理解歪了，后面全白搭。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">闭环 ②</span>
+        <h3>交易闭环</h3>
+        <span class="role">验证对象：<b>经济</b></span>
+      </div>
+      <div class="q">本环回答的问题：<b>"单笔交易是否产生正向边际贡献？"</b></div>
+      <dl class="kv">
+        <dt>闭环链路</dt>
+        <dd>客户细分 → 收入来源 → 成本结构 → 边际贡献。</dd>
+        <dt>验证要点</dt>
+        <dd>每一单算不算得过账，<b>收入能否顺利确认与收回</b>——有流水不等于有利润。</dd>
+        <dt>缺环后果</dt>
+        <dd>缺交易闭环，<b>无法验证经济</b>：卖得越多亏得越快的模式，增长只是加速失血。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">闭环 ③</span>
+        <h3>增长闭环</h3>
+        <span class="role">验证对象：<b>扩张</b></span>
+      </div>
+      <div class="q">本环回答的问题：<b>"客户关系能否驱动可持续的增长飞轮？"</b></div>
+      <dl class="kv">
+        <dt>闭环链路</dt>
+        <dd>客户获取 → 客户关系 → 复购/推荐 → 获客成本摊薄。</dd>
+        <dt>验证要点</dt>
+        <dd><b>扩张是否可持续</b>——老客户复购与推荐能否摊薄获客成本，让增长自己转起来。</dd>
+        <dt>缺环后果</dt>
+        <dd>缺增长闭环，<b>无法验证扩张</b>：每获一个新客都要花全价，规模越大成本越高。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见误用</div>
+        <div class="trap"><span class="tn">先跑起来再说</span><span class="td">用"先跑起来再说"为由省略任何一环，等于把一类关键问题留在了验证盲区。</span></div>
+        <div class="trap"><span class="tn">只测产品不测系统</span><span class="td">MVS 测的是商业模式闭环，把三环简化成"产品体验测试"就失去了本卡的意义。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MVP / MVS 对照 ============ -->
+  <section>
+    <h2>MVP 与 MVS 的客观对照</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">MVP</span>
+        <h4>验证产品假设</h4>
+        <p>属精益创业方法体系，回答"这个产品有没有人要、好不好用"——是机会验证阶段的工具。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">MVS</span>
+        <h4>验证最小商业模式闭环</h4>
+        <p>把价值、交易、增长三环装进同一个实验单元，回答"这门生意整体能否自转"——是模式验证阶段的工具。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      <b>适用顺序提示：</b>MVS 最适用于 MVP 已通过、进入商业模式层验证的阶段；已达到或逼近 PMF 的企业，应转入规模化，而非继续停留于 MVS。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>圈出最小模块组合。</b>从已绘制的商业模式画布中，圈出支撑三个闭环的最小模块组合——MVS 是画布的"最小完备子集"，不是另起炉灶重做一套。</li>
+      <li><b>逐环做"够用即可"的简化设计。</b>为每个模块选最便宜的可行实现：能用微信群就不用 APP，能用人工服务就不用自动化，能用第三方工具就不自研系统。</li>
+      <li><b>对照三闭环检查表自查。</b>缺价值闭环→无法验证定位；缺交易闭环→无法验证经济；缺增长闭环→无法验证扩张。任何一环缺失，先补环再上线。</li>
+      <li><b>小规模上线运行。</b>让三环真实转起来，并为每一环预设可量化的观测指标，把"转没转起来"变成可以读数的问题。</li>
+      <li><b>依据三环数据进入决策。</b>数据健康→坚持放大；局部异常→调优；结构性断裂→重构（衔接卡8-16 的三分决策）。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>MVP 已通过、进入商业模式层验证</b>的阶段</li>
+          <li>需要在投入大规模资源前，检验整个生意"能否自转"的项目</li>
+          <li>培训与咨询中的 MVS 设计工作表、三闭环检查表练习</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三个闭环任何一环都<b>不可用"先跑起来再说"为由省略</b></li>
+          <li>不适用于纯技术可行性或单一产品功能的测试——那属产品验证</li>
+          <li>已达到或逼近 PMF 的企业应转入规模化，而非继续停留于 MVS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-08</div>
+        <h4>模块耦合度诊断体系</h4>
+        <p>一静一动：卡8-08 先给画布做"CT 扫描"判断结构是否具备运转可能，本卡再让最小系统实际转起来验证。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持/调优/重构三分决策</h4>
+        <p>三环跑出一轮数据后，用卡8-16 决定是坚守、微调还是动大手术——本卡的输出正是它的输入。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-11</div>
+        <h4>耦合假设提取法</h4>
+        <p>三环上出现的疑点，先按卡8-11 写成可检验的若/则命题，再设计受控实验，避免瞎试。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 221—222 页</span>
+    <span>方法论卡 8-13 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡2-01 · 创业者四大心理特质框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#334155; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 特质详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--s4);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 提示框 ===== */
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=2">第 2 章 · 创业者</a><span class="card-nav-meta">卡 2-01 · 创业者四大心理特质框架</span><a class="card-nav-prev" href="卡1-02-创业过程三阶段模型.html">← 卡 1-02</a><a class="card-nav-next" href="卡2-02-动机指纹与三类动机组合.html">卡 2-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 2-01</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>创业者四大心理特质框架</h1>
+  <div class="oneliner">成就需求 · 风险承担倾向 · 内控点 · 模糊容忍度——认识自己的四面镜子。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>"我适合创业吗？"是潜在创业者问得最多、也最容易问错的问题。教材的回答策略是：不谈适不适合，先谈<b>"你是什么配置"</b>——成就需求、风险承担倾向、内控点、模糊容忍度四项特质，构成创业者心理画像的四个维度。</p>
+    <p>这张卡的用法是"照镜子"而不是"下判决"：<b>特质解释的是"倾向"而非"命运"</b>。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看清行为偏好</div>
+        <div class="vd">理解自己在机会、风险、归因与不确定面前的本能反应。</div>
+      </div>
+      <div class="value">
+        <div class="vt">找到平衡点</div>
+        <div class="vd">每项特质都有适度区，过度即成害——目标是平衡，不是极值。</div>
+      </div>
+      <div class="value">
+        <div class="vt">支撑团队互补</div>
+        <div class="vd">四特质画像可用来设计合伙人搭配，差异互补优于同质扎堆。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 378" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">特质解释的是"倾向"而非"命运"：每项都有适度区，过度即成害</text>
+
+        <!-- ===== 列一 成就需求 ===== -->
+        <rect x="10" y="56" width="157" height="268" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,66 a10,10 0 0 1 10,-10 h137 a10,10 0 0 1 10,10 v20 h-157 z" fill="#3b82f6"/>
+        <text x="88" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">特质一 · 成就需求</text>
+        <text x="22" y="106" font-size="11.5" font-weight="700" fill="#64748b">是什么</text>
+        <text x="22" y="123" font-size="11.5" fill="#475569">渴望把事情做得更好</text>
+        <text x="22" y="139" font-size="11.5" fill="#475569">追求可感知的卓越</text>
+        <rect x="22" y="150" width="133" height="76" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="30" y="169" font-size="11.5" font-weight="700" fill="#059669">适度表现</text>
+        <text x="30" y="187" font-size="11.5" fill="#334155">强烈的进取动力</text>
+        <text x="30" y="203" font-size="11.5" fill="#334155">把标准越做越高</text>
+        <rect x="22" y="238" width="133" height="76" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="30" y="257" font-size="11.5" font-weight="700" fill="#dc2626">过度即成害</text>
+        <text x="30" y="275" font-size="11.5" fill="#334155">为成就感盲目扩张</text>
+        <text x="30" y="291" font-size="11.5" fill="#334155">忽视风险与代价</text>
+
+        <!-- ===== 列二 风险承担倾向 ===== -->
+        <rect x="177" y="56" width="157" height="268" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M177,66 a10,10 0 0 1 10,-10 h137 a10,10 0 0 1 10,10 v20 h-157 z" fill="#d97706"/>
+        <text x="255" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">特质二 · 风险承担</text>
+        <text x="189" y="106" font-size="11.5" font-weight="700" fill="#64748b">是什么</text>
+        <text x="189" y="123" font-size="11.5" fill="#475569">敢于在不确定中</text>
+        <text x="189" y="139" font-size="11.5" fill="#475569">投入时间与资本</text>
+        <rect x="189" y="150" width="133" height="76" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="197" y="169" font-size="11.5" font-weight="700" fill="#059669">适度表现</text>
+        <text x="197" y="187" font-size="11.5" fill="#334155">精算型风险偏好</text>
+        <text x="197" y="203" font-size="11.5" fill="#334155">而非赌徒式下注</text>
+        <rect x="189" y="238" width="133" height="76" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="197" y="257" font-size="11.5" font-weight="700" fill="#dc2626">过度即成害</text>
+        <text x="197" y="275" font-size="11.5" fill="#334155">把冒险当成本事</text>
+        <text x="197" y="291" font-size="11.5" fill="#334155">鲁莽替代了胆识</text>
+
+        <!-- ===== 列三 内控点 ===== -->
+        <rect x="344" y="56" width="157" height="268" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M344,66 a10,10 0 0 1 10,-10 h137 a10,10 0 0 1 10,10 v20 h-157 z" fill="#059669"/>
+        <text x="422" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">特质三 · 内控点</text>
+        <text x="356" y="106" font-size="11.5" font-weight="700" fill="#64748b">是什么</text>
+        <text x="356" y="123" font-size="11.5" fill="#475569">相信结果主要由</text>
+        <text x="356" y="139" font-size="11.5" fill="#475569">自己的行动决定</text>
+        <rect x="356" y="150" width="133" height="76" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="364" y="169" font-size="11.5" font-weight="700" fill="#059669">适度表现</text>
+        <text x="364" y="187" font-size="11.5" fill="#334155">相信我能改变，也</text>
+        <text x="364" y="203" font-size="11.5" fill="#334155">接受有的事改不了</text>
+        <rect x="356" y="238" width="133" height="76" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="364" y="257" font-size="11.5" font-weight="700" fill="#dc2626">过度即成害</text>
+        <text x="364" y="275" font-size="11.5" fill="#334155">事事归因于己</text>
+        <text x="364" y="291" font-size="11.5" fill="#334155">自责或过度控制</text>
+
+        <!-- ===== 列四 模糊容忍度 ===== -->
+        <rect x="511" y="56" width="157" height="268" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M511,66 a10,10 0 0 1 10,-10 h137 a10,10 0 0 1 10,10 v20 h-157 z" fill="#334155"/>
+        <text x="589" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">特质四 · 模糊容忍</text>
+        <text x="523" y="106" font-size="11.5" font-weight="700" fill="#64748b">是什么</text>
+        <text x="523" y="123" font-size="11.5" fill="#475569">信息不全时仍能</text>
+        <text x="523" y="139" font-size="11.5" fill="#475569">保持行动与判断</text>
+        <rect x="523" y="150" width="133" height="76" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="531" y="169" font-size="11.5" font-weight="700" fill="#059669">适度表现</text>
+        <text x="531" y="187" font-size="11.5" fill="#334155">不等于鲁莽：需与</text>
+        <text x="531" y="203" font-size="11.5" fill="#334155">系统化方法结合</text>
+        <rect x="523" y="238" width="133" height="76" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="531" y="257" font-size="11.5" font-weight="700" fill="#dc2626">过度即成害</text>
+        <text x="531" y="275" font-size="11.5" fill="#334155">容忍变成麻木</text>
+        <text x="531" y="291" font-size="11.5" fill="#334155">该止损时不止损</text>
+
+        <!-- 底部用法提示 -->
+        <rect x="10" y="336" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="358" text-anchor="middle" font-size="12.5" fill="#475569">对照四栏自评：每项写下自己的具体经历，找到强项与平衡点</text>
+      </svg>
+      <div class="caption">图 1　四大心理特质框架：是什么 / 适度表现 / 过度即成害 三段式对照</div>
+    </div>
+    <div class="quote">
+      <b>"创业者并非因为看到机会才相信，而是因为相信才'看到'机会。"</b>特质不是创业的入场券，而是理解自己行为模式的起点——看见它，才能管理它。
+    </div>
+  </section>
+
+  <!-- ============ 逐特质详解 ============ -->
+  <section>
+    <h2>逐特质详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">特质一</span>
+        <h3>成就需求</h3>
+        <span class="role">理论源头：<b>麦克利兰成就需求理论</b></span>
+      </div>
+      <div class="q">自问：<b>"我是不是渴望把事情做得更好，而不只是做成？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>渴望追求卓越、把标准不断做高的内在动力。相关元分析研究支持高成就需求与创业活动之间的关联。</dd>
+        <dt>适度表现</dt>
+        <dd>强烈的进取心与自我要求，是长期投入创业的心理燃料。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">过度即成害</div>
+        <div class="trap"><span class="tn">盲目扩张</span><span class="td">为追新目标而忽视风险与代价，成就感变成决策滤镜。</span></div>
+        <div class="trap"><span class="tn">弃基本盘</span><span class="td">一心找"更有成就感"的新战场，丢了手上的现金流生意。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">特质二</span>
+        <h3>风险承担倾向</h3>
+        <span class="role">理论源头：<b>布洛克豪斯等人的风险认知研究</b></span>
+      </div>
+      <div class="q">自问：<b>"我敢不敢在不确定中押上自己的时间与资本？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>在结果不确定时仍愿意投入的行动倾向。研究发现创业者并非更爱赌博，而是<b>风险认知方式不同</b>——他们看到的下行风险比常人感知的更小。</dd>
+        <dt>适度表现</dt>
+        <dd>教材主张创业者是<b>"'精算型'或'风险缓冲型'的偏好"</b>：先算清赔率、留好缓冲，再从容下注。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">过度即成害</div>
+        <div class="trap"><span class="tn">冒险上瘾</span><span class="td">把"敢赌"当成能力本身，鲁莽替代了胆识。</span></div>
+        <div class="trap"><span class="tn">无缓冲押注</span><span class="td">全仓投入不留退路，一次失败即出局。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">特质三</span>
+        <h3>内控点</h3>
+        <span class="role">理论源头：<b>罗特控制点理论</b></span>
+      </div>
+      <div class="q">自问：<b>"我相信结果主要由我自己的行动决定吗？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>内控者相信成败取决于自己的选择与努力，外控者更多归因于运气与环境。创业者群体整体偏向内控，这解释了他们"明知难而为之"的行动力。</dd>
+        <dt>适度表现</dt>
+        <dd>教材的平衡观：<b>"在'相信我能改变'与'接受有些事物无法改变'之间找到平衡"</b>——对能改变的事全力出击，对改不了的事坦然接受。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">过度即成害</div>
+        <div class="trap"><span class="tn">全能归因</span><span class="td">事事归因于己，市场逆势也怪自己不够拼，陷入自责循环。</span></div>
+        <div class="trap"><span class="tn">过度控制</span><span class="td">不敢授权、不容出错，团队长不大，自己先耗尽。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">特质四</span>
+        <h3>模糊容忍度</h3>
+        <span class="role">理论源头：<b>布德纳模糊容忍度概念</b></span>
+      </div>
+      <div class="q">自问：<b>"信息不全的时候，我还能不能行动？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>在信息不完整、情境多义时保持镇定并继续判断与行动的能力。创业环境天然高度模糊，这项特质决定了"等不等人齐再动手"。</dd>
+        <dt>适度表现</dt>
+        <dd>在迷雾中保持有序推进。但教材特别强调：高模糊容忍度<b>"不等于鲁莽"</b>，<b>需与系统化方法结合</b>——能忍受未知，同时用方法降低未知。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">过度即成害</div>
+        <div class="trap"><span class="tn">容忍变麻木</span><span class="td">对关键信号的模糊视而不见，该收敛时不收敛。</span></div>
+        <div class="trap"><span class="tn">止损失灵</span><span class="td">习惯了"再说吧"，错过纠偏窗口，小错拖成大错。</span></div>
+      </div>
+    </div>
+
+    <div class="mile-note">
+      <b>四项特质是"倾向"不是"命运"。</b>没有任何一项特质是创业的必要条件或充分保证；特质画像的真正用途，是让你知道自己的默认反应模式——进而在关键决策点上，<b>有意识地校准它，而不是被它悄悄带偏</b>。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐项自评。</b>对照四个特质，各给自己一个判断，并为每一项附上一段真实经历作为证据——章末实训即要求学员"逐一进行自我评估"。</li>
+      <li><b>找出最强与最弱。</b>强项是你的心理资产，弱项先别急着改，看它是否踩到了"过度即成害"的红线。</li>
+      <li><b>为弱项设护栏。</b>不改性格，改决策场景：如风险倾向过强者，规定重大投入前必须征询两位以上外部意见。</li>
+      <li><b>借他人视角校验。</b>请信任的人复核你的自评——自评最常出现的偏差，是把自己最 admire 的特质打了高分。</li>
+      <li><b>用画像做互补。</b>把四特质当作合伙人搭配的坐标系，差异互补优先于气味相投。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>创业启动前的<b>自我盘点与心理准备</b></li>
+          <li>合伙人特质互补搭配与团队画像设计</li>
+          <li>培训、教练与咨询中引导"认识自己"的对话</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>特质解释"倾向"而非"命运"，<b>不能用来预测创业成败</b></li>
+          <li>勿当筛人标签：心理画像不能替代对具体行为的观察</li>
+          <li>自评存在偏差，且受文化情境影响，需结合他人反馈使用</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-05</div>
+        <h4>创业者四大核心能力框架</h4>
+        <p>从"我是什么样的人"（特质）到"我能干成什么事"（能力），两卡衔接成完整自画像。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-01</div>
+        <h4>创业思维三层次框架</h4>
+        <p>心理层之上还有认知层与行动层：特质打底，思维与方法接管日常决策。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-02</div>
+        <h4>动机指纹与三类动机组合</h4>
+        <p>特质之下的下一问：你到底为什么出发？动机结构决定坚持的燃料。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 2 章，第 36—38 页</span>
+    <span>方法论卡 2-01 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

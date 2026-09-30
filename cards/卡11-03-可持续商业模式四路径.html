@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-03 · 可持续商业模式四路径</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#64748b; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 路径详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--s4);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-03 · 可持续商业模式四路径</span><a class="card-nav-prev" href="卡11-02-可持续创业三维度机会框架.html">← 卡 11-02</a><a class="card-nav-next" href="卡11-04-银发经济四维机会框架.html">卡 11-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-03</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>可持续商业模式四路径</h1>
+  <div class="oneliner">可持续溢价 — 成本重构 — 逆向价值闭环 — 生态共享：绿色商业化的四条路径。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多创业者认同可持续理念，却卡在同一个死结上："绿色 = 贵，贵 = 没人买"。理念正确救不了算不过来的账。</p>
+    <p>教材给出了四条破解路径：<b>认同可以换来溢价，效率可以直接省钱，闭环能让废物变资源，共享平台能让多方共赢</b>。四条路径各解一个结，每条都按"核心逻辑—运营层面—盈利来源—核心挑战"四要素展开，可以直接当商业模式选型清单用。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">四条路各解一个结</div>
+        <div class="vd">溢价解"认同变现"，重构解"绿色变便宜"，闭环解"废物变资源"，共享解"多方共赢"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">四要素展开</div>
+        <div class="vd">每条路径都讲清逻辑、运营、盈利与挑战，选型时不是凭感觉而是逐项对照。</div>
+      </div>
+      <div class="value">
+        <div class="vt">选型而非拼凑</div>
+        <div class="vd">先在四条路径中选一条主路径跑通，再谈组合，避免"什么都想要"。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 456" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">总纲：可持续商业模式创新的本质，是系统耦合的重构</text>
+
+        <!-- ===== 路径① 可持续溢价 ===== -->
+        <rect x="10" y="58" width="320" height="158" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,82 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#3b82f6"/>
+        <text x="170" y="88.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">路径① 可持续溢价</text>
+        <text x="24" y="120" font-size="12" font-weight="700" fill="#1e293b">消费者不是因为"便宜"而购买，</text>
+        <text x="24" y="138" font-size="12" font-weight="700" fill="#1e293b">而是因为"认同"而支付</text>
+        <text x="24" y="158" font-size="12" fill="#334155">运营：认证 · 溯源 · 社群，把认同换成溢价</text>
+        <text x="24" y="176" font-size="12" fill="#334155">盈利：认同带来的品牌溢价</text>
+        <text x="24" y="194" font-size="12" fill="#334155">挑战：信任建立慢，认证与溯源成本高</text>
+
+        <!-- ===== 路径② 成本重构 ===== -->
+        <rect x="350" y="58" width="320" height="158" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M350,82 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#d97706"/>
+        <text x="510" y="88.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">路径② 成本重构</text>
+        <text x="364" y="120" font-size="12" font-weight="700" fill="#1e293b">用更少的资源投入实现同等或更</text>
+        <text x="364" y="138" font-size="12" font-weight="700" fill="#1e293b">高产出，使"绿色即省钱"成为现实</text>
+        <text x="364" y="158" font-size="12" fill="#334155">运营：工艺与流程改造，压能耗物耗</text>
+        <text x="364" y="176" font-size="12" fill="#334155">盈利：省下来的资源成本即利润</text>
+        <text x="364" y="194" font-size="12" fill="#334155">挑战：改造投入前置，回收周期长</text>
+
+        <!-- ===== 路径③ 逆向价值闭环 ===== -->
+        <rect x="10" y="228" width="320" height="158" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,252 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#059669"/>
+        <text x="170" y="258.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">路径③ 逆向价值闭环</text>
+        <text x="24" y="290" font-size="12" font-weight="700" fill="#1e293b">"产品即服务 / 废弃物即资源"</text>
+        <text x="24" y="310" font-size="12" fill="#334155">子型一：产品服务化——"照明即服</text>
+        <text x="24" y="328" font-size="12" fill="#334155">务"按流明小时收费</text>
+        <text x="24" y="348" font-size="12" fill="#334155">子型二：回收再利用闭环</text>
+        <text x="24" y="366" font-size="12" fill="#334155">挑战：闭环基础设施投入重</text>
+
+        <!-- ===== 路径④ 生态共享 ===== -->
+        <rect x="350" y="228" width="320" height="158" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M350,252 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#64748b"/>
+        <text x="510" y="258.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">路径④ 生态共享</text>
+        <text x="364" y="290" font-size="12" fill="#334155">逻辑：多利益相关者平台，让环境、</text>
+        <text x="364" y="308" font-size="12" fill="#334155">产业各方在同一生态里各取所需</text>
+        <text x="364" y="328" font-size="12" font-weight="700" fill="#1e293b">关键：必须在早期解决"先有鸡还是</text>
+        <text x="364" y="346" font-size="12" font-weight="700" fill="#1e293b">先有鸡蛋"的双边启动问题</text>
+        <text x="364" y="366" font-size="12" fill="#334155">挑战：生态冷启动最难，早期投入大</text>
+
+        <!-- 底部注解带 -->
+        <rect x="10" y="400" width="660" height="40" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="425" text-anchor="middle" font-size="12" fill="#475569">四条路径可组合，但先跑通一条：溢价靠认同 · 重构靠效率 · 闭环靠循环 · 共享靠生态</text>
+      </svg>
+      <div class="caption">图 1　可持续商业模式四路径：四条通道各解一个结，四要素逐项对照后再选型</div>
+    </div>
+    <div class="quote">
+      四条路径的共同底座只有一句话：<b>"可持续商业模式创新的本质，是系统耦合的重构。"</b>可持续不是在原有生意上"贴一层绿"，而是把价值创造的方式重新耦合一遍——谁在付钱、什么在省钱、资源从哪儿来到哪儿去，都要重新接线。
+    </div>
+  </section>
+
+  <!-- ============ 路径详解 ============ -->
+  <section>
+    <h2>路径详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">路径①</span>
+        <h3>可持续溢价</h3>
+        <span class="role">解的结：<b>认同如何变现</b></span>
+      </div>
+      <div class="q">核心逻辑：<b>"消费者不是因为'便宜'而购买，而是因为'认同'而支付。"</b></div>
+      <dl class="kv">
+        <dt>运营层面</dt>
+        <dd>靠<b>认证、溯源、社群</b>三件套实现溢价：认证证明"我真的是绿色的"，溯源证明"钱真的到了该到的地方"，社群让认同的人互相看见。</dd>
+        <dt>盈利来源</dt>
+        <dd>认同带来的<b>品牌溢价</b>——同样的功能，认同者愿意多付的那部分钱。</dd>
+        <dt>核心挑战</dt>
+        <dd>信任建立慢，认证与溯源体系的建设成本高；溢价一旦被质疑"漂绿"，崩塌也快。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">路径②</span>
+        <h3>成本重构</h3>
+        <span class="role">解的结：<b>绿色如何变便宜</b></span>
+      </div>
+      <div class="q">核心逻辑：<b>"用更少的资源投入实现同等或更高产出，使'绿色即省钱'成为现实。"</b></div>
+      <dl class="kv">
+        <dt>运营层面</dt>
+        <dd>从工艺与流程入手改造生产环节，压降能耗、物耗与废弃物的单位成本——绿色在这里不是额外成本，而是效率本身。</dd>
+        <dt>盈利来源</dt>
+        <dd><b>省下来的资源成本直接变成利润</b>：不依赖消费者多付一分钱，账就先算得过来。</dd>
+        <dt>核心挑战</dt>
+        <dd>改造投入前置，回收周期长；省出来的成本若被同行价格战吃掉，优势就守不住。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">路径③</span>
+        <h3>逆向价值闭环</h3>
+        <span class="role">解的结：<b>废物如何变资源</b></span>
+      </div>
+      <div class="q">核心逻辑：<b>"产品即服务 / 废弃物即资源。"</b></div>
+      <dl class="kv">
+        <dt>子型一</dt>
+        <dd><b>产品服务化</b>：卖的不是产品而是产品提供的结果，如<b>"照明即服务"按流明小时收费</b>——厂商为了多赚服务费，反而有动力把灯做得更耐用、更省电。</dd>
+        <dt>子型二</dt>
+        <dd><b>回收再利用闭环</b>：把使用后的产品收回、拆解、再造成新原料，废弃物重新进入价值循环。</dd>
+        <dt>核心挑战</dt>
+        <dd>闭环基础设施（回收网络、拆解产线）投入重，闭环没转起来之前都是净投入。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">路径④</span>
+        <h3>生态共享</h3>
+        <span class="role">解的结：<b>多方如何共赢</b></span>
+      </div>
+      <div class="q">核心逻辑：搭建<b>多利益相关者平台</b>，让环保组织、企业、政府与消费者在同一生态里各取所需。</div>
+      <dl class="kv">
+        <dt>运营层面</dt>
+        <dd>平台定规则、做撮合，让各方的绿色行动都能在生态内获得回报——单方做不成的系统耦合，平台来接。</dd>
+        <dt>盈利来源</dt>
+        <dd>生态运转后的平台收益：交易佣金、服务费与生态内增值分成。</dd>
+        <dt>核心挑战</dt>
+        <dd><b>"必须在早期解决'先有鸡还是先有鸡蛋'问题"</b>——供给方不来需求方就不来，反之亦然，双边冷启动是生死关。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>写下绿色价值归属。</b>一句话说清你的生意里"绿色"对谁有利：对认同的消费者（走①）、对自己的成本（走②）、对废弃物（走③）、还是对整个系统（走④）。</li>
+      <li><b>对照四路径初选。</b>用"核心逻辑"一栏做快速匹配，圈出与你的资源禀赋最接近的 1—2 条路径。</li>
+      <li><b>用四要素表展开。</b>给候选路径逐项填"核心逻辑—运营层面—盈利来源—核心挑战"，填不满的格子就是下一步要补的功课。</li>
+      <li><b>小成本验证关键假设。</b>走溢价路径就先验证"有人愿多付钱"；走成本重构就先验证"真的省得出钱"；走闭环就先验证"回收链转得动"；走共享就先验证"能撬动关键一方先入场"。</li>
+      <li><b>跑通一条再组合。</b>主路径盈利模型成立后，再叠加其他路径做增长——顺序反了就是两头都算不过账。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>绿色新产品、新品牌</b>的商业模式选型：先选路径，再画盈利模型</li>
+          <li><b>传统制造与农业企业</b>的可持续转型规划，尤其是成本重构路径</li>
+          <li>循环经济、回收再利用类项目的模式设计（路径③子型对照）</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>路径可以组合，但<b>先聚焦跑通一条</b>，四种元素拼在一起往往四种都没跑通</li>
+          <li>溢价路径<b>依赖认证与溯源体系的公信力</b>，没有第三方背书慎做高溢价</li>
+          <li>闭环与共享路径<b>资产与投入偏重</b>，小团队慎入，或先做闭环中离钱最近的一环</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-02</div>
+        <h4>可持续创业三维度机会框架</h4>
+        <p>先用工卡选"做什么方向"，再用本卡选"怎么赚钱"——机会框架与模式路径前后相接。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-04</div>
+        <h4>六类型矩阵</h4>
+        <p>四路径是可持续赛道的特殊模式谱系，可与一般商业模式类型矩阵交叉比对，看清差异在哪。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-01</div>
+        <h4>四段式专题分析框架</h4>
+        <p>本卡对应"可持续创业"专题的第③段（商业模式创新），与趋势、机会、挑战三段合并成完整简报。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 295—297 页</span>
+    <span>方法论卡 11-03 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

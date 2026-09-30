@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-10 · 机会验证三步与转型四类型</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .values.four{grid-template-columns:repeat(4,1fr);}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+  .value.t4 .vt{color:var(--s2);}
+  .value.t4{background:var(--s2-bg);border-color:var(--s2-line);}
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+  /* ===== 三步详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+  /* ===== 决策三支 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+  @media (max-width:680px){
+    .values,.values.four,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:96px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-10 · 机会验证三步＋转型四类型</span><a class="card-nav-prev" href="卡5-09-四维度两阶段机会评估框架.html">← 卡 5-09</a><a class="card-nav-next" href="卡6-01-关键资源识别三步法.html">卡 6-01 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-10</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>机会验证三步与转型四类型</h1>
+  <div class="oneliner">构建—测量—学习 × 决策三支 × 转型四类型：让假设过一遍"证据法庭"。</div>
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>机会在纸面上永远成立——方案再完整、逻辑再自洽，都只是<b>假设</b>；能给出判决的只有市场。教材接续精益创业的"构建—测量—学习"循环，给出完整的验证闭环：用最小可行产品（MVP）产生<b>真实行为数据</b>，用四类核心指标测量，用三原则复盘学习，最后在<b>坚持、转型、放弃</b>三支中决策——选择转型时，还有四种明确类型可选，避免"死扛到底"与"半途而废"两个极端。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">证据闭环</div>
+        <div class="vd">从造出 MVP 到读出数据再到复盘归因，每一步都有明确的动作与产出。</div>
+      </div>
+      <div class="value">
+        <div class="vt">决策有章法</div>
+        <div class="vd">坚持、转型还是放弃，由事前定好的成功标准说了算，不由情绪说了算。</div>
+      </div>
+      <div class="value">
+        <div class="vt">转型不是失败</div>
+        <div class="vd">转型保留已验证的认知资产，修正的只是初始价值判断——损失可控、认知可续。</div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="32" rx="16" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="28" text-anchor="middle" font-size="13" fill="#475569">构建—测量—学习循环：让证据决定坚持、转型还是放弃</text>
+        <!-- 循环回退线 -->
+        <path d="M570,64 L570,54 L110,54 L110,64" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,4" marker-end="url(#ah)"/>
+        <text x="340" y="51" text-anchor="middle" font-size="10.5" fill="#94a3b8">循环迭代，直至决策</text>
+        <!-- ===== 构建 ===== -->
+        <rect x="10" y="64" width="200" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,74 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#3b82f6"/>
+        <text x="110" y="84" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">① 构建 MVP</text>
+        <text x="24" y="116" font-size="12" fill="#334155">MVP 产生真实行为数据</text>
+        <text x="24" y="140" font-size="11" fill="#64748b">是"学习工具"，不是半成品</text>
+        <!-- ===== 测量 ===== -->
+        <rect x="240" y="64" width="200" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M240,74 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#d97706"/>
+        <text x="340" y="84" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">② 测量指标</text>
+        <text x="254" y="116" font-size="12" fill="#334155">用户参与度 · 留存率</text>
+        <text x="254" y="140" font-size="11" fill="#64748b">付费意愿 · 推荐意愿</text>
+        <!-- ===== 学习 ===== -->
+        <rect x="470" y="64" width="200" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M470,74 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#059669"/>
+        <text x="570" y="84" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">③ 学习复盘</text>
+        <text x="484" y="116" font-size="12" fill="#334155">假设对照 · 归因追溯</text>
+        <text x="484" y="140" font-size="11" fill="#64748b">认知记录沉淀知识资产</text>
+        <!-- 前进箭头 -->
+        <line x1="210" y1="112" x2="236" y2="112" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="440" y1="112" x2="466" y2="112" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <!-- 学习 → 决策 -->
+        <path d="M570,160 L570,180 L340,180 L340,196" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <!-- 决策节点 -->
+        <rect x="240" y="198" width="200" height="40" rx="20" fill="#1e293b"/>
+        <text x="340" y="222.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">决策三支</text>
+        <!-- 分发线 -->
+        <path d="M340,238 L340,252" fill="none" stroke="#475569" stroke-width="2"/>
+        <path d="M110,252 L570,252" fill="none" stroke="#475569" stroke-width="2"/>
+        <line x1="110" y1="252" x2="110" y2="264" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="340" y1="252" x2="340" y2="264" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="570" y1="252" x2="570" y2="264" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <!-- ===== 坚持 ===== -->
+        <rect x="10" y="268" width="200" height="77.4" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="110" y="292" text-anchor="middle" font-size="13.5" font-weight="700" fill="#047857">坚持</text>
+        <text x="110" y="314" text-anchor="middle" font-size="11.5" fill="#334155">证据支持核心假设，继续推进</text>
+        <text x="110" y="334" text-anchor="middle" font-size="11" fill="#dc2626">警惕"虚假成立"</text>
+        <!-- ===== 转型 ===== -->
+        <rect x="240" y="268" width="200" height="77.4" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="292" text-anchor="middle" font-size="13.5" font-weight="700" fill="#b45309">转型</text>
+        <text x="340" y="314" text-anchor="middle" font-size="11.5" fill="#334155">部分假设被证伪</text>
+        <text x="340" y="334" text-anchor="middle" font-size="11" fill="#92400e">保留认知资产，修正价值判断</text>
+        <!-- ===== 放弃 ===== -->
+        <rect x="470" y="268" width="200" height="77.4" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="570" y="292" text-anchor="middle" font-size="13.5" font-weight="700" fill="#dc2626">放弃</text>
+        <text x="570" y="314" text-anchor="middle" font-size="11.5" fill="#334155">致命假设被证伪</text>
+        <text x="570" y="334" text-anchor="middle" font-size="11" fill="#991b1b">及时止损，守住可承受损失</text>
+        <!-- 转型 → 四类型分发 -->
+        <path d="M340,340 L340,352" fill="none" stroke="#475569" stroke-width="2"/>
+        <path d="M88,352 L592,352" fill="none" stroke="#475569" stroke-width="2"/>
+        <line x1="88" y1="352" x2="88" y2="364" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="256" y1="352" x2="256" y2="364" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="424" y1="352" x2="424" y2="364" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="592" y1="352" x2="592" y2="364" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <!-- ===== 转型四类型 ===== -->
+        <rect x="10" y="368" width="155" height="58" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="88" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">问题转型</text>
+        <text x="88" y="414" text-anchor="middle" font-size="11" fill="#92400e">换一个问题去解决</text>
+        <rect x="178" y="368" width="155" height="58" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="256" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">客户细分转型</text>
+        <text x="256" y="414" text-anchor="middle" font-size="11" fill="#92400e">换一群用户去服务</text>
+        <rect x="346" y="368" width="155" height="58" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="424" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">Zoom-in 转型</text>
+        <text x="424" y="414" text-anchor="middle" font-size="11" fill="#92400e">把一个功能做成全部</text>
+        <rect x="514" y="368" width="155" height="58" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="592" y="392" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">需求重构转型</text>
+        <text x="592" y="414" text-anchor="middle" font-size="11" fill="#92400e">重新定义需求本身</text>
+        <!-- 底部注解 -->
+        <text x="340" y="456" text-anchor="middle" font-size="11.5" fill="#d97706">共同特征：保留已验证的认知资产，修正的是对"为谁解决什么问题"的初始价值判断</text>
+      </svg>
+      <div class="caption">图 1　机会验证全景：三步循环 → 决策三支 → 转型四类型</div>
+    </div>
+    <div class="quote">
+      对 MVP 的定位，教材说得直白：<b>"MVP 不是功能残缺的半成品，而是'学习工具'"</b>——它<b>"必须是能够产生真实的用户行为数据，而非仅仅收集口头表态"</b>。
+    </div>
+  </section>
+  <!-- ============ 三步详解 ============ -->
+  <section>
+    <h2>验证三步详解</h2>
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一步</span>
+        <h3>构建</h3>
+        <span class="role">产出：<b>能产生行为数据的 MVP</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"用什么去验证？"</b></div>
+      <dl class="kv">
+        <dt>核心工具</dt>
+        <dd>最小可行产品（MVP）——用最小的成本搭出能触达用户、能收集行为证据的验证载体。</dd>
+        <dt>两条铁律</dt>
+        <dd><b>"MVP 不是功能残缺的半成品，而是'学习工具'"</b>；它<b>"必须是能够产生真实的用户行为数据，而非仅仅收集口头表态"</b>。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">当缩水产品做</span><span class="td">埋头打磨功能细节，忘了 MVP 的使命是学习，不是交付。</span></div>
+        <div class="trap"><span class="tn">问卷代行为</span><span class="td">用"你会用吗"的口头表态代替真实使用——表态不构成证据。</span></div>
+        <div class="trap"><span class="tn">越做越大</span><span class="td">功能一路加码，"最小"丢了，成本与周期双双失控。</span></div>
+      </div>
+    </div>
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二步</span>
+        <h3>测量</h3>
+        <span class="role">产出：<b>四类核心指标读数</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"看哪些数字？"</b></div>
+      <dl class="kv">
+        <dt>四类指标</dt>
+        <dd><b>用户参与度</b>、<b>留存率</b>、<b>付费意愿</b>、<b>推荐意愿</b>（NPS；小样本时改用口头推荐替代）。</dd>
+        <dt>关键一条</dt>
+        <dd>付费意愿是重头：<b>"在接触产品的用户中，有多大比例愿意预付、订阅或支付定金？这是检验需求强度的直接证据。"</b></dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">虚荣指标</span><span class="td">只看只涨不说明问题的数字——下载量、浏览量撑不起需求判断。</span></div>
+        <div class="trap"><span class="tn">小样本百分比</span><span class="td">样本太小却用百分比下结论——教材实训建议采用绝对数量标准，如"至少 3 人支付定金"。</span></div>
+        <div class="trap"><span class="tn">只看均值</span><span class="td">平均数掩盖分布——少数极度热情与多数无感，读出来是同一个"平均满意"。</span></div>
+      </div>
+    </div>
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三步</span>
+        <h3>学习</h3>
+        <span class="role">产出：<b>可复用的认知记录</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"数据究竟说明假设对不对？"</b></div>
+      <dl class="kv">
+        <dt>复盘三原则</dt>
+        <dd><b>假设对照</b>——<b>"将实际数据与实验前设定的成功标准直接对比，避免事后解释的主观偏移"</b>；<b>归因追溯</b>——<b>"区分信号与噪声"</b>；<b>认知记录</b>——<b>"形成可累积、可复用的组织知识资产"</b>。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">事后找理由</span><span class="td">数据不好看就重新解释标准——复盘对照的是事前写下的那条线。</span></div>
+        <div class="trap"><span class="tn">噪声当信号</span><span class="td">把个别用户的热情读成需求爆发——先问样本，再下结论。</span></div>
+        <div class="trap"><span class="tn">结论存脑内</span><span class="td">验证结论只留在创始人脑子里，组织学不到，下一轮还得重交学费。</span></div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ 决策三支 ============ -->
+  <section>
+    <h2>决策三支</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">分支一</span>
+        <h4>坚持</h4>
+        <p>核心假设获得证据支持：留存、付费等关键指标达标，扩大验证范围、加大投入。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">分支二</span>
+        <h4>转型</h4>
+        <p>部分假设被证伪但认知资产仍在：换问题、换用户、换功能或重构需求，保留已验证的部分再出发。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">分支三</span>
+        <h4>放弃</h4>
+        <p>致命假设被证伪且无转型余地：及时止损，把可承受损失当作这场验证的学费。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      <b>选择"坚持"前先过一道安检。</b>教材提醒警惕<b>"虚假成立"</b>——<b>"早期用户的高满意度可能仅反映'尝鲜者'的宽容"</b>。真正的坚持依据是留存与付费证据，不是最初的热情。而无论转向哪一支，决策都应对照<b>事前写下的成功标准</b>作出，不靠临场情绪。
+    </div>
+  </section>
+  <!-- ============ 转型四类型 ============ -->
+  <section>
+    <h2>转型四类型</h2>
+    <p>选择转型时，四种类型给出明确路径。它们的共同特征是：<b>"保留已验证的认知资产……修正的是对'为谁解决什么问题'的初始价值判断"</b>。</p>
+    <div class="values four">
+      <div class="value t4">
+        <div class="vt">问题转型</div>
+        <div class="vd">最初瞄准的问题不成立，转而解决验证过程中发现的真问题。</div>
+      </div>
+      <div class="value t4">
+        <div class="vt">客户细分转型</div>
+        <div class="vd">产品没大错，用户群错了——换到真正愿意付费的人群。</div>
+      </div>
+      <div class="value t4">
+        <div class="vt">Zoom-in 转型</div>
+        <div class="vd">把原产品中被验证最受用的单一功能，放大为产品的全部。</div>
+      </div>
+      <div class="value t4">
+        <div class="vt">需求重构转型</div>
+        <div class="vd">用户与场景不变，对需求本身重新定义，换一层价值去满足。</div>
+      </div>
+    </div>
+  </section>
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列假设清单。</b>从评估阶段（卡 5-09）的"待验证假设清单"出发，按证伪后果严重程度排序，优先验证最致命的假设。</li>
+      <li><b>设计 MVP。</b>满足低成本、短周期、能产生真实行为数据三条约束；明确向谁测试、收集什么数据、判定成败的标准。</li>
+      <li><b>事前定标准。</b>动手之前写下成功标准——建议采用绝对数量（如"至少 3 人支付定金"）而非百分比，杜绝事后解释空间。</li>
+      <li><b>测量并复盘。</b>用四类指标读数，按假设对照、归因追溯、认知记录三原则复盘，结论写进组织知识库。</li>
+      <li><b>按证据决策。</b>坚持要有留存与付费证据；转型对照四类型选路径、保留认知资产；放弃守住可承受损失，不恋战。</li>
+    </ol>
+  </section>
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>假设已明确、需要<b>证据裁决</b>的阶段：机会开发走向模式验证的关口</li>
+          <li>资源有限、必须<b>控制验证成本</b>的团队：小实验回答大问题</li>
+          <li>"继续还是转向"的<b>关键决策点</b>：用标准代替直觉换挡</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>循环依赖<b>真实用户接触</b>——没有用户渠道时，先解决触达再谈验证</li>
+          <li>验证的是<b>"问题与需求"，不是"产品完成度"</b>——别把循环跑成迭代开发</li>
+          <li><b>频繁转型等于没有战略</b>——转型应保留认知资产，而非推倒重来</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-09</div>
+        <h4>四维度两阶段机会评估框架</h4>
+        <p>评估的终点就是验证的起点：本卡的假设清单与验证实验方案，都由评估框架的两份文档交接而来。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-08</div>
+        <h4>机会假设命题句式</h4>
+        <p>"如果我解决某问题，某类用户就会付费"——写清假设句，验证才有靶子。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>本卡属于"机会开发→模式验证"的换挡工具：过不了验证，就退回去重新开发机会。</p>
+      </div>
+    </div>
+  </section>
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 148—150 页</span>
+    <span>方法论卡 5-10 · 第 5 章 创业机会</span>
+  </div>
+</div>
+</body>
+</html>

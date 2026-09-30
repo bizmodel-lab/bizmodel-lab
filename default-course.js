@@ -1,5 +1,5 @@
 /**
- * 创见 BizLab 2.0 — 默认课程模板
+ * mAtlas BizLab 2.0 — 默认课程模板
  * 六大阶段：知识精讲 / 实战工具 / 实训任务 / 阶段自测
  * deliverable: none | vpc | bmc | matrix | assumptions | finance | plan  （该阶段需提交的成果类型）
  */

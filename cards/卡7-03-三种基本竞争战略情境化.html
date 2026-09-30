@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡7-03 · 三种基本竞争战略情境化</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 战略详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 选择依据 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=7">第 7 章 · 创业战略</a><span class="card-nav-meta">卡 7-03 · 三种基本竞争战略的创业情境化</span><a class="card-nav-prev" href="卡7-02-愿景金字塔.html">← 卡 7-02</a><a class="card-nav-next" href="卡7-04-市场进入四策略矩阵.html">卡 7-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 7-03</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>三种基本竞争战略情境化</h1>
+  <div class="oneliner">成本领先、差异化、聚焦利基——把波特三大通用战略翻译成创业者能落地的打法清单。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>波特的三种基本竞争战略是战略管理的经典框架，但原版语言面向成熟大企业——创业者读得懂，却常常用不上：<b>没有规模怎么成本领先？没有预算怎么差异化？正面战场打不起怎么办？</b></p>
+    <p>教材把这一框架放进创业情境：成本领先给出<b>四条实现路径</b>，差异化给出<b>四个维度与"双战场"</b>，聚焦利基给出<b>利基市场五特征与"深挖沟、高筑墙"的壁垒观</b>，并配套选择矩阵与三个选择依据。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">通用理论接上创业地气</div>
+        <div class="vd">四路径、四维度、五特征——都是可以直接对照执行的清单。</div>
+      </div>
+      <div class="value">
+        <div class="vt">选型有依据</div>
+        <div class="vd">竞争范围 × 优势来源矩阵定位基本型，行业结构、自身禀赋、资源约束三据定夺。</div>
+      </div>
+      <div class="value">
+        <div class="vt">弱者有起手式</div>
+        <div class="vd">利基五特征帮资源有限的创业者先找到"打得赢"的细分战场。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 630" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 三角连线 -->
+        <line x1="280" y1="190" x2="130" y2="340" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="400" y1="190" x2="550" y2="340" stroke="#cbd5e1" stroke-width="2"/>
+        <line x1="220" y1="440" x2="460" y2="440" stroke="#cbd5e1" stroke-width="2"/>
+
+        <!-- 中心标注 -->
+        <text x="340" y="255" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">创业情境化</text>
+        <text x="340" y="285" text-anchor="middle" font-size="12" fill="#64748b">把通用竞争战略翻译成</text>
+        <text x="340" y="305" text-anchor="middle" font-size="12" fill="#64748b">创业者可执行的打法清单</text>
+
+        <!-- ===== 成本领先（上） ===== -->
+        <rect x="240" y="20" width="200" height="170" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="240" y="20" width="200" height="30" rx="10" fill="#3b82f6"/>
+        <rect x="240" y="35" width="200" height="15" fill="#3b82f6"/>
+        <text x="340" y="39.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">成本领先</text>
+        <text x="254" y="76" font-size="11" font-weight="700" fill="#3b82f6">创业情境化 · 四条实现路径</text>
+        <text x="254" y="100" font-size="12" fill="#334155">商业模式重构成本结构</text>
+        <text x="254" y="122" font-size="12" fill="#334155">技术驱动提升运营效率</text>
+        <text x="254" y="144" font-size="12" fill="#334155">产品与服务做减法简化</text>
+        <text x="254" y="166" font-size="12" fill="#334155">善用资源杠杆，以巧补拙</text>
+
+        <!-- ===== 差异化（左下） ===== -->
+        <rect x="20" y="340" width="200" height="200" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="20" y="340" width="200" height="30" rx="10" fill="#d97706"/>
+        <rect x="20" y="355" width="200" height="15" fill="#d97706"/>
+        <text x="120" y="359.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">差异化</text>
+        <text x="34" y="396" font-size="11" font-weight="700" fill="#d97706">四维度 + 理性感性双战场</text>
+        <text x="34" y="420" font-size="12" fill="#334155">技术 / 设计 / 服务 / 体验</text>
+        <text x="34" y="442" font-size="12" fill="#334155">延伸：品牌 / 渠道 / 客户关系</text>
+        <text x="34" y="464" font-size="12" fill="#334155">理性战场：可验证价值</text>
+        <text x="34" y="486" font-size="12" fill="#334155">感性战场：完成心智嵌入</text>
+        <text x="34" y="514" font-size="12" font-weight="700" fill="#b45309">两个战场需同时征服</text>
+
+        <!-- ===== 聚焦利基（右下） ===== -->
+        <rect x="460" y="340" width="200" height="200" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="460" y="340" width="200" height="30" rx="10" fill="#059669"/>
+        <rect x="460" y="355" width="200" height="15" fill="#059669"/>
+        <text x="560" y="359.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">聚焦利基</text>
+        <text x="474" y="396" font-size="11" font-weight="700" fill="#059669">利基市场五特征 + 壁垒观</text>
+        <text x="474" y="420" font-size="12" fill="#334155">① 规模可生存</text>
+        <text x="474" y="442" font-size="12" fill="#334155">② 处于上升期</text>
+        <text x="474" y="464" font-size="12" fill="#334155">③ 在位者关注不足</text>
+        <text x="474" y="486" font-size="12" fill="#334155">④ 需求独特、可定制</text>
+        <text x="474" y="508" font-size="12" fill="#334155">⑤ 可承受成本触达</text>
+        <text x="474" y="530" font-size="12" font-weight="700" fill="#047857">壁垒：深挖沟、高筑墙</text>
+
+        <!-- ===== 底部：怎么选 ===== -->
+        <rect x="30" y="560" width="620" height="56" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="584" text-anchor="middle" font-size="12" fill="#475569">怎么选：选择矩阵 = 竞争范围（宽 / 窄）× 优势来源（成本 / 差异）</text>
+        <text x="340" y="606" text-anchor="middle" font-size="12" fill="#475569">三个依据：行业结构 · 自身禀赋 · 资源约束</text>
+      </svg>
+      <div class="caption">图 1　三种基本竞争战略的创业情境化三角：成本领先四路径 / 差异化四维度双战场 / 聚焦利基五特征</div>
+    </div>
+    <div class="quote">
+      差异化要在<b>理性（可验证价值）与感性（心智嵌入）双战场同时征服</b>；聚焦利基的壁垒观是<b>"深挖沟、高筑墙"</b>——把利基做深做透，让在位者难以回头来攻。
+    </div>
+  </section>
+
+  <!-- ============ 逐战略详解 ============ -->
+  <section>
+    <h2>逐战略详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">战略一</span>
+        <h3>成本领先</h3>
+        <span class="role">情境化增量：<b>四条实现路径</b></span>
+      </div>
+      <div class="q">本战略回答的问题：<b>"凭什么比别人便宜还有得赚？"</b></div>
+      <dl class="kv">
+        <dt>路径一</dt>
+        <dd><b>商业模式创新，重构成本结构</b>——不是在旧结构里省小钱，而是换一套结构重新定义成本。</dd>
+        <dt>路径二</dt>
+        <dd><b>技术驱动效率</b>——用技术把运营成本系统性地降下来。</dd>
+        <dt>路径三</dt>
+        <dd><b>产品与服务做减法、简化</b>——砍掉不构成价值的部分，成本随价值冗余一起消失。</dd>
+        <dt>路径四</dt>
+        <dd><b>资源杠杆利用</b>——以巧劲获取资源，弥补创业企业在规模上的天然劣势。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">价格战冒充</span><span class="td">没有结构性降本，靠补贴硬压价格——烧钱时看似领先，钱一停就回到原点。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">战略二</span>
+        <h3>差异化</h3>
+        <span class="role">情境化增量：<b>四维度 + 双战场</b></span>
+      </div>
+      <div class="q">本战略回答的问题：<b>"凭什么让客户选你、记住你？"</b></div>
+      <dl class="kv">
+        <dt>四个维度</dt>
+        <dd><b>技术、设计、服务、体验</b>四个差异化维度，并可进一步扩展至<b>品牌、渠道、客户关系</b>。</dd>
+        <dt>双战场</dt>
+        <dd><b>理性战场</b>提供可验证的价值，<b>感性战场</b>完成心智嵌入——两个战场<b>需同时征服</b>，缺一不可。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">只赢一边</span><span class="td">价值可验证但无人知晓，或者声量很大却经不起理性检验——都是半场胜利。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">战略三</span>
+        <h3>聚焦利基</h3>
+        <span class="role">情境化增量：<b>五特征 + 壁垒观</b></span>
+      </div>
+      <div class="q">本战略回答的问题：<b>"在哪个小战场上，我能形成绝对优势？"</b></div>
+      <dl class="kv">
+        <dt>五特征</dt>
+        <dd>利基市场须同时满足：<b>①规模可生存 ②处于上升期 ③在位者关注不足 ④需求独特、可定制 ⑤可承受成本触达</b>。</dd>
+        <dt>壁垒观</dt>
+        <dd><b>深挖沟、高筑墙</b>——选定利基后持续做深，把护城河垒到在位者难以回头来攻的高度。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">伪利基</span><span class="td">规模养不活自己、或在位者随时可以碾压的"缝隙"——五特征不过半的细分市场不要进。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 怎么选 ============ -->
+  <section>
+    <h2>怎么选：一张矩阵 + 三个依据</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">选择矩阵</span>
+        <h4>竞争范围 × 优势来源</h4>
+        <p>竞争范围取宽或窄、优势来源取成本或差异——两个维度交叉，先定位你的基本战略型。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">三个依据</span>
+        <h4>行业结构 · 自身禀赋 · 资源约束</h4>
+        <p>行业结构决定哪些战略型可行；自身禀赋决定哪种优势来源拿得出手；资源约束决定竞争范围能铺多宽。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      <b>矩阵定型，三据定夺。</b>先用矩阵把选项收敛到基本型，再用三个依据做最终裁决——三个依据中，<b>资源约束</b>对创业企业权重最高：资源有限时，"打得赢的小战场"优先于"看起来更大的战场"。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>分析行业结构。</b>判断行业的成本结构与差异化空间，圈出可行的基本战略型——有些行业天生偏成本，有些天生偏差异。</li>
+      <li><b>盘点自身禀赋。</b>对照技术、设计、服务、体验四维，确认自己最可能形成哪一种优势来源。</li>
+      <li><b>核对资源约束。</b>竞争范围能铺多宽，由资源能支撑多宽决定——资源越紧，范围越应聚焦。</li>
+      <li><b>在矩阵上定位。</b>用竞争范围 × 优势来源定出主战略型：成本领先、差异化或聚焦利基。</li>
+      <li><b>套用打法清单。</b>成本领先查四条路径、差异化查四维度与双战场、聚焦利基查五特征——把清单逐条落成行动。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>制定竞争战略或开展<b>战略定位研讨</b>时的选型框架</li>
+          <li>定价与差异化设计：用四维度 + 双战场检查差异化是否完整</li>
+          <li>寻找细分市场切入：用利基五特征逐条筛选手头的机会清单</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>母框架是波特的通用理论，<b>本卡的价值在情境化清单</b>，不是框架本身</li>
+          <li>三种基本型之外存在组合打法，但<b>主战略必须明确</b>——左右摇摆等于没有战略</li>
+          <li>利基五特征要逐条核验，<b>满足三条以下的细分市场不宜进入</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-04</div>
+        <h4>市场进入四策略矩阵</h4>
+        <p>定完"靠什么赢"，再定"怎么进场"——边缘切入、正面突破、价值嵌入还是生态依附。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-05</div>
+        <h4>市场进入三维选择模型</h4>
+        <p>机会窗口、行业格局与资源能力三维匹配，与竞争战略选型互相校验。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>成本领先路径中的"资源杠杆利用"，到资源端找配套打法：拼凑、杠杆、网络与合作。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 7 章，第 188—192 页</span>
+    <span>方法论卡 7-03 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

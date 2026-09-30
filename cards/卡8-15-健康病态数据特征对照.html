@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-15 · 健康病态数据特征对照</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图（对照表） ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 14px 8px;overflow-x:auto;
+  }
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+  table.cmp{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .cmp th,.cmp td{padding:13px 14px;vertical-align:top;text-align:left;}
+  .cmp thead th{font-size:14px;font-weight:700;color:#fff;}
+  .cmp thead th.d{background:var(--ink);width:88px;}
+  .cmp thead th.h{background:var(--s3);}
+  .cmp thead th.s{background:var(--risk);}
+  .cmp tbody th{font-size:13.5px;font-weight:700;color:var(--ink);background:#f8fafc;width:88px;}
+  .cmp td{font-size:13.5px;color:var(--ink-2);line-height:1.7;border-top:1px solid var(--line);}
+  .cmp td.h{background:var(--s3-bg);}
+  .cmp td.s{background:#fef2f2;}
+  .cmp td b.fn{display:block;font-size:14px;margin-bottom:2px;}
+  .cmp td.h b.fn{color:var(--s3);}
+  .cmp td.s b.fn{color:var(--risk);}
+
+  /* ===== 溯源 SVG ===== */
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+
+  /* ===== 特征详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.rk{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s3 .sn{background:var(--s3);} .rk .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+    .cmp thead th.d,.cmp tbody th{width:64px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-15 · 健康/病态数据特征对照＋财务三症状溯源</span><a class="card-nav-prev" href="卡8-14-四种系统测试.html">← 卡 8-14</a><a class="card-nav-next" href="卡8-16-坚持调优重构三分决策.html">卡 8-16 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-15</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>健康 / 病态数据特征对照</h1>
+  <div class="oneliner">指标不会说谎，但会装糊涂——用健康三特征对病态三特征，再沿三条链给财务症状追根。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>实验做完了、数据也拿到了，很多创业者却读不懂：增长到底是模式在起作用，还是钱在起作用？指标都在涨，为什么心里越来越虚？——因为<b>数据要按"系统特征"来读，而不是按"涨跌"来读</b>。</p>
+    <p>教材给出了一套系统动力学的判读标准：健康系统与病态系统各有一组典型数据特征，一一对照就能定性；财务指标异常时，还有一套沿链条溯源的方法。这张卡带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">判读有标尺</div>
+        <div class="vd">健康三特征对病态三特征，逐项对照，数据好坏不再靠感觉。</div>
+      </div>
+      <div class="value">
+        <div class="vt">症状能溯源</div>
+        <div class="vd">LTV/CAC 异常、毛利率下滑、现金流紧张，各有专属的追溯路径。</div>
+      </div>
+      <div class="value">
+        <div class="vt">决策有依据</div>
+        <div class="vd">判读结果直接接入"坚持 / 调优 / 重构"决策，数据变成行动。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图：双栏对照表 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th class="d">对照维度</th>
+            <th class="h">健康系统三特征</th>
+            <th class="s">病态系统三特征</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>联动方式</th>
+            <td class="h"><b class="fn">正向联动</b>关键指标呈现非线性跃升时，系统即逼近 PMF 状态。</td>
+            <td class="s"><b class="fn">指标冲突</b>渠道增长与投诉飙升并存——渠道与目标客户不匹配。</td>
+          </tr>
+          <tr>
+            <th>响应形态</th>
+            <td class="h"><b class="fn">非线性响应</b>用户规模翻倍时获客成本下降；若响应呈线性，说明动力源未被激活。</td>
+            <td class="s"><b class="fn">外生驱动</b>收入 100% 来自广告投放，无口碑、无复购，始终需要"输血"。</td>
+          </tr>
+          <tr>
+            <th>恢复能力</th>
+            <td class="h"><b class="fn">自修复迹象</b>某渠道流量骤降后，其他渠道自动承接了流量缺口。</td>
+            <td class="s"><b class="fn">滞后崩溃</b>补贴退坡后留存断崖——留存动机是"薅羊毛"而非产品价值。</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="caption">图 1　健康 / 病态系统数据特征对照：三个维度，一组判读系统的"体检单"</div>
+    </div>
+    <div class="quote">
+      判读顺序：<b>先看联动、再看响应、最后看恢复</b>。三个维度都落在左栏，系统健康；任何一项落在右栏，就要停下来找根源。
+    </div>
+  </section>
+
+  <!-- ============ 特征详解 ============ -->
+  <section>
+    <h2>两组特征逐条拆解</h2>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">健康侧</span>
+        <h3>健康系统三特征</h3>
+        <span class="role">共同指向：<b>系统在自我强化</b></span>
+      </div>
+      <dl class="kv">
+        <dt>正向联动</dt>
+        <dd>关键指标不是各涨各的，而是<b>相互牵引、共振向上</b>——"关键指标呈现非线性跃升时，系统即逼近 PMF 状态"。</dd>
+        <dt>非线性响应</dt>
+        <dd>投入翻倍带来的不是产出翻倍，而是<b>产出更多</b>：用户规模翻倍时获客成本反而下降。<b>若响应呈线性，则说明动力源未被激活</b>——增长靠人力推，不靠系统转。</dd>
+        <dt>自修复迹象</dt>
+        <dd>系统挨了打能自己站起来的证据：某渠道流量骤降后，<b>其他渠道自动承接了流量缺口</b>——冗余与反馈机制在真实工作。</dd>
+      </dl>
+    </div>
+
+    <div class="stage rk">
+      <div class="stage-head">
+        <span class="sn">病态侧</span>
+        <h3>病态系统三特征</h3>
+        <span class="role">共同指向：<b>系统在靠外部输血</b></span>
+      </div>
+      <dl class="kv">
+        <dt>指标冲突</dt>
+        <dd>一边是渠道增长，一边是投诉飙升——两组指标往相反方向走，说明<b>渠道与目标客户不匹配</b>：进来的人越多，错的人越多。</dd>
+        <dt>外生驱动</dt>
+        <dd>收入 100% 来自广告投放，无口碑、无复购——把投放一停，系统立刻停摆，<b>始终处于需要"输血"的状态</b>。</dd>
+        <dt>滞后崩溃</dt>
+        <dd>补贴期内一切正常，补贴退坡后留存断崖式下跌——用户的留存动机是<b>"薅羊毛"而非产品价值</b>，崩溃只是被推迟，没有被避免。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 财务三症状溯源 ============ -->
+  <section>
+    <h2>财务三症状溯源</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 258" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ai" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <text x="340" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">财务指标异常时，沿对应耦合链追溯真实根源</text>
+
+        <!-- 症状一 -->
+        <rect x="10" y="44" width="160" height="52" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="90" y="75" text-anchor="middle" font-size="12.5" font-weight="700" fill="#dc2626">LTV / CAC 异常</text>
+        <line x1="172" y1="70" x2="192" y2="70" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+        <rect x="196" y="44" width="200" height="52" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="296" y="75" text-anchor="middle" font-size="12" fill="#3b82f6">沿价值捕获链逐层追溯</text>
+        <line x1="398" y1="70" x2="418" y2="70" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+        <rect x="422" y="44" width="248" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="546" y="66" text-anchor="middle" font-size="11.5" fill="#475569">逐层追溯指标变动的真实根源</text>
+        <text x="546" y="84" text-anchor="middle" font-size="11.5" fill="#475569">避免陷入局部优化陷阱</text>
+
+        <!-- 症状二 -->
+        <rect x="10" y="120" width="160" height="52" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="90" y="151" text-anchor="middle" font-size="12.5" font-weight="700" fill="#dc2626">毛利率下滑</text>
+        <line x1="172" y1="146" x2="192" y2="146" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+        <rect x="196" y="120" width="200" height="52" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="296" y="151" text-anchor="middle" font-size="12" fill="#b45309">沿价值创造链诊断</text>
+        <line x1="398" y1="146" x2="418" y2="146" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+        <rect x="422" y="120" width="248" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="546" y="142" text-anchor="middle" font-size="11.5" fill="#475569">警惕规模扩张的速度超越了</text>
+        <text x="546" y="160" text-anchor="middle" font-size="11.5" fill="#475569">组织能力的边界</text>
+
+        <!-- 症状三 -->
+        <rect x="10" y="196" width="160" height="52" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="90" y="227" text-anchor="middle" font-size="12.5" font-weight="700" fill="#dc2626">现金流紧张</text>
+        <line x1="172" y1="222" x2="192" y2="222" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+        <rect x="196" y="196" width="200" height="52" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="296" y="227" text-anchor="middle" font-size="12" fill="#047857">收入与成本的周期错配</text>
+        <line x1="398" y1="222" x2="418" y2="222" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+        <rect x="422" y="196" width="248" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="546" y="218" text-anchor="middle" font-size="11.5" fill="#475569">时间错配的系统症状</text>
+        <text x="546" y="236" text-anchor="middle" font-size="11.5" fill="#475569">而非单纯的"缺钱"</text>
+      </svg>
+      <div class="caption">图 2　财务三症状溯源：症状 → 耦合链 → 根源，不在指标表面动手脚</div>
+    </div>
+    <div class="quote">
+      <b>现金流紧张是时间错配的系统症状，而非单纯的"缺钱"。</b>收入确认周期与成本支付周期的错位，会在报表上伪装成"资金问题"——只去融资不修周期，紧张会反复发作。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>先看联动。</b>把核心指标摆在一起看方向：关键指标是否同向共振、出现非线性跃升？出现冲突（一涨一飙）立刻标记病态信号。</li>
+      <li><b>再看响应。</b>做一次规模加压后观察：用户翻倍、投入翻倍时，获客成本等指标是下降（非线性）还是等比上升（线性）？线性响应说明动力源未被激活，转卡8-09 复查。</li>
+      <li><b>查自修复。</b>人为或意外扰动之后，观察其他渠道、其他模块是否自动承接缺口——自修复迹象是系统韧性的直接证据。</li>
+      <li><b>识别病态信号。</b>指标冲突、外生驱动、滞后崩溃，任何一项命中即预警；命中越多，越要警惕"数据繁荣"的假象。</li>
+      <li><b>财务异常必溯源。</b>LTV/CAC 异常沿价值捕获链、毛利率下滑沿价值创造链、现金流紧张查周期错配——追到根源再动手。</li>
+      <li><b>接入决策。</b>把判读结论交给"坚持 / 调优 / 重构"三分决策（卡8-16）：健康→坚持放大，局部病态→调优，系统性病态→评估重构信号。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>系统测试（卡8-14）跑完后的<b>数据判读环节</b></li>
+          <li>增长期体检：区分<b>内生增长与买量繁荣</b></li>
+          <li>财务指标异常时的<b>根源诊断</b>：三症状对号入座再追链</li>
+          <li>融资 / 复盘材料中的<b>系统健康度陈述</b>：用特征说话，不用形容词说话</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>特征判读需要<b>一段时间的数据</b>，单点截面数据看不出联动与响应形态</li>
+          <li>非线性跃升也可能来自季节性与外部红利，<b>先排除环境因素再下结论</b></li>
+          <li>病态特征是预警不是判决——命中后先溯源（卡8-12），<b>再决定调优还是重构</b></li>
+          <li>不同业务的健康基线不同，对照时应结合自身赛道常模校准</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-12</div>
+        <h4>财务三链检验</h4>
+        <p>本卡的三个财务症状沿哪条链溯源，正是卡8-12 的三条主传动链——两卡共用一套"症状—链条—根源"语言。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-09</div>
+        <h4>系统动力源识别</h4>
+        <p>"线性响应、外生驱动"等病态特征，多数指向动力源未被激活或已中断——回头用三回路加四问复查。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持/调优/重构三分决策</h4>
+        <p>判读的下一站：健康系统坚持放大、局部病态按四情境调优、系统性病态核对五信号评估重构。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 223—224 页</span>
+    <span>方法论卡 8-15 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

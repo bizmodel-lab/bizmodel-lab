@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-03 · 效果逻辑五原则</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 原则详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s5{border-top-color:var(--ink-2);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s5 .sn{background:var(--ink-2);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-03 · 效果逻辑五原则</span><a class="card-nav-prev" href="卡3-02-反脆弱两维度与策略实验日志.html">← 卡 3-02</a><a class="card-nav-next" href="卡3-04-第一性原理三阶段法.html">卡 3-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-03</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>效果逻辑五原则</h1>
+  <div class="oneliner">不从"想要什么"出发，而从"手里有什么"出发 —— 五条原则把不确定性从威胁变成原料。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>面对高不确定性的新市场，"先定目标、再配资源"的<b>因果逻辑</b>常常失灵——它默认"未来可预测、世界线性稳定"，而创业初期恰恰两者皆无。萨拉斯·萨拉斯瓦西（Sarasvathy）在研究创业者决策方式后提出了另一套范式：<b>效果逻辑</b>——<b>"小步快跑、快速迭代，以实验验证假设"</b>的非线性思维。</p>
+    <p>效果逻辑由五条原则联动构成，带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">手段驱动</div>
+        <div class="vd">从"我是谁、我知道什么、我认识谁"出发，而不是从空泛的目标出发。</div>
+      </div>
+      <div class="value">
+        <div class="vt">控制下行</div>
+        <div class="vd">用"可承受损失"钉死风险下限，把上行的想象空间留给实验。</div>
+      </div>
+      <div class="value">
+        <div class="vt">共创未来</div>
+        <div class="vd">拉利益相关者渐进入伙、接住意外——未来是拼出来、造出来的。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 458" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 两种逻辑对照 ===== -->
+        <rect x="10" y="8" width="318" height="76" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="169" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">因果逻辑 · 目标驱动</text>
+        <text x="169" y="54" text-anchor="middle" font-size="12" fill="#64748b">「有多少资源，做多大事情」</text>
+        <text x="169" y="74" text-anchor="middle" font-size="12" fill="#64748b">假设未来可预测、世界线性稳定</text>
+        <circle cx="340" cy="46" r="16" fill="#1e293b"/>
+        <text x="340" y="51" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">vs</text>
+        <rect x="352" y="8" width="318" height="76" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="511" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">效果逻辑 · 手段驱动</text>
+        <text x="511" y="54" text-anchor="middle" font-size="12" fill="#1d4ed8">小步快跑、快速迭代</text>
+        <text x="511" y="74" text-anchor="middle" font-size="12" fill="#1d4ed8">以实验验证假设，未来靠创造</text>
+
+        <!-- ===== 五原则联动 ===== -->
+        <rect x="10" y="104" width="120" height="190" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,114 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 v20 h-120 z" fill="#3b82f6"/>
+        <text x="70" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">手中鸟</text>
+        <text x="70" y="156" text-anchor="middle" font-size="11" fill="#334155">「我是谁」</text>
+        <text x="70" y="174" text-anchor="middle" font-size="11" fill="#334155">「我知道什么」</text>
+        <text x="70" y="192" text-anchor="middle" font-size="11" fill="#334155">「我认识谁」</text>
+        <line x1="20" y1="204" x2="120" y2="204" stroke="#e2e8f0" stroke-dasharray="4,3"/>
+        <text x="70" y="224" text-anchor="middle" font-size="11" fill="#334155">三问盘点现有手段</text>
+        <text x="70" y="252" text-anchor="middle" font-size="11" fill="#94a3b8">从「有什么」出发</text>
+        <text x="70" y="270" text-anchor="middle" font-size="11" fill="#94a3b8">不空谈「要什么」</text>
+
+        <rect x="145" y="104" width="120" height="190" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M145,114 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 v20 h-120 z" fill="#d97706"/>
+        <text x="205" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">可承受损失</text>
+        <text x="205" y="156" text-anchor="middle" font-size="11" fill="#334155">只投入可承受的</text>
+        <text x="205" y="174" text-anchor="middle" font-size="11" fill="#334155">资源</text>
+        <text x="205" y="192" text-anchor="middle" font-size="11" fill="#334155">并设定退出阈值</text>
+        <line x1="155" y1="204" x2="255" y2="204" stroke="#e2e8f0" stroke-dasharray="4,3"/>
+        <text x="205" y="224" text-anchor="middle" font-size="11" fill="#334155">先问输得起多少</text>
+        <text x="205" y="242" text-anchor="middle" font-size="11" fill="#334155">再问能赢得多少</text>
+        <text x="205" y="270" text-anchor="middle" font-size="11" fill="#94a3b8">下行有底，上行开放</text>
+
+        <rect x="280" y="104" width="120" height="190" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M280,114 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 v20 h-120 z" fill="#059669"/>
+        <text x="340" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">疯狂被子</text>
+        <text x="340" y="156" text-anchor="middle" font-size="11" fill="#334155">利益相关者</text>
+        <text x="340" y="174" text-anchor="middle" font-size="11" fill="#334155">渐进承诺</text>
+        <text x="340" y="192" text-anchor="middle" font-size="11" fill="#334155">共同创造机会</text>
+        <line x1="290" y1="204" x2="390" y2="204" stroke="#e2e8f0" stroke-dasharray="4,3"/>
+        <text x="340" y="224" text-anchor="middle" font-size="11" fill="#334155">先拉伙伴入伙</text>
+        <text x="340" y="242" text-anchor="middle" font-size="11" fill="#334155">再谈宏大蓝图</text>
+        <text x="340" y="270" text-anchor="middle" font-size="11" fill="#94a3b8">伙伴越多，选择越多</text>
+
+        <rect x="415" y="104" width="120" height="190" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M415,114 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 v20 h-120 z" fill="#3b82f6"/>
+        <text x="475" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">柠檬水</text>
+        <text x="475" y="156" text-anchor="middle" font-size="11" fill="#334155">意外不是干扰</text>
+        <text x="475" y="174" text-anchor="middle" font-size="11" fill="#334155">意外即机会</text>
+        <text x="475" y="192" text-anchor="middle" font-size="11" fill="#334155">把偶然变成可能</text>
+        <line x1="425" y1="204" x2="525" y2="204" stroke="#e2e8f0" stroke-dasharray="4,3"/>
+        <text x="475" y="224" text-anchor="middle" font-size="11" fill="#334155">出状况时先问</text>
+        <text x="475" y="242" text-anchor="middle" font-size="11" fill="#334155">「这是不是机会」</text>
+        <text x="475" y="270" text-anchor="middle" font-size="11" fill="#94a3b8">而非死守原计划</text>
+
+        <rect x="550" y="104" width="120" height="190" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M550,114 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 v20 h-120 z" fill="#475569"/>
+        <text x="610" y="124" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">飞行员</text>
+        <text x="610" y="156" text-anchor="middle" font-size="11" fill="#334155">未来不可精确预测</text>
+        <text x="610" y="174" text-anchor="middle" font-size="11" fill="#334155">但可以被创造</text>
+        <text x="610" y="192" text-anchor="middle" font-size="11" fill="#334155">掌控可控之事</text>
+        <line x1="560" y1="204" x2="660" y2="204" stroke="#e2e8f0" stroke-dasharray="4,3"/>
+        <text x="610" y="224" text-anchor="middle" font-size="11" fill="#334155">像飞行员一样</text>
+        <text x="610" y="242" text-anchor="middle" font-size="11" fill="#334155">边飞边调整航线</text>
+        <text x="610" y="270" text-anchor="middle" font-size="11" fill="#94a3b8">而非纸上谈兵</text>
+
+        <!-- 原则间联动箭头 -->
+        <line x1="132" y1="199" x2="141" y2="199" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="267" y1="199" x2="276" y2="199" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="402" y1="199" x2="411" y2="199" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="537" y1="199" x2="546" y2="199" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 一句话模板 ===== -->
+        <rect x="10" y="316" width="660" height="70" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="340" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">「手中鸟」实训 · 项目描述一句话模板</text>
+        <text x="340" y="366" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">我用【资源】，为【谁】，提供【什么】价值，收取【多少】费用。</text>
+
+        <!-- ===== 切换提示 ===== -->
+        <text x="340" y="416" text-anchor="middle" font-size="12" fill="#475569">创业初期效果逻辑占主导；随企业成长、市场明朗，因果逻辑比重逐渐增加</text>
+        <text x="340" y="438" text-anchor="middle" font-size="11" fill="#94a3b8">切换判据：不确定性程度 × 资源约束强度（详见卡 3-09、卡 3-10）</text>
+      </svg>
+      <div class="caption">图 1　效果逻辑五原则联动：从手段出发，控住下行，拼大伙伴，接住意外，创造未来</div>
+    </div>
+    <div class="quote">
+      五条原则不是五条纪律，而是<b>一个联动的决策循环</b>：手里有什么决定能试什么（手中鸟），输得起的范围决定试多大（可承受损失），伙伴的加入扩大能试的范围（疯狂被子），意外不断改写试的方向（柠檬水），而这一切的终点不是预测中的市场，而是<b>被亲手创造出来的市场</b>（飞行员）。
+    </div>
+  </section>
+
+  <!-- ============ 原则详解 ============ -->
+  <section>
+    <h2>五原则详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">原则一</span>
+        <h3>手中鸟</h3>
+        <span class="role">起点：<b>"我现在手里有什么？"</b></span>
+      </div>
+      <div class="q">用三个问题盘点现有手段，而不是先画一个大目标再找差距。</div>
+      <dl class="kv">
+        <dt>三问</dt>
+        <dd><b>我是谁</b>（特质与偏好）、<b>我知道什么</b>（知识与经验）、<b>我认识谁</b>（人脉网络）。</dd>
+        <dt>用法</dt>
+        <dd>先如实写下三问的答案，再据此构想"以这些手段，能创造什么机会"——机会从手段里长出来，而不是从幻想里掉下来。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">原则二</span>
+        <h3>可承受损失</h3>
+        <span class="role">边界：<b>"最多输得起多少？"</b></span>
+      </div>
+      <div class="q">只投入可承受的资源，并事先设定退出阈值。</div>
+      <dl class="kv">
+        <dt>做法</dt>
+        <dd>行动前先算清"如果全输，我损失什么"，把这个上限当作硬边界——<b>下行风险被钉死，上行收益交给实验</b>。</dd>
+        <dt>与因果逻辑的差别</dt>
+        <dd>因果逻辑问"要达成目标还缺多少资源"，效果逻辑问"现有资源里我赔得起多少"——前者容易被目标绑架，后者永远有下一次。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">原则三</span>
+        <h3>疯狂被子</h3>
+        <span class="role">扩张：<b>"谁愿意和我一起拼？"</b></span>
+      </div>
+      <div class="q">利益相关者渐进承诺、共同创造。</div>
+      <dl class="kv">
+        <dt>做法</dt>
+        <dd>主动邀请潜在的利益相关者小步入局：先做轻量合作，承诺随信任逐步加码。</dd>
+        <dt>效果</dt>
+        <dd>每一方带入新的手段与资源，"被子"越拼越大——<b>机会的边界随伙伴的加入而扩展</b>，而不是靠单打独斗去硬扛。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">原则四</span>
+        <h3>柠檬水</h3>
+        <span class="role">应变：<b>"这个意外说明什么？"</b></span>
+      </div>
+      <div class="q">把意外当作原料，而不是当作干扰。</div>
+      <dl class="kv">
+        <dt>做法</dt>
+        <dd>计划外事件发生后，先别急着"回到正轨"，先问一句：这里面有没有新的机会线索？</dd>
+        <dt>关键</dt>
+        <dd>意外是<b>尚未被定价的信息</b>——柠檬掉进来，配方就该改；只会执行原计划的人，会把手里的柠檬当垃圾扔掉。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s5">
+      <div class="stage-head">
+        <span class="sn">原则五</span>
+        <h3>飞行员</h3>
+        <span class="role">世界观：<b>"未来是创造出来的"</b></span>
+      </div>
+      <div class="q">不做预测的奴隶，做创造的驾驶员。</div>
+      <dl class="kv">
+        <dt>立场</dt>
+        <dd><b>未来不是被预测的对象，而是被创造的结果</b>——与其押注哪份预测报告更准，不如动手把想要的未来做出来。</dd>
+        <dt>姿态</dt>
+        <dd>像飞行员一样：目的地可以有，但航线在飞行中不断修正，靠一次次小动作抵达，而不是靠起飞前的一张完美航图。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>用三问盘点手段。</b>写下"我是谁 / 我知道什么 / 我认识谁"的完整清单，不许谦虚也不许夸张。</li>
+      <li><b>用一句话模板描述项目。</b>"我用【资源】，为【谁】，提供【什么】价值，收取【多少】费用。"——填不满的空格，就是下一步要补的功课。</li>
+      <li><b>设定可承受损失上限。</b>写明本次探索最多投入多少钱、多少时间，以及到什么程度就停。</li>
+      <li><b>主动邀请伙伴入伙。</b>列出能从这件事中受益的人，设计一个"低承诺、易加入"的合作起点，把被子拼起来。</li>
+      <li><b>给每次意外做"柠檬水检查"。</b>计划外事件出现时，强制自己回答一遍："这是不是机会？"再决定回到原计划还是改道。</li>
+      <li><b>定期评估切换时机。</b>当不确定性下降、资源约束放松，逐步加大因果逻辑的比重——用卡 3-10 的情境矩阵校准。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>高不确定 × 资源受限</b>的早期创业：草根创业、副业探索、学生创业</li>
+          <li>进入新市场、面对新需求，无法靠预测和规划推进的项目</li>
+          <li>创业培训的入门实训（如"手中鸟"方案：小预算、短周期、拿到首单）</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>市场成熟、因果链条清晰的业务，因果逻辑更高效——<b>不要为用而用</b></li>
+          <li>"可承受损失"是纪律不是借口：阈值之内要全力投入，而不是浅尝辄止</li>
+          <li>随企业成长需逐步切换思维比重，<b>一直停在效果逻辑里同样是误用</b>（见卡 3-10）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>"可承受损失"的升级版：用心理账户隔离和实验日志，管理多次试错的情绪与记录。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP四步流程</h4>
+        <p>效果逻辑的行动引擎：三问盘出的手段，最终要靠 MVP 变成被验证的假设。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-10</div>
+        <h4>情境二维矩阵</h4>
+        <p>判断"现在该不该用效果逻辑"的导航仪：不确定性 × 资源约束四象限定位。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 64—65 页</span>
+    <span>方法论卡 3-03 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

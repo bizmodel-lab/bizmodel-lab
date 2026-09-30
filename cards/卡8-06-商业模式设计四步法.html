@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-06 · 商业模式设计四步法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--ink-2);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--ink-2);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 收尾警示 ===== */
+  .mile-note{
+    background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-06 · 设计四步法（主张→资源→价值端→交付端）</span><a class="card-nav-prev" href="卡8-05-商业模式类型演化四路径.html">← 卡 8-05</a><a class="card-nav-next" href="卡8-07-价值主张四步深化.html">卡 8-07 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-06</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>商业模式设计四步法</h1>
+  <div class="oneliner">价值主张 → 关键资源 → 价值端 → 交付端——四步链式设计，产出可检验的商业假说。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多团队"设计"商业模式的方式，是九个人围着画布九个格子同时开填——填完格子各自矛盾，主张撑不起资源，收入配不上成本。教材指出，商业模式设计<b>可分解为四个递进步骤</b>，且<b>每一步的输出构成下一步的输入</b>，形成从"为何存在"到"如何运转"的完整逻辑链。</p>
+    <p>四步法的价值不在"多一步"，而在<b>顺序</b>：先定主张再盘资源，先铺价值端再搭交付端，每一步都踩着上一步的产出走。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">链式防跳跃</div>
+        <div class="vd">主张未定就谈资源、资源未清就铺渠道——四步链条锁死这类越级设计。</div>
+      </div>
+      <div class="value">
+        <div class="vt">资源先行校验</div>
+        <div class="vd">第二步强制盘点"手中鸟"资源，让主张落进现实约束，防空中楼阁。</div>
+      </div>
+      <div class="value">
+        <div class="vt">产出可检验</div>
+        <div class="vd">四步走完得到的是明确标注为"假说"的方案，直接衔接验证流程。</div>
+      </div>
+    </div>
+    <div class="quote">
+      四步法背后的设计准则（教材列有五项）：价值中心、系统协同、资源适配、<b>假设驱动——"任何新设计的商业模式，都只是一个未经证实的假设集合"</b>、动态演化。
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 390" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部横幅 -->
+        <rect x="10" y="8" width="660" height="32" rx="16" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="12.5" fill="#475569">每一步的输出构成下一步的输入——从「为何存在」到「如何运转」的完整逻辑链</text>
+
+        <!-- ===== 第一步 ===== -->
+        <rect x="10" y="78" width="150" height="190" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="78" width="150" height="24" rx="10" fill="#3b82f6"/>
+        <rect x="10" y="90" width="150" height="19.8" fill="#3b82f6"/>
+        <text x="85" y="104.2" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">第一步</text>
+        <text x="22" y="126" font-size="12.5" font-weight="700" fill="#1e293b">定义核心</text>
+        <text x="22" y="143" font-size="12.5" font-weight="700" fill="#1e293b">价值主张</text>
+        <text x="22" y="168" font-size="11" fill="#475569">问：客户为何</text>
+        <text x="22" y="184" font-size="11" fill="#475569">选择你？</text>
+        <text x="22" y="208" font-size="10.5" font-weight="700" fill="#3b82f6">产出</text>
+        <text x="22" y="226" font-size="11" fill="#334155">经初步验证的</text>
+        <text x="22" y="242" font-size="11" fill="#334155">价值主张草稿</text>
+        <text x="22" y="258" font-size="11" fill="#334155">（模式「北极星」）</text>
+
+        <!-- ===== 第二步 ===== -->
+        <rect x="180" y="78" width="150" height="190" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="180" y="78" width="150" height="24" rx="10" fill="#d97706"/>
+        <rect x="180" y="90" width="150" height="19.8" fill="#d97706"/>
+        <text x="255" y="104.2" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">第二步</text>
+        <text x="192" y="126" font-size="12.5" font-weight="700" fill="#1e293b">盘点</text>
+        <text x="192" y="143" font-size="12.5" font-weight="700" fill="#1e293b">关键资源</text>
+        <text x="192" y="168" font-size="11" fill="#475569">审视「手中鸟」</text>
+        <text x="192" y="184" font-size="11" fill="#475569">资源：</text>
+        <text x="192" y="208" font-size="11" fill="#334155">· 可直接利用</text>
+        <text x="192" y="224" font-size="11" fill="#334155">· 需获取</text>
+        <text x="192" y="240" font-size="11" fill="#334155">· 需创造性拼凑</text>
+
+        <!-- ===== 第三步 ===== -->
+        <rect x="350" y="78" width="150" height="190" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="350" y="78" width="150" height="24" rx="10" fill="#059669"/>
+        <rect x="350" y="90" width="150" height="19.8" fill="#059669"/>
+        <text x="425" y="104.2" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">第三步</text>
+        <text x="362" y="126" font-size="12.5" font-weight="700" fill="#1e293b">展开</text>
+        <text x="362" y="143" font-size="12.5" font-weight="700" fill="#1e293b">价值端设计</text>
+        <text x="362" y="168" font-size="11" fill="#475569">四模块的</text>
+        <text x="362" y="184" font-size="11" fill="#475569">市场策略化：</text>
+        <text x="362" y="208" font-size="11" fill="#334155">· 客户细分</text>
+        <text x="362" y="224" font-size="11" fill="#334155">· 渠道、关系</text>
+        <text x="362" y="240" font-size="11" fill="#334155">· 收入来源</text>
+
+        <!-- ===== 第四步 ===== -->
+        <rect x="520" y="78" width="150" height="190" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="520" y="78" width="150" height="24" rx="10" fill="#475569"/>
+        <rect x="520" y="90" width="150" height="19.8" fill="#475569"/>
+        <text x="595" y="104.2" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">第四步</text>
+        <text x="532" y="126" font-size="12.5" font-weight="700" fill="#1e293b">搭建</text>
+        <text x="532" y="143" font-size="12.5" font-weight="700" fill="#1e293b">交付端架构</text>
+        <text x="532" y="168" font-size="11" fill="#475569">四模块的</text>
+        <text x="532" y="184" font-size="11" fill="#475569">系统化搭建：</text>
+        <text x="532" y="208" font-size="11" fill="#334155">· 资源、业务</text>
+        <text x="532" y="224" font-size="11" fill="#334155">· 合作伙伴</text>
+        <text x="532" y="240" font-size="11" fill="#334155">· 成本结构</text>
+
+        <!-- 步骤间箭头 -->
+        <line x1="161" y1="173" x2="177" y2="173" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="331" y1="173" x2="347" y2="173" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="501" y1="173" x2="517" y2="173" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 输出→输入标注 -->
+        <text x="85" y="288" text-anchor="middle" font-size="10.5" fill="#94a3b8">主张草稿</text>
+        <text x="255" y="288" text-anchor="middle" font-size="10.5" fill="#94a3b8">资源清单</text>
+        <text x="425" y="288" text-anchor="middle" font-size="10.5" fill="#94a3b8">价值端方案</text>
+        <text x="595" y="288" text-anchor="middle" font-size="10.5" fill="#94a3b8">完整模式假说</text>
+
+        <!-- 收尾判定 -->
+        <rect x="10" y="304" width="660" height="52" rx="10" fill="#fef2f2" stroke="#fecaca" stroke-dasharray="6,4"/>
+        <text x="340" y="326" text-anchor="middle" font-size="12" fill="#dc2626">收尾判定：四步产出的是逻辑自洽的方案，但它仍是一个有待检验的商业假说——</text>
+        <text x="340" y="346" text-anchor="middle" font-size="12" fill="#dc2626">必须通过市场验证来迭代修正，验证工具见卡 8-13（MVS）与卡 8-14（系统测试）</text>
+        <text x="340" y="378" text-anchor="middle" font-size="11" fill="#94a3b8">顺序为逻辑递进，实践中允许来回迭代，但不可跳步</text>
+      </svg>
+      <div class="caption">图 1　商业模式设计四步法：主张 → 资源 → 价值端 → 交付端的链式流程</div>
+    </div>
+  </section>
+
+  <!-- ============ 逐步详解 ============ -->
+  <section>
+    <h2>逐步详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一步</span>
+        <h3>定义核心价值主张</h3>
+        <span class="role">回答：<b>客户为何选择你？</b></span>
+      </div>
+      <div class="q">主张是整个模式的<b>"北极星"</b>——后面三步全部围绕它展开。</div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>写出<b>经过初步验证的价值主张草稿</b>：不是完美文稿，而是"为谁、解决什么核心问题、提供什么独特价值"的初稿。</dd>
+        <dt>为何先行</dt>
+        <dd>主张未定就设计资源与渠道，等于不知道目的地先买机票；主张虽是草稿，也须先过初步验证，不能纯凭想象（深化操作见卡 8-07）。</dd>
+        <dt>本步产出</dt>
+        <dd>一句经得起追问的价值主张草稿，作为第二步盘资源的参照系。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二步</span>
+        <h3>盘点关键资源</h3>
+        <span class="role">审视：<b>"手中鸟"资源</b></span>
+      </div>
+      <div class="q">先看清手里有什么，再决定模式能做多大。</div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>把手头资源分成三类：<b>可直接利用 / 需获取 / 需创造性拼凑</b>。专利技术、行业专长、渠道关系、初始用户群、个人声誉，都是候选清单项。</dd>
+        <dt>为何紧随主张</dt>
+        <dd>用第一步的主张当筛子：资源盘点不是罗列家底，而是追问<b>"这些资源如何帮我实现这个主张？"</b>对不上的资源再多也是闲子。</dd>
+        <dt>本步产出</dt>
+        <dd>一张带分类的资源清单 + 资源缺口初判（难以获取的缺口，反过来可能要求调整主张）。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三步</span>
+        <h3>展开价值端设计</h3>
+        <span class="role">范围：<b>细分 / 渠道 / 关系 / 收入</b></span>
+      </div>
+      <div class="q">把主张翻译成<b>面向市场的四个模块</b>。</div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>依次设计客户细分、渠道通路、客户关系、收入来源四个模块，使其<b>市场策略化</b>——每格都直接服务第一步的主张、用得上第二步的资源。</dd>
+        <dt>操作要点</dt>
+        <dd>细分用递进式策略（先极端用户后扩大），主张按三层面递进到用户利益，收入警惕单一模式——判定规则详见卡 8-02。</dd>
+        <dt>本步产出</dt>
+        <dd>价值端四模块方案：卖给谁、怎么触达、处成什么关系、怎么收钱。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">第四步</span>
+        <h3>搭建交付端架构</h3>
+        <span class="role">范围：<b>资源 / 业务 / 伙伴 / 成本</b></span>
+      </div>
+      <div class="q">把"怎么送达"变成<b>"怎么做出来"</b>。</div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>搭建核心资源、关键业务、合作伙伴、成本结构四个模块，让价值端的每个承诺背后都有交付能力支撑。</dd>
+        <dt>操作要点</dt>
+        <dd>"缺失即停摆"的资源优先内部构建，非核心业务外包，合作伙伴按资产专用性定治理机制，成本引入单位经济视角（详见卡 8-02 交付端规则）。</dd>
+        <dt>本步产出</dt>
+        <dd>九模块齐备、逻辑自洽的<b>完整商业模式方案</b>。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>收尾判定：</b>四步走完，你手里是一份逻辑自洽的方案，但教材紧接着提醒——<b>"它仍然是一个有待检验的商业假说，必须通过市场验证来迭代修正。"</b>设计结束之时，就是验证开始之日。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>写主张。</b>用一句话写出价值主张草稿并做初步验证（访谈几个目标客户），暂不追求完美——它会在后续步骤中被修正。</li>
+      <li><b>盘资源。</b>列资源清单并分三类：可直接利用 / 需获取 / 需创造性拼凑；对照主张问"它能帮我实现主张吗"。</li>
+      <li><b>查缺口。</b>识别关键资源缺口，评估获取难度与成本——难以获取的缺口，回头修订主张而不是硬上。</li>
+      <li><b>铺价值端。</b>依次定客户细分、渠道、关系、收入四模块，每格标注它如何服务主张、动用哪项资源。</li>
+      <li><b>搭交付端。</b>定核心资源、关键业务、合作伙伴、成本结构，确保价值端的每个承诺都有交付支撑。</li>
+      <li><b>整体自检。</b>用教材系统协同原则的三个检验过一遍：<b>主张—细分匹配、收入—成本平衡、业务—资源呼应</b>。</li>
+      <li><b>送验证。</b>把方案当作假说交给验证流程：MVS 三闭环（卡 8-13）+ 四种系统测试（卡 8-14），用证据迭代修正。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>从 0 到 1 的商业模式首构：第一次把想法变成完整方案</li>
+          <li>新业务线 / 第二曲线设计：在公司内套用同一套链式逻辑</li>
+          <li>写商业计划前的骨架梳理：先有自洽的四步方案，再写文档</li>
+          <li>团队共创的结构化流程：四步即四次工作坊的天然议程</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>四步是<b>逻辑顺序而非单行道</b>，允许回改，但不可跳步——尤其不能跳过第二步直接铺渠道</li>
+          <li>第一步的主张未经初步验证就往下走，后面三步全是空中楼阁</li>
+          <li>产出物<b>不等于事实</b>：逻辑自洽只是及格线，市场验证才是终审（卡 8-13、卡 8-14）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-07</div>
+        <h4>价值主张四步深化</h4>
+        <p>第一步的详细操作手册：客户概况 → 价值图 → 匹配检验 → 一句话陈述，含情境—任务—结果访谈法。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-01</div>
+        <h4>商业模式三根本问题</h4>
+        <p>四步法的顶层逻辑：为谁创造价值、如何创造传递、如何获取回报——四步即三问的展开。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>MVS 三闭环</h4>
+        <p>四步产出的验证去处：价值、交易、增长三个闭环的最小化原型检验。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 213—215 页</span>
+    <span>方法论卡 8-06 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

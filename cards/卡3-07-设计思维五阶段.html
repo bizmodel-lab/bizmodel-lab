@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-07 · 设计思维五阶段</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 阶段详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 句式卡 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-07 · 设计思维五阶段＋问题陈述句式</span><a class="card-nav-prev" href="卡3-06-逆向思维两维度与闭环.html">← 卡 3-06</a><a class="card-nav-next" href="卡3-08-MVP四步流程与循环加速.html">卡 3-08 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-07</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>设计思维五阶段</h1>
+  <div class="oneliner">同理心 — 定义 — 构思 — 原形 — 测试：以用户为中心，把模糊的痛点变成一句可验证的问题陈述。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>许多创业失败并不是"方案做得不好"，而是<b>"从一开始就对准了错误的问题"</b>——坐在办公室里想象用户，把"我觉得用户需要"当成"用户真的需要"，方案越完整，偏得越远。</p>
+    <p>设计思维是一套<b>以用户为中心的创新框架</b>，它强制创业者先走进现场、把问题定义清楚，再动手做方案。本卡把教材内容压缩成"五阶段＋一句标准话术"，带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">先问题，后方案</div>
+        <div class="vd">五阶段把"定义问题"放在"制作方案"之前，从源头减少问题—方案错配。</div>
+      </div>
+      <div class="value">
+        <div class="vt">问题可教可练</div>
+        <div class="vd">教材给出问题陈述标准句式，把模糊的"洞察"变成五个占位符的填空题。</div>
+      </div>
+      <div class="value">
+        <div class="vt">衔接验证闭环</div>
+        <div class="vd">定义阶段产出的问题陈述，正是后续精益创业 MVP 要优先验证的关键假设。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 446" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+          <marker id="ahr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#dc2626"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="32" rx="16" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="12" fill="#475569">以用户为中心的创新框架 · 五阶段逻辑递进、循环迭代，而非单向流水线</text>
+
+        <!-- 阶段间前进箭头 -->
+        <line x1="132" y1="176" x2="146" y2="176" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="272" y1="176" x2="286" y2="176" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="412" y1="176" x2="426" y2="176" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="552" y1="176" x2="566" y2="176" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 阶段一 · 同理心 ===== -->
+        <rect x="10" y="64" width="120" height="222" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,88 L10,74 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 L130,88 Z" fill="#3b82f6"/>
+        <text x="70" y="83.4" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">① 同理心</text>
+        <text x="22" y="112" font-size="11" font-weight="700" fill="#3b82f6">关键动作</text>
+        <text x="22" y="130" font-size="12" fill="#334155">沉浸式观察</text>
+        <text x="22" y="147" font-size="12" fill="#334155">走进真实场景</text>
+        <text x="22" y="174" font-size="11" font-weight="700" fill="#3b82f6">关键产出</text>
+        <text x="22" y="192" font-size="12" fill="#334155">未经加工的</text>
+        <text x="22" y="209" font-size="12" fill="#334155">用户原始资料</text>
+
+        <!-- ===== 阶段二 · 定义 ===== -->
+        <rect x="150" y="64" width="120" height="222" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M150,88 L150,74 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 L270,88 Z" fill="#d97706"/>
+        <text x="210" y="83.4" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">② 定义</text>
+        <text x="162" y="112" font-size="11" font-weight="700" fill="#d97706">关键动作</text>
+        <text x="162" y="130" font-size="12" fill="#334155">对资料聚类</text>
+        <text x="162" y="147" font-size="12" fill="#334155">构建用户画像</text>
+        <text x="162" y="174" font-size="11" font-weight="700" fill="#d97706">关键产出</text>
+        <text x="162" y="192" font-size="12" fill="#334155">一句清晰的</text>
+        <text x="162" y="209" font-size="12" fill="#334155">问题陈述</text>
+
+        <!-- ===== 阶段三 · 构思 ===== -->
+        <rect x="290" y="64" width="120" height="222" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M290,88 L290,74 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 L410,88 Z" fill="#059669"/>
+        <text x="350" y="83.4" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">③ 构思</text>
+        <text x="302" y="112" font-size="11" font-weight="700" fill="#059669">发散工具</text>
+        <text x="302" y="130" font-size="12" fill="#334155">头脑风暴、</text>
+        <text x="302" y="147" font-size="12" fill="#334155">SCAMPER</text>
+        <text x="302" y="174" font-size="11" font-weight="700" fill="#059669">收敛工具</text>
+        <text x="302" y="192" font-size="12" fill="#334155">用户价值×</text>
+        <text x="302" y="209" font-size="12" fill="#334155">可行性矩阵</text>
+
+        <!-- ===== 阶段四 · 原形 ===== -->
+        <rect x="430" y="64" width="120" height="222" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M430,88 L430,74 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 L550,88 Z" fill="#3b82f6"/>
+        <text x="490" y="83.4" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">④ 原形</text>
+        <text x="442" y="112" font-size="11" font-weight="700" fill="#3b82f6">制作原则</text>
+        <text x="442" y="130" font-size="12" fill="#334155">快速、粗糙、</text>
+        <text x="442" y="147" font-size="12" fill="#334155">廉价</text>
+        <text x="442" y="174" font-size="11" font-weight="700" fill="#3b82f6">匹配原则</text>
+        <text x="442" y="192" font-size="12" fill="#334155">保真度与阶段</text>
+        <text x="442" y="209" font-size="12" fill="#334155">风险相匹配</text>
+
+        <!-- ===== 阶段五 · 测试 ===== -->
+        <rect x="570" y="64" width="120" height="222" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M570,88 L570,74 a10,10 0 0 1 10,-10 h100 a10,10 0 0 1 10,10 L690,88 Z" fill="#d97706"/>
+        <text x="630" y="83.4" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">⑤ 测试</text>
+        <text x="582" y="112" font-size="11" font-weight="700" fill="#d97706">观察判据</text>
+        <text x="582" y="130" font-size="12" fill="#334155">看用户做了</text>
+        <text x="582" y="147" font-size="12" fill="#334155">什么，而非</text>
+        <text x="582" y="164" font-size="12" fill="#334155">说了什么</text>
+        <text x="582" y="191" font-size="11" font-weight="700" fill="#d97706">测试导向</text>
+        <text x="582" y="209" font-size="12" fill="#334155">证伪：主动</text>
+        <text x="582" y="226" font-size="12" fill="#334155">寻找反例</text>
+
+        <!-- 迭代回退线 -->
+        <path d="M630,292 L630,314 L210,314 L210,296" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,4" fill="none" marker-end="url(#ahr)"/>
+        <text x="420" y="334" text-anchor="middle" font-size="11" fill="#dc2626">迭代循环：测试的发现常把前面的阶段推倒重来，五阶段并非单向流水线</text>
+
+        <!-- 问题陈述句式 -->
+        <rect x="10" y="348" width="660" height="86" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="24" y="372" font-size="12" font-weight="700" fill="#1e293b">问题陈述标准句式 —— 定义阶段的直接产出</text>
+        <text x="24" y="398" font-size="13" fill="#334155">【用户角色】需要【深层需求】，是因为【洞察】，但现有方案因【限制因素】而失败。</text>
+        <text x="24" y="422" font-size="11" fill="#64748b">五个占位符逐项追问：为谁服务、要什么、洞察是什么、现有方案败在哪里。</text>
+      </svg>
+      <div class="caption">图 1　设计思维五阶段总览：动作 / 产出 × 迭代循环 × 问题陈述句式</div>
+    </div>
+    <div class="quote">
+      原形的制作原则是<b>快速、粗糙、廉价</b>，且<b>保真度与阶段风险匹配</b>；测试阶段的判据是<b>关注用户做了什么，而非说了什么</b>。
+    </div>
+  </section>
+
+  <!-- ============ 逐阶段详解 ============ -->
+  <section>
+    <h2>逐阶段详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">阶段①</span>
+        <h3>同理心</h3>
+        <span class="role">回答的问题：<b>"用户真实的经历到底是什么样？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>关键动作</dt>
+        <dd><b>沉浸式观察</b>——走进用户的真实场景，看他们在做什么、卡在哪里，而不是坐在会议室里想象用户。</dd>
+        <dt>关键产出</dt>
+        <dd><b>未经加工的原始用户资料</b>：现场记录、影像、对话片段，留待下个阶段处理。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">操作要点</div>
+        <div class="trap"><span class="tn">放下预设</span><span class="td">带着"我已经知道用户要什么"的预设去观察，只会收集到支持自己的证据。</span></div>
+        <div class="trap"><span class="tn">人在现场</span><span class="td">同理心阶段拼的是"在场"，不是问卷数量——看十分钟真实使用，胜过一份想象出来的需求清单。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">阶段②</span>
+        <h3>定义</h3>
+        <span class="role">回答的问题：<b>"到底要解决谁的什么问题？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>关键动作</dt>
+        <dd>对同理心阶段的原始资料<b>聚类</b>，构建<b>用户画像</b>，把散落的观察凝练成一句问题陈述。</dd>
+        <dt>关键产出</dt>
+        <dd>一句用标准句式写出、<b>写得出、讲得清、经得起追问</b>的问题陈述。</dd>
+      </dl>
+      <div class="quote">
+        问题陈述标准句式：<b>【用户角色】需要【深层需求】，是因为【洞察】，但现有方案因【限制因素】而失败。</b>
+      </div>
+      <div class="traps">
+        <div class="tt">操作要点</div>
+        <div class="trap"><span class="tn">填不下去</span><span class="td">句子写不出来＝定义未完成，说明同理心阶段的资料还不够，回上一阶段补。</span></div>
+        <div class="trap"><span class="tn">洞察≠表面</span><span class="td">"洞察"要穿透表面需求，写出用户自己都未必说得清的深层动机。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">阶段③</span>
+        <h3>构思</h3>
+        <span class="role">回答的问题：<b>"有哪些可能的解决方向？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>发散</dt>
+        <dd><b>头脑风暴</b>与 <b>SCAMPER 检核表</b>（替代、组合、适应、修改、他用、去除、重组），先求数量、暂不评判。</dd>
+        <dt>收敛</dt>
+        <dd>用<b>"用户价值 × 实施可行性"多维矩阵</b>给候选方案打分，选出值得做原形的方向。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">操作要点</div>
+        <div class="trap"><span class="tn">先散后敛</span><span class="td">发散阶段过早评判会扼杀好方向；收敛阶段用矩阵说话，不凭嗓门和职位。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">阶段④</span>
+        <h3>原形</h3>
+        <span class="role">回答的问题：<b>"怎样最便宜地把它摆到用户面前？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>制作原则</dt>
+        <dd><b>快速、粗糙、廉价</b>——原形是用来引发用户反馈的，不是用来炫耀完成度的。</dd>
+        <dt>匹配原则</dt>
+        <dd><b>保真度与阶段风险匹配</b>——这一轮要验证哪个风险，就把原形做到刚好能验证那个风险的保真度，不多不少。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">操作要点</div>
+        <div class="trap"><span class="tn">勿过早打磨</span><span class="td">在验证方向之前打磨细节，沉没成本越垒越高，反而舍不得放弃错误方向。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">阶段⑤</span>
+        <h3>测试</h3>
+        <span class="role">回答的问题：<b>"用户真的会这么做吗？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>观察判据</dt>
+        <dd><b>关注用户做了什么，而非说了什么</b>——口头好评是最廉价的反馈，行为才是真信号。</dd>
+        <dt>测试导向</dt>
+        <dd><b>证伪导向</b>——带着"找反例"的目的去测试，而不是收集支持自己的证据。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">操作要点</div>
+        <div class="trap"><span class="tn">带着发现回去</span><span class="td">测试暴露的问题可能属于前面任何一个阶段：看不懂＝共情不足，没人用＝定义错了。迭代，不是硬闯。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 怎么用 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>进场观察。</b>列出目标用户，走进他们的真实场景做沉浸式观察，带回未经加工的原始资料——记录、影像、对话片段。</li>
+      <li><b>聚类画像。</b>对原始资料聚类、构建用户画像，然后用标准句式写出问题陈述。一句写不出来，就是定义未完成，回上一步补资料。</li>
+      <li><b>先散后敛。</b>用头脑风暴与 SCAMPER 充分发散，再用"用户价值 × 实施可行性"矩阵收敛出值得做原形的方向。</li>
+      <li><b>按风险做原形。</b>明确这一轮要验证的风险，用"快速、粗糙、廉价"的方式做出保真度刚好匹配的原形。</li>
+      <li><b>看行为找反例。</b>把原形放到用户面前，只记录他们做了什么；测试结论指向哪个阶段的问题，就回到那个阶段迭代。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>新产品、新服务、新体验的<b>概念开发期</b>——痛点模糊、用户需求说不清</li>
+          <li>团队对"要解决什么问题"缺乏共识，需要统一语言的工作坊</li>
+          <li>需要深入理解客户真实工作流程与痛点的业务场景</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>五阶段循环迭代，<b>切勿当作单向流水线机械执行</b></li>
+          <li>测试中用户"说的"不如"做的"可靠，勿把口头好评当作验证通过</li>
+          <li>构思阶段先发散后收敛，过早评判会扼杀好方向</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP四步流程与循环加速</h4>
+        <p>定义阶段产出的问题陈述，就是 MVP 要优先验证的关键假设——设计思维管"找对问题"，精益创业管"验对方案"。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-09</div>
+        <h4>三阶段×思维组合</h4>
+        <p>设计思维是机会开发阶段的指定洞察工具——先定阶段，再取思维处方。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-11</div>
+        <h4>认知偏误三层护栏</h4>
+        <p>"关注用户做了什么，而非说了什么"本身就是对确认偏误的一道护栏。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 75—77 页</span>
+    <span>方法论卡 3-07 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡1-01 · 创业类型五维分类</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#334155; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --s5:#475569; --s5-bg:#f8fafc; --s5-line:#e2e8f0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 维度详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage.s5{border-top-color:var(--s5);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--s4);} .s5 .sn{background:var(--s5);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 提示框 ===== */
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=1">第 1 章 · 导论</a><span class="card-nav-meta">卡 1-01 · 创业类型五维分类（起点/动机/方向/资源依赖/创新程度）</span><a class="card-nav-next" href="卡1-02-创业过程三阶段模型.html">卡 1-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 1-01</span>
+    <span class="domain">教材体系 · <b>第 1 章 导论</b></span>
+  </div>
+  <h1>创业类型五维分类</h1>
+  <div class="oneliner">起点 · 动机 · 方向 · 资源依赖 · 创新程度——用五个维度给创业项目"验明正身"。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>拿到一个创业项目，第一个该问的问题往往不是"好不好"，而是<b>"这是个什么类型的创业"</b>——类型不同，机会从哪里来、壁垒靠什么建、风险藏在哪里、对创业者要求什么，答案全都不同。</p>
+    <p>教材用五个维度对创业类型做了系统划分，并按统一模板逐类展开。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看清机会来源</div>
+        <div class="vd">不同类型的创业，机会的来源与形态不同，先定型才谈得上识别机会。</div>
+      </div>
+      <div class="value">
+        <div class="vt">预判风险特征</div>
+        <div class="vd">每类创业的风险各有着力点，类型定得准，风险防得住。</div>
+      </div>
+      <div class="value">
+        <div class="vt">对齐能力要求</div>
+        <div class="vd">类型决定创业者需要什么能力，缺什么、补什么，先照单盘点。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 496" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">先分型，再定打法：一个项目往往同时命中多个维度，逐维对照诊断</text>
+
+        <!-- ===== 维度一 起点 ===== -->
+        <rect x="10" y="56" width="110" height="70" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="65" y="82" text-anchor="middle" font-size="11" fill="#64748b">维度①</text>
+        <text x="65" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#3b82f6">起点</text>
+        <rect x="130" y="60" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="140" y="86" font-size="12.5" font-weight="700" fill="#3b82f6">独立创业</text>
+        <text x="140" y="103" font-size="11" fill="#64748b">从零创办企业</text>
+        <text x="140" y="116" font-size="11" fill="#64748b">自由高责任全担</text>
+        <rect x="267" y="60" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="277" y="86" font-size="12.5" font-weight="700" fill="#3b82f6">公司创业</text>
+        <text x="277" y="103" font-size="11" fill="#64748b">在组织内创新</text>
+        <text x="277" y="116" font-size="11" fill="#64748b">催生新业务</text>
+        <rect x="404" y="60" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="414" y="86" font-size="12.5" font-weight="700" fill="#3b82f6">兼职创业</text>
+        <text x="414" y="103" font-size="11" fill="#64748b">保留主业试水</text>
+        <text x="414" y="116" font-size="11" fill="#64748b">收入不断档</text>
+        <rect x="541" y="60" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="551" y="86" font-size="12.5" font-weight="700" fill="#3b82f6">全职创业</text>
+        <text x="551" y="103" font-size="11" fill="#64748b">全身心投入</text>
+        <text x="551" y="116" font-size="11" fill="#64748b">投入深退路少</text>
+
+        <!-- ===== 维度二 动机 ===== -->
+        <rect x="10" y="134" width="110" height="70" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="65" y="160" text-anchor="middle" font-size="11" fill="#64748b">维度②</text>
+        <text x="65" y="186" text-anchor="middle" font-size="14" font-weight="700" fill="#d97706">动机</text>
+        <rect x="130" y="138" width="266" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="142" y="164" font-size="12.5" font-weight="700" fill="#d97706">生存型</text>
+        <text x="142" y="181" font-size="11" fill="#64748b">缺乏更优选择，为生计所迫</text>
+        <text x="142" y="194" font-size="11" fill="#64748b">被现实"推"着走（GEM 口径）</text>
+        <rect x="404" y="138" width="266" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="416" y="164" font-size="12.5" font-weight="700" fill="#d97706">机会型</text>
+        <text x="416" y="181" font-size="11" fill="#64748b">主动识别机会、追求其价值</text>
+        <text x="416" y="194" font-size="11" fill="#64748b">被机会"拉"着走</text>
+
+        <!-- ===== 维度三 方向 ===== -->
+        <rect x="10" y="212" width="110" height="70" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="65" y="238" text-anchor="middle" font-size="11" fill="#64748b">维度③</text>
+        <text x="65" y="264" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">方向</text>
+        <rect x="130" y="216" width="266" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="142" y="242" font-size="12.5" font-weight="700" fill="#059669">To C</text>
+        <text x="142" y="259" font-size="11" fill="#64748b">面向大众消费者</text>
+        <text x="142" y="272" font-size="11" fill="#64748b">需求分散、反馈直接</text>
+        <rect x="404" y="216" width="266" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="416" y="242" font-size="12.5" font-weight="700" fill="#059669">To B</text>
+        <text x="416" y="259" font-size="11" fill="#64748b">面向企业与机构客户</text>
+        <text x="416" y="272" font-size="11" fill="#64748b">决策链长、订单集中</text>
+
+        <!-- ===== 维度四 资源依赖 ===== -->
+        <rect x="10" y="290" width="110" height="70" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="65" y="316" text-anchor="middle" font-size="11" fill="#64748b">维度④</text>
+        <text x="65" y="342" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">资源依赖</text>
+        <rect x="130" y="294" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="140" y="320" font-size="12.5" font-weight="700" fill="#334155">资源驱动型</text>
+        <text x="140" y="337" font-size="11" fill="#64748b">掌握稀缺性资源</text>
+        <text x="140" y="350" font-size="11" fill="#64748b">以此构建壁垒</text>
+        <rect x="267" y="294" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="277" y="320" font-size="12.5" font-weight="700" fill="#334155">技术驱动型</text>
+        <text x="277" y="337" font-size="11" fill="#64748b">以技术突破立身</text>
+        <text x="277" y="350" font-size="11" fill="#64748b">靠技术领先筑壁垒</text>
+        <rect x="404" y="294" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="414" y="320" font-size="12.5" font-weight="700" fill="#334155">模式驱动型</text>
+        <text x="414" y="337" font-size="11" fill="#64748b">价值创造逻辑</text>
+        <text x="414" y="350" font-size="11" fill="#64748b">的重塑</text>
+        <rect x="541" y="294" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="551" y="320" font-size="12.5" font-weight="700" fill="#334155">关系驱动型</text>
+        <text x="551" y="337" font-size="11" fill="#64748b">把社会资本转化</text>
+        <text x="551" y="350" font-size="11" fill="#64748b">为组织能力</text>
+
+        <!-- ===== 维度五 创新程度 ===== -->
+        <rect x="10" y="368" width="110" height="70" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="65" y="394" text-anchor="middle" font-size="11" fill="#64748b">维度⑤</text>
+        <text x="65" y="420" text-anchor="middle" font-size="14" font-weight="700" fill="#475569">创新程度</text>
+        <rect x="130" y="372" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="140" y="398" font-size="12.5" font-weight="700" fill="#475569">复制型</text>
+        <text x="140" y="415" font-size="11" fill="#64748b">照搬成熟做法</text>
+        <text x="140" y="428" font-size="11" fill="#64748b">风险低壁垒薄</text>
+        <rect x="267" y="372" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="277" y="398" font-size="12.5" font-weight="700" fill="#475569">模仿型</text>
+        <text x="277" y="415" font-size="11" fill="#64748b">借鉴中微调</text>
+        <text x="277" y="428" font-size="11" fill="#64748b">本土化改良</text>
+        <rect x="404" y="372" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="414" y="398" font-size="12.5" font-weight="700" fill="#475569">渐进型</text>
+        <text x="414" y="415" font-size="11" fill="#64748b">逐步改良升级</text>
+        <text x="414" y="428" font-size="11" fill="#64748b">风险中等</text>
+        <rect x="541" y="372" width="129" height="67.4" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="551" y="398" font-size="12.5" font-weight="700" fill="#475569">颠覆型</text>
+        <text x="551" y="415" font-size="11" fill="#64748b">重新定义规则</text>
+        <text x="551" y="428" font-size="11" fill="#64748b">高风险高回报</text>
+
+        <!-- ===== 底部统一模板 ===== -->
+        <rect x="10" y="450" width="660" height="34" rx="17" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="472" text-anchor="middle" font-size="13" fill="#b45309">统一诊断模板：机会来源 → 竞争壁垒 → 风险特征 → 对创业者能力要求</text>
+      </svg>
+      <div class="caption">图 1　创业类型五维分类总览：五个维度 × 每维类型 × 统一诊断模板</div>
+    </div>
+    <div class="quote">
+      教材对每一类创业都按同一模板展开：<b>机会来源 — 竞争壁垒 — 风险特征 — 对创业者的能力要求</b>。定型不是为了贴标签，而是为了让后续每一个战略问题都有对应的答案入口。
+    </div>
+  </section>
+
+  <!-- ============ 逐维详解 ============ -->
+  <section>
+    <h2>逐维详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">维度①</span>
+        <h3>起点</h3>
+        <span class="role">分型问题：<b>生意从哪里、以什么身段开始？</b></span>
+      </div>
+      <div class="q">这一维回答：<b>"我是白手起家，还是借船出海？是孤注一掷，还是留有后路？"</b></div>
+      <dl class="kv">
+        <dt>分类口径</dt>
+        <dd>独立创业 / 公司创业；兼职创业 / 全职创业。</dd>
+        <dt>要点</dt>
+        <dd><b>独立创业</b>从零起步、自担全责；<b>公司创业</b>在既有组织内部催生新业务，依托平台资源但也要应对组织惯性。<b>兼职创业</b>保留主业收入、低成本试水；<b>全职创业</b>投入深、信号强，但退路更少——起点身段决定了风险敞口与资源逻辑。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">维度②</span>
+        <h3>动机</h3>
+        <span class="role">分型问题：<b>是被推着走，还是被拉着走？</b></span>
+      </div>
+      <div class="q">这一维回答：<b>"我为什么出发？"</b></div>
+      <dl class="kv">
+        <dt>分类口径</dt>
+        <dd>生存型 / 机会型（此口径引自 GEM 2002 报告）。</dd>
+        <dt>要点</dt>
+        <dd><b>生存型创业</b>因缺乏更优选择而创业，被现实"推"着走；<b>机会型创业</b>主动识别并抓住机会，被机会"拉"着走。两类动机常常并存于同一人身上，且会互相转化（详见卡 2-02 动机指纹）。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">维度③</span>
+        <h3>方向</h3>
+        <span class="role">分型问题：<b>我的客户到底是谁？</b></span>
+      </div>
+      <div class="q">这一维回答：<b>"我做的是谁的生意？"</b></div>
+      <dl class="kv">
+        <dt>分类口径</dt>
+        <dd>To C（面向消费者）/ To B（面向企业与机构客户）。</dd>
+        <dt>要点</dt>
+        <dd><b>To C</b>面向大众消费者，需求分散、反馈直接；<b>To B</b>面向企业与机构客户，决策链长、订单集中。方向不同，获客方式、交付节奏与现金流结构完全不同——很多项目死因就是"用 To C 的打法做 To B 的生意"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">维度④</span>
+        <h3>资源依赖</h3>
+        <span class="role">分型问题：<b>生意立足的"硬底子"是什么？</b></span>
+      </div>
+      <div class="q">这一维回答：<b>"我靠什么安身立命？"</b>教材的四分法结构完整，是五个维度中信息量最大的一维。</div>
+      <dl class="kv">
+        <dt>资源驱动型</dt>
+        <dd><b>"通过掌握稀缺性资源……构建竞争壁垒"</b>——底牌是别人拿不到的资源。</dd>
+        <dt>技术驱动型</dt>
+        <dd>以技术突破为核心立足点，壁垒来自持续的技术领先。</dd>
+        <dt>模式驱动型</dt>
+        <dd><b>"本质是价值创造逻辑的重塑"</b>——赢在打法，而不赢在某项资产。</dd>
+        <dt>关系驱动型</dt>
+        <dd>起点是社会资本，但必须<b>"主动将社会资本转化为可持续的组织能力"</b>，否则人走茶凉、生意归零。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s5">
+      <div class="stage-head">
+        <span class="sn">维度⑤</span>
+        <h3>创新程度</h3>
+        <span class="role">分型问题：<b>我做的事有多"新"？</b></span>
+      </div>
+      <div class="q">这一维回答：<b>"我在创新的哪个档位上竞争？"</b></div>
+      <dl class="kv">
+        <dt>分类口径</dt>
+        <dd>复制型 / 模仿型 / 渐进型 / 颠覆型。</dd>
+        <dt>要点</dt>
+        <dd>从<b>复制型</b>（照搬成熟做法，风险最低、壁垒最薄）到<b>模仿型</b>（借鉴中微调、本土化改良）、<b>渐进型</b>（逐步改良升级），再到<b>颠覆型</b>（重新定义行业规则，高风险高回报）——创新档位越高，潜在回报越大，验证周期与失败概率也越大。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>类型是"快照"不是"判决书"。</b>五维定位描述的是项目当前的样子：生存型可以演化为机会型，复制型可以升级为渐进型。定期复检类型坐标，就是定期校准战略假设。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐维打标签。</b>对照五个维度，给自己的项目各选一个最贴近的类型；两个都沾边的，把次要的也记下来。</li>
+      <li><b>用统一模板深挖。</b>对每个命中类型，依次回答四问：机会从哪里来？竞争壁垒靠什么建？风险特征是什么？对创业者要求什么能力？</li>
+      <li><b>写出五维坐标。</b>把五个答案串成一句话，如"全职 × 生存型 × To C × 模式驱动 × 渐进"——这就是项目的类型画像。</li>
+      <li><b>按类型定打法。</b>对照画像检查现有打法是否错配：壁垒怎么建、风险怎么防、能力怎么补，都从类型出发。</li>
+      <li><b>阶段复检。</b>每逢重大节点（融资、转型、扩张）重打一次标签，类型漂移往往就是战略转向的信号。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>新项目立项与定位的<b>第一张诊断表</b></li>
+          <li>观察、访谈身边创业样本时的分析工具（第 1 章实训"知识对照"环节已如此使用）</li>
+          <li>培训课堂的"创业类型认知"第一课，建立分类语言</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>分类是透镜不是标签，<b>切勿用类型否定一个项目</b></li>
+          <li>生存型与机会型常并存，边界随处境移动</li>
+          <li>五维是时点快照，类型会随阶段演化，需定期复检</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>定型之后看进程：机会开发—模式验证—规模化，判断项目走到了哪一步。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-05</div>
+        <h4>创业者四大核心能力框架</h4>
+        <p>类型决定能力侧重：定型后逐项 1—5 分自评，照单补短。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-10</div>
+        <h4>情境二维矩阵</h4>
+        <p>与"类型"叠加使用：类型 + 情境（不确定性 × 资源）双维导航打法选择。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 1 章，第 10—14 页</span>
+    <span>方法论卡 1-01 · 第 1 章 导论</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡9-01 · 创业伦理决策四步法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#334155; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 步骤详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--s4);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:96px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 四重检验 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--s3);
+    border:1px solid var(--s3);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile p b{color:var(--ink-2);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:80px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=9">第 9 章 · 创业伦理</a><span class="card-nav-meta">卡 9-01 · 创业伦理决策四步法</span><a class="card-nav-prev" href="卡8-17-规模化耦合三质变.html">← 卡 8-17</a><a class="card-nav-next" href="卡9-02-伦理困境三类型诊断.html">卡 9-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 9-01</span>
+    <span class="domain">教材体系 · <b>第 9 章 创业伦理</b></span>
+  </div>
+  <h1>创业伦理决策四步法</h1>
+  <div class="oneliner">澄清事实 — 诊断问题 — 方案检验 — 执行反馈：用四步把伦理两难变成可讨论的决策。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业情境中，利益相关者高度嵌入、规则边界模糊，伦理选择常被夹在<b>"商业利益、生存压力"</b>与<b>"道德底线、社会责任"</b>之间——裁掉老员工还是保住现金流？用户数据用到什么程度算越界？这些两难没有现成答案。</p>
+    <p>单一理论视角各有侧重，但<b>「创业情境的复杂性决定了单一视角难以应对所有困难」</b>。四步法的价值，在于<b>「将抽象的理论原则转化为可操作的决策流程」</b>：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">两难变流程</div>
+        <div class="vd">把"心里纠结"变成一步步可讨论、可检验的决策动作。</div>
+      </div>
+      <div class="value">
+        <div class="vt">多视角平衡</div>
+        <div class="vd">四重理论检验并用，避免单一视角的盲区与偏袒。</div>
+      </div>
+      <div class="value">
+        <div class="vt">过程可交代</div>
+        <div class="vd">留下决策记录，向团队与利益相关者透明解释。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 478" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">将抽象的理论原则转化为可操作的决策流程 · 过程公正透明与结果同样重要</text>
+
+        <!-- ===== 第 1 步 ===== -->
+        <rect x="10" y="56" width="144" height="125.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,84 a10,10 0 0 1 10,-10 h124 a10,10 0 0 1 10,10 v10 h-144 z" fill="#3b82f6"/>
+        <text x="82" y="88.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第 1 步 · 澄清事实</text>
+        <text x="20" y="106" font-size="11" fill="#475569">收集客观证据，区分</text>
+        <text x="20" y="122" font-size="11" fill="#475569">事实陈述与价值判断；</text>
+        <text x="20" y="138" font-size="11" fill="#475569">识别利益相关者，含</text>
+        <text x="20" y="154" font-size="11" fill="#475569">社区环境、未来世代</text>
+        <text x="20" y="170" font-size="11" fill="#475569">等隐性主体</text>
+
+        <line x1="158" y1="116" x2="178" y2="116" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 第 2 步 ===== -->
+        <rect x="182" y="56" width="144" height="123.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M182,84 a10,10 0 0 1 10,-10 h124 a10,10 0 0 1 10,10 v10 h-144 z" fill="#d97706"/>
+        <text x="254" y="88.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第 2 步 · 诊断问题</text>
+        <text x="192" y="106" font-size="11" fill="#475569">对困境三分类：</text>
+        <text x="192" y="128" font-size="11" fill="#475569">① 权利冲突型</text>
+        <text x="192" y="148" font-size="11" fill="#475569">② 公平质疑型</text>
+        <text x="192" y="168" font-size="11" fill="#475569">③ 功利计算型</text>
+
+        <line x1="330" y1="116" x2="350" y2="116" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 第 3 步 ===== -->
+        <rect x="354" y="56" width="144" height="125.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M354,84 a10,10 0 0 1 10,-10 h124 a10,10 0 0 1 10,10 v10 h-144 z" fill="#059669"/>
+        <text x="426" y="88.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第 3 步 · 方案与检验</text>
+        <text x="364" y="106" font-size="11" fill="#475569">先发散、后收敛，</text>
+        <text x="364" y="122" font-size="11" fill="#475569">生成备选方案；</text>
+        <text x="364" y="138" font-size="11" fill="#475569">过四重检验，</text>
+        <text x="364" y="154" font-size="11" fill="#475569">任一严重不合格</text>
+        <text x="364" y="170" font-size="11" fill="#475569">即果断舍弃</text>
+
+        <line x1="502" y1="116" x2="522" y2="116" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 第 4 步 ===== -->
+        <rect x="526" y="56" width="144" height="125.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M526,84 a10,10 0 0 1 10,-10 h124 a10,10 0 0 1 10,10 v10 h-144 z" fill="#334155"/>
+        <text x="598" y="88.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第 4 步 · 执行与反馈</text>
+        <text x="536" y="106" font-size="11" fill="#475569">向利益相关者透明</text>
+        <text x="536" y="122" font-size="11" fill="#475569">解释；监控预期之</text>
+        <text x="536" y="138" font-size="11" fill="#475569">外的负外部性；将</text>
+        <text x="536" y="154" font-size="11" fill="#475569">经验教训纳入决策</text>
+        <text x="536" y="170" font-size="11" fill="#475569">规则，形成闭环</text>
+
+        <!-- 下挂连接线 -->
+        <line x1="426" y1="176" x2="426" y2="192" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 四重检验面板 ===== -->
+        <rect x="10" y="196" width="660" height="272" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="220" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">第 3 步下挂 · 四重理论检验</text>
+
+        <rect x="22" y="232" width="316" height="88" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="34" y="256" font-size="12" font-weight="700" fill="#3b82f6">功利主义检验 —— 总体效用</text>
+        <text x="34" y="278" font-size="11" fill="#475569">哪个方案给所有利益相关者带来的</text>
+        <text x="34" y="296" font-size="11" fill="#475569">总体净效用最大？</text>
+
+        <rect x="350" y="232" width="316" height="88" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="362" y="256" font-size="12" font-weight="700" fill="#d97706">义务论检验 —— 普遍化＋头条测试</text>
+        <text x="362" y="278" font-size="11" fill="#475569">康德式追问：能否成为普遍规则？</text>
+        <text x="362" y="296" font-size="11" fill="#475569">头条测试：被公开报道，能否坦然面对？</text>
+
+        <rect x="22" y="332" width="316" height="88" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="34" y="356" font-size="12" font-weight="700" fill="#059669">美德伦理学检验 —— 榜样之问</text>
+        <text x="34" y="378" font-size="11" fill="#475569">一个我真正敬佩的创业者，会如何</text>
+        <text x="34" y="396" font-size="11" fill="#475569">选择？</text>
+
+        <rect x="350" y="332" width="316" height="88" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="362" y="356" font-size="12" font-weight="700" fill="#334155">利益相关者检验 —— 平衡权益</text>
+        <text x="362" y="378" font-size="11" fill="#475569">是否平衡了多方主体的真实权益？</text>
+        <text x="362" y="396" font-size="11" fill="#475569">兼顾显性与隐性主体的诉求</text>
+
+        <text x="340" y="450" text-anchor="middle" font-size="12" fill="#dc2626">若某方案在任一检验中严重不合格，也应果断舍弃，并详细记录决策过程</text>
+      </svg>
+      <div class="caption">图 1　伦理决策四步法：四步流程条 × 第 3 步下挂四重理论检验</div>
+    </div>
+    <div class="quote">
+      设计理念：<b>「决策质量不仅取决于最终选择本身，更取决于达成选择的过程是否公正、透明」</b>。
+    </div>
+  </section>
+
+  <!-- ============ 逐步详解 ============ -->
+  <section>
+    <h2>逐步详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第 1 步</span>
+        <h3>澄清事实</h3>
+        <span class="role">回答：<b>实际发生了什么</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"在情绪与立场之外，事实到底是什么？"</b></div>
+      <dl class="kv">
+        <dt>收集证据</dt>
+        <dd>先收集客观证据，<b>区分事实陈述与价值判断</b>——"他迟到了三次"是事实，"他不负责任"是判断，混在一起就没法讨论。</dd>
+        <dt>识别主体</dt>
+        <dd>识别利益相关者，且要包括<b>「社区环境、未来世代等隐性主体」</b>——不见得会开口的人，也是受影响的人。</dd>
+        <dt>辨析诉求</dt>
+        <dd>辨析各方的真实诉求与潜在动机——台面上说的，未必是真正在意的。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第 2 步</span>
+        <h3>诊断问题</h3>
+        <span class="role">回答：<b>两难难在哪一类</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"这个伦理困境，本质上是哪一类冲突？"</b></div>
+      <dl class="kv">
+        <dt>三分类</dt>
+        <dd>将伦理困境分为三种基本类型——<b>权利冲突型、公平质疑型、功利计算型</b>。类型不同，争论的焦点就不同，匹配的分析工具也不同。</dd>
+        <dt>深入工具</dt>
+        <dd>三类型的判别问句、典型情境与匹配工具，见卡 9-02<b>"伦理困境三类型诊断"</b>——先分诊，再进第 3 步检验。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第 3 步</span>
+        <h3>设计方案与理论检验</h3>
+        <span class="role">回答：<b>有哪些选择、经不经得起检验</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"备选方案里，哪个经得起四重追问？"</b></div>
+      <dl class="kv">
+        <dt>先发散</dt>
+        <dd><b>「先发散、后收敛」</b>生成备选方案——别急着二选一，先把可能的选择都摆出来。</dd>
+        <dt>后收敛</dt>
+        <dd>用四重检验逐一过筛（见下节），综合权衡时<b>「若某方案在任一检验中严重不合格……也应果断舍弃」</b>，并详细记录决策过程。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">第 4 步</span>
+        <h3>执行与反馈</h3>
+        <span class="role">回答：<b>决定之后怎么落地、怎么收尾</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"决策执行后，如何对各方交代、如何变得更好？"</b></div>
+      <dl class="kv">
+        <dt>透明解释</dt>
+        <dd>向利益相关者透明解释决策及其理由——过程公正，从执行延续到沟通。</dd>
+        <dt>监控外溢</dt>
+        <dd>持续监控<b>「预期之外的负外部性」</b>——决策伤害到了谁，要看得见、补得上。</dd>
+        <dt>形成闭环</dt>
+        <dd>把这次的经验教训<b>纳入决策规则</b>，让下一次伦理决策站在这一次的肩膀上。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 四重检验 ============ -->
+  <section>
+    <h2>四重理论检验（第 3 步核心工具）</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">检验一</span>
+        <h4>功利主义检验</h4>
+        <p>算<b>总体效用</b>：这个方案给所有利益相关者带来的净效用，是不是各方案中最大的？</p>
+      </div>
+      <div class="mile">
+        <span class="mno">检验二</span>
+        <h4>义务论检验</h4>
+        <p>康德式<b>普遍化追问</b>：这个做法若成为人人遵循的规则，世界是否还成立？再加<b>「头条测试」</b>：<b>"这个决策如果被公开报道，能否坦然面对？"</b></p>
+      </div>
+      <div class="mile">
+        <span class="mno">检验三</span>
+        <h4>美德伦理学检验</h4>
+        <p>榜样之问：<b>"一个我真正敬佩的创业者会如何选择？"</b>——用你心中的标杆，照一照眼前的选项。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">检验四</span>
+        <h4>利益相关者检验</h4>
+        <p><b>平衡多方权益</b>：是否照顾了各方的真实诉求？有没有谁被无声地牺牲掉了？</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>写下事实。</b>把全部已知事实写下来，逐条标注"事实"还是"判断"；同时列出显性与隐性利益相关者清单。</li>
+      <li><b>判定类型。</b>对照三分类（判别工具见卡 9-02），判断这个困境属于权利冲突型、公平质疑型还是功利计算型——类型不同，争论的焦点就不同。</li>
+      <li><b>发散方案。</b>先不做取舍，至少列出三个备选方案，越不一样越好。</li>
+      <li><b>四重检验。</b>每个方案依次过功利、义务、美德、利益相关者四重检验，把每项追问的回答记录在案。</li>
+      <li><b>收敛并记录。</b>按<b>"任一检验严重不合格即舍弃"</b>的规则收敛出最终方案，并详细记录整个决策过程。</li>
+      <li><b>执行与闭环。</b>执行后向各方透明解释，跟踪预期之外的负外部性，把经验教训更新进决策规则。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>"涉及员工权益、合作伙伴利益、用户数据等多元主体权利平衡的复杂情境"</b></li>
+          <li>需要<b>留下决策记录、向团队解释</b>的正式决策</li>
+          <li>伦理两难的团队讨论：四步给争论提供共同骨架</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>它<b>"不在于提供标准答案"</b>，不能保证决策完全符合伦理</li>
+          <li><b>日常琐碎选择不必启动全流程</b>，避免流程过重、决策变慢</li>
+          <li>检验结论需综合权衡，不能机械地"一票否决"于轻微不合格项——舍弃规则针对的是<b>严重</b>不合格</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related" style="grid-template-columns:repeat(2,1fr)">
+      <div class="rel">
+        <div class="rn">卡 9-02</div>
+        <h4>伦理困境三类型诊断</h4>
+        <p>第 2 步"诊断问题"的专用工具：三类型的判别问句、典型情境与匹配理论，先分诊再检验。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-06</div>
+        <h4>价值观建设四步法</h4>
+        <p>伦理决策的底层是价值观：先厘清价值排序，两难来临时才有一以贯之的准绳。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-04</div>
+        <h4>动机觉察三路径与引导三技术</h4>
+        <p>"头条测试"能否坦然面对，取决于动机是否干净——觉察动机是伦理决策的前置功课。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>团队结构三型</h4>
+        <p>员工权益类伦理困境的处理结果，最终要落到团队结构与规则的设计上。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 9 章，第 236—238 页</span>
+    <span>方法论卡 9-01 · 第 9 章 创业伦理</span>
+  </div>
+
+</div>
+</body>
+</html>

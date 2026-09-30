@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡2-05 · 创业者四大核心能力框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#334155; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 能力详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--s4);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:104px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 提示框 ===== */
+  .mile-note{
+    margin-top:14px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s3);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:88px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=2">第 2 章 · 创业者</a><span class="card-nav-meta">卡 2-05 · 创业者四大核心能力框架（含1—5分自评）</span><a class="card-nav-prev" href="卡2-04-动机觉察三路径与引导三技术.html">← 卡 2-04</a><a class="card-nav-next" href="卡2-06-创业者角色身份协变模型.html">卡 2-06 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 2-05</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>创业者四大核心能力框架</h1>
+  <div class="oneliner">机会感知与评估 · 资源调动与整合 · 战略适应与执行 · 团队领导与影响——四项能力，八个子维度，一张自评表。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>特质回答"你是什么样的人"，能力回答<b>"你能把什么事干成"</b>。创业对能力的要求是组合式的：单科满分救不了全面塌方，四项都在及格线、其中一两项突出的创业者，往往走得更远。</p>
+    <p>教材把创业者核心能力归纳为四项、每项各含两个子维度，并且章末实训已直接给出了使用方式：<b>逐项进行 1—5 分自评，每项评分均需附上真实经历</b>。这张卡带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">盘点有框架</div>
+        <div class="vd">四项 × 八个子维度，能力盘点不再凭感觉，逐格填写。</div>
+      </div>
+      <div class="value">
+        <div class="vt">自评有口径</div>
+        <div class="vd">1—5 分 + 真实经历佐证，防止自我感觉良好。</div>
+      </div>
+      <div class="value">
+        <div class="vt">补短有出路</div>
+        <div class="vd">不必求全才：突出一两项，短板交给互补的团队。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 372" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">四项能力，八个子维度——先自评定位，再决定打磨还是补团队</text>
+
+        <!-- ===== 能力一 ===== -->
+        <rect x="10" y="56" width="324" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,66 a10,10 0 0 1 10,-10 h304 a10,10 0 0 1 10,10 v16 h-324 z" fill="#3b82f6"/>
+        <text x="172" y="73.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">能力一 · 机会感知与评估</text>
+        <rect x="22" y="92" width="145" height="72" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="32" y="114" font-size="12" font-weight="700" fill="#3b82f6">机会感知</text>
+        <text x="32" y="131" font-size="11" fill="#475569">看见别人没看见的</text>
+        <text x="32" y="145" font-size="11" fill="#475569">机会与可能性</text>
+        <rect x="177" y="92" width="145" height="72" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="187" y="114" font-size="12" font-weight="700" fill="#3b82f6">机会评估</text>
+        <text x="187" y="131" font-size="11" fill="#475569">判断机会的真伪</text>
+        <text x="187" y="145" font-size="11" fill="#475569">与价值大小</text>
+
+        <!-- ===== 能力二 ===== -->
+        <rect x="346" y="56" width="324" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M346,66 a10,10 0 0 1 10,-10 h304 a10,10 0 0 1 10,10 v16 h-324 z" fill="#d97706"/>
+        <text x="508" y="73.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">能力二 · 资源调动与整合</text>
+        <rect x="358" y="92" width="145" height="72" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="368" y="114" font-size="12" font-weight="700" fill="#d97706">资源拼凑与杠杆</text>
+        <text x="368" y="131" font-size="11" fill="#475569">手头资源创造性地</text>
+        <text x="368" y="145" font-size="11" fill="#475569">组合与撬动</text>
+        <rect x="513" y="92" width="145" height="72" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="523" y="114" font-size="12" font-weight="700" fill="#d97706">网络构建与利用</text>
+        <text x="523" y="131" font-size="11" fill="#475569">经营关系网络</text>
+        <text x="523" y="145" font-size="11" fill="#475569">换取所需资源</text>
+
+        <!-- ===== 能力三 ===== -->
+        <rect x="10" y="186" width="324" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,196 a10,10 0 0 1 10,-10 h304 a10,10 0 0 1 10,10 v16 h-324 z" fill="#059669"/>
+        <text x="172" y="203.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">能力三 · 战略适应与执行</text>
+        <rect x="22" y="222" width="145" height="72" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="32" y="244" font-size="12" font-weight="700" fill="#059669">实验与迭代</text>
+        <text x="32" y="261" font-size="11" fill="#475569">构建—测量—学习</text>
+        <text x="32" y="275" font-size="11" fill="#475569">小成本快速验证</text>
+        <rect x="177" y="222" width="145" height="72" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="187" y="244" font-size="12" font-weight="700" fill="#059669">决策与风险管理</text>
+        <text x="187" y="261" font-size="11" fill="#475569">在不确定中果断</text>
+        <text x="187" y="275" font-size="11" fill="#475569">取舍并管理风险</text>
+
+        <!-- ===== 能力四 ===== -->
+        <rect x="346" y="186" width="324" height="120" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M346,196 a10,10 0 0 1 10,-10 h304 a10,10 0 0 1 10,10 v16 h-324 z" fill="#334155"/>
+        <text x="508" y="203.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">能力四 · 团队领导与影响</text>
+        <rect x="358" y="222" width="145" height="72" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="368" y="244" font-size="12" font-weight="700" fill="#334155">愿景沟通与感召</text>
+        <text x="368" y="261" font-size="11" fill="#475569">让他人看见并相信</text>
+        <text x="368" y="275" font-size="11" fill="#475569">同一个方向</text>
+        <rect x="513" y="222" width="145" height="72" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="523" y="244" font-size="12" font-weight="700" fill="#334155">团队组建与激励</text>
+        <text x="523" y="261" font-size="11" fill="#475569">把对的人聚起来</text>
+        <text x="523" y="275" font-size="11" fill="#475569">并持续点燃</text>
+
+        <!-- ===== 自评口径 ===== -->
+        <rect x="10" y="318" width="660" height="40" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="343" text-anchor="middle" font-size="12.5" fill="#3b82f6">自评口径：1—5 分逐项评分，每一项都要附上真实经历作为证据</text>
+      </svg>
+      <div class="caption">图 1　四大核心能力框架：四能力 × 各两个子维度 × 1—5 分自评口径</div>
+    </div>
+    <div class="quote">
+      教材的收束观点：<b>"成功的创业者不必在所有能力上出类拔萃，但必然在某一两项核心能力上表现突出。"</b>自评的目的不是求全，而是找出属于你的那一两项。
+    </div>
+  </section>
+
+  <!-- ============ 逐项详解 ============ -->
+  <section>
+    <h2>逐项详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">能力一</span>
+        <h3>机会感知与评估</h3>
+        <span class="role">解决：<b>机会从哪来、值不值得做</b></span>
+      </div>
+      <div class="q">本项能力回答：<b>"我能不能看见机会，并判断它的成色？"</b></div>
+      <dl class="kv">
+        <dt>机会感知</dt>
+        <dd>看见别人没看见的机会与可能性——对市场需求、技术变化与未被满足的痛点保持敏感。</dd>
+        <dt>机会评估</dt>
+        <dd>判断机会的真伪与价值大小——感知解决"看得见"，评估解决"看得准"，两者缺一都会在起跑线选错方向。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">能力二</span>
+        <h3>资源调动与整合</h3>
+        <span class="role">解决：<b>没资源怎么把事办成</b></span>
+      </div>
+      <div class="q">本项能力回答：<b>"我能不能用手头的牌打出别人以为打不出的局？"</b></div>
+      <dl class="kv">
+        <dt>资源拼凑与杠杆</dt>
+        <dd>对手头资源做创造性组合与撬动，以小博大——教材此处吸收了效果逻辑"资源拼凑"的思想：<b>创业成功的关键不在于初始资源禀赋</b>。</dd>
+        <dt>网络构建与利用</dt>
+        <dd>持续经营关系网络，在需要时换取所需资源——网络是创业者的"第二资产负债表"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">能力三</span>
+        <h3>战略适应与执行</h3>
+        <span class="role">解决：<b>方向怎么调、事怎么落地</b></span>
+      </div>
+      <div class="q">本项能力回答：<b>"我能不能在不确定中边学边干、果断取舍？"</b></div>
+      <dl class="kv">
+        <dt>实验与迭代</dt>
+        <dd>以小成本实验快速验证假设、持续修正——吸收了精益创业<b>"构建—测量—学习"循环</b>的操作内核。</dd>
+        <dt>决策与风险管理</dt>
+        <dd>在信息不完备时果断取舍，并对已识别风险做主动管理——慢决策错失窗口，莽决策放大风险，两头都要兼顾。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">能力四</span>
+        <h3>团队领导与影响</h3>
+        <span class="role">解决：<b>一个人干不成的事怎么办</b></span>
+      </div>
+      <div class="q">本项能力回答：<b>"我能不能把人聚起来，并让大家一直愿意干？"</b></div>
+      <dl class="kv">
+        <dt>愿景沟通与感召</dt>
+        <dd>让他人看见并相信同一个方向——早期没有钱和品牌，靠的就是把方向讲清楚、讲动人。</dd>
+        <dt>团队组建与激励</dt>
+        <dd>把对的人聚起来并持续点燃：识别互补、设计分工、维持动力，是把"我"变成"我们"的关键。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>不必全才，但必有长板。</b>四项能力的自评结果通常呈锯齿状，这是正常的——<b>"成功的创业者不必在所有能力上出类拔萃，但必然在某一两项核心能力上表现突出"</b>。锯齿的处理方式有两种：能补则补（针对性训练），难补则配（用互补的合伙人或团队成员接住短板）。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐项打分。</b>对四项核心能力各给出 1—5 分——先凭直觉打，再看子维度校准。</li>
+      <li><b>附上真实经历。</b>教材要求"每项评分均需附上真实经历"：写不出佐证的分数一律下调——防的就是自我感觉良好。</li>
+      <li><b>找出 1—2 项突出能力。</b>分数与经历互相印证的长板，就是你的主战场，后续应重点打磨、并让它成为项目的招牌。</li>
+      <li><b>处理短板。</b>对低分项逐个决定：训练可补的列提升计划，难补的进入团队配置需求（找互补的人）。</li>
+      <li><b>定期复评。</b>能力随创业阶段动态成长，半年到一年重评一次；阶段切换（如进入规模化）时必须复评。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>创业者与潜在创业者的<b>能力盘点与成长规划</b></li>
+          <li>合伙人互补设计与早期团队搭班子（照单找缺项）</li>
+          <li>创业培训的测评模块：1—5 分自评＋经历佐证的现成量表</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>能力可以成长，<b>评分是时点快照，不是终身标签</b></li>
+          <li>自评容易高估，尽量叠加他人评价与实战检验</li>
+          <li>勿求四项全能——突出一两项比平均用力更有价值</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-01</div>
+        <h4>创业者四大心理特质框架</h4>
+        <p>特质打底，能力接管：先看"是什么样的人"，再看"能干成什么事"，合成完整自画像。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>能力侧重随阶段变化：不同阶段的任务不同，对四能力的要求侧重也不同。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>团队结构三型模型</h4>
+        <p>短板交给谁：自评找出的低分项，用团队结构设计来补位。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 2 章，第 45—47 页</span>
+    <span>方法论卡 2-05 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

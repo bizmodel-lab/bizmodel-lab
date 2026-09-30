@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-05 · 结构分析法三子工具</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 子工具详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:96px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-05 · 结构分析法三子工具（价值链缺口/利润池错配/竞争空白区）</span><a class="card-nav-prev" href="卡5-04-三阶推演法.html">← 卡 5-04</a><a class="card-nav-next" href="卡5-06-用户功能场景三角交叉验证.html">卡 5-06 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-05</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>结构分析法三子工具</h1>
+  <div class="oneliner">价值链、利润池、竞争空白区——三把尺子量同一个市场。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>趋势看得见、摸不着，机会却藏在具体的市场结构里。结构分析法的核心追问只有一句：<b>"现有的市场结构在哪些环节存在低效问题？"</b>——但"找低效"三个字太笼统，无从下手。教材把它拆成三个并列的子工具：<b>沿价值链逐环节找缺口、沿利润分布找异常、沿竞争地图找空白</b>。三把尺子各量一个侧面，量出的缺口彼此重合时，就是结构性的、经得起推敲的机会。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">三个抓手</div>
+        <div class="vd">链条、利润、地图——"找低效"从一句口号变成三套可操作的检查动作。</div>
+      </div>
+      <div class="value">
+        <div class="vt">从模糊到具体</div>
+        <div class="vd">不问"市场有没有机会"，改问"哪个环节、哪类用户、哪个场景有机会"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">可交叉印证</div>
+        <div class="vd">三个子工具的发现可以互相验证，也可与用户—功能—场景三角交叉（卡 5-06）叠加。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">结构分析法：三把尺子量同一个市场</text>
+
+        <!-- ===== 子工具一：价值链缺口分析 ===== -->
+        <rect x="10" y="64" width="212" height="316" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,74 a10,10 0 0 1 10,-10 h192 a10,10 0 0 1 10,10 v20 h-212 z" fill="#3b82f6"/>
+        <text x="116" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">① 价值链缺口分析</text>
+        <rect x="46" y="112" width="140" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="116" y="131.3" text-anchor="middle" font-size="12" fill="#1d4ed8">研发设计</text>
+        <rect x="46" y="148" width="140" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="116" y="167.3" text-anchor="middle" font-size="12" fill="#1d4ed8">采购供应</text>
+        <rect x="46" y="184" width="140" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="116" y="203.3" text-anchor="middle" font-size="12" fill="#1d4ed8">生产制造</text>
+        <rect x="46" y="220" width="140" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="116" y="239.3" text-anchor="middle" font-size="12" fill="#1d4ed8">营销销售</text>
+        <rect x="46" y="256" width="140" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="116" y="275.3" text-anchor="middle" font-size="12" fill="#1d4ed8">交付服务</text>
+        <rect x="46" y="292" width="140" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="116" y="311.3" text-anchor="middle" font-size="12" fill="#1d4ed8">用户体验</text>
+        <text x="116" y="346" text-anchor="middle" font-size="11" fill="#64748b">六环节逐一审视：</text>
+        <text x="116" y="364" text-anchor="middle" font-size="11" fill="#64748b">低效环节＝潜在机会</text>
+
+        <!-- ===== 子工具二：利润池错配分析 ===== -->
+        <rect x="234" y="64" width="212" height="316" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M234,74 a10,10 0 0 1 10,-10 h192 a10,10 0 0 1 10,10 v20 h-212 z" fill="#d97706"/>
+        <text x="340" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">② 利润池错配分析</text>
+        <rect x="246" y="112" width="188" height="69.4" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="134" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">第一步 绘制利润分布图</text>
+        <text x="340" y="154" text-anchor="middle" font-size="11" fill="#92400e">标出链条上各环节</text>
+        <text x="340" y="170" text-anchor="middle" font-size="11" fill="#92400e">利润率的高低</text>
+        <line x1="340" y1="176" x2="340" y2="188" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <rect x="246" y="188" width="188" height="69.4" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">第二步 识别异常点</text>
+        <text x="340" y="230" text-anchor="middle" font-size="11" fill="#92400e">哪些环节利润率显著</text>
+        <text x="340" y="246" text-anchor="middle" font-size="11" fill="#92400e">高于平均水平？</text>
+        <line x1="340" y1="252" x2="340" y2="264" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <rect x="246" y="264" width="188" height="69.4" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="286" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">第三步 追问原因</text>
+        <text x="340" y="306" text-anchor="middle" font-size="11" fill="#92400e">技术壁垒？资源垄断？</text>
+        <text x="340" y="322" text-anchor="middle" font-size="11" fill="#92400e">信息不对称？</text>
+        <text x="340" y="352" text-anchor="middle" font-size="11" fill="#64748b">利润异常指向机会方向</text>
+
+        <!-- ===== 子工具三：竞争空白区分析 ===== -->
+        <rect x="458" y="64" width="212" height="316" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M458,74 a10,10 0 0 1 10,-10 h192 a10,10 0 0 1 10,10 v20 h-212 z" fill="#059669"/>
+        <text x="564" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">③ 竞争空白区分析</text>
+        <rect x="470" y="112" width="188" height="69.4" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="564" y="134" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">用户空白</text>
+        <text x="564" y="154" text-anchor="middle" font-size="11" fill="#065f46">未被服务与被错误服务</text>
+        <text x="564" y="170" text-anchor="middle" font-size="11" fill="#065f46">回答：为谁做</text>
+        <rect x="470" y="188" width="188" height="69.4" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="564" y="210" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">功能空白</text>
+        <text x="564" y="230" text-anchor="middle" font-size="11" fill="#065f46">功能过剩与功能不足</text>
+        <text x="564" y="246" text-anchor="middle" font-size="11" fill="#065f46">回答：做什么</text>
+        <rect x="470" y="264" width="188" height="69.4" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="564" y="286" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">场景空白</text>
+        <text x="564" y="306" text-anchor="middle" font-size="11" fill="#065f46">新场景尚无匹配供给</text>
+        <text x="564" y="322" text-anchor="middle" font-size="11" fill="#065f46">回答：何时何地做</text>
+        <text x="564" y="352" text-anchor="middle" font-size="11" fill="#64748b">三方向可做交叉矩阵</text>
+
+        <!-- 汇聚箭头 -->
+        <line x1="116" y1="380" x2="116" y2="402" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="340" y1="380" x2="340" y2="402" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="564" y1="380" x2="564" y2="402" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 核心追问横幅 -->
+        <rect x="10" y="404" width="660" height="34" rx="17" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="340" y="426" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">核心追问：现有的市场结构在哪些环节存在低效问题？</text>
+      </svg>
+      <div class="caption">图 1　结构分析法三子工具：价值链缺口 × 利润池错配 × 竞争空白区</div>
+    </div>
+    <div class="quote">
+      三个子工具殊途同归，教材的落点只有一句：<b>"每一个被诊断出的低效环节，都可能成为一个创业机会。"</b>
+    </div>
+  </section>
+
+  <!-- ============ 逐工具详解 ============ -->
+  <section>
+    <h2>逐工具详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">子工具一</span>
+        <h3>价值链缺口分析</h3>
+        <span class="role">量的侧面：<b>链条</b></span>
+      </div>
+      <div class="q">本工具回答的问题：<b>"链条上哪个环节在拖后腿？"</b></div>
+      <dl class="kv">
+        <dt>做法</dt>
+        <dd>对<b>研发设计、采购供应、生产制造、营销销售、交付服务、用户体验</b>六个环节逐一审视，每个环节各配诊断问句，逐环过、不许跳。</dd>
+        <dt>判据</dt>
+        <dd>环节是否低效、是否值得被改善、改善的收益能否覆盖投入——<b>"每一个被诊断出的低效环节，都可能成为一个创业机会"</b>。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">只盯熟环节</span><span class="td">只看自己从业过的那一段，其余五个环节一概不看，缺口看不全。</span></div>
+        <div class="trap"><span class="tn">错把不熟当低效</span><span class="td">"我不擅长"不等于"行业低效"——低效要有证据，不能靠体感。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">子工具二</span>
+        <h3>利润池错配分析</h3>
+        <span class="role">量的侧面：<b>利润</b></span>
+      </div>
+      <div class="q">本工具回答的问题：<b>"钱都赚在哪些环节？为什么是它们？"</b></div>
+      <dl class="kv">
+        <dt>三步骤</dt>
+        <dd><b>绘制利润分布图</b> → <b>识别异常点</b>——<b>"哪些环节的利润率显著高于平均水平"</b> → <b>追问原因</b>——是技术壁垒、资源垄断，还是信息不对称？</dd>
+        <dt>逻辑</dt>
+        <dd>利润异常意味着价值与分配的错位：成因决定门槛——技术壁垒要掂量能否翻越，信息不对称则可能被认知优势瓦解。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">只看收入</span><span class="td">拿营收分布冒充利润分布——流水大的环节未必赚钱。</span></div>
+        <div class="trap"><span class="tn">错判溢价</span><span class="td">把短期风口溢价当长期利润池，风一停池就干。</span></div>
+        <div class="trap"><span class="tn">找到即止</span><span class="td">发现异常却不追问成因——成因不明，进退两难。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">子工具三</span>
+        <h3>竞争空白区分析</h3>
+        <span class="role">量的侧面：<b>地图</b></span>
+      </div>
+      <div class="q">本工具回答的问题：<b>"竞争地图上，哪里没人守？"</b></div>
+      <dl class="kv">
+        <dt>用户空白</dt>
+        <dd><b>"未被服务"</b>与<b>"被错误服务"</b>两类群体——回答<b>"为谁做"</b>。</dd>
+        <dt>功能空白</dt>
+        <dd>现有产品的功能<b>"过剩"</b>与<b>"不足"</b>并存之处——回答<b>"做什么"</b>。</dd>
+        <dt>场景空白</dt>
+        <dd>新场景出现而供给尚未跟上——回答<b>"何时何地做"</b>。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">空白当需求</span><span class="td">空白可能只是没人要——是否伪需求，要用三角交叉验证（卡 5-06）复核。</span></div>
+        <div class="trap"><span class="tn">单方向定论</span><span class="td">三个方向要交叉着看：同缺口出现在多个方向，才更经得起推敲。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>画链条。</b>画出目标行业的六环节价值链，标注每个环节的主要玩家与流向，一张图打底。</li>
+      <li><b>逐环诊断。</b>每个环节问一句诊断问句："这个环节低效吗？低效在哪里？"——标出所有可疑环节。</li>
+      <li><b>叠加利润。</b>在链条上绘制利润分布，找出高利润异常点，并追问成因：壁垒、垄断还是信息差。</li>
+      <li><b>圈出空白。</b>在用户、功能、场景三个方向分别圈出空白区，各配一句"为谁做／做什么／何时何地做"。</li>
+      <li><b>交叉定位。</b>三把尺子量出的缺口若彼此重合，即结构性机会；再用三角交叉验证（卡 5-06）做最后复核。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>成熟行业</b>的结构化扫描：格局已定，低效处即突破口</li>
+          <li>进入陌生行业前的<b>摸底研究</b>：三把尺子给出标准动线</li>
+          <li>为已发现的问题寻找<b>结构性支撑</b>：确认它不是孤例</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>依赖对行业结构的<b>先验了解</b>，信息不足时先做行业研究再上工具</li>
+          <li>剧变期的行业链条本身在重组，须配合趋势分析（卡 5-03）使用</li>
+          <li>要区分<b>结构性低效与暂时性低效</b>——前者才是机会，后者入场即消失</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-06</div>
+        <h4>用户—功能—场景三角交叉验证</h4>
+        <p>本卡第三子工具圈出的空白，交给三角框架交叉验证——多维印证，过滤伪需求。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-02</div>
+        <h4>机会识别三类信号总纲</h4>
+        <p>结构分析法是结构信号的深挖工具；扫完结构，再轮到趋势与问题两个入口。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-01</div>
+        <h4>机会来源分类学</h4>
+        <p>价值链重构、市场结构不连续等来源线索，用本卡三子工具落到具体环节。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 137—139 页</span>
+    <span>方法论卡 5-05 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

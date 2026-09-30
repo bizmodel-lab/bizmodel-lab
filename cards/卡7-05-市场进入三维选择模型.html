@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡7-05 · 市场进入三维选择模型</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 逐维详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+  .mile-note{
+    margin-top:14px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s3);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=7">第 7 章 · 创业战略</a><span class="card-nav-meta">卡 7-05 · 市场进入三维选择模型（窗口×格局×资源能力）</span><a class="card-nav-prev" href="卡7-04-市场进入四策略矩阵.html">← 卡 7-04</a><a class="card-nav-next" href="卡7-06-安索夫情境化与增长四原则.html">卡 7-06 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 7-05</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>市场进入三维选择模型</h1>
+  <div class="oneliner">机会窗口 × 行业格局 × 资源能力：三维交叉，找到外部机会与内部能力的最大公约数。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>四策略矩阵（卡 7-04）给出了四种切入打法，但<b>"四个选项"不等于"怎么选"</b>。不少团队拿着矩阵反复摇摆：想独立又怕资源不够，想依附又怕被平台锁死——问题不在选项，而在<b>选择缺少依据</b>。</p>
+    <p>教材的回答是：答案需要从<b>外部环境与内部能力的综合分析</b>中得出——具体展开为机会窗口、行业格局、资源能力三个维度，三维交叉而非孤立套用。这张卡带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">选择有依据</div>
+        <div class="vd">三维交叉分析，替代拍脑袋与随大流。</div>
+      </div>
+      <div class="value">
+        <div class="vt">外部内部兼顾</div>
+        <div class="vd">窗口与格局看外部，团队禀赋看内部，两边一起定。</div>
+      </div>
+      <div class="value">
+        <div class="vt">演进有轨迹</div>
+        <div class="vd">进入方式并非终身锁定，从"借船出海"到"造船远航"。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 640" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah705" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">三维交叉分析 · 找到外部机会与内部能力的最大公约数 · 任何一维都不足以单独定策略</text>
+
+        <!-- ===== 轴一：机会窗口 ===== -->
+        <rect x="10" y="58" width="207" height="176" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <rect x="10" y="58" width="207" height="28" rx="10" fill="#3b82f6"/>
+        <rect x="10" y="72" width="207" height="14" fill="#3b82f6"/>
+        <text x="113" y="77" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">轴一 · 机会窗口</text>
+        <text x="24" y="108" font-size="11.5" font-weight="700" fill="#3b82f6">宽度（市场空间大小）</text>
+        <text x="24" y="128" font-size="11" fill="#334155">宽窗口：多玩家同台，可独立</text>
+        <text x="24" y="146" font-size="11" fill="#334155">窄窗口：精准卡位，借体系占位</text>
+        <text x="24" y="172" font-size="11.5" font-weight="700" fill="#3b82f6">时限（机会持续时间）</text>
+        <text x="24" y="192" font-size="11" fill="#334155">短窗口：快速行动、借力打力</text>
+        <text x="24" y="210" font-size="11" fill="#334155">长窗口：从容打磨、稳步推进</text>
+
+        <!-- ===== 轴二：行业格局 ===== -->
+        <rect x="237" y="58" width="207" height="176" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <rect x="237" y="58" width="207" height="28" rx="10" fill="#d97706"/>
+        <rect x="237" y="72" width="207" height="14" fill="#d97706"/>
+        <text x="340" y="77" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">轴二 · 行业格局</text>
+        <text x="251" y="106" font-size="11" fill="#334155">高度分散：边缘 / 正面均可尝试</text>
+        <text x="251" y="128" font-size="11" fill="#334155">巨头＋缝隙：边缘切入建根据地</text>
+        <text x="251" y="150" font-size="11" fill="#334155">强平台生态：依附 / 嵌入借势</text>
+        <text x="251" y="172" font-size="11" fill="#334155">新兴未定：正面 / 边缘抢先卡位</text>
+        <text x="251" y="200" font-size="11" fill="#94a3b8">可用波特五力评估竞争结构</text>
+
+        <!-- ===== 轴三：资源能力 ===== -->
+        <rect x="464" y="58" width="207" height="176" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <rect x="464" y="58" width="207" height="28" rx="10" fill="#059669"/>
+        <rect x="464" y="72" width="207" height="14" fill="#059669"/>
+        <text x="567" y="77" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">轴三 · 资源能力</text>
+        <text x="478" y="106" font-size="11" fill="#334155">技术驱动型：正面 / 边缘切入</text>
+        <text x="478" y="128" font-size="11" fill="#334155">运营驱动型：价值嵌入产业链</text>
+        <text x="478" y="150" font-size="11" fill="#334155">市场驱动型：边缘 / 生态依附</text>
+        <text x="478" y="172" font-size="11" fill="#334155">资源受限型：生态依附起步</text>
+        <text x="478" y="200" font-size="11" fill="#94a3b8">团队禀赋决定哪种进入更可能成功</text>
+
+        <!-- 三轴汇入箭头 -->
+        <line x1="113" y1="238" x2="290" y2="292" stroke="#3b82f6" stroke-width="2" marker-end="url(#ah705)"/>
+        <line x1="340" y1="238" x2="340" y2="286" stroke="#d97706" stroke-width="2" marker-end="url(#ah705)"/>
+        <line x1="567" y1="238" x2="390" y2="292" stroke="#059669" stroke-width="2" marker-end="url(#ah705)"/>
+
+        <!-- ===== 中心交汇：最大公约数 ===== -->
+        <ellipse cx="340" cy="330" rx="180" ry="40" fill="#ffffff" stroke="#475569" stroke-width="2"/>
+        <text x="340" y="326" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">外部机会与内部能力</text>
+        <text x="340" y="348" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">的最大公约数</text>
+        <line x1="340" y1="372" x2="340" y2="396" stroke="#475569" stroke-width="2" marker-end="url(#ah705)"/>
+
+        <!-- ===== 输出：四型选择 ===== -->
+        <rect x="10" y="402" width="660" height="30" rx="15" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="422" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">输出：四策略矩阵（卡 7-04）中选定切入打法</text>
+
+        <!-- ===== 演进轨迹带 ===== -->
+        <text x="340" y="462" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">演进轨迹：从"借船出海"到"造船远航"</text>
+        <rect x="88" y="476" width="140" height="52" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="158" y="498" text-anchor="middle" font-size="12.5" font-weight="700" fill="#d97706">早期 · 生态依附</text>
+        <text x="158" y="517" text-anchor="middle" font-size="11" fill="#b45309">借力平台、验证模式</text>
+        <line x1="230" y1="502" x2="258" y2="502" stroke="#475569" stroke-width="2" marker-end="url(#ah705)"/>
+        <rect x="262" y="476" width="140" height="52" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="332" y="498" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3b82f6">中期 · 价值嵌入</text>
+        <text x="332" y="517" text-anchor="middle" font-size="11" fill="#1d4ed8">建立不可替代地位</text>
+        <line x1="404" y1="502" x2="432" y2="502" stroke="#475569" stroke-width="2" marker-end="url(#ah705)"/>
+        <rect x="436" y="476" width="140" height="52" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="506" y="498" text-anchor="middle" font-size="12.5" font-weight="700" fill="#059669">后期 · 独立发展</text>
+        <text x="506" y="517" text-anchor="middle" font-size="11" fill="#047857">乃至重新定义规则</text>
+
+        <!-- 底部提醒 -->
+        <rect x="10" y="548" width="660" height="34" rx="17" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="340" y="570" text-anchor="middle" font-size="12" fill="#dc2626">进入方式并非终身锁定：持续评估、主动调整，而非固守初始选择</text>
+      </svg>
+      <div class="caption">图 1　市场进入三维选择模型：三轴交叉汇入"最大公约数" → 四型选择 → "借船出海 → 造船远航"演进</div>
+    </div>
+    <div class="quote">
+      三个维度<b>共同构成选择的基本依据，但不可孤立套用</b>：同样的窗口特征下，行业格局与团队能力的差异可能导致截然不同的选择。创业者应将三个维度交叉分析，<b>"找到外部机会与内部能力的最大公约数"</b>。
+    </div>
+  </section>
+
+  <!-- ============ 逐维详解 ============ -->
+  <section>
+    <h2>逐维详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">轴一</span>
+        <h3>机会窗口</h3>
+        <span class="role">宽度与时限<b>决定进入节奏</b></span>
+      </div>
+      <div class="q">本轴回答的问题：<b>"这个窗口能容纳多少人、还能开多久？"</b></div>
+      <dl class="kv">
+        <dt>窗口宽度</dt>
+        <dd>即市场空间大小。<b>宽窗口</b>可容纳多个玩家同台竞技，独立发展空间较大，边缘切入型或正面突破型均可尝试；<b>窄窗口</b>要求精准卡位，借助成熟体系快速占位更稳妥，价值嵌入型或生态依附型往往更有效。</dd>
+        <dt>窗口时限</dt>
+        <dd>即机会持续时间。<b>短窗口</b>转瞬即逝，要求快速行动、借力打力——生态依附型或价值嵌入型能借平台或巨头资源加速进入；<b>长窗口</b>允许从容打磨与迭代，边缘切入型或正面突破型可以稳步推进。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">轴二</span>
+        <h3>行业格局</h3>
+        <span class="role">竞争结构<b>框定策略空间</b></span>
+      </div>
+      <div class="q">本轴回答的问题：<b>"这个行业里，哪些打法根本行不通？"</b></div>
+      <dl class="kv">
+        <dt>评估工具</dt>
+        <dd>先用<b>波特五力模型</b>评估行业竞争结构，再匹配相应的进入策略。</dd>
+        <dt>四种格局</dt>
+        <dd><b>高度分散、无绝对领导者</b>：适合边缘切入型或正面突破型，市场尚未形成壁垒，存在占位空间；<b>巨头主导但有服务不充分的细分缝隙</b>：适合边缘切入型，避开正面冲突、在缝隙中建根据地；<b>存在强大的平台生态</b>：适合生态依附型或价值嵌入型，借力生态势能、降低独立获客成本；<b>新兴行业、格局未定</b>：适合正面突破型或边缘切入型，抢占先发优势。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">轴三</span>
+        <h3>资源能力</h3>
+        <span class="role">团队禀赋<b>匹配策略选择</b></span>
+      </div>
+      <div class="q">本轴回答的问题：<b>"凭我们这支队伍，哪种进入方式更可能成功？"</b></div>
+      <dl class="kv">
+        <dt>技术驱动型</dt>
+        <dd>拥有核心专利、顶尖研发能力——更适合<b>正面突破型或边缘切入型</b>，以技术壁垒换取市场话语权。</dd>
+        <dt>运营驱动型</dt>
+        <dd>擅长供应链管理、成本控制、精细化运营——更适合<b>价值嵌入型</b>，凭效率优势成为产业链的稳定枢纽。</dd>
+        <dt>市场驱动型</dt>
+        <dd>擅长用户洞察、品牌运营、流量获取——更适合<b>边缘切入型或生态依附型</b>，以敏锐嗅觉快速捕捉需求红利。</dd>
+        <dt>资源受限型</dt>
+        <dd>资金少、团队小、品牌弱——更适合<b>生态依附型</b>，借成熟平台的流量、支付、物流体系快速起步，再逐步培育独立能力。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">决策要领</div>
+        <div class="trap"><span class="tn">三维交叉</span><span class="td">三维判断要同时成立——任何一维单独都不足以定策略；同样的团队类型，在不同窗口和行业环境中也需灵活调整。</span></div>
+      </div>
+    </div>
+
+    <div class="mile-note">
+      <b>演进观：从"借船出海"到"造船远航"。</b>许多成功企业会在不同阶段动态演进：早期以生态依附借力平台、验证模式、积累资源；中期通过价值嵌入，在产业链中建立不可替代的专业地位；后期逐步走向独立发展，甚至以正面突破型姿态重新定义行业规则。关键在于<b>根据发展阶段和环境变化，持续评估、主动调整，而非固守初始选择</b>。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>评估机会窗口。</b>判断窗口的宽度（市场空间）与时限（持续时间）——宽长窗口容许独立发展，窄短窗口必须借成熟体系抢先占位。</li>
+      <li><b>分析行业格局。</b>用五力模型判断行业属高度分散、巨头＋缝隙、强平台生态还是新兴未定，格局先划掉根本行不通的打法。</li>
+      <li><b>盘点团队禀赋。</b>对照技术驱动、运营驱动、市场驱动、资源受限四类画像，圈出与自身能力匹配的候选策略。</li>
+      <li><b>三维交叉定策。</b>把三个维度的判断放在同一张表上交叉分析，<b>"找到外部机会与内部能力的最大公约数"</b>，在四型中选定切入打法。</li>
+      <li><b>规划演进路线。</b>制定阶段演进计划：从"借船出海"走向"造船远航"，随发展阶段与环境变化持续评估、主动调整。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>新创企业首次进入市场</b>的打法选择与论证</li>
+          <li>战略转型期的<b>再定位</b>：窗口、格局、能力变了，打法要不要跟着变</li>
+          <li>战略研讨与教学中的<b>三维护盘</b>：把"选哪型"变成三张证据表</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li><b>三维判断信息要求高</b>，格局剧变时需重估，结论有保质期</li>
+          <li>不可孤立套用任何一维——<b>单一维度推出的结论都不足以定策略</b></li>
+          <li>模型解决"如何切入"，<b>进入之后的扩张另需增长战略工具</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-04</div>
+        <h4>市场进入四策略矩阵</h4>
+        <p>本卡管"怎么选"，卡 7-04 管"选什么"：三维交叉的结论，落到四型矩阵中定案。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-09</div>
+        <h4>机会评估框架</h4>
+        <p>"机会窗口"一轴的宽度与时限怎么估？先过机会评估这一关。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>"资源能力"一轴的团队禀赋怎么盘？用三步法沿价值流程摸清家底与缺口。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 7 章，第 198 页</span>
+    <span>方法论卡 7-05 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

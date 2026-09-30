@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-02 · 机会识别三类信号总纲</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 信号详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:96px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-02 · 机会识别三类信号总纲（趋势/结构/问题）</span><a class="card-nav-prev" href="卡5-01-机会来源分类学.html">← 卡 5-01</a><a class="card-nav-next" href="卡5-03-PESTEL与机会转化提问表.html">卡 5-03 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-02</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>机会识别三类信号总纲</h1>
+  <div class="oneliner">趋势、结构、问题——三个入口看世界，机会识别的总目录。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>找机会的人常犯两种毛病：一种是<b>"见树不见林"</b>——盯着某个具体问题钻牛角尖，看不见大势已变；另一种是<b>"见林不见树"</b>——大谈趋势，却落不到具体的市场缺口上。教材为此给出一条总纲：<b>"机会识别的核心，在于捕捉与分析三类关键信号：趋势信号、结构信号与问题信号"</b>。三类信号分别由趋势分析法、结构分析法、问题分析法三套工具承接，构成机会识别的完整地图。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">三个入口</div>
+        <div class="vd">变化、低效、痛点三条路径进入，一个入口卡住就换另一个，不再钻牛角尖。</div>
+      </div>
+      <div class="value">
+        <div class="vt">工具总目录</div>
+        <div class="vd">每类信号都有对应的深挖工具，总纲帮你快速对号入座、不迷路。</div>
+      </div>
+      <div class="value">
+        <div class="vt">相互印证</div>
+        <div class="vd">同一缺口在多类信号中重复出现，才是经得起推敲的结构性机会。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 390" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">三类信号总纲：趋势看变化，结构看低效，问题看痛点</text>
+
+        <!-- ===== 入口一：趋势信号 ===== -->
+        <rect x="10" y="64" width="200" height="104" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,74 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#3b82f6"/>
+        <text x="110" y="83.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">入口一 · 趋势信号</text>
+        <text x="24" y="116" font-size="12" fill="#334155">环境正在发生什么变化？</text>
+        <text x="24" y="138" font-size="11" font-weight="700" fill="#3b82f6">承接工具：趋势分析法</text>
+        <text x="24" y="158" font-size="11" fill="#64748b">PESTEL 扫描 · 三阶推演</text>
+
+        <!-- ===== 入口二：结构信号 ===== -->
+        <rect x="240" y="64" width="200" height="104" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M240,74 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#d97706"/>
+        <text x="340" y="83.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">入口二 · 结构信号</text>
+        <text x="254" y="116" font-size="12" fill="#334155">市场结构哪里存在低效？</text>
+        <text x="254" y="138" font-size="11" font-weight="700" fill="#d97706">承接工具：结构分析法</text>
+        <text x="254" y="158" font-size="11" fill="#64748b">价值链 · 利润池 · 空白区</text>
+
+        <!-- ===== 入口三：问题信号 ===== -->
+        <rect x="470" y="64" width="200" height="104" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M470,74 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#059669"/>
+        <text x="570" y="83.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">入口三 · 问题信号</text>
+        <text x="484" y="116" font-size="12" fill="#334155">用户遇到什么问题？</text>
+        <text x="484" y="138" font-size="11" font-weight="700" fill="#059669">承接工具：问题分析法</text>
+        <text x="484" y="158" font-size="11" fill="#64748b">任务洞察 · 痛点深潜</text>
+
+        <!-- 三入口汇聚箭头 -->
+        <line x1="110" y1="168" x2="268" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="340" y1="168" x2="340" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="570" y1="168" x2="412" y2="210" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 汇聚中心 -->
+        <rect x="200" y="212" width="280" height="52" rx="26" fill="#1e293b"/>
+        <text x="340" y="242.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">机会识别：捕捉与分析三类信号</text>
+
+        <!-- 输出箭头 -->
+        <line x1="340" y1="264" x2="340" y2="294" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 输出框 -->
+        <rect x="170" y="296" width="340" height="55.4" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="318" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1d4ed8">形成候选机会清单 → 进入评估与验证</text>
+        <text x="340" y="340" text-anchor="middle" font-size="11" fill="#64748b">三类信号相互印证，机会更经得起推敲</text>
+
+        <!-- 底部注解 -->
+        <text x="340" y="374" text-anchor="middle" font-size="11" fill="#94a3b8">趋势与结构多用于扫描，问题多用于深潜；同一现象可同时属于多类信号</text>
+      </svg>
+      <div class="caption">图 1　三类信号总览：三个入口，一个出口——形成可验证的候选机会</div>
+    </div>
+    <div class="quote">
+      这条总纲是第 5 章机会识别部分的组织骨架：<b>"机会识别的核心，在于捕捉与分析三类关键信号：趋势信号、结构信号与问题信号。"</b>三套分析工具全部挂在它名下。
+    </div>
+  </section>
+
+  <!-- ============ 逐信号详解 ============ -->
+  <section>
+    <h2>逐信号详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">趋势信号</span>
+        <h3>环境的变化</h3>
+        <span class="role">看：<b>大势</b></span>
+      </div>
+      <div class="q">本入口回答的问题：<b>"环境正在发生哪些不可逆的变化？"</b></div>
+      <dl class="kv">
+        <dt>承接工具</dt>
+        <dd>趋势分析法——PESTEL 六维扫描与机会转化提问表（卡 5-03）、三阶推演法（卡 5-04）。</dd>
+        <dt>典型产出</dt>
+        <dd><b>"新趋势与旧供给之间的差距"</b>——教材点明：趋势分析的目的不是预测未来，而是在变化中定位可能的错位，差距正是机会的藏身之处。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">把预测当分析</span><span class="td">热衷赌"未来会怎样"，却说不清"现在哪里错位"——趋势分析定位错位，不做水晶球。</span></div>
+        <div class="trap"><span class="tn">追在拐点之后</span><span class="td">等趋势成为共识才入场，看到的已是红海。</span></div>
+        <div class="trap"><span class="tn">单维下结论</span><span class="td">只见政策不见技术，或只见技术不见人群，结论片面。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">结构信号</span>
+        <h3>市场的低效</h3>
+        <span class="role">看：<b>格局</b></span>
+      </div>
+      <div class="q">本入口回答的问题：<b>"现有的市场结构在哪些环节存在低效问题？"</b></div>
+      <dl class="kv">
+        <dt>承接工具</dt>
+        <dd>结构分析法三子工具（卡 5-05）——价值链缺口分析、利润池错配分析、竞争空白区分析。</dd>
+        <dt>典型产出</dt>
+        <dd>结构性的、经得起推敲的缺口——<b>"每一个被诊断出的低效环节，都可能成为一个创业机会"</b>。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">只看身边环节</span><span class="td">价值链有六个环节，只盯自己熟悉的那一段，缺口看不全。</span></div>
+        <div class="trap"><span class="tn">错判低效性质</span><span class="td">把暂时性低效当结构性低效，入场后低效消失，机会随之蒸发。</span></div>
+        <div class="trap"><span class="tn">不做交叉验证</span><span class="td">单一维度的空白未必是真需求，须用三角交叉验证（卡 5-06）复核。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">问题信号</span>
+        <h3>用户的痛点</h3>
+        <span class="role">看：<b>人</b></span>
+      </div>
+      <div class="q">本入口回答的问题：<b>"用户在完成什么任务时遇到了阻碍？"</b></div>
+      <dl class="kv">
+        <dt>承接工具</dt>
+        <dd>问题分析法——任务洞察（用户体验地图、待办任务访谈）与痛点深潜（三层痛点模型，卡 5-07）。</dd>
+        <dt>典型产出</dt>
+        <dd>分层的痛点地图，以及被主流产品忽视的<b>边缘用户</b>——"被主流产品忽视的用户群体，其痛点往往更尖锐、更迫切"。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">采信口头表态</span><span class="td">用户"说想要"不等于"会付费"，要看行为证据（卡 5-10）。</span></div>
+        <div class="trap"><span class="tn">停在表层痛点</span><span class="td">功能层的不满意最容易被看见，也最容易被模仿——要往情感层、身份层深潜。</span></div>
+        <div class="trap"><span class="tn">忽视未消费</span><span class="td">"没在消费"的时刻里藏着最真实的待办任务。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>三问开路。</b>固定周期回答三个问题："环境变了什么？""市场哪里低效？""用户被什么卡住？"——三问就是三个入口的门铃。</li>
+      <li><b>卡住就换口。</b>一个入口深挖不出结果时，切到另外两个入口继续；三个入口轮着走，避免视角僵死。</li>
+      <li><b>工具对号。</b>每类信号用对应工具深挖：趋势→卡 5-03／卡 5-04，结构→卡 5-05，问题→卡 5-07，不混用、不跳步。</li>
+      <li><b>交叉印证。</b>同一缺口在两类以上信号中重复出现，才列为重点候选——多维印证能有效避开伪需求陷阱。</li>
+      <li><b>结转评估。</b>候选清单交给机会评估框架（卡 5-09）排序，再进入验证环节（卡 5-10）。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>机会识别期的<b>系统扫描</b>：三个入口各扫一遍，不漏视角</li>
+          <li>创意枯竭时的<b>换视角练习</b>：从"找点子"变成"换入口"</li>
+          <li>教学与培训中的<b>总目录导航</b>：先立地图，再学工具</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>总纲是<b>导航而非深度工具</b>——每个入口的产出质量取决于配套工具用得深不深</li>
+          <li>三类信号边界有重叠，同一现象可同时是趋势与问题——<b>重叠不是缺陷，恰是交叉印证的素材</b></li>
+          <li>信号捕捉依赖持续的信息输入，闭门造车扫不出任何东西</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-03</div>
+        <h4>PESTEL 与机会转化提问表</h4>
+        <p>趋势信号的深挖工具：六维扫描环境，再用一个提问把"变化"翻译成"机会"。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-05</div>
+        <h4>结构分析法三子工具</h4>
+        <p>结构信号的深挖工具：价值链、利润池、竞争空白区三把尺子量市场。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-07</div>
+        <h4>三层痛点模型</h4>
+        <p>问题信号的深潜工具：表层—中层—深层痛点逐层下探，直至身份层面的不一致。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 135 页</span>
+    <span>方法论卡 5-02 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

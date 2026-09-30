@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡2-03 · 动机触发四要素</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#334155; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 要素详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s2);}
+  .stage.s2{border-top-color:var(--s3);}
+  .stage.s3{border-top-color:var(--s1);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s2);} .s2 .sn{background:var(--s3);}
+  .s3 .sn{background:var(--s1);} .s4 .sn{background:var(--s4);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 提示框 ===== */
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=2">第 2 章 · 创业者</a><span class="card-nav-meta">卡 2-03 · 动机触发四要素（推力—拉力—关键事件—资源杠杆）</span><a class="card-nav-prev" href="卡2-02-动机指纹与三类动机组合.html">← 卡 2-02</a><a class="card-nav-next" href="卡2-04-动机觉察三路径与引导三技术.html">卡 2-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 2-03</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>动机触发四要素</h1>
+  <div class="oneliner">推力 · 拉力 · 关键事件 · 资源杠杆——回答"为什么是现在出发"。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多潜在创业者的卡点，不是"想不想"，而是<b>"为什么一直没动"</b>：想法放了好几年，始终停在"再等等"。教材把动机从潜在状态到付诸行动之间的转折，拆成了可分析的四个要素。</p>
+    <p>教材的提醒是：<b>"创业者'为什么出发'固然重要，但'为什么是现在出发'同样关键"</b>。把触发机制看清，带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">复盘触发时刻</div>
+        <div class="vd">四要素构成一套结构化的问题清单，帮你回看"当时到底发生了什么"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">诊断行动成熟度</div>
+        <div class="vd">还没出发的人，可以逐项检查自己缺的是哪块拼图。</div>
+      </div>
+      <div class="value">
+        <div class="vt">主动创造条件</div>
+        <div class="vd">触发不只靠等：短板要素（尤其是资源杠杆）可以主动补齐。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">"为什么出发"重要，"为什么是现在出发"同样关键</text>
+
+        <!-- ===== 要素三 关键事件（上） ===== -->
+        <rect x="245" y="60" width="190" height="96" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="84" text-anchor="middle" font-size="13.5" font-weight="700" fill="#3b82f6">③ 关键事件</text>
+        <text x="340" y="106" text-anchor="middle" font-size="11.5" fill="#334155">将创业从理性计算</text>
+        <text x="340" y="123" text-anchor="middle" font-size="11.5" fill="#334155">升华为意义追寻</text>
+        <text x="340" y="145" text-anchor="middle" font-size="11" fill="#64748b">把"值不值"变成"必须做"</text>
+
+        <!-- ===== 要素一 推力（左） ===== -->
+        <rect x="10" y="168" width="160" height="104" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="90" y="192" text-anchor="middle" font-size="13.5" font-weight="700" fill="#d97706">① 推力</text>
+        <text x="90" y="214" text-anchor="middle" font-size="11.5" fill="#334155">推着人离开现状</text>
+        <text x="90" y="231" text-anchor="middle" font-size="11.5" fill="#334155">来自当下的不满与压力</text>
+        <text x="90" y="255" text-anchor="middle" font-size="11" fill="#64748b">＝ 离开的理由</text>
+
+        <!-- ===== 要素二 拉力（右） ===== -->
+        <rect x="510" y="168" width="160" height="104" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="590" y="192" text-anchor="middle" font-size="13.5" font-weight="700" fill="#059669">② 拉力</text>
+        <text x="590" y="214" text-anchor="middle" font-size="11.5" fill="#334155">把人引向机会</text>
+        <text x="590" y="231" text-anchor="middle" font-size="11.5" fill="#334155">来自前方的吸引与预期</text>
+        <text x="590" y="255" text-anchor="middle" font-size="11" fill="#64748b">＝ 奔向的理由</text>
+
+        <!-- ===== 中心转折点 ===== -->
+        <rect x="275" y="185" width="130" height="62" rx="10" fill="#1e293b"/>
+        <text x="340" y="212" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">从潜在到行动</text>
+        <text x="340" y="233" text-anchor="middle" font-size="11.5" fill="#cbd5e1">的转折点</text>
+
+        <!-- ===== 要素四 资源杠杆（下） ===== -->
+        <rect x="245" y="300" width="190" height="96" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="324" text-anchor="middle" font-size="13.5" font-weight="700" fill="#334155">④ 资源杠杆</text>
+        <text x="340" y="346" text-anchor="middle" font-size="11.5" fill="#334155">使创业从想做变为能做</text>
+        <text x="340" y="363" text-anchor="middle" font-size="11.5" fill="#334155">启动资源的撬动与到位</text>
+        <text x="340" y="385" text-anchor="middle" font-size="11" fill="#64748b">＝ 能走的条件</text>
+
+        <!-- ===== 作用力箭头 ===== -->
+        <line x1="170" y1="216" x2="267" y2="216" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="510" y1="216" x2="413" y2="216" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="340" y1="156" x2="340" y2="179" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="340" y1="247" x2="340" y2="292" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 底部复合作用提示 ===== -->
+        <rect x="10" y="410" width="660" height="36" rx="18" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="340" y="433" text-anchor="middle" font-size="12.5" fill="#dc2626">四要素很少单独起作用：触发往往是推力、拉力、事件与资源共同作用的结果</text>
+      </svg>
+      <div class="caption">图 1　动机触发四要素：推 / 拉 / 事件 / 杠杆 四路合力于"从潜在到行动"的转折点</div>
+    </div>
+    <div class="quote">
+      推拉二分的原型来自李氏迁移理论（教材脚注引入）；教材在创业情境中将其扩展为四要素——<b>关键事件与资源杠杆两个维度的加入，让"触发"从背景变量变成了可以盘点的行动清单</b>。
+    </div>
+  </section>
+
+  <!-- ============ 逐要素详解 ============ -->
+  <section>
+    <h2>逐要素详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">要素①</span>
+        <h3>推力</h3>
+        <span class="role">作用方向：<b>把你推离现状</b></span>
+      </div>
+      <div class="q">自问：<b>"现在的处境里，有什么让我待不下去？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>推着人离开现状的力量，来自当下处境的不满与压力——职业受限、环境恶化、关系变化都可能成为推力。</dd>
+        <dt>怎么读</dt>
+        <dd>推力回答"为什么要走"。只有推力没有拉力的出发，本质是<b>逃离</b>而非<b>奔向</b>，容易掉进"出了狼窝又入虎口"的重复困境。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">要素②</span>
+        <h3>拉力</h3>
+        <span class="role">作用方向：<b>把你引向机会</b></span>
+      </div>
+      <div class="q">自问：<b>"前方的什么图景在吸引我？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>把人引向创业机会的力量，来自对机会价值与未来图景的预期。</dd>
+        <dt>怎么读</dt>
+        <dd>拉力回答"为什么往这里走"。推力与拉力的组合才构成完整方向：被推离 A、又被 B 吸引，出发才有了坐标；单有拉力没有推力的人，则常常"想想就算了"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">要素③</span>
+        <h3>关键事件</h3>
+        <span class="role">作用方式：<b>点燃行动的扳机</b></span>
+      </div>
+      <div class="q">自问：<b>"有没有哪一刻，让创业从'划算'变成了'必须'？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>某个具体时刻或经历，让创业的决心越过临界点。教材的说法是：关键事件<b>"将创业从理性计算升华为意义追寻"</b>——账还没算完，心已经定了。</dd>
+        <dt>怎么读</dt>
+        <dd>关键事件往往是转折的显性标志：一次谈话、一场变故、一个被点燃的瞬间。复盘时找到它，就找到了"为什么是那时"的答案锚点。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">要素④</span>
+        <h3>资源杠杆</h3>
+        <span class="role">作用方式：<b>让可能变成可行</b></span>
+      </div>
+      <div class="q">自问：<b>"让我从'想做'走到'能做'的东西是什么？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>启动资源的撬动与到位——一笔启动资金、一项可变现技能、一位愿意同行的伙伴，都可能成为杠杆。教材的话：<b>"使创业从想做变为能做"</b>。</dd>
+        <dt>怎么读</dt>
+        <dd>资源杠杆是四要素中<b>最可以主动经营</b>的一项：推力未必等得来，事件无法制造，但启动条件可以攒。很多人"想创业很多年"，缺的从来不是想法，是杠杆。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>复合触发是常态。</b>教材强调：触发<b>"往往是推力、拉力、事件与资源共同作用的结果"</b>。四要素很少单枪匹马地起作用——只被推着走容易盲动，只被拉着走容易拖延；真正的转折点，通常是四股力量在某个时点上的共振。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>锚定触发时刻。</b>写下你决定创业（或最动心）的那个时间点，越具体越好——"哪个月、什么事之后"。</li>
+      <li><b>四问复盘。</b>依次回答：当时的推力是什么？拉力是什么？有没有关键事件？资源杠杆何时到位？哪一格填不出来，哪一格就是你的薄弱项。</li>
+      <li><b>找短板。</b>还没出发的，用四要素检查缺哪块拼图——缺杠杆就去攒启动资源，缺拉力就去把机会看清楚。</li>
+      <li><b>主动补条件。</b>四要素中资源杠杆与拉力可以主动创造：小规模验证机会、先攒第一笔启动资源，都是在给自己"制造触发"。</li>
+      <li><b>定期回看。</b>触发条件会变化：推力会衰减，拉力会转移。定期重查四要素，判断窗口正在打开还是正在关闭。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>创业者的<b>触发时刻结构化复盘</b>（教材思考题已用作自我剖析框架）</li>
+          <li>潜在创业者的自我诊断："我到底缺什么才没出发"</li>
+          <li>访谈与个案分析：把"当时怎么决定的"变成可比较的结构</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>四要素是回溯性的解释框架，<b>不构成"凑齐就成功"的保证</b></li>
+          <li>勿消极等待"完美触发"——条件可以主动创造</li>
+          <li>关键事件的"意义感"会衰减，触发之后需要动机管理接棒（见卡 2-02 / 2-04）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-02</div>
+        <h4>动机指纹与三类动机组合</h4>
+        <p>本卡管"为什么是现在"，卡 2-02 管"靠什么坚持下去"——触发之后，靠动机结构续航。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-04</div>
+        <h4>动机觉察三路径＋引导三技术</h4>
+        <p>触发的意义感会衰减：用觉察与引导技术持续校准动机。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>出发之后看路标：机会开发—模式验证—规模化，判断下一步该做什么。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 2 章，第 43—44 页</span>
+    <span>方法论卡 2-03 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

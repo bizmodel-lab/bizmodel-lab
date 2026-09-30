@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-05 · 商业模式类型演化四路径</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 路径详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 三重启示 ===== */
+  .miles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--s2);
+    border:1px solid var(--s2);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-05 · 类型演化四路径＋三重启示</span><a class="card-nav-prev" href="卡8-04-双维度商业模式六类型矩阵.html">← 卡 8-04</a><a class="card-nav-next" href="卡8-06-商业模式设计四步法.html">卡 8-06 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-05</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>商业模式类型演化四路径</h1>
+  <div class="oneliner">产品型到生态型：四条典型演化路径 + 三重启示，看清下一步往哪走。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>用六类型矩阵（卡 8-04）完成定位之后，很多团队会停在原地：知道自己是"产品型"，却不知道<b>下一步能往哪走、该怎么走</b>。也有人反过来——看到别人做平台、做生态，就急着给自己的模式换标签，结果只是名字变了，模块连接方式一点没变。</p>
+    <p>教材给出关键限定：六种类型<b>"并非互斥的静态'标签'，而是商业模式在不同发展阶段的'结构快照'"</b>；类型转换<b>"本质是系统模块连接方式的重构"</b>。演化路径因此有章可循。这张卡带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">演化有典型路径</div>
+        <div class="vd">四条被实践检验的路径，给"下一步往哪走"提供参照系。</div>
+      </div>
+      <div class="value">
+        <div class="vt">跨越有纪律</div>
+        <div class="vd">路径可以规划但不可跳级——不盲目跨越是首要纪律。</div>
+      </div>
+      <div class="value">
+        <div class="vt">升级有时机观</div>
+        <div class="vd">能力要提前储备，窗口期到来时要果断升级。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 560" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah805" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">类型演化的本质是商业模式系统模块连接方式的重构——换标签不算演化</text>
+
+        <!-- ===== 路径一 ===== -->
+        <text x="24" y="80" font-size="13" font-weight="700" fill="#3b82f6">路径一</text>
+        <rect x="24" y="90" width="92" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="70" y="109.3" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">产品型</text>
+        <line x1="118" y1="103" x2="140" y2="103" stroke="#475569" stroke-width="2" marker-end="url(#ah805)"/>
+        <rect x="144" y="90" width="92" height="30.2" rx="13" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="190" y="109.3" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">订阅型</text>
+        <text x="254" y="108" font-size="11.5" fill="#475569">重构收入来源与客户关系的连接</text>
+        <text x="24" y="134" font-size="11" fill="#94a3b8">教材例：惠普 Instant Ink（打印机＋订阅墨盒）</text>
+
+        <!-- ===== 路径二 ===== -->
+        <text x="24" y="176" font-size="13" font-weight="700" fill="#d97706">路径二</text>
+        <rect x="24" y="186" width="92" height="30.2" rx="13" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="70" y="203.2" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">订阅型</text>
+        <line x1="118" y1="199" x2="140" y2="199" stroke="#475569" stroke-width="2" marker-end="url(#ah805)"/>
+        <rect x="144" y="186" width="92" height="30.2" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="190" y="203.2" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">平台型</text>
+        <text x="254" y="204" font-size="11.5" fill="#475569">重构价值主张边界与重要合作范围</text>
+        <text x="24" y="230" font-size="11" fill="#94a3b8">教材例：Adobe（从套装软件订阅到创意云平台）</text>
+
+        <!-- ===== 路径三 ===== -->
+        <text x="24" y="272" font-size="13" font-weight="700" fill="#059669">路径三</text>
+        <rect x="24" y="282" width="100" height="30.2" rx="13" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="74" y="299.2" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">免费增值型</text>
+        <line x1="126" y1="295" x2="148" y2="295" stroke="#475569" stroke-width="2" marker-end="url(#ah805)"/>
+        <rect x="152" y="282" width="92" height="30.2" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="198" y="299.2" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">平台型</text>
+        <text x="262" y="300" font-size="11.5" fill="#475569">以免费聚用户，向平台要生态</text>
+        <text x="24" y="326" font-size="11" fill="#94a3b8">教材例：腾讯</text>
+
+        <!-- ===== 路径四 ===== -->
+        <text x="24" y="368" font-size="13" font-weight="700" fill="#dc2626">路径四</text>
+        <rect x="24" y="378" width="86" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="67" y="395.2" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">产品型</text>
+        <line x1="112" y1="391" x2="134" y2="391" stroke="#475569" stroke-width="2" marker-end="url(#ah805)"/>
+        <rect x="138" y="378" width="86" height="30.2" rx="13" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="181" y="395.2" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">订阅型</text>
+        <line x1="226" y1="391" x2="248" y2="391" stroke="#475569" stroke-width="2" marker-end="url(#ah805)"/>
+        <rect x="252" y="378" width="86" height="30.2" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="295" y="395.2" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">平台型</text>
+        <line x1="340" y1="391" x2="362" y2="391" stroke="#475569" stroke-width="2" marker-end="url(#ah805)"/>
+        <rect x="366" y="378" width="86" height="30.2" rx="13" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="409" y="395.2" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">生态型</text>
+        <text x="466" y="396" font-size="11.5" fill="#475569">全路径跃迁</text>
+        <text x="24" y="422" font-size="11" fill="#94a3b8">教材例：苹果</text>
+
+        <!-- 分隔线 -->
+        <line x1="10" y1="444" x2="670" y2="444" stroke="#e2e8f0" stroke-width="1"/>
+
+        <!-- ===== 三重启示 ===== -->
+        <text x="340" y="472" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">三重启示</text>
+        <rect x="10" y="486" width="212" height="50.4" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="116" y="507" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">认清当前阶段</text>
+        <text x="116" y="525" text-anchor="middle" font-size="11" fill="#64748b">不盲目跨越</text>
+        <rect x="234" y="486" width="212" height="50.4" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="507" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">提前储备下一阶段</text>
+        <text x="340" y="525" text-anchor="middle" font-size="11" fill="#64748b">关键能力</text>
+        <rect x="458" y="486" width="212" height="50.4" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="564" y="507" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">市场窗口期</text>
+        <text x="564" y="525" text-anchor="middle" font-size="11" fill="#64748b">果断升级</text>
+      </svg>
+      <div class="caption">图 1　商业模式类型演化四路径：逐级换挡 × 全路径跃迁 × 三重启示</div>
+    </div>
+    <div class="quote">
+      类型演化的每一步都不是改称呼，而是<b>"重构"</b>：路径一重构收入来源与客户关系的连接，路径二重构价值主张边界与重要合作范围——<b>动的都是模块之间的连接方式</b>。
+    </div>
+  </section>
+
+  <!-- ============ 逐路径详解 ============ -->
+  <section>
+    <h2>逐路径详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">路径一</span>
+        <h3>产品型 → 订阅型</h3>
+        <span class="role">重构<b>收入与客户关系</b>的连接</span>
+      </div>
+      <div class="q">本路径回答的问题：<b>"能不能把一次性的买卖，变成持续的服务关系？"</b></div>
+      <dl class="kv">
+        <dt>换挡实质</dt>
+        <dd>收入来源从"单次交易"改为"周期性费用"，客户关系从"交付即结束"改为"持续运营"——<b>重构收入来源与客户关系的连接方式</b>。</dd>
+        <dt>教材例证</dt>
+        <dd>惠普 Instant Ink：从卖打印机（产品型）转向"打印机＋订阅墨盒"（订阅服务型），按月付费、按需供墨。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">路径二</span>
+        <h3>订阅型 → 平台型</h3>
+        <span class="role">重构<b>价值主张与合作</b>的范围</span>
+      </div>
+      <div class="q">本路径回答的问题：<b>"我积累的能力，能不能开放给别人用？"</b></div>
+      <dl class="kv">
+        <dt>换挡实质</dt>
+        <dd>价值主张的边界从"服务自己的客户"扩展到"支撑多边群体"，重要合作范围随之重组——<b>重构价值主张的边界与重要合作的范围</b>。</dd>
+        <dt>教材例证</dt>
+        <dd>Adobe：从套装软件的订阅服务，演进为汇聚开发者、插件与用户的创意云平台。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">路径三</span>
+        <h3>免费增值型 → 平台型</h3>
+        <span class="role">以免费聚用户，向平台要生态</span>
+      </div>
+      <div class="q">本路径回答的问题：<b>"免费换来的海量用户，能不能变成平台的地基？"</b></div>
+      <dl class="kv">
+        <dt>换挡实质</dt>
+        <dd>用免费服务快速聚拢用户规模，再围绕用户基础接入多边群体、设计平台规则，把"流量"转化为"生态位"。</dd>
+        <dt>教材例证</dt>
+        <dd>腾讯：从免费的即时通讯服务起步，长出覆盖多业务的平台生态。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">路径四</span>
+        <h3>产品型 → 订阅型 → 平台型 → 生态型</h3>
+        <span class="role">全路径跃迁</span>
+      </div>
+      <div class="q">本路径回答的问题：<b>"逐级换挡的完整链条长什么样？"</b></div>
+      <dl class="kv">
+        <dt>换挡实质</dt>
+        <dd>沿着四型逐级演进：每一级都要等<b>模块连接方式完成重构</b>、关键能力到位后，再进入下一级——这是演化的完整形态，也是最考验耐心的路径。</dd>
+        <dt>教材例证</dt>
+        <dd>苹果：从产品（电脑）到订阅（服务），到平台（App Store），再到生态（软硬一体）。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 三重启示 ============ -->
+  <section>
+    <h2>三重启示</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">启示 ①</span>
+        <h4>认清当前阶段，不盲目跨越</h4>
+        <p>多数创业企业从产品型起步——阶段可以规划，但不可跳级；看清自己在哪一格，再谈往哪走。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">启示 ②</span>
+        <h4>提前储备下一阶段关键能力</h4>
+        <p>演化发生前，关键能力要先长出来：不储备能力的跨越，只是换一个标签。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">启示 ③</span>
+        <h4>市场窗口期果断升级</h4>
+        <p>演化有机会成本——窗口期到来时犹豫不决，储备的能力也会过期。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>先定位。</b>用卡 8-04 的六类型矩阵确认当前所属类型——演化路径的起点必须先站实，否则后面全是空谈。</li>
+      <li><b>对照四路径。</b>判断自身处于哪条演化线上的哪个位置——是正在换挡，还是应该准备换挡；多数企业的第一步是产品型 → 订阅型。</li>
+      <li><b>列出重构清单。</b>按目标路径写出要重构的模块连接：收入来源与客户关系怎么连？价值主张边界与重要合作范围怎么调？</li>
+      <li><b>盘点能力缺口。</b>对照下一类型的关键能力要求，列出尚未储备的能力清单——<b>能力不齐，宁可原地多待一阵</b>。</li>
+      <li><b>设窗口期检验时点。</b>给"何时果断升级"定一个明确的检验时点，到点评估市场窗口，避免能力备好了却错过时机。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>已完成六类型定位、规划<b>下一阶段方向</b>的团队</li>
+          <li>战略研讨中的"演化位置"讨论：你在哪条线的哪一段</li>
+          <li>投资沟通中的<b>成长路线陈述</b>：从当前型到目标型的路径</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>四条是<b>典型路径而非唯一路线</b>，实际演化常有交织与回退</li>
+          <li><b>不盲目跨越阶段是首要纪律</b>——跳级式升级多数以失败收场</li>
+          <li>教材例证仅作参照，<b>不能照搬他人路径</b>：模块连接方式不同，照抄会水土不服</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-04</div>
+        <h4>双维度商业模式六类型矩阵</h4>
+        <p>演化的前提是定位：先用两维矩阵看清当前是六型中的哪一格，再谈往哪走。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持/调优/重构三分决策</h4>
+        <p>演化落到操作上就是重构：模块替换、链条重构、系统跃迁，按卡 8-16 的三路径执行。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>"提前储备下一阶段关键能力"的前提，是用三步法先识别哪些资源算关键资源。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 211—212 页</span>
+    <span>方法论卡 8-05 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

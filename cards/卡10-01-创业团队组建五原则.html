@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡10-01 · 创业团队组建五原则</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 原则详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=10">第 10 章 · 创业组织</a><span class="card-nav-meta">卡 10-01 · 创业团队组建五原则</span><a class="card-nav-prev" href="卡9-03-创业实务九大类伦理议题图谱.html">← 卡 9-03</a><a class="card-nav-next" href="卡10-02-创业团队结构三型模型.html">卡 10-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 10-01</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>创业团队组建五原则</h1>
+  <div class="oneliner">愿景、能力、信任、承诺、适配：组建创业团队的五道关口。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多创业团队不是输在方向，而是输在"人"：<b>能力重叠、信任缺失、承诺不对等</b>——合伙人之间的小裂缝，在创业的高压之下会被放大成大分裂。</p>
+    <p>教材为创业团队的组建提出五条原则：<b>愿景共融、能力互补、信任为先、承诺对等、动态适配</b>。前四条决定"要不要一起走"，第五条决定"能走多远"。这张卡把五条原则变成<b>合伙人筛选与团队评估的对照清单</b>。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">组建前把关</div>
+        <div class="vd">选合伙人如同选伴侣，五条原则提供逐人逐条的筛选标尺。</div>
+      </div>
+      <div class="value">
+        <div class="vt">结构性防裂</div>
+        <div class="vd">多数团队分裂可在组建期预防：能力地图、信任层级、承诺书面化。</div>
+      </div>
+      <div class="value">
+        <div class="vt">全周期校准</div>
+        <div class="vd">团队不是一次组建定终身，动态适配原则让团队随阶段演进。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 446" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部屋顶 -->
+        <polygon points="150,14 530,14 492,58 188,58" fill="#1e293b"/>
+        <text x="340" y="42" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">一支可持续作战的创业团队</text>
+
+        <!-- ===== 五支柱 ===== -->
+        <rect x="6" y="68" width="124" height="192" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="6" y="68" width="124" height="28" rx="8" fill="#3b82f6"/>
+        <rect x="6" y="82" width="124" height="14" fill="#3b82f6"/>
+        <text x="68" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">一 · 愿景共融</text>
+        <text x="16" y="118" font-size="11" fill="#64748b">认同同一愿景</text>
+        <text x="16" y="138" font-size="11" fill="#64748b">与使命，而非</text>
+        <text x="16" y="158" font-size="11" fill="#64748b">利益临时凑合</text>
+
+        <rect x="142" y="68" width="124" height="192" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="142" y="68" width="124" height="28" rx="8" fill="#d97706"/>
+        <rect x="142" y="82" width="124" height="14" fill="#d97706"/>
+        <text x="204" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">二 · 能力互补</text>
+        <text x="152" y="118" font-size="11" fill="#64748b">产品、技术、</text>
+        <text x="152" y="138" font-size="11" fill="#64748b">商业三大核心</text>
+        <text x="152" y="158" font-size="11" fill="#64748b">能力互补齐备</text>
+
+        <rect x="278" y="68" width="124" height="192" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="278" y="68" width="124" height="28" rx="8" fill="#059669"/>
+        <rect x="278" y="82" width="124" height="14" fill="#059669"/>
+        <text x="340" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">三 · 信任为先</text>
+        <text x="288" y="118" font-size="11" fill="#64748b">以信任而非</text>
+        <text x="288" y="138" font-size="11" fill="#64748b">纯契约维系</text>
+        <text x="288" y="158" font-size="11" fill="#64748b">团队合作</text>
+
+        <rect x="414" y="68" width="124" height="192" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="414" y="68" width="124" height="28" rx="8" fill="#475569"/>
+        <rect x="414" y="82" width="124" height="14" fill="#475569"/>
+        <text x="476" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">四 · 承诺对等</text>
+        <text x="424" y="118" font-size="11" fill="#64748b">时间、资源与</text>
+        <text x="424" y="138" font-size="11" fill="#64748b">风险的投入大</text>
+        <text x="424" y="158" font-size="11" fill="#64748b">体对等，无搭车</text>
+
+        <rect x="550" y="68" width="124" height="192" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="550" y="68" width="124" height="28" rx="8" fill="#3b82f6"/>
+        <rect x="550" y="82" width="124" height="14" fill="#3b82f6"/>
+        <text x="612" y="87" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">五 · 动态适配</text>
+        <text x="560" y="118" font-size="11" fill="#64748b">随创业阶段</text>
+        <text x="560" y="138" font-size="11" fill="#64748b">演进，调整</text>
+        <text x="560" y="158" font-size="11" fill="#64748b">成员与分工</text>
+
+        <!-- ===== 基座 ===== -->
+        <rect x="6" y="268" width="668" height="32" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="289" text-anchor="middle" font-size="12" fill="#475569">五条原则共同支撑、缺一不可：组建期把关，运行期校准</text>
+
+        <!-- ===== 内嵌结构：三大核心能力 ===== -->
+        <rect x="6" y="312" width="328" height="126" rx="10" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="18" y="334" font-size="12" font-weight="700" fill="#3b82f6">内嵌于「能力互补」· 三大核心能力</text>
+        <text x="18" y="360" font-size="11" fill="#475569">① 产品能力——定义与打磨价值</text>
+        <text x="18" y="382" font-size="11" fill="#475569">② 技术能力——实现与构筑壁垒</text>
+        <text x="18" y="404" font-size="11" fill="#475569">③ 商业能力——变现与放大规模</text>
+        <text x="18" y="426" font-size="11" fill="#64748b">组建前先盘点三者的缺口</text>
+
+        <!-- ===== 内嵌结构：信任三层面 ===== -->
+        <rect x="346" y="312" width="328" height="126" rx="10" fill="#ffffff" stroke="#a7f3d0"/>
+        <text x="358" y="334" font-size="12" font-weight="700" fill="#059669">内嵌于「信任为先」· 信任三层面</text>
+        <text x="358" y="360" font-size="11" fill="#475569">① 基于计算的信任（算得失）</text>
+        <text x="358" y="382" font-size="11" fill="#475569">② 基于了解的信任（知其人）</text>
+        <text x="358" y="404" font-size="11" fill="#475569">③ 基于认同的信任（认同价值观）</text>
+        <text x="358" y="426" font-size="11" fill="#64748b">信任随合作逐层加深</text>
+      </svg>
+      <div class="caption">图 1　创业团队组建五原则：五支柱 + 三大核心能力 + 信任三层面</div>
+    </div>
+    <div class="quote">
+      五条原则内嵌两套子结构：能力互补中的<b>三大核心能力</b>（产品、技术、商业），与信任为先中的<b>信任三层面</b>（基于计算、基于了解、基于认同）。选人时对照能力缺口，合作中推动信任逐层加深。
+    </div>
+  </section>
+
+  <!-- ============ 逐原则详解 ============ -->
+  <section>
+    <h2>逐原则详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">原则一</span>
+        <h3>愿景共融</h3>
+        <span class="role">回答的问题：<b>"我们要去哪儿、为什么去？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心要求</dt>
+        <dd>成员对创业愿景与使命有<b>真实的认同</b>，而不是仅因短期利益临时凑合。愿景上的分歧平时隐身，遇挫折、缺资源时集中爆发。</dd>
+        <dt>检查要点</dt>
+        <dd>对"公司三年、五年后应该是什么样"这类问题，让每位成员独立作答再对照——答案之间的距离，就是愿景共融的程度。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">原则二</span>
+        <h3>能力互补</h3>
+        <span class="role">回答的问题：<b>"合起来能不能把事干成？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心要求</dt>
+        <dd>围绕<b>产品能力、技术能力、商业能力</b>三大核心能力配置团队，让能力组合覆盖价值创造的关键环节。</dd>
+        <dt>检查要点</dt>
+        <dd>画一张能力地图：三大能力各有谁承接？<b>能力组合比人数更重要</b>——全是技术或全是产品的同质化堆叠，是组建期最常见的失误。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">原则三</span>
+        <h3>信任为先</h3>
+        <span class="role">回答的问题：<b>"出问题时能不能互相托付？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心要求</dt>
+        <dd>以信任而非纯契约维系合作。教材将信任分为三层面：<b>基于计算的信任</b>（算得失）→ <b>基于了解的信任</b>（知其人）→ <b>基于认同的信任</b>（认同其价值观）。</dd>
+        <dt>检查要点</dt>
+        <dd>团队信任停留在哪一层？长期停留在利益计算层的团队，一次利益变动就可能散伙；信任应随合作<b>逐层加深</b>。</dd>
+      </dl>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="sn" style="background:var(--ink-2);">原则四</span>
+        <h3>承诺对等</h3>
+        <span class="role">回答的问题：<b>"每个人的投入是否匹配？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心要求</dt>
+        <dd>成员在<b>时间、资源与风险</b>上的投入承诺大体对等。有人全职冲锋、有人兼职观望，投入的不对等迟早会在股权、决策权与责任分担上变成显性问题。</dd>
+        <dt>检查要点</dt>
+        <dd>把每个人的投入（全职/兼职、出资、承担的风险）摆在同一张表上看——差距明显而不处理，就是未来的裂痕。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">原则五</span>
+        <h3>动态适配</h3>
+        <span class="role">回答的问题：<b>"团队跟得上业务的变化吗？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心要求</dt>
+        <dd>团队不是一次组建定终身——<b>随创业阶段演进调整成员构成与分工</b>，该进则进、该退则退，让团队结构始终匹配业务需要。</dd>
+        <dt>检查要点</dt>
+        <dd>业务进入新阶段（如从验证走向规模化）时，主动复核团队构成：缺什么能力？谁的职责需要重划？与团队结构三型模型（卡 10-02）配合使用。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>组建前筛选。</b>用五原则做合伙人筛选清单，逐人逐条评估；任何一条严重不合格，都应缓一缓再决定。</li>
+      <li><b>画能力地图。</b>对照产品、技术、商业三大能力盘点团队缺口，缺什么补什么，警惕同质化堆叠。</li>
+      <li><b>谈清承诺。</b>把每个人的时间投入、资源投入与风险承担写进书面约定，让"对等"可见、可核查。</li>
+      <li><b>定期校准。</b>随创业阶段演进复核五原则，重点核查信任层级是否在加深、承诺是否仍在兑现。</li>
+      <li><b>裂缝时回检。</b>团队出现摩擦，先回五原则定位是哪一条失守——愿景、能力、信任还是承诺——再决定修补还是调整成员。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>首次组建合伙人团队的<b>选人把关</b></li>
+          <li>引入新高管、新合伙人前的<b>评估与谈判准备</b></li>
+          <li>团队出现摩擦时的<b>结构化诊断</b>：定位失守的原则</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>五原则是筛选与诊断框架，不是法律文件，具体权责须落到股权与协议（配合卡 10-05）</li>
+          <li>一人公司或极小团队部分原则暂不适用，但<b>能力互补与动态适配</b>仍然有效</li>
+          <li>信任建设需要时间沉淀，<b>不宜用一次性测评替代长期观察</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>团队结构三型模型</h4>
+        <p>人定了之后回答"权力怎么摆"：星状、网状、虚拟星状三种结构与情境适配。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-04</div>
+        <h4>冲突管理四步递进</h4>
+        <p>五原则是预防，卡 10-04 是处置：预防 → 识别 → 干预 → 僵局处理。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-06</div>
+        <h4>角色—身份协变模型</h4>
+        <p>团队演进的同时，创始人自身角色也在协变——两卡共用阶段划分，构成"团队—创始人"双轨。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 10 章，第 257—258 页</span>
+    <span>方法论卡 10-01 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

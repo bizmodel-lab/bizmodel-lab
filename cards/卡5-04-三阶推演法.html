@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-04 · 三阶推演法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 阶梯详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-04 · 三阶推演法</span><a class="card-nav-prev" href="卡5-03-PESTEL与机会转化提问表.html">← 卡 5-03</a><a class="card-nav-next" href="卡5-05-结构分析法三子工具.html">卡 5-05 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-04</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>三阶推演法</h1>
+  <div class="oneliner">把大趋势推演成具体生意机会的三步走方法。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业者大多能看到"人口老龄化""AI 普及"这类大趋势，却常常停在<b>"趋势很热"</b>的感叹上——趋势人人看得见，机会却不是人人抓得住。缺的不是信息，而是一条<b>从趋势走到生意的推演路径</b>：趋势到底会接连改变什么？变化尽头长出了什么新需求？现在的供给接得住吗？</p>
+    <p>三阶推演法不预测未来，只定位<b>"新趋势与旧供给之间的差距"</b>，把宏大的趋势判断落到一句写得出来的机会描述上。</p>
+    <div class="quote">
+      教材指出：<b>"趋势分析的目的不是预测未来，而是在变化中定位可能的错位。新趋势与旧供给之间的差距，正是机会的藏身之处。"</b>
+    </div>
+    <div class="values">
+      <div class="value">
+        <div class="vt">从感叹到推演</div>
+        <div class="vd">把"趋势很热"的直觉，转成一步步可检验的因果链条。</div>
+      </div>
+      <div class="value">
+        <div class="vt">定位错位而非预测</div>
+        <div class="vd">不赌未来长什么样，只找新趋势与旧供给之间已经出现的差距。</div>
+      </div>
+      <div class="value">
+        <div class="vt">产出可比较的机会点</div>
+        <div class="vd">换一条趋势重复推演，即可比较各机会点差距的大小。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 505" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 第一阶 · 识别变化 ===== -->
+        <rect x="10" y="24" width="96" height="56" rx="8" fill="#3b82f6"/>
+        <text x="58" y="56.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第一阶</text>
+        <text x="58" y="56.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">识别变化</text>
+
+        <rect x="120" y="16" width="550" height="46" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="395" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">趋势带：正在发生的环境变化（人口老龄化 · AI 普及 · 政策调整 …）</text>
+
+        <rect x="120" y="70" width="268" height="47.5" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="254" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">判据一 · 真假</text>
+        <text x="254" y="106" text-anchor="middle" font-size="11.5" fill="#475569">是长期趋势，还是短期波动？</text>
+
+        <rect x="402" y="70" width="268" height="47.5" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="536" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">判据二 · 方向</text>
+        <text x="536" y="106" text-anchor="middle" font-size="11.5" fill="#475569">是增长、衰退，还是替代？</text>
+
+        <line x1="395" y1="118" x2="395" y2="142" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 第二阶 · 推演连锁反应 ===== -->
+        <rect x="10" y="186" width="96" height="56" rx="8" fill="#d97706"/>
+        <text x="58" y="218.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第二阶</text>
+        <text x="58" y="217.8" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">推演连锁反应</text>
+
+        <rect x="122" y="148" width="170" height="49.6" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="207" y="168" text-anchor="middle" font-size="12" fill="#334155">它会接连改变</text>
+        <text x="207" y="186" text-anchor="middle" font-size="12" fill="#334155">什么需求？</text>
+
+        <rect x="122" y="246" width="170" height="49.6" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="207" y="266" text-anchor="middle" font-size="12" fill="#334155">它会接连改变</text>
+        <text x="207" y="284" text-anchor="middle" font-size="12" fill="#334155">什么供给？</text>
+
+        <rect x="310" y="180" width="140" height="56" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="380" y="202" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">已确认的</text>
+        <text x="380" y="222" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">环境变化</text>
+
+        <rect x="468" y="148" width="200" height="49.6" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="568" y="168" text-anchor="middle" font-size="12" fill="#334155">连锁反应：「这会导致……」</text>
+        <text x="568" y="186" text-anchor="middle" font-size="12" fill="#334155">「进而导致……」</text>
+
+        <rect x="468" y="246" width="200" height="49.6" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="568" y="266" text-anchor="middle" font-size="12" fill="#334155">连锁末端：</text>
+        <text x="568" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">长出新生需求</text>
+
+        <line x1="310" y1="195" x2="296" y2="172" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="322" y1="236" x2="300" y2="262" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="450" y1="195" x2="464" y2="172" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="438" y1="236" x2="460" y2="262" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <line x1="390" y1="296" x2="390" y2="360" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 第三阶 · 对比差距 ===== -->
+        <rect x="10" y="346" width="96" height="56" rx="8" fill="#059669"/>
+        <text x="58" y="378.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第三阶</text>
+        <text x="58" y="378.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">对比差距</text>
+
+        <rect x="122" y="330" width="226" height="110" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+        <path d="M122,340 a10,10 0 0 1 10,-10 h206 a10,10 0 0 1 10,10 v16 h-226 z" fill="#64748b"/>
+        <text x="235" y="347.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">旧供给</text>
+        <text x="235" y="384" text-anchor="middle" font-size="12" fill="#334155">当前满足这一需求的</text>
+        <text x="235" y="404" text-anchor="middle" font-size="12" fill="#334155">现有供给方案</text>
+        <text x="235" y="426" text-anchor="middle" font-size="11" fill="#64748b">为旧需求而设计</text>
+
+        <rect x="432" y="330" width="226" height="110" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <path d="M432,340 a10,10 0 0 1 10,-10 h206 a10,10 0 0 1 10,10 v16 h-226 z" fill="#059669"/>
+        <text x="545" y="347.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">新需求</text>
+        <text x="545" y="384" text-anchor="middle" font-size="12" fill="#334155">连锁反应末端长出的</text>
+        <text x="545" y="404" text-anchor="middle" font-size="12" fill="#334155">新生需求</text>
+        <text x="545" y="426" text-anchor="middle" font-size="11" fill="#64748b">尚未被充分满足</text>
+
+        <line x1="348" y1="330" x2="348" y2="440" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <line x1="432" y1="330" x2="432" y2="440" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <rect x="350" y="368" width="80" height="30" rx="15" fill="#dc2626"/>
+        <text x="390" y="388" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">机会点</text>
+        <text x="390" y="422" text-anchor="middle" font-size="11" fill="#dc2626">供给—需求差距</text>
+
+        <text x="340" y="468" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">新趋势与旧供给之间的差距，正是机会的藏身之处</text>
+        <text x="340" y="488" text-anchor="middle" font-size="11" fill="#94a3b8">趋势分析的目的不是预测未来，而是在变化中定位可能的错位（P137）</text>
+      </svg>
+      <div class="caption">图 1　三阶推演法：识别变化（真假 × 方向）→ 推演连锁反应 → 对比差距，差距即机会点</div>
+    </div>
+  </section>
+
+  <!-- ============ 逐阶详解 ============ -->
+  <section>
+    <h2>逐阶详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一阶</span>
+        <h3>识别变化</h3>
+        <span class="role">回答的问题：<b>这个变化是真的吗？往哪个方向走？</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心任务</dt>
+        <dd>对每条环境变化核对两个判据——<b>真实性</b>：它是长期趋势，还是短期波动？<b>方向性</b>：它是增长、衰退，还是替代？两个判据都过关，变化才值得进入下一步推演。</dd>
+        <dt>输入清单</dt>
+        <dd>可配合 <b>PESTEL 六维扫描</b>（政治、经济、社会、技术、环境、法律，教材表 5-1）系统地列出正在发生的环境变化，避免只盯着自己熟悉的领域。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">波动当趋势</span><span class="td">把一波短期热度当成结构性变化，推演建立在流沙上。变化尚不成立或仅为短期波动时，第一步就应剔除。</span></div>
+        <div class="trap"><span class="tn">方向判断含糊</span><span class="td">只说"越来越重要"，说不清是增长、衰退还是替代，后面的连锁推演就没有明确方向可循。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二阶</span>
+        <h3>推演连锁反应</h3>
+        <span class="role">回答的问题：<b>它会接连改变什么？</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心任务</dt>
+        <dd>沿确认过的变化持续追问：<b>"这会导致……进而导致……"</b>——它会接连改变什么需求、什么供给，一直推到连锁末端长出的新生需求为止。</dd>
+        <dt>产出</dt>
+        <dd>一串<b>写得出来、经得起追问的因果链</b>：每一步都答得上"为什么会导致下一步"，而不是凭感觉跳到结论。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">信息不足硬推</span><span class="td">无法回答"连锁反应"的趋势，说明信息不足，不宜硬推——先补认知，再回来推演。</span></div>
+        <div class="trap"><span class="tn">链条凭空跳跃</span><span class="td">从趋势直接跳到"所以有个大市场"，中间的因果环节一问就断。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三阶</span>
+        <h3>对比差距</h3>
+        <span class="role">回答的问题：<b>新需求与旧供给之间差多远？</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心任务</dt>
+        <dd>在连锁末端找到新生需求后，列出当前满足它的供给方案，标出供给与需求之间的差距——<b>"这一差距便是潜在的机会点"</b>（P137）。</dd>
+        <dt>产出</dt>
+        <dd>一句<b>机会描述</b>：差距在哪里、为谁弥合、弥合什么。换一条趋势重复推演，还可比较各机会点差距的大小。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">结论当可行</span><span class="td">本方法产出的是"潜在机会点"，仍需进入机会评估与验证，不能直接当作可行结论。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列变化、过两判据。</b>列出 3—5 条正在发生的环境变化，逐条判断：是长期趋势还是短期波动？方向是增长、衰退还是替代？不过关的当场剔除。</li>
+      <li><b>写连锁反应。</b>对每条确认过的变化，写下至少 3 步连锁反应，句式就用"这会导致……进而导致……"，每一步都要说得出因果。</li>
+      <li><b>找末端新需求。</b>在连锁末端找到新生需求，并列出当前满足它的供给方案有哪些。</li>
+      <li><b>标差距、写机会。</b>标出供给与需求的差距，写出一句机会描述：谁的新需求、旧供给差在哪、机会在哪。</li>
+      <li><b>换趋势、比差距。</b>换一条趋势重复推演，比较各机会点差距大小，把差距最大的机会带入后续评估。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>技术、政策、人口等<b>趋势明确的领域</b>做机会扫描</li>
+          <li>手上有多条趋势线索，需要系统推演并比较各机会点</li>
+          <li>配合 PESTEL 六维扫描（表 5-1），作为环境分析的下游工具</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>变化尚不成立或仅为<b>短期波动</b>时，第一步就应剔除，不进入推演</li>
+          <li>无法回答"连锁反应"的趋势说明<b>信息不足，不宜硬推</b></li>
+          <li>产出是"潜在机会点"，<b>仍需进入评估与验证</b>，不能直接当作可行结论</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-06</div>
+        <h4>用户—功能—场景三角交叉验证</h4>
+        <p>推演出的机会点先过三角验证：同一缺口是否在多个维度同时出现，筛掉伪需求。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-09</div>
+        <h4>四维度两阶段机会评估框架</h4>
+        <p>机会点通过初筛与深评的压力测试，判断是否值得投入有限资源优先探索。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-08</div>
+        <h4>机会假设命题句式</h4>
+        <p>把推演出的机会写成一句可验证的"如果—那么"命题，作为识别阶段的收口。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 136—137 页</span>
+    <span>方法论卡 5-04 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

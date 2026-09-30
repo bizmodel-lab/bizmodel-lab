@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡7-06 · 安索夫情境化与增长四原则</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 方向详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 增长四原则 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=7">第 7 章 · 创业战略</a><span class="card-nav-meta">卡 7-06 · 安索夫情境化＋增长四原则</span><a class="card-nav-prev" href="卡7-05-市场进入三维选择模型.html">← 卡 7-05</a><a class="card-nav-next" href="卡8-01-商业模式三根本问题.html">卡 8-01 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 7-06</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>安索夫情境化与增长四原则</h1>
+  <div class="oneliner">四个增长方向按风险排序，四条增长原则守住扩张节奏。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>增长是创业的氧气，也是最常见的翻车原因——很多项目不是死于停滞，而是<b>死于方向选错之后的加速</b>：现有市场还没吃透就急于开发新市场，付费意愿还没验证就急于开发新产品，最后多条战线一起失血。</p>
+    <p>教材把安索夫矩阵放进创业情境：四个增长方向<b>风险层级逐级递增</b>，选择须有次序；同时给出<b>增长四原则</b>（节奏控制、能力先行、冗余与弹性、第二曲线准备）管理执行，并配套"客户需要 vs 客户愿意付费"的辨析与并购的渐进式整合策略。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">方向选择可视化</div>
+        <div class="vd">四象限一眼看清"在哪里增长、新在哪一边"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">风险有刻度</div>
+        <div class="vd">渗透起步、两个开发居中、多元化慎入——扩张顺序有依据。</div>
+      </div>
+      <div class="value">
+        <div class="vt">执行有护栏</div>
+        <div class="vd">四原则防止"方向选对了、节奏跑崩了"的增长翻车。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 600" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ahr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#dc2626"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">矩阵回答「往哪里增长」 · 四原则回答「怎样增长才不翻车」</text>
+
+        <!-- 列标题 -->
+        <rect x="100" y="56" width="280" height="31.3" rx="14" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="240" y="76.2" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">现有产品</text>
+        <rect x="396" y="56" width="280" height="31.3" rx="14" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="536" y="76.2" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">新产品</text>
+
+        <!-- 行标题 -->
+        <text x="45" y="170" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">现有</text>
+        <text x="45" y="190" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">市场</text>
+        <text x="45" y="300" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">新市场</text>
+        <text x="45" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">（新客群）</text>
+
+        <!-- ===== 单元格：市场渗透 ===== -->
+        <rect x="100" y="100" width="280" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="100" y="100" width="280" height="30" rx="10" fill="#059669"/>
+        <rect x="100" y="115" width="280" height="15" fill="#059669"/>
+        <text x="240" y="119.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">市场渗透</text>
+        <text x="114" y="156" font-size="12" fill="#334155">深耕现有市场，向现有客户</text>
+        <text x="114" y="178" font-size="12" fill="#334155">卖出更多——增长的起点</text>
+        <rect x="114" y="194" width="128" height="29.2" rx="12" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="178" y="212.5" text-anchor="middle" font-size="11" fill="#047857">风险最低 · 优先做</text>
+
+        <!-- ===== 单元格：产品开发 ===== -->
+        <rect x="396" y="100" width="280" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="396" y="100" width="280" height="30" rx="10" fill="#d97706"/>
+        <rect x="396" y="115" width="280" height="15" fill="#d97706"/>
+        <text x="536" y="119.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">产品开发</text>
+        <text x="410" y="156" font-size="12" fill="#334155">为现有客户开发新产品</text>
+        <text x="410" y="178" font-size="12" fill="#334155">警惕：客户需要 ≠ 愿意付费</text>
+        <rect x="410" y="194" width="100" height="29.2" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="460" y="212.5" text-anchor="middle" font-size="11" fill="#b45309">风险中等</text>
+
+        <!-- ===== 单元格：市场开发 ===== -->
+        <rect x="100" y="240" width="280" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="100" y="240" width="280" height="30" rx="10" fill="#d97706"/>
+        <rect x="100" y="255" width="280" height="15" fill="#d97706"/>
+        <text x="240" y="259.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">市场开发</text>
+        <text x="114" y="296" font-size="12" fill="#334155">把现有产品带进新客群、</text>
+        <text x="114" y="318" font-size="12" fill="#334155">新区域或新渠道</text>
+        <rect x="114" y="334" width="100" height="29.2" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="164" y="352.5" text-anchor="middle" font-size="11" fill="#b45309">风险中等</text>
+
+        <!-- ===== 单元格：多元化 ===== -->
+        <rect x="396" y="240" width="280" height="130" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="396" y="240" width="280" height="30" rx="10" fill="#dc2626"/>
+        <rect x="396" y="255" width="280" height="15" fill="#dc2626"/>
+        <text x="536" y="259.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">多元化</text>
+        <text x="410" y="296" font-size="12" fill="#334155">新产品进入全新市场</text>
+        <text x="410" y="318" font-size="12" fill="#334155">若走并购，宜渐进式整合</text>
+        <rect x="410" y="334" width="132" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="476" y="352.5" text-anchor="middle" font-size="11" fill="#dc2626">风险最高 · 慎入</text>
+
+        <!-- 风险递增箭头 -->
+        <line x1="110" y1="396" x2="655" y2="396" stroke="#dc2626" stroke-width="2" marker-end="url(#ahr)"/>
+        <text x="340" y="418" text-anchor="middle" font-size="12" fill="#dc2626">风险层级逐级递增：市场渗透 → 市场开发 / 产品开发 → 多元化</text>
+
+        <!-- ===== 增长四原则 ===== -->
+        <rect x="280" y="436" width="120" height="26" rx="13" fill="#1e293b"/>
+        <text x="340" y="453" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">增长四原则</text>
+
+        <rect x="12" y="474" width="155" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="24" y="500" font-size="12.5" font-weight="700" fill="#3b82f6">节奏控制</text>
+        <line x1="24" y1="510" x2="155" y2="510" stroke="#e2e8f0"/>
+        <text x="24" y="532" font-size="11.5" fill="#64748b">扩张快慢要匹配组织</text>
+        <text x="24" y="552" font-size="11.5" fill="#64748b">能力与市场容量</text>
+
+        <rect x="177" y="474" width="155" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="189" y="500" font-size="12.5" font-weight="700" fill="#d97706">能力先行</text>
+        <line x1="189" y1="510" x2="320" y2="510" stroke="#e2e8f0"/>
+        <text x="189" y="532" font-size="11.5" fill="#64748b">让能力建设走在规模</text>
+        <text x="189" y="552" font-size="11.5" fill="#64748b">扩张的前面</text>
+
+        <rect x="342" y="474" width="155" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="354" y="500" font-size="12.5" font-weight="700" fill="#059669">冗余与弹性</text>
+        <line x1="354" y1="510" x2="485" y2="510" stroke="#e2e8f0"/>
+        <text x="354" y="532" font-size="11.5" fill="#64748b">留出资源缓冲，保持</text>
+        <text x="354" y="552" font-size="11.5" fill="#64748b">调整与转向的空间</text>
+
+        <rect x="507" y="474" width="155" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="519" y="500" font-size="12.5" font-weight="700" fill="#3b82f6">第二曲线准备</text>
+        <line x1="519" y1="510" x2="650" y2="510" stroke="#e2e8f0"/>
+        <text x="519" y="532" font-size="11.5" fill="#64748b">在当前曲线仍处高位</text>
+        <text x="519" y="552" font-size="11.5" fill="#64748b">时，孕育下一条曲线</text>
+      </svg>
+      <div class="caption">图 1　安索夫矩阵的创业情境化：2×2 增长方向 × 风险层级递增 × 增长四原则护栏</div>
+    </div>
+    <div class="quote">
+      四个增长方向<b>风险层级逐级递增</b>；进入产品开发前先分清——<b>客户需要，不等于客户愿意付费</b>。
+    </div>
+  </section>
+
+  <!-- ============ 逐方向详解 ============ -->
+  <section>
+    <h2>逐方向详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">方向一</span>
+        <h3>市场渗透</h3>
+        <span class="role">现有产品 × 现有市场 · <b>风险最低</b></span>
+      </div>
+      <div class="q">本方向回答的问题：<b>"现有市场里，还有多少没吃下来？"</b></div>
+      <dl class="kv">
+        <dt>定位</dt>
+        <dd><b>增长的起点</b>——产品已验证、市场已熟悉，是四个方向中风险最低的一个。</dd>
+        <dt>打法</dt>
+        <dd>深耕存量：提高复购、提升份额、向现有客户卖出更多。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">看不起渗透</span><span class="td">觉得存量增长"不够性感"而跳级扩张，结果丢掉了最稳的增长基本盘。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">方向二</span>
+        <h3>市场开发</h3>
+        <span class="role">现有产品 × 新市场 · <b>风险中等</b></span>
+      </div>
+      <div class="q">本方向回答的问题：<b>"验证过的产品，还能去哪里卖？"</b></div>
+      <dl class="kv">
+        <dt>定位</dt>
+        <dd>产品已被市场验证，<b>新的是市场</b>——新客群、新区域或新渠道。</dd>
+        <dt>打法</dt>
+        <dd>把现有产品带入新的客户群、新的地域或新的渠道体系。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">低估差异</span><span class="td">把"这里能卖"直接当成"那里会买"——新市场的渠道结构与消费习惯差异常被低估。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">方向三</span>
+        <h3>产品开发</h3>
+        <span class="role">新产品 × 现有市场 · <b>风险中等</b></span>
+      </div>
+      <div class="q">本方向回答的问题：<b>"现有客户，还缺什么没被满足？"</b></div>
+      <dl class="kv">
+        <dt>定位</dt>
+        <dd>市场已验证、<b>新的是产品</b>——向熟悉的客户延伸产品线。</dd>
+        <dt>关键辨析</dt>
+        <dd><b>客户需要 ≠ 客户愿意付费</b>——投产前必须验证付费意愿，而不只是听到"挺好的"。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">需要当付费</span><span class="td">客户口头说需要就开干，付费意愿从头到尾没有被验证——产品做出来无人买单。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">方向四</span>
+        <h3>多元化</h3>
+        <span class="role">新产品 × 新市场 · <b>风险最高</b></span>
+      </div>
+      <div class="q">本方向回答的问题：<b>"要不要进入一个全新战场？"</b></div>
+      <dl class="kv">
+        <dt>定位</dt>
+        <dd>产品与市场<b>双双都是新的</b>——验证逻辑全部清零，是四个方向中风险最高的一格，须慎入。</dd>
+        <dt>打法</dt>
+        <dd>若借并购进入新战场，宜采取<b>渐进式整合</b>策略——分步消化，不求一步吞下。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">双重陌生</span><span class="td">产品没验证、市场也不熟，两条战线同时从零开始——资源再厚也容易拖垮。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 增长四原则 ============ -->
+  <section>
+    <h2>增长四原则</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">原则一</span>
+        <h4>节奏控制</h4>
+        <p>扩张的快慢要匹配组织能力与市场容量——增长不是越快越好，而是越稳越好。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">原则二</span>
+        <h4>能力先行</h4>
+        <p>能力建设走在规模扩张之前——先补能力、再上规模，别让增长把组织扯散。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">原则三</span>
+        <h4>冗余与弹性</h4>
+        <p>留出资源缓冲，保持调整与转向的空间——把资源用到满格，等于放弃纠错机会。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">原则四</span>
+        <h4>第二曲线准备</h4>
+        <p>在当前曲线仍处高位时，就开始孕育下一条增长曲线——等下滑才动手，为时已晚。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      <b>矩阵解决"往哪走"，四原则解决"怎么走不翻车"。</b>四原则是扩张前的自检清单：任一原则不满足，先补课、再增长。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>定位当前位置。</b>多数创业企业的原点都是市场渗透——先诚实评估：现有市场到底吃透了几成？</li>
+      <li><b>排出方向组合。</b>把四个方向按风险从低到高排序，形成"渗透打底、开发接力、多元慎入"的增长次序，而不是四面出击。</li>
+      <li><b>用辨析卡住冲动。</b>凡进入产品开发，先逐项确认"客户愿意付费"而不只是"客户需要"——拿不出付费证据就不投产。</li>
+      <li><b>对照四原则自检。</b>节奏、能力、冗余、第二曲线逐条过——任一原则不达标，先补课再扩张。</li>
+      <li><b>设里程碑与回撤线。</b>每个新方向设验证里程碑与放弃标准，达不到就回撤——把试错成本锁在可承受范围内。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>增长规划与年度目标制定：先定方向次序，再拆目标数字</li>
+          <li>新业务、新产品立项讨论时的<b>风险定级</b>与前置检验</li>
+          <li>并购扩张的节奏设计：用"渐进式整合"约束消化速度</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>安索夫矩阵是通用战略工具，<b>本卡价值在风险排序与四原则护栏</b></li>
+          <li>多元化<b>风险最高</b>，创业企业慎入——进入前先问两条战线是否都经得起从零验证</li>
+          <li>矩阵只回答方向，<b>不替代验证</b>——每个方向落地前仍需小步试错</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-04</div>
+        <h4>市场进入四策略矩阵</h4>
+        <p>方向定了"去哪增长"，进场方式另有打法——边缘切入、正面突破、价值嵌入与生态依附。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-05</div>
+        <h4>市场进入三维选择模型</h4>
+        <p>机会窗口、行业格局与资源能力三维匹配，为增长方向的落地做最后一道校验。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>扩张必然消耗资源——用拼凑、杠杆、社会网络与战略性合作四策略补资源缺口。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 7 章，第 199—200 页</span>
+    <span>方法论卡 7-06 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

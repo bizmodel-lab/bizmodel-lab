@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-09 · 数字文化四维机会框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 维度详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--ink-3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--ink-3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-09 · 数字文化四维机会框架（生产/流通/消费/工具）</span><a class="card-nav-prev" href="卡11-08-AI商业模式四模式.html">← 卡 11-08</a><a class="card-nav-next" href="卡11-10-注意力情感变现价值闭环.html">卡 11-10 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-09</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>数字文化四维机会框架</h1>
+  <div class="oneliner">生产 — 流通 — 消费 — 工具：沿产业链四个维度，扫描数字文化创业机会。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>数字文化创业看起来"处处是机会"，但多数人的真实处境是<b>"只看见内容，看不见生意"</b>——会创作的不懂分发，懂分发的不懂变现，想做工具的又说不清服务谁。问题出在缺少一张<b>全链视角的机会地图</b>。</p>
+    <p>教材沿产业链逻辑把数字文化创业机会划分为四个维度，每个维度都配了一个"本质上是……"的转化式定义。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">全链视角</div>
+        <div class="vd">沿产业链看全局，不再只盯着"做内容"一个环节。</div>
+      </div>
+      <div class="value">
+        <div class="vt">定位自检</div>
+        <div class="vd">逐维自问"我有什么、能切哪一环"，快速排除不属于自己的一半赛道。</div>
+      </div>
+      <div class="value">
+        <div class="vt">组合放大</div>
+        <div class="vd">工具与服务维度可与任意环节叠加，让既有能力二次变现。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="40" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="33" text-anchor="middle" font-size="12" fill="#475569">产业链视角：生产 → 流通 → 消费 为主轴，工具与服务贯穿全链支撑</text>
+
+        <!-- ===== 维度一：生产 ===== -->
+        <rect x="10" y="60" width="320" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,90 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#3b82f6"/>
+        <text x="170" y="97" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">① 生产维度 · 内容源头</text>
+        <text x="34" y="130" font-size="12" fill="#334155">将创意转化为可版权化、</text>
+        <text x="34" y="148" font-size="12" fill="#334155">可运营的 IP 资产</text>
+        <text x="34" y="190" font-size="11" fill="#1e40af">自检：创意能否确权、授权、持续运营？</text>
+
+        <!-- ===== 维度二：流通 ===== -->
+        <rect x="350" y="60" width="320" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M350,90 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#d97706"/>
+        <text x="510" y="97" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">② 流通维度 · 分发与交易</text>
+        <text x="374" y="130" font-size="12" fill="#334155">构建高效的内容流通网络</text>
+        <text x="374" y="148" font-size="12" fill="#334155">与活跃的价值交换生态</text>
+        <text x="374" y="190" font-size="11" fill="#92400e">自检：内容能否高效到达并持续增值？</text>
+
+        <!-- ===== 维度三：消费 ===== -->
+        <rect x="10" y="218" width="320" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,248 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#059669"/>
+        <text x="170" y="255" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">③ 消费维度 · 体验终端</text>
+        <text x="34" y="288" font-size="12" fill="#334155">将文化内容转化为可感知、</text>
+        <text x="34" y="306" font-size="12" fill="#334155">可交互、可收藏的消费产品</text>
+        <text x="34" y="348" font-size="11" fill="#065f46">自检：用户拿到的可感知吗？可收藏吗？</text>
+
+        <!-- ===== 维度四：工具与服务 ===== -->
+        <rect x="350" y="218" width="320" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M350,248 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#475569"/>
+        <text x="510" y="255" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">④ 工具与服务 · 全链支撑</text>
+        <text x="374" y="288" font-size="12" fill="#334155">将创意产业的非标流程</text>
+        <text x="374" y="306" font-size="12" fill="#334155">转化为可复用的标准化能力</text>
+        <text x="374" y="348" font-size="11" fill="#334155">自检：非标流程能否标准化、可复用？</text>
+
+        <!-- ===== 底部使用提示 ===== -->
+        <rect x="10" y="384" width="660" height="64" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="408" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">主轴：生产 → 流通 → 消费（内容沿链流动）　　支撑：工具与服务（贯穿各环）</text>
+        <text x="340" y="430" text-anchor="middle" font-size="11.5" fill="#64748b">四维是机会扫描清单：逐维自问"我有什么、能切哪一环"，再用卡 11-10 检验能否走通价值闭环</text>
+      </svg>
+      <div class="caption">图 1　数字文化四维机会框架：产业链主轴 × 全链支撑 × 逐维自检</div>
+    </div>
+    <div class="quote">
+      四个维度各有一个"本质转化"：<b>创意变资产、内容变网络、内容变产品、非标变标准</b>。维度是机会的入口，能否成为生意，还要过价值闭环这一关。
+    </div>
+  </section>
+
+  <!-- ============ 逐维详解 ============ -->
+  <section>
+    <h2>逐维详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">维度一</span>
+        <h3>生产维度</h3>
+        <span class="role">产业链角色：<b>内容的源头</b></span>
+      </div>
+      <div class="q">本维回答的问题：<b>"我的创意能不能变成受保护、可运营的资产？"</b></div>
+      <dl class="kv">
+        <dt>本质定义</dt>
+        <dd><b>将创意转化为可版权化、可运营的 IP 资产</b>——写出来、画出来只是第一步，能确权、能授权、能持续运营的才是资产。</dd>
+        <dt>通俗理解</dt>
+        <dd>同样的一个故事，一次性的作品与可多轮开发的 IP，价值相差整个量级；本维的关键动作是<b>把"作品思维"换成"资产思维"</b>。</dd>
+        <dt>自检问题</dt>
+        <dd>这个创意能登记版权吗？能授权给别人使用吗？三年后还有人愿意为它付费吗？</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">维度二</span>
+        <h3>流通维度</h3>
+        <span class="role">产业链角色：<b>分发与交易</b></span>
+      </div>
+      <div class="q">本维回答的问题：<b>"内容能否高效到达受众，并在交换中持续增值？"</b></div>
+      <dl class="kv">
+        <dt>本质定义</dt>
+        <dd><b>构建高效的内容流通网络与活跃的价值交换生态</b>——让内容找到人，让供需双方产生交换。</dd>
+        <dt>通俗理解</dt>
+        <dd>好内容不等于好生意，中间隔着"到达"与"交换"两个关卡；本维的机会在于<b>做网络与生态，而不只是搬运内容</b>。</dd>
+        <dt>自检问题</dt>
+        <dd>我的渠道是自己的还是借来的？交换发生的频率高吗？生态里的各方都愿意反复来吗？</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">维度三</span>
+        <h3>消费维度</h3>
+        <span class="role">产业链角色：<b>体验的终端</b></span>
+      </div>
+      <div class="q">本维回答的问题：<b>"用户拿到的东西，可感知、可交互、可收藏吗？"</b></div>
+      <dl class="kv">
+        <dt>本质定义</dt>
+        <dd><b>将文化内容转化为可感知、可交互、可收藏的消费产品</b>——让内容从"被看到"变成"被拥有"。</dd>
+        <dt>通俗理解</dt>
+        <dd>单纯的观看越来越廉价，<b>"能上手、能参与、能留下"的消费形态</b>才是终端的溢价来源；三个"可"缺一个，付费意愿就掉一截。</dd>
+        <dt>自检问题</dt>
+        <dd>用户除了看，还能干什么？体验结束后，他手里留下了什么？</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">维度四</span>
+        <h3>工具与服务维度</h3>
+        <span class="role">产业链角色：<b>全链支撑</b></span>
+      </div>
+      <div class="q">本维回答的问题：<b>"我能不能把别人做不了的流程，变成可复用的标准服务？"</b></div>
+      <dl class="kv">
+        <dt>本质定义</dt>
+        <dd><b>将创意产业的非标流程转化为可复用的标准化能力</b>——创意无法批量，但流程可以。</dd>
+        <dt>通俗理解</dt>
+        <dd>内容生产高度依赖个人才华，恰恰因此，<b>把非标环节标准化</b>的工具与服务最稀缺、最值钱；它与前三环中的任何一环都可以叠加。</dd>
+        <dt>自检问题</dt>
+        <dd>我熟悉的流程，别人是否又慢又贵？如果把它标准化，客户会不会反复购买？</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>沿链自查。</b>对照"生产—流通—消费"主轴，写下自己现有的资源、能力与人脉分别落在哪一环，一环一环过，不要凭印象。</li>
+      <li><b>选维聚焦。</b>从四维中选一个主攻维度，用该维度的"自检问题"检验：答不上来就换维度，答得上来就写下这一维的机会陈述。</li>
+      <li><b>找组合。</b>检查"工具与服务"维度能否与主攻维度叠加——把熟悉的非标流程标准化，常是内容能力之外的第二增长点。</li>
+      <li><b>接闭环。</b>用卡 11-10 检验所选机会能否走通"注意力捕获—情感沉淀—价值变现"；走不通的只是"有内容、无生意"。</li>
+      <li><b>配模式。</b>对照卡 11-11 的四模式，为选定的维度匹配具体变现形态。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>内容创作者、IP 运营者、文化传媒项目团队的<b>定位自检清单</b></li>
+          <li>数字文化类项目商业计划书中的<b>机会分析章节</b>：按四维展开不遗漏</li>
+          <li>与卡 11-01 四段式框架配合，作为"创业机会"环节的<b>结构化工具</b></li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>维度是<b>逻辑切分</b>，实际项目常跨维度组合，定位时写清主次即可</li>
+          <li>流通与消费维度受平台规则与渠道变化影响大，<b>选此两维须评估外部依赖</b></li>
+          <li>单维机会必须接得上价值闭环，<b>否则只是"有内容、无生意"</b>的空转</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-10</div>
+        <h4>注意力—情感—变现价值闭环</h4>
+        <p>定完维度之后的方向盘：任何一维的机会，都要能走通三段闭环才算生意。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-11</div>
+        <h4>数字文化四模式</h4>
+        <p>四个维度对应的四种变现形态：定完位置，从这里选收钱方式。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-01</div>
+        <h4>四段式专题分析框架</h4>
+        <p>把本卡嵌进"趋势—机会—模式—挑战"的完整分析里，配合使用不漏环节。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 312—314 页</span>
+    <span>方法论卡 11-09 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

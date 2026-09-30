@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-01 · 机会来源分类学</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 分类详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:150px 1fr;gap:10px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:110px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-01 · 机会来源分类学（宏观五类＋微观四类）</span><a class="card-nav-prev" href="卡3-11-认知偏误三层护栏.html">← 卡 3-11</a><a class="card-nav-next" href="卡5-02-机会识别三类信号总纲.html">卡 5-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-01</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>机会来源分类学</h1>
+  <div class="oneliner">宏观五类 × 微观四类：一张扫描清单，系统排查机会可能藏在哪里。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>多数创业者不缺热情，缺的是<b>"看见机会的清单"</b>——凭直觉等灵感，灵感迟迟不来；或者只盯着自己熟悉的单一来源，一叶障目。教材把机会来源整理成"宏观五类 + 微观四类"的<b>机会扫描框架</b>：宏观看环境层面的变化，微观看市场层面的缺口，逐类排查、交叉对照，让找机会从"碰运气"变成"过筛子"。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">双层视野</div>
+        <div class="vd">宏观环境之变与微观市场之隙对照扫描，避免只看一头、盲区成片。</div>
+      </div>
+      <div class="value">
+        <div class="vt">逐类排查</div>
+        <div class="vd">九类来源就是九个追问，每一类都强制回答一次"这里有没有线索"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">激发创意</div>
+        <div class="vd">思路卡住时换一类来源继续找，创意清单源源不断，不靠灵光乍现。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 640" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">机会扫描框架：宏观看环境之变，微观看市场之隙</text>
+
+        <!-- 根节点 -->
+        <rect x="255" y="52" width="170" height="26" rx="13" fill="#1e293b"/>
+        <text x="340" y="70" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">创业机会的来源</text>
+
+        <!-- 根到两栏的连线 -->
+        <path d="M340,78 L340,86 L170,86 L170,100" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#ah)"/>
+        <path d="M340,78 L340,86 L510,86 L510,100" fill="none" stroke="#475569" stroke-width="1.5" marker-end="url(#ah)"/>
+
+        <!-- ===== 左栏表头：宏观五类 ===== -->
+        <rect x="10" y="100" width="320" height="30" rx="8" fill="#3b82f6"/>
+        <text x="170" y="120" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">宏观五类 · 环境层面的变化</text>
+
+        <!-- 宏观 1：技术变革 -->
+        <rect x="10" y="144" width="320" height="78" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="26" y="168" font-size="13" font-weight="700" fill="#3b82f6">① 技术变革</text>
+        <text x="26" y="190" font-size="11.5" fill="#475569">基础技术范式突破 · 应用技术系统整合</text>
+        <text x="26" y="208" font-size="11.5" fill="#475569">技术经济性拐点 → 需求指数级释放</text>
+
+        <!-- 宏观 2：政策调整 -->
+        <rect x="10" y="234" width="320" height="78" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="26" y="258" font-size="13" font-weight="700" fill="#3b82f6">② 政策调整</text>
+        <text x="26" y="280" font-size="11.5" fill="#475569">需求创造 · 成本重构 · 风险调节</text>
+        <text x="26" y="298" font-size="11.5" fill="#475569">政策同时改变需求侧与成本结构</text>
+
+        <!-- 宏观 3：社会与人口结构变化 -->
+        <rect x="10" y="324" width="320" height="78" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="26" y="348" font-size="13" font-weight="700" fill="#3b82f6">③ 社会与人口结构变化</text>
+        <text x="26" y="370" font-size="11.5" fill="#475569">催生基础性需求 · 消费结构迁移</text>
+        <text x="26" y="388" font-size="11.5" fill="#475569">价值观变革（持续性 · 本土化依赖）</text>
+
+        <!-- 宏观 4：产业结构升级 -->
+        <rect x="10" y="414" width="320" height="78" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="26" y="438" font-size="13" font-weight="700" fill="#3b82f6">④ 产业结构升级</text>
+        <text x="26" y="460" font-size="11.5" fill="#475569">重构价值链 · 打破产业边界</text>
+        <text x="26" y="478" font-size="11.5" fill="#475569">服务化、智能化转型</text>
+
+        <!-- 宏观 5：其他来源 -->
+        <rect x="10" y="504" width="320" height="78" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="26" y="528" font-size="13" font-weight="700" fill="#3b82f6">⑤ 其他宏观来源</text>
+        <text x="26" y="550" font-size="11.5" fill="#475569">国际环境 · 基础设施范式跃迁</text>
+        <text x="26" y="568" font-size="11.5" fill="#475569">主流观念变迁</text>
+
+        <!-- ===== 右栏表头：微观四类 ===== -->
+        <rect x="350" y="100" width="320" height="30" rx="8" fill="#059669"/>
+        <text x="510" y="120" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">微观四类 · 市场层面的缺口</text>
+
+        <!-- 微观 1：未满足的需求 -->
+        <rect x="350" y="144" width="320" height="103" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="366" y="168" font-size="13" font-weight="700" fill="#059669">① 未满足的需求</text>
+        <text x="366" y="190" font-size="11.5" fill="#475569">未满足程度三维度：</text>
+        <text x="366" y="208" font-size="11.5" fill="#475569">重要性 · 紧迫性 · 持续性</text>
+        <text x="366" y="226" font-size="11.5" fill="#475569">越重要、越紧迫、越持久，价值越高</text>
+
+        <!-- 微观 2：资源的低效率利用 -->
+        <rect x="350" y="259" width="320" height="103" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="366" y="283" font-size="13" font-weight="700" fill="#059669">② 现有资源的低效率利用</text>
+        <text x="366" y="305" font-size="11.5" fill="#475569">物理闲置 · 知识欠发掘</text>
+        <text x="366" y="323" font-size="11.5" fill="#475569">人力错配 · 时间浪费</text>
+        <text x="366" y="341" font-size="11.5" fill="#475569">资源重构：追问"还可能成为什么"</text>
+
+        <!-- 微观 3：市场结构的不连续性 -->
+        <rect x="350" y="374" width="320" height="103" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="366" y="398" font-size="13" font-weight="700" fill="#059669">③ 市场结构的不连续性</text>
+        <text x="366" y="420" font-size="11.5" fill="#475569">新市场涌现 · 既有市场细分裂变</text>
+        <text x="366" y="438" font-size="11.5" fill="#475569">产业边界溶解重构</text>
+        <text x="366" y="456" font-size="11.5" fill="#475569">结构松动之处，就是进入窗口</text>
+
+        <!-- 微观 4：信息不对称 -->
+        <rect x="350" y="489" width="320" height="103" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="366" y="513" font-size="13" font-weight="700" fill="#059669">④ 信息不对称</text>
+        <text x="366" y="535" font-size="11.5" fill="#475569">知识结构跨界复合 · 结构洞优势</text>
+        <text x="366" y="553" font-size="11.5" fill="#475569">时间维度先发占位</text>
+        <text x="366" y="571" font-size="11.5" fill="#475569">认知差距是机会的私人通道</text>
+
+        <!-- 底部注解 -->
+        <text x="340" y="618" text-anchor="middle" font-size="12" fill="#dc2626">宏观改变环境，微观暴露缺口——同一个机会常是多类来源的叠加</text>
+      </svg>
+      <div class="caption">图 1　机会来源分类学总览：宏观五类 × 微观四类＝九条扫描通道</div>
+    </div>
+    <div class="quote">
+      微观来源中特别值得记住的是教材的<b>资源重构视角</b>：<b>"不是盯着资源'是什么'，而是追问它'还可能成为什么'"</b>——同一批资源，换一个用途、换一种组合，就是一次机会。
+    </div>
+  </section>
+
+  <!-- ============ 分类详解 ============ -->
+  <section>
+    <h2>逐层详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">宏观五类</span>
+        <h3>环境层面的变化</h3>
+        <span class="role">回答的问题：<b>"世界正在发生哪些不可逆的变化？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>技术变革</dt>
+        <dd>三类型——基础技术范式突破、应用技术系统整合、<b>技术经济性拐点</b>。关于拐点，教材写道：<b>"当技术成熟度曲线跨越商业化应用的性价比临界点时，将引发市场需求的指数级释放"</b>。</dd>
+        <dt>政策调整</dt>
+        <dd>三机制——<b>需求创造</b>（政策直接制造新需求）、<b>成本重构</b>（补贴、税收改变成本结构）、<b>风险调节</b>（资质、牌照改变风险预期）。</dd>
+        <dt>社会与人口结构变化</dt>
+        <dd>三机制——催生基础性需求、消费结构迁移、价值观变革。两个特征要记住：<b>需求持续性</b>与<b>本土化依赖</b>——这类机会扎根本土情境，不易被外来者简单复制。</dd>
+        <dt>产业结构升级</dt>
+        <dd>三层面——重构价值链、打破产业边界、服务化智能化转型。产业升级不是"别人的新闻"，它直接改写你所在行业的分工格局。</dd>
+        <dt>其他来源</dt>
+        <dd>国际环境变化、基础设施范式跃迁、主流观念变迁——变化本身没有行业门槛，谁都可能率先看见。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">微观四类</span>
+        <h3>市场层面的缺口</h3>
+        <span class="role">回答的问题：<b>"身边的市场里，哪里缺了、哪里浪费了？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>未满足的需求</dt>
+        <dd>用三个维度评估<b>"需求未满足程度"</b>：重要性、紧迫性、持续性。三者都高的需求，才是值得优先对待的机会土壤。</dd>
+        <dt>资源低效率利用</dt>
+        <dd>四个入口——物理闲置、知识欠发掘、人力错配、时间浪费。关键是换上<b>资源重构视角</b>：<b>"不是盯着资源'是什么'，而是追问它'还可能成为什么'"</b>。</dd>
+        <dt>市场结构不连续</dt>
+        <dd>三形态——新市场涌现、既有市场细分裂变、产业边界溶解重构。结构松动之处，正是新玩家绕开旧格局的进入窗口。</dd>
+        <dt>信息不对称</dt>
+        <dd>三认知来源——知识结构跨界复合、网络位置的结构性优势（结构洞）、时间维度的先发占位。你比别人早知道、跨界知道、或处在知道的位置，机会就先找你。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">使用提醒</div>
+        <div class="trap"><span class="tn">只扫一层</span><span class="td">只看宏观容易"谈趋势落不了地"，只看微观容易"捡芝麻丢大势"——两层都要过。</span></div>
+        <div class="trap"><span class="tn">把来源当结论</span><span class="td">找到来源只是拿到线索，机会是否成立，还要经过评估与验证（见卡 5-09、卡 5-10）。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>先定层次。</b>宏观问"环境变了什么"，微观问"市场缺了什么"——两问轮流过，各扫一遍，不许跳层。</li>
+      <li><b>逐类过筛。</b>把九类来源当检查表，每类强制写下至少一条观察；暂时写不出的类别标注"暂无"，留待下次再扫。</li>
+      <li><b>深挖机制。</b>对每条观察追问背后的机制：是需求被创造了、成本被重构了，还是结构在松动？机制清楚了，机会的形态才清楚。</li>
+      <li><b>交叉对照。</b>同一条线索同时出现在宏观与微观两端（例如政策调整叠加资源闲置）时，优先级显著提高。</li>
+      <li><b>结转深化。</b>把筛出的线索交给三类信号分析（卡 5-02）继续深挖，再进入评估与验证环节。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>找不到方向时的<b>创意清单生成</b>：九类来源逐类追问，批量产出线索</li>
+          <li>行业研究、市场扫描的<b>第一轮排查</b>：先广度后深度</li>
+          <li>培训课堂的"机会雷达"练习：学员分头认领类别，汇总成全景图</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>分类是<b>排查视角，不是机会成立的证明</b>——筛出的线索仍需评估与验证</li>
+          <li>宏观类周期长、判断难，须与时机窗口判断配合，避免过早入场</li>
+          <li>实际机会常是几类来源的叠加，<b>切勿把九类当作互斥的格子机械对号</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-02</div>
+        <h4>机会识别三类信号总纲</h4>
+        <p>来源分类学负责"扫出线索"，三类信号总纲负责"深挖线索"：趋势、结构、问题三个入口接力。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-08</div>
+        <h4>机会假设命题句式</h4>
+        <p>扫出的线索要写成可检验的命题——"如果我能解决某问题，某类用户就会付费"，才好进入验证。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>来源扫描属于"机会开发"阶段的第一步：先有线索，再有陈述，再有验证。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 127—135 页</span>
+    <span>方法论卡 5-01 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

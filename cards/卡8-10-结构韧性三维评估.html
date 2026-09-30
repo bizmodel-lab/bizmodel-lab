@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-10 · 结构韧性三维评估</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 提示条 ===== */
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-10 · 结构韧性三维评估</span><a class="card-nav-prev" href="卡8-09-系统动力源识别.html">← 卡 8-09</a><a class="card-nav-next" href="卡8-11-耦合假设提取法.html">卡 8-11 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-10</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>结构韧性三维评估</h1>
+  <div class="oneliner">测试商业模式挨一击之后，还能不能自己站起来。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>不少模式在顺境中运转良好，却在<b>一次平台规则调整、供应商断供或技术范式变化</b>中崩溃。创业者投入之前需要预判：这个系统在冲击下能否维持核心功能、快速修复损伤，甚至从中获益。</p>
+    <p>本方法提供一套<b>投入前可完成的韧性压力测试清单</b>。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">冲击前预演</div>
+        <div class="vd">把"出了事会怎样"的追问提前到投入之前，而不是崩溃之后。</div>
+      </div>
+      <div class="value">
+        <div class="vt">结构化自查</div>
+        <div class="vd">三个维度配压力测试问句，把"感觉挺稳"变成逐项打分。</div>
+      </div>
+      <div class="value">
+        <div class="vt">定位最薄弱环</div>
+        <div class="vd">雷达图一眼看出最薄弱维度，把有限的资源用在最脆的地方。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 515" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- ===== 雷达图（三轴） ===== -->
+        <polygon points="250,80 137.4,275 362.6,275" fill="#f8fafc" stroke="#cbd5e1"/>
+        <polygon points="250,125 177.1,260 322.9,260" fill="#ffffff" stroke="#e2e8f0"/>
+        <polygon points="250,170 216.1,237.5 283.9,237.5" fill="#ffffff" stroke="#e2e8f0"/>
+        <line x1="250" y1="210" x2="250" y2="80" stroke="#cbd5e1"/>
+        <line x1="250" y1="210" x2="137.4" y2="275" stroke="#cbd5e1"/>
+        <line x1="250" y1="210" x2="362.6" y2="275" stroke="#cbd5e1"/>
+
+        <!-- 示例画像 -->
+        <polygon points="250,119 193.7,242.5 311.9,245.8" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
+        <circle cx="250" cy="119" r="4" fill="#3b82f6"/>
+        <circle cx="193.7" cy="242.5" r="4" fill="#3b82f6"/>
+        <circle cx="311.9" cy="245.8" r="4" fill="#3b82f6"/>
+        <text x="260" y="116" font-size="11" font-weight="700" fill="#3b82f6">7</text>
+        <text x="182" y="248" font-size="11" font-weight="700" fill="#3b82f6">5</text>
+        <text x="320" y="240" font-size="11" font-weight="700" fill="#3b82f6">5.5</text>
+
+        <!-- 轴标签 -->
+        <text x="250" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">模块可替代性</text>
+        <text x="137" y="298" text-anchor="middle" font-size="13" font-weight="700" fill="#d97706">耦合可重构性</text>
+        <text x="395" y="298" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">边界可扩展性</text>
+
+        <!-- 压力测试问句①：连向顶轴 -->
+        <path d="M262,72 L428,82" stroke="#bfdbfe" stroke-width="1.5" stroke-dasharray="5,4" fill="none"/>
+        <text x="432" y="76" font-size="12" font-weight="700" fill="#3b82f6">压力测试问句①</text>
+        <text x="432" y="96" font-size="11" fill="#475569">若核心资源供应商断供，</text>
+        <text x="432" y="112" font-size="11" fill="#475569">是否有备选渠道？</text>
+        <text x="432" y="132" font-size="11" fill="#475569">若主渠道被封禁，</text>
+        <text x="432" y="148" font-size="11" fill="#475569">是否有独立获客能力？</text>
+
+        <!-- 压力测试问句②：连向左轴 -->
+        <path d="M130,285 L124,316" stroke="#fde68a" stroke-width="1.5" stroke-dasharray="5,4" fill="none"/>
+        <text x="12" y="336" font-size="12" font-weight="700" fill="#d97706">压力测试问句②</text>
+        <text x="12" y="356" font-size="11" fill="#475569">模块之间的连接方式，</text>
+        <text x="12" y="372" font-size="11" fill="#475569">是否允许在必要时</text>
+        <text x="12" y="388" font-size="11" fill="#475569">重新配置？</text>
+        <text x="12" y="408" font-size="11" fill="#94a3b8">例：直销→分销</text>
+        <text x="12" y="424" font-size="11" fill="#94a3b8">　　　自营→平台</text>
+
+        <!-- 压力测试问句③：连向右轴 -->
+        <path d="M370,285 L428,316" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="5,4" fill="none"/>
+        <text x="432" y="336" font-size="12" font-weight="700" fill="#059669">压力测试问句③</text>
+        <text x="432" y="356" font-size="11" fill="#475569">核心能力能否向相邻</text>
+        <text x="432" y="372" font-size="11" fill="#475569">领域迁移？</text>
+        <text x="432" y="392" font-size="11" fill="#475569">边界能否延伸以</text>
+        <text x="432" y="408" font-size="11" fill="#475569">分散风险、捕捉新机会？</text>
+
+        <!-- 示例说明 -->
+        <text x="250" y="308" text-anchor="middle" font-size="11" fill="#94a3b8">示例画像（10 分制）——找出你的最薄弱维度</text>
+
+        <!-- 输出栏与警示 -->
+        <rect x="10" y="445" width="430" height="56" rx="12" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="24" y="468" font-size="12" font-weight="700" fill="#059669">评估输出：三维打分绘雷达图</text>
+        <text x="24" y="488" font-size="12" fill="#475569">→ 找出最薄弱维度 → 提出一条具体的增强韧性建议</text>
+        <rect x="455" y="445" width="215" height="56" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="469" y="468" font-size="12" font-weight="700" fill="#dc2626">警示：过度追求可替代性</text>
+        <text x="469" y="488" font-size="11" fill="#dc2626">→ 资源分散、核心能力稀释</text>
+      </svg>
+      <div class="caption">图 1　结构韧性三轴雷达：可替代性 / 可重构性 / 可扩展性 × 各轴压力测试问句 × 输出与警示</div>
+    </div>
+    <div class="quote">
+      教材定义：<b>"商业模式的韧性是指系统在面临竞争加剧、技术颠覆、政策调整、需求漂移等外部冲击时，维持核心功能、快速修复损伤，甚至从中获益的能力。韧性不足的商业模式，可能在单一冲击下崩溃。"</b>
+    </div>
+  </section>
+
+  <!-- ============ 三维详解 ============ -->
+  <section>
+    <h2>三维详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">维度 ①</span>
+        <h3>模块可替代性</h3>
+        <span class="role">问的是：<b>有没有备胎</b></span>
+      </div>
+      <div class="q">系统中每个模块，是否存在可快速切换的替代方案？<b>可替代性越高，韧性越强</b>。</div>
+      <dl class="kv">
+        <dt>判据问句</dt>
+        <dd><b>"若核心资源供应商断供，是否有备选渠道？若主渠道被封禁，是否有独立获客能力？"</b></dd>
+        <dt>警示</dt>
+        <dd><b>"过度追求可替代性可能导致资源分散、核心能力稀释"</b>——备胎太多，主业会瘦。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">维度 ②</span>
+        <h3>耦合可重构性</h3>
+        <span class="role">问的是：<b>能不能改接法</b></span>
+      </div>
+      <div class="q"><b>"模块之间的连接方式，是否允许在必要时重新配置？"</b></div>
+      <dl class="kv">
+        <dt>典型重构</dt>
+        <dd>从直销到分销的渠道重构、从自营到平台的业务模式重构。</dd>
+        <dt>支撑条件</dt>
+        <dd>取决于组织的<b>学习能力</b>、<b>资源弹性</b>以及<b>文化包容度</b>——三项有一项短板，重构就停在纸面上。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">维度 ③</span>
+        <h3>边界可扩展性</h3>
+        <span class="role">问的是：<b>能不能外扩</b></span>
+      </div>
+      <div class="q">商业模式边界能否向相邻领域延伸，以<b>分散风险、捕捉新机会</b>？</div>
+      <dl class="kv">
+        <dt>决定因素一</dt>
+        <dd><b>核心能力的可迁移性</b>——如供应链管理能力可迁移至任何实物商品领域。</dd>
+        <dt>决定因素二</dt>
+        <dd><b>组织野心与执行力的匹配度</b>——想得再远，执行跟不上就是空耗。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">使用提醒</div>
+        <div class="trap"><span class="tn">三维须平衡</span><span class="td">可替代性过高会稀释核心能力，与专注战略存在张力——韧性不是把每个维度都拉满。</span></div>
+        <div class="trap"><span class="tn">早期取舍</span><span class="td">资源极度有限的企业难以同时优化三维，应先消除致命的单点依赖。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列出核心模块清单。</b>核心资源、主渠道、关键合作方等逐项列出——压力测试要有具体的受试对象。</li>
+      <li><b>逐模块问可替代性问句。</b>"断供有没有备选？封禁能不能独立获客？"——把所有没有备选方案的单点依赖标记出来。</li>
+      <li><b>检查耦合能否重新配置。</b>评估组织学习能力、资源弹性与文化包容度三项支撑条件，判断"改接法"在组织上是否可行。</li>
+      <li><b>评估边界扩展空间。</b>核心能力能否向相邻领域迁移？组织野心与执行力是否匹配？</li>
+      <li><b>三维打分绘雷达图。</b>对最薄弱的维度，提出一条增强韧性的具体建议——只针对最弱项，不平均用力。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>评估阶段与融资尽调前</b>的韧性压力测试</li>
+          <li>投入前预判系统"抗不抗揍"的结构体检</li>
+          <li>培训中的"选一家公司做三维压力测试"练习</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三维须平衡使用——<b>可替代性过高会稀释核心能力</b>，与专注战略存在张力</li>
+          <li>韧性评估回答"抗冲击"问题，<b>不能替代动力源识别与耦合度诊断</b></li>
+          <li>早期资源极度有限的企业难以同时优化三维，<b>应先消除致命单点依赖</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-08</div>
+        <h4>模块耦合度诊断体系</h4>
+        <p>本卡问"挨一击能不能站起来"，卡8-08 问"齿轮咬合处有没有裂痕"——两卡同属结构体检，一个测冲击，一个查断裂。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持/调优/重构三分决策</h4>
+        <p>测出的"系统韧性脆弱"，对应调优情境④：备选供应商、多元渠道、预设熔断规则。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别</h4>
+        <p>单点依赖清单的第一列是关键资源——先识别哪些资源"关键"，才谈得上备选与替代。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 218 页</span>
+    <span>方法论卡 8-10 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

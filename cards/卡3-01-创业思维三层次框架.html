@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-01 · 创业思维三层次框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 层级详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 协同机制 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--s1);
+    border:1px solid var(--s1);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-01 · 创业思维三层次框架</span><a class="card-nav-prev" href="卡2-06-创业者角色身份协变模型.html">← 卡 2-06</a><a class="card-nav-next" href="卡3-02-反脆弱两维度与策略实验日志.html">卡 3-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-01</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>创业思维三层次框架</h1>
+  <div class="oneliner">心理层 — 认知层 — 行动层：把创业思维拆成三层，逐层训练与搭配。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>「要有创业思维」这句话，几乎每个创业者都听过，但它常被当成一句口号或某一门单一方法论——学习者不知道<b>该练什么、从哪练起</b>：有人工具学了一大堆，一遇挫折就全线崩塌；有人心态很好，却始终缺一套拿得出手的打法。</p>
+    <p>三层次框架先回答<b>「创业思维由什么构成」</b>：它是<b>「由心理层（心智基础）、认知层（决策框架）、行动层（行动方法）构成的动态系统」</b>。有了分层结构，诊断与训练就都有了抓手。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">知道练什么</div>
+        <div class="vd">思维不再是笼统口号，而是可以逐层盘点、逐层补课的能力清单。</div>
+      </div>
+      <div class="value">
+        <div class="vt">分层做诊断</div>
+        <div class="vd">出问题时能定位：是心态塌了、框架错了，还是打法缺了，对症下药。</div>
+      </div>
+      <div class="value">
+        <div class="vt">解释工具失灵</div>
+        <div class="vd">只学工具不够——缺心理层支撑，认知与行动方法会因焦虑或放弃而难以为继。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 504" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+          <marker id="ahr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#dc2626"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">三层动态系统：心理层提供成长动力 · 认知层提供方向导航 · 行动层提供反馈校准</text>
+
+        <!-- ===== 行动层（输出层）===== -->
+        <rect x="10" y="60" width="550" height="112" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,90 a10,10 0 0 1 10,-10 h530 a10,10 0 0 1 10,10 v12 h-550 z" fill="#d97706"/>
+        <text x="285" y="95.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">行动层 · 输出层</text>
+        <text x="24" y="117" font-size="11" font-weight="700" fill="#d97706">层级定位</text>
+        <text x="24" y="130" font-size="12" fill="#334155">输出层 · 行动方法</text>
+        <text x="24" y="150" font-size="11" fill="#94a3b8">把思考落到行动</text>
+        <rect x="200" y="104" width="124" height="52" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="262" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">精益创业</text>
+        <text x="262" y="142" text-anchor="middle" font-size="11" fill="#92400e">假设验证与快速迭代</text>
+        <rect x="336" y="104" width="124" height="52" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="398" y="124" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">设计思维</text>
+        <text x="398" y="142" text-anchor="middle" font-size="11" fill="#92400e">以用户为中心的创新</text>
+
+        <!-- 层间箭头：认知层→行动层（向上）；行动层→认知层（向下反馈） -->
+        <line x1="60" y1="206" x2="60" y2="180" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="74" y="197" font-size="11" fill="#475569">方向导航</text>
+        <line x1="340" y1="180" x2="340" y2="206" stroke="#475569" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#ah)"/>
+        <text x="354" y="197" font-size="11" fill="#94a3b8">反馈</text>
+
+        <!-- ===== 认知层（转化层）===== -->
+        <rect x="10" y="212" width="550" height="115.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,242 a10,10 0 0 1 10,-10 h530 a10,10 0 0 1 10,10 v12 h-550 z" fill="#3b82f6"/>
+        <text x="285" y="247.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">认知层 · 转化层</text>
+        <text x="24" y="269" font-size="11" font-weight="700" fill="#3b82f6">层级定位</text>
+        <text x="24" y="282" font-size="12" fill="#334155">转化层 · 决策框架</text>
+        <text x="24" y="302" font-size="11" fill="#94a3b8">把能量转化为策略</text>
+        <rect x="200" y="272" width="76" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="238" y="289.2" text-anchor="middle" font-size="12" fill="#3b82f6">效果逻辑</text>
+        <rect x="284" y="272" width="76" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="322" y="289.2" text-anchor="middle" font-size="12" fill="#3b82f6">第一性原理</text>
+        <rect x="368" y="272" width="76" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="406" y="289.2" text-anchor="middle" font-size="12" fill="#3b82f6">系统思维</text>
+        <rect x="452" y="272" width="76" height="30.2" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="490" y="289.2" text-anchor="middle" font-size="12" fill="#3b82f6">逆向思维</text>
+        <text x="200" y="316" font-size="11" fill="#94a3b8">将心理能量转化为思考框架与行动策略（P56）</text>
+
+        <!-- 层间箭头：心理层→认知层（向上）；认知层→心理层（向下反馈） -->
+        <line x1="60" y1="358" x2="60" y2="332" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="74" y="349" font-size="11" fill="#475569">成长动力</text>
+        <line x1="340" y1="332" x2="340" y2="358" stroke="#475569" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#ah)"/>
+        <text x="354" y="349" font-size="11" fill="#94a3b8">反馈</text>
+
+        <!-- ===== 心理层（基础层）===== -->
+        <rect x="10" y="364" width="550" height="115.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,394 a10,10 0 0 1 10,-10 h530 a10,10 0 0 1 10,10 v12 h-550 z" fill="#059669"/>
+        <text x="285" y="399.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">心理层 · 基础层</text>
+        <text x="24" y="421" font-size="11" font-weight="700" fill="#059669">层级定位</text>
+        <text x="24" y="434" font-size="12" fill="#334155">基础层 · 心智基础</text>
+        <text x="24" y="454" font-size="11" fill="#94a3b8">启动认知的前提</text>
+        <rect x="200" y="424" width="76" height="30.2" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="238" y="441.2" text-anchor="middle" font-size="12" fill="#059669">成长型思维</text>
+        <rect x="284" y="424" width="76" height="30.2" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="322" y="441.2" text-anchor="middle" font-size="12" fill="#059669">自我效能感</text>
+        <rect x="368" y="424" width="76" height="30.2" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="406" y="441.2" text-anchor="middle" font-size="12" fill="#059669">反脆弱思维</text>
+        <text x="200" y="468" font-size="11" fill="#94a3b8">共同构成应对不确定性的内在资源（P56）</text>
+
+        <!-- 右侧动态反馈大回路 -->
+        <path d="M566,116 C654,116 654,420 566,420" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,4" fill="none" marker-end="url(#ahr)"/>
+        <text x="612" y="248" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">动态反馈回路</text>
+        <text x="612" y="266" text-anchor="middle" font-size="11" fill="#64748b">三层互相影响</text>
+        <text x="612" y="282" text-anchor="middle" font-size="11" fill="#64748b">形成自我强化</text>
+        <text x="612" y="298" text-anchor="middle" font-size="11" fill="#64748b">的系统（P83）</text>
+
+        <!-- 底部例证 -->
+        <text x="340" y="494" text-anchor="middle" font-size="11" fill="#94a3b8">例：焦虑时更倾向于保守的类比思维（心理→认知）· 一次成功的 MVP 验证有助于培育成长型思维（行动→心理）</text>
+      </svg>
+      <div class="caption">图 1　创业思维三层次框架：三层结构 × 各层工具清单 × 动态反馈回路（协同机制见 P83）</div>
+    </div>
+    <div class="quote">
+      三层<b>「通过动态反馈回路形成一个自我强化的系统」</b>（P83）：心理层提供成长动力，认知层提供方向导航，行动层提供反馈校准——层与层不是单向传递，而是持续互相塑造。
+    </div>
+  </section>
+
+  <!-- ============ 逐层详解 ============ -->
+  <section>
+    <h2>逐层详解</h2>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">基础层</span>
+        <h3>心理层：心智基础</h3>
+        <span class="role">本层管：<b>动力与底子</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"我有没有承受创业不确定性的内在底子？"</b></div>
+      <dl class="kv">
+        <dt>构成工具</dt>
+        <dd><b>成长型思维、自我效能感、反脆弱思维</b>——三种心智基础互相配合。</dd>
+        <dt>层内定位</dt>
+        <dd>三者<b>「共同构成创业者应对不确定性的内在资源，是启动认知过程的前提」</b>（P56）。地基不牢，上面的框架与方法都会失灵。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">转化层</span>
+        <h3>认知层：决策框架</h3>
+        <span class="role">本层管：<b>想的角度</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"我用什么框架去想问题、做判断？"</b></div>
+      <dl class="kv">
+        <dt>构成工具</dt>
+        <dd><b>效果逻辑、第一性原理、系统思维、逆向思维</b>——四套互补的思考框架。</dd>
+        <dt>层内定位</dt>
+        <dd>认知层<b>「将心理能量转化为具体的思考框架与行动策略」</b>（P56）：把心理层的干劲，变成可执行的判断角度与打法方向。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">输出层</span>
+        <h3>行动层：行动方法</h3>
+        <span class="role">本层管：<b>做的套路</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"想法落地时按什么章法干？"</b></div>
+      <dl class="kv">
+        <dt>构成工具</dt>
+        <dd><b>精益创业</b>：提供<b>「假设验证与快速迭代的行动框架」</b>（P57）；<b>设计思维</b>：提供<b>「以用户为中心的创新框架」</b>（P57）。</dd>
+        <dt>层内定位</dt>
+        <dd>行动层是整个系统的输出口——心理与认知的成果，最终都要靠这一层变成动作与结果。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 协同机制 ============ -->
+  <section>
+    <h2>三层怎么协同</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">向上支撑</span>
+        <h4>心理层 → 成长动力</h4>
+        <p>心智基础为认知与行动提供持续动力，是启动一切思考的前提。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">向上导航</span>
+        <h4>认知层 → 方向导航</h4>
+        <p>决策框架把心理能量转化为策略，为行动指明方向。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">向下反馈</span>
+        <h4>行动层 → 反馈校准</h4>
+        <p>行动产生的真实结果回流，反过来校准上面两层的判断与心态。</p>
+      </div>
+    </div>
+    <div class="quote">
+      层间影响是双向的：<b>「焦虑状态下更倾向于保守的类比思维」</b>（心理层状态拖累认知层）；而<b>「一次成功的 MVP 验证有助于培育团队的成长型思维」</b>（行动层成果反哺心理层）。所以训练顺序与反馈校准同样重要。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐层自评。</b>对照各层工具清单，盘点我在每层已具备哪些、还缺哪些——成长型思维稳不稳？思考框架够不够？行动章法有没有？</li>
+      <li><b>按顺序补基础。</b>遵循<b>"心理 → 认知 → 行动"</b>的顺序：先稳心理层，再学认知框架，最后落到行动方法。跳层补课，容易半途而废。</li>
+      <li><b>在行动中读反馈。</b>做完一件事，回头看看结果对心态和判断各产生了什么影响，用真实反馈反向校准上两层。</li>
+      <li><b>按情境选组合。</b>结合卡06情境二维矩阵，判断当前处境，再为三层各自选择适配的思维组合。</li>
+      <li><b>不匹配就切换。</b>发现配置与情境不匹配时快速调整——<b>"不存在绝对'最好'的思维，只有最适合当前情境的思维组合"</b>（P83）。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>创业学习与培训的<b>总课程地图</b>：先分层，再排课</li>
+          <li>学员与创业者的<b>能力诊断维度</b>：逐层盘点强项与短板</li>
+          <li>解释<b>"为什么只学工具不够"</b>：缺心理层支撑，方法难以持续</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>它是<b>配置框架而非决策工具</b>，不适用于直接给出某个具体决策的答案</li>
+          <li>三层<b>不是单向流水线</b>，需按反馈动态调整，不能机械地"学完一层再学一层"了事</li>
+          <li>工具组合的选择需结合具体情境（联用卡3-10），不能脱离处境空谈某层"最重要"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-10</div>
+        <h4>情境二维矩阵</h4>
+        <p>本卡给出思维的分层结构，卡06回答"当前情境该启用哪套组合"——两卡联用完成思维配置。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>阶段不同，三层的训练重点与工具配比也不同；可与"阶段 × 思维组合"联用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-04</div>
+        <h4>动机觉察三路径与引导三技术</h4>
+        <p>心理层的深化练习：看清并主动管理创业动机，为成长型思维打底。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 56—57 页（协同机制见第 83 页）</span>
+    <span>方法论卡 3-01 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

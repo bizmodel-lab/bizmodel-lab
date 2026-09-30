@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡10-06 · 价值观建设四步法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 步骤详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--ink);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--ink);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=10">第 10 章 · 创业组织</a><span class="card-nav-meta">卡 10-06 · 价值观建设四步法</span><a class="card-nav-prev" href="卡10-05-股权结构设计七模块.html">← 卡 10-05</a><a class="card-nav-next" href="卡11-01-四段式专题分析框架.html">卡 11-01 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-09-06</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>价值观建设四步法</h1>
+  <div class="oneliner">提炼 — 翻译 — 制度化 — 活化：把价值观从墙上的标语，变成可观察、可考核、可传承的组织行为。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>许多创业公司的价值观只是<b>"墙上的空洞标语"</b>——写着"诚信""创新"，却既不指导决策，也不影响行为：招聘时不看它，考核时不问它，晋升时更没人想起它。价值观建设由此沦为一次性的墙面装修工程。</p>
+    <p>四步法提供一套完整落地路径：先把价值观<b>提炼</b>出来，再<b>翻译</b>成具体行为，接着<b>制度化</b>进管理流程，最后靠<b>活化</b>让它可感可触。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">从标语到行为</div>
+        <div class="vd">每条价值观都翻译成具体的、可观察、可考核的行为指标，人人知道该怎么做。</div>
+      </div>
+      <div class="value">
+        <div class="vt">让文化有牙齿</div>
+        <div class="vd">考核与晋升挂钩价值观，实行一票否决——文化不再只是墙上的倡导。</div>
+      </div>
+      <div class="value">
+        <div class="vt">可传承的文化</div>
+        <div class="vd">仪式、故事、符号三手段并用，文化传承不依赖创始人个人。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">四步递进：从理念到行为，从行为到习惯——让价值观可观察、可考核、可传承</text>
+
+        <!-- 步骤间前进箭头 -->
+        <line x1="162" y1="190" x2="179" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="335" y1="190" x2="352" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="507" y1="190" x2="524" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 第①步 提炼 ===== -->
+        <rect x="10" y="70" width="148" height="235" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,100 a10,10 0 0 1 10,-10 h128 a10,10 0 0 1 10,10 v14 h-148 z" fill="#3b82f6"/>
+        <text x="84" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">第①步 提炼</text>
+        <text x="84" y="134" text-anchor="middle" font-size="11" fill="#64748b">找到真正的价值观</text>
+        <text x="24" y="156" font-size="11" font-weight="700" fill="#3b82f6">核心动作</text>
+        <text x="24" y="174" font-size="12" fill="#334155">三来源共同提炼：</text>
+        <text x="24" y="191" font-size="12" fill="#334155">创始人信念</text>
+        <text x="24" y="208" font-size="12" fill="#334155">团队血泪教训</text>
+        <text x="24" y="225" font-size="12" fill="#334155">用户正向反馈</text>
+        <text x="24" y="247" font-size="11" font-weight="700" fill="#3b82f6">关键产出</text>
+        <text x="24" y="265" font-size="12" fill="#334155">3—5条动词驱动的</text>
+        <text x="24" y="282" font-size="12" fill="#334155">简短表述</text>
+
+        <!-- ===== 第②步 翻译 ===== -->
+        <rect x="183" y="70" width="148" height="235" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M183,100 a10,10 0 0 1 10,-10 h128 a10,10 0 0 1 10,10 v14 h-148 z" fill="#d97706"/>
+        <text x="257" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">第②步 翻译</text>
+        <text x="257" y="134" text-anchor="middle" font-size="11" fill="#64748b">转化为行为准则</text>
+        <text x="197" y="156" font-size="11" font-weight="700" fill="#d97706">核心动作</text>
+        <text x="197" y="174" font-size="12" fill="#334155">为每条价值观配套</text>
+        <text x="197" y="191" font-size="12" fill="#334155">可观察、可考核</text>
+        <text x="197" y="208" font-size="12" fill="#334155">的行为指标</text>
+        <text x="197" y="225" font-size="12" fill="#334155">制成对照表</text>
+        <text x="197" y="247" font-size="11" font-weight="700" fill="#d97706">关键产出</text>
+        <text x="197" y="265" font-size="12" fill="#334155">价值观—行为</text>
+        <text x="197" y="282" font-size="12" fill="#334155">对照表</text>
+
+        <!-- ===== 第③步 制度化 ===== -->
+        <rect x="356" y="70" width="148" height="235" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M356,100 a10,10 0 0 1 10,-10 h128 a10,10 0 0 1 10,10 v14 h-148 z" fill="#059669"/>
+        <text x="430" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">第③步 制度化</text>
+        <text x="430" y="134" text-anchor="middle" font-size="11" fill="#64748b">嵌入管理流程</text>
+        <text x="370" y="156" font-size="11" font-weight="700" fill="#059669">核心动作</text>
+        <text x="370" y="174" font-size="12" fill="#334155">把行为指标嵌入</text>
+        <text x="370" y="191" font-size="12" fill="#334155">人力资源五环节</text>
+        <text x="370" y="208" font-size="12" fill="#334155">（见下方五环节）</text>
+        <text x="370" y="225" font-size="12" fill="#334155">文化开始有牙齿</text>
+        <text x="370" y="247" font-size="11" font-weight="700" fill="#059669">关键产出</text>
+        <text x="370" y="265" font-size="12" fill="#334155">带价值观指标的</text>
+        <text x="370" y="282" font-size="12" fill="#334155">管理制度体系</text>
+
+        <!-- ===== 第④步 活化 ===== -->
+        <rect x="529" y="70" width="148" height="235" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M529,100 a10,10 0 0 1 10,-10 h128 a10,10 0 0 1 10,10 v14 h-148 z" fill="#1e293b"/>
+        <text x="603" y="107" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">第④步 活化</text>
+        <text x="603" y="134" text-anchor="middle" font-size="11" fill="#64748b">让价值观可感可触</text>
+        <text x="543" y="156" font-size="11" font-weight="700" fill="#1e293b">核心动作</text>
+        <text x="543" y="174" font-size="12" fill="#334155">仪式设计</text>
+        <text x="543" y="191" font-size="12" fill="#334155">故事传播</text>
+        <text x="543" y="208" font-size="12" fill="#334155">符号强化</text>
+        <text x="543" y="225" font-size="12" fill="#334155">三手段并用</text>
+        <text x="543" y="247" font-size="11" font-weight="700" fill="#1e293b">关键产出</text>
+        <text x="543" y="265" font-size="12" fill="#334155">文化故事集与</text>
+        <text x="543" y="282" font-size="12" fill="#334155">年度仪式体系</text>
+
+        <!-- 制度化下挂五环节：连接线 -->
+        <line x1="430" y1="305" x2="430" y2="332" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="76" y1="332" x2="604" y2="332" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="76" y1="332" x2="76" y2="348" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="208" y1="332" x2="208" y2="348" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="340" y1="332" x2="340" y2="348" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="472" y1="332" x2="472" y2="348" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <line x1="604" y1="332" x2="604" y2="348" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+        <text x="15" y="326" font-size="11" font-weight="700" fill="#059669">制度化五环节</text>
+
+        <!-- 五环节小图标 -->
+        <rect x="15" y="348" width="122" height="56" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="76" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">招聘</text>
+        <text x="76" y="394" text-anchor="middle" font-size="11" fill="#334155">情景题考察认同</text>
+
+        <rect x="147" y="348" width="122" height="56" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="208" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">培训</text>
+        <text x="208" y="394" text-anchor="middle" font-size="11" fill="#334155">师徒制传承文化</text>
+
+        <rect x="279" y="348" width="122" height="56" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="340" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">考核</text>
+        <text x="340" y="394" text-anchor="middle" font-size="11" fill="#334155">价值观一票否决</text>
+
+        <rect x="411" y="348" width="122" height="56" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="472" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">晋升</text>
+        <text x="472" y="394" text-anchor="middle" font-size="11" fill="#334155">确认文化榜样</text>
+
+        <rect x="543" y="348" width="122" height="56" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="604" y="372" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">退出</text>
+        <text x="604" y="394" text-anchor="middle" font-size="11" fill="#334155">体面的退出机制</text>
+
+        <!-- 底部说明 -->
+        <text x="340" y="430" text-anchor="middle" font-size="12" fill="#475569">四步递进，环环相扣：前一环的产出，是后一环的输入</text>
+        <text x="340" y="450" text-anchor="middle" font-size="11" fill="#94a3b8">制度化让文化"有牙齿"，活化让文化"可感可触"——两者须平衡</text>
+      </svg>
+      <div class="caption">图 1　价值观建设四步法总览：提炼 → 翻译 → 制度化 → 活化 × 人力资源管理五环节</div>
+    </div>
+    <div class="quote">
+      <b>价值观不能由创始人单方面宣布，而必须经由团队共同确认</b>——提炼环节的四问要核心团队一起回答，产出的表述要一起投票认账；判据是<b>价值观必须能区分"你"和"别人"</b>，而非辞藻是否漂亮。
+    </div>
+  </section>
+
+  <!-- ============ 逐步详解 ============ -->
+  <section>
+    <h2>逐步详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第①步</span>
+        <h3>提炼：找到真正的价值观</h3>
+        <span class="role">本步回答：<b>"我们真正信奉什么？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>从三个来源出发——<b>创始人的信念、团队的血泪教训、用户的正向反馈</b>；由核心团队共同回答四问：我们信奉什么？我们反对什么？我们希望在什么样的组织中工作？希望别人如何评价我们？</dd>
+        <dt>关键产出</dt>
+        <dd><b>3—5 条动词驱动的简短表述</b>（如"客户第一""不走捷径"），每条都来自真实的决策经验，而非漂亮的辞藻。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">大词堆砌</span><span class="td">"卓越""创新""共赢"这类词谁都能用——谁都适用，等于谁都不适用。</span></div>
+        <div class="trap"><span class="tn">单方面宣布</span><span class="td">价值观由创始人一人拍板写上墙，团队从未认账，后续每一步都推不动。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第②步</span>
+        <h3>翻译：转化为行为准则</h3>
+        <span class="role">本步回答：<b>"这条价值观要求人具体做什么？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>为每条价值观配套<b>具体的、可观察、可考核的行为指标</b>，制成对照表。例如"客户至上"翻译为：客户投诉 2 小时内响应、主动发现客户潜在需求、客户推荐比例超过 50%；"诚信"翻译为：如实记录工作日志、承诺的事情必须做到、发现错误第一时间报告。</dd>
+        <dt>关键产出</dt>
+        <dd>一份<b>价值观—行为对照表</b>：从这一步起，价值观具备了被考核的形态。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">指标空泛</span><span class="td">写不出可观察的行为，说明第一步的提炼就没做实——回到提炼步重炼，而不是硬凑指标。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第③步</span>
+        <h3>制度化：嵌入管理流程</h3>
+        <span class="role">本步回答：<b>"离开提醒，价值观还起作用吗？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>把行为指标<b>嵌入人力资源管理全流程的五个环节</b>：招聘环节，文化认同是"一票否决项"，可用情景题考察；培训环节，<b>师徒制是文化传承最有效的方式</b>；考核环节，让文化"有牙齿"，实行价值观一票否决制；晋升环节，<b>晋升不只是对业务能力的认可，更是对文化榜样的确认</b>；退出环节，设置体面的退出机制。</dd>
+        <dt>关键产出</dt>
+        <dd>带价值观指标的管理制度体系——价值观开始参与"谁能进、谁能升、谁该走"的真实决策。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">制度空转</span><span class="td">考核环节不给价值观否决权，指标形同虚设——文化没有牙齿，就仍然只是倡导。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">第④步</span>
+        <h3>活化：让价值观可感可触</h3>
+        <span class="role">本步回答：<b>"成员能不能感觉得到它？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心动作</dt>
+        <dd>三个手段并用：<b>仪式设计</b>（入职仪式、价值观颁奖典礼、年度文化日）；<b>故事传播</b>——<b>将关键事件整理成文化故事集</b>；<b>符号强化</b>（办公室布置、员工语言、行为习惯）。</dd>
+        <dt>关键产出</dt>
+        <dd>可感可触的文化氛围与文化资产：仪式重复记忆，故事承载意义，符号日常提醒。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">只靠墙上标语</span><span class="td">跳过前三步直接做符号与口号，就回到了起点——墙上的空洞标语。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>共创提炼。</b>组织核心团队从三个来源出发，共同回答四问，共创并投票确认 3—5 条动词驱动的价值观。记住：价值观不能由创始人单方面宣布，必须经由团队共同确认。</li>
+      <li><b>逐条翻译。</b>为每条价值观翻译出至少 3 条可观察、可考核的行为指标，制成"价值观—行为对照表"；写不出具体行为的条目，回炉重炼。</li>
+      <li><b>嵌入制度。</b>逐一改造招聘、培训、考核、晋升、退出五个环节，把行为指标嵌进去：招聘用情景题考察认同，考核实行价值观一票否决。</li>
+      <li><b>设计活化。</b>设计年度仪式（入职仪式、颁奖典礼、文化日），整理文化故事集，布置文化符号，让价值观在日常中可感可触。</li>
+      <li><b>定期检验。</b>回头检验这些原则是否真的在日常决策与生死抉择中起作用；若发现只是墙上标语，从提炼步重新走起。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>团队从创始期走向规模化、文化需要从<b>"口口相传"转向制度传承</b>的关口</li>
+          <li>团队快速扩张、新人占比迅速提高，需要靠文化降低管理成本</li>
+          <li>希望价值观真正参与决策——招聘否决、晋升标准的组织</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>提炼与翻译必须基于真实的决策经验，创始早期空谈易成一套新标语</li>
+          <li>制度化若过重可能压抑多样性，须与活化手段保持平衡</li>
+          <li>价值观重构成本高，<b>宜一次做深，而非频繁推倒重来</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>创业团队结构三型模型</h4>
+        <p>价值观由人来承载：先用卡24看清团队的权力结构与互动方式，价值观建设才有人接得住。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>制度化与规模化阶段直接对应：模式验证后的组织承接，正是价值观从口口相传转向制度传承的时机。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-06</div>
+        <h4>创业者角色—身份协变模型</h4>
+        <p>创始人从"探索者"到"扩张者"的角色演化，决定其在价值观建设中从宣布者到守护者的转变。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 10 章，第 282—283 页</span>
+    <span>方法论卡 5-09-06 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

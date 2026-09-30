@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-01 · 商业模式三根本问题</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 边界澄清 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile h4{font-size:15px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-01 · 商业模式三根本问题（三问体系）</span><a class="card-nav-prev" href="卡7-06-安索夫情境化与增长四原则.html">← 卡 7-06</a><a class="card-nav-next" href="卡8-02-九模块创业情境化改造.html">卡 8-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-01</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>商业模式三根本问题</h1>
+  <div class="oneliner">为谁创造什么价值 · 如何创造和传递价值 · 如何获取回报——三问自洽，模式才成闭环。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多创业者谈起自己的项目，产品讲得头头是道，账也算得清楚，但被连续追问几句就语塞——问题往往不在细节，而在<b>没有先回答商业模式的最顶层问题</b>。教材在第八章导读中提出：一个完整的商业模式，需要回答三个根本问题。</p>
+    <p>这三问不是学术分类，而是一张最简的"体检表"：任何一问答不上来，或三问互相打架，模式就没有闭环。它能带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">一问定位</div>
+        <div class="vd">先说清"为谁创造什么价值"，避免埋头做方案、抬头找不到客户。</div>
+      </div>
+      <div class="value">
+        <div class="vt">二问过程</div>
+        <div class="vd">再答"如何创造和传递价值"，让价值从纸面走到客户手里。</div>
+      </div>
+      <div class="value">
+        <div class="vt">三问回报</div>
+        <div class="vd">最后算清"如何获取回报"，让创造价值的行为可持续。</div>
+      </div>
+    </div>
+    <div class="quote">
+      教材给出的整合性定义可作为三问的底注：商业模式是<b>核心企业协同生态伙伴整合资源要素、创造客户价值并获取可持续回报的价值闭环逻辑与战略蓝图</b>。
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 500" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">三问对应三个维度：价值定位 → 价值创造 → 价值捕获，循环往复、彼此校验</text>
+
+        <!-- ===== 第一问（顶部） ===== -->
+        <rect x="240" y="64" width="200" height="104" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="240" y="64" width="200" height="26" rx="10" fill="#3b82f6"/>
+        <rect x="240" y="78" width="200" height="12" fill="#3b82f6"/>
+        <text x="340" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第一问</text>
+        <text x="340" y="116" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">为谁创造什么价值？</text>
+        <rect x="290" y="130" width="100" height="30.2" rx="12" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="149.3" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">价值定位</text>
+
+        <!-- ===== 第二问（左下） ===== -->
+        <rect x="40" y="308" width="200" height="104" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="40" y="308" width="200" height="26" rx="10" fill="#d97706"/>
+        <rect x="40" y="322" width="200" height="12" fill="#d97706"/>
+        <text x="140" y="326" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第二问</text>
+        <text x="140" y="360" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">如何创造和传递价值？</text>
+        <rect x="90" y="374" width="100" height="30.2" rx="12" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="140" y="393.3" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">价值创造</text>
+
+        <!-- ===== 第三问（右下） ===== -->
+        <rect x="440" y="308" width="200" height="104" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="440" y="308" width="200" height="26" rx="10" fill="#059669"/>
+        <rect x="440" y="322" width="200" height="12" fill="#059669"/>
+        <text x="540" y="326" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第三问</text>
+        <text x="540" y="354" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">如何从创造的价值中</text>
+        <text x="540" y="372" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">获取回报？</text>
+        <rect x="490" y="377.8" width="100" height="30.2" rx="12" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="540" y="395" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">价值捕获</text>
+
+        <!-- 循环箭头：一→二→三→一 -->
+        <line x1="288" y1="176" x2="168" y2="300" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="248" y1="360" x2="428" y2="360" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="512" y1="300" x2="392" y2="176" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 中心闭环 -->
+        <circle cx="340" cy="262" r="48" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="340" y="256" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">自洽闭环</text>
+        <text x="340" y="276" text-anchor="middle" font-size="10.5" fill="#64748b">缺一即断裂</text>
+
+        <!-- 底部判定 -->
+        <rect x="10" y="438" width="660" height="34" rx="17" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="340" y="460" text-anchor="middle" font-size="12" fill="#dc2626">判定标准：三个问题必须形成自洽的闭环——上一问的答案，要能支撑下一问</text>
+        <text x="340" y="490" text-anchor="middle" font-size="11" fill="#94a3b8">三问是商业模式的顶层骨架，展开细化见卡 8-02（九模块）、卡 8-06（设计四步法）</text>
+      </svg>
+      <div class="caption">图 1　商业模式三根本问题：三问环形结构 × 自洽闭环判定</div>
+    </div>
+  </section>
+
+  <!-- ============ 逐问详解 ============ -->
+  <section>
+    <h2>逐问详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一问</span>
+        <h3>为谁创造什么价值？</h3>
+        <span class="role">对应维度：<b>价值定位</b></span>
+      </div>
+      <div class="q">这一问把创业者和客户重新连在一起：<b>先定"为谁"，再定"给什么"。</b></div>
+      <dl class="kv">
+        <dt>回答对象</dt>
+        <dd>客户与价值的关系——谁是你的客户，你到底给他带来什么好处。</dd>
+        <dt>常见病灶</dt>
+        <dd>答案里只有产品（"我做了一个 App"），没有人（"帮谁、省了什么、多了什么"）。产品是价值的载体，不是价值本身。</dd>
+        <dt>及格线</dt>
+        <dd>能用一句<b>不含产品名词</b>的话说清"为谁、解决什么问题、带来什么好处"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二问</span>
+        <h3>如何创造和传递价值？</h3>
+        <span class="role">对应维度：<b>价值创造</b></span>
+      </div>
+      <div class="q">这一问把承诺变成路径：<b>价值不是说出来的，是做出来、送到位的。</b></div>
+      <dl class="kv">
+        <dt>回答对象</dt>
+        <dd>创造价值的作业方式与传递价值的通路——靠什么资源、做什么事、走什么渠道抵达客户。</dd>
+        <dt>常见病灶</dt>
+        <dd>只谈"价值"不谈"如何"：主张动人，但资源、业务、渠道支撑不起来，承诺与能力脱节。</dd>
+        <dt>及格线</dt>
+        <dd>从第一问的答案出发，能顺出一条<b>资源 → 业务 → 渠道 → 客户</b>的传递链。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三问</span>
+        <h3>如何从创造的价值中获取回报？</h3>
+        <span class="role">对应维度：<b>价值捕获</b></span>
+      </div>
+      <div class="q">这一问让价值创造可持续：<b>赚不到回报的商业模式，是在消耗而不是在经营。</b></div>
+      <dl class="kv">
+        <dt>回答对象</dt>
+        <dd>收入来源与成本结构——向谁收费、怎么收费、成本是否被收入覆盖。</dd>
+        <dt>常见病灶</dt>
+        <dd>把"盈利模式"当成商业模式的全部。教材特别澄清：<b>盈利模式只是商业模式的子集</b>，对应画布中"收入来源 + 成本结构"两个模块。</dd>
+        <dt>及格线</dt>
+        <dd>答得出收入从哪里来，也算得过账：单位层面创造的价值，能留下一部分作为回报。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>三问的闭环判定：</b>教材强调，三个问题<b>"三者必须形成自洽的闭环"</b>——为谁创造的价值，恰好是创造与传递体系能交付的；交付得出的价值，恰好是回报机制能捕获的。任何一环对不上，商业模式就不完整，先补断点，再谈优化。
+    </div>
+  </section>
+
+  <!-- ============ 边界澄清 ============ -->
+  <section>
+    <h2>三问与三个易混概念</h2>
+    <div class="miles">
+      <div class="mile">
+        <h4>盈利模式 ⊂ 商业模式</h4>
+        <p>盈利模式只回答第三问的一半（收入与成本），商业模式还要回答为谁、如何创造与传递。</p>
+      </div>
+      <div class="mile">
+        <h4>战略 ≠ 商业模式</h4>
+        <p>战略解决"在哪里竞争、如何取胜"；商业模式解决"如何做"的行动蓝图。二者动态互构。</p>
+      </div>
+      <div class="mile">
+        <h4>商业计划 ≠ 商业模式</h4>
+        <p>商业计划是线性预测性文档；商业模式是系统性、可测试的框架——前者写给人看，后者拿去验证。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>依次作答。</b>用三张纸分别写下三问的一句话答案，写不出来就先空着——空着的那一问，就是当前最要紧的功课。</li>
+      <li><b>连环追问。</b>把第一问的答案代入第二问：这套创造与传递方式，交付得出承诺的价值吗？再代入第三问：交付得出的价值，收得回回报吗？</li>
+      <li><b>找断点。</b>哪一问与前后冲突（如承诺高端服务却只有低成本产能），闭环就在哪里断裂，优先修补。</li>
+      <li><b>决定深浅。</b>三问都能自洽作答，即可进入九模块细化（卡 8-02）与设计四步法（卡 8-06）；答不出的，退回机会梳理。</li>
+      <li><b>定期重问。</b>产品调整、客户变化、模式转型之后，把三问重新过一遍——三问的答案是动态的，不是一次性的填空。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>新项目立项的<b>"第一张纸"</b>：动用资源之前先过三问</li>
+          <li>路演与商业计划的自检清单：投资人连续追问的，往往就是这三问</li>
+          <li>项目受挫时的顶层复盘：先查三问是否断裂，再查执行细节</li>
+          <li>培训与咨询中的破冰框架：一节课讲不完商业模式，讲得完三问</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三问是<b>顶层框架</b>，不能替代九模块的细化设计与逐项验证</li>
+          <li>多元化业务的成熟企业，需按业务线分别回答三问，不能一张答卷包打天下</li>
+          <li>三问答得好<b>不等于模式成立</b>——闭环只是逻辑自洽，事实层面仍需验证（卡 8-13、卡 8-14）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-02</div>
+        <h4>九模块创业情境化改造</h4>
+        <p>三问定骨架，九模块填血肉：把"为谁、如何、回报"展开成可操作的画布规则。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-06</div>
+        <h4>商业模式设计四步法</h4>
+        <p>三问想清楚之后，按"主张→资源→价值端→交付端"把答案做成完整方案。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>MVS 三闭环</h4>
+        <p>三问闭环的最小验证形态：价值闭环、交易闭环、增长闭环逐一接受现实检验。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 206—207 页</span>
+    <span>方法论卡 8-01 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡9-03 · 创业实务九大类伦理议题图谱</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+  .value.v1 .vt{color:var(--s1);}
+  .value.v2 .vt{color:var(--s2);}
+  .value.v3 .vt{color:var(--s3);}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 九环节详解 ===== */
+  .values.compact .value{padding:14px 16px;}
+  .values.compact .vt{font-size:14.5px;}
+  .values.compact .vd{font-size:13px;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=9">第 9 章 · 创业伦理</a><span class="card-nav-meta">卡 9-03 · 创业实务九大类伦理议题图谱</span><a class="card-nav-prev" href="卡9-02-伦理困境三类型诊断.html">← 卡 9-02</a><a class="card-nav-next" href="卡10-01-创业团队组建五原则.html">卡 10-01 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 9-03</span>
+    <span class="domain">教材体系 · <b>第 9 章 创业伦理</b></span>
+  </div>
+  <h1>创业实务九大类伦理议题图谱</h1>
+  <div class="oneliner">九大业务环节 × 议题清单 × 灰色地带判断基准：给创业全程做一次伦理体检。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>伦理问题很少以"要不要作恶"的面目出现，而是藏在招聘、定价、报税、取数、签合同这些日常业务动作里——<b>等你意识到它是伦理问题时，往往已经付出了代价</b>。</p>
+    <p>教材从业务视角出发，按创业过程的业务流程把常见伦理议题梳理为九大类，每一类都配有议题清单、灰色地带的判断基准与应对准则。这张卡把它做成一张<b>"创业伦理体检表"</b>：按环节逐格自查，提前发现灰色地带，提前写好应对准则。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">全流程覆盖</div>
+        <div class="vd">从用人到国际经营，九大环节各有议题清单，不留死角。</div>
+      </div>
+      <div class="value">
+        <div class="vt">灰色地带有基准</div>
+        <div class="vd">模糊地带不是"凭感觉"，教材为关键环节给出了明确判断基准。</div>
+      </div>
+      <div class="value">
+        <div class="vt">可复用为尽调清单</div>
+        <div class="vd">九环节 × 议题清单天然构成自查表，可改造为伦理体检工具。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 464" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">以业务流程为轴 · 九大环节 × 议题清单 × 灰色地带判断基准 × 应对准则</text>
+
+        <!-- ===== 第一行 ===== -->
+        <rect x="10" y="56" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="56" width="4" height="108" fill="#3b82f6"/>
+        <rect x="24" y="68" width="24" height="20" rx="6" fill="#3b82f6"/>
+        <text x="36" y="83" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">1</text>
+        <text x="56" y="83" font-size="13" font-weight="700" fill="#3b82f6">人力资源</text>
+        <text x="24" y="108" font-size="11" fill="#64748b">招聘、薪酬、解雇中的公平</text>
+        <text x="24" y="126" font-size="11" fill="#64748b">与员工隐私权边界问题</text>
+
+        <rect x="238" y="56" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="238" y="56" width="4" height="108" fill="#3b82f6"/>
+        <rect x="252" y="68" width="24" height="20" rx="6" fill="#3b82f6"/>
+        <text x="264" y="83" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">2</text>
+        <text x="284" y="83" font-size="13" font-weight="700" fill="#3b82f6">产品与营销</text>
+        <text x="252" y="108" font-size="11" fill="#64748b">产品安全与宣传真实，尊</text>
+        <text x="252" y="126" font-size="11" fill="#64748b">重消费者知情权与权益</text>
+
+        <rect x="466" y="56" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="466" y="56" width="4" height="108" fill="#3b82f6"/>
+        <rect x="480" y="68" width="24" height="20" rx="6" fill="#3b82f6"/>
+        <text x="492" y="83" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">3</text>
+        <text x="512" y="83" font-size="13" font-weight="700" fill="#3b82f6">财务与税务</text>
+        <text x="480" y="108" font-size="11" fill="#64748b">财务信息真实；税务筹划</text>
+        <text x="480" y="126" font-size="11" fill="#64748b">的名实一致问题</text>
+
+        <!-- ===== 第二行 ===== -->
+        <rect x="10" y="172" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="172" width="4" height="108" fill="#d97706"/>
+        <rect x="24" y="184" width="24" height="20" rx="6" fill="#d97706"/>
+        <text x="36" y="198.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">4</text>
+        <text x="56" y="199" font-size="13" font-weight="700" fill="#d97706">融资与投资</text>
+        <text x="24" y="224" font-size="11" fill="#64748b">资金来源正当、信息披</text>
+        <text x="24" y="242" font-size="11" fill="#64748b">露真实、审慎对待有道</text>
+        <text x="24" y="260" font-size="11" fill="#64748b">德争议的资金</text>
+
+        <rect x="238" y="172" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="238" y="172" width="4" height="108" fill="#d97706"/>
+        <rect x="252" y="184" width="24" height="20" rx="6" fill="#d97706"/>
+        <text x="264" y="198.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">5</text>
+        <text x="284" y="199" font-size="13" font-weight="700" fill="#d97706">数据与算法</text>
+        <text x="252" y="224" font-size="11" fill="#64748b">数据获取须合规（如避</text>
+        <text x="252" y="242" font-size="11" fill="#64748b">免默认勾选）；算法设</text>
+        <text x="252" y="260" font-size="11" fill="#64748b">计的影响（如防沉迷）</text>
+
+        <rect x="466" y="172" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="466" y="172" width="4" height="108" fill="#d97706"/>
+        <rect x="480" y="184" width="24" height="20" rx="6" fill="#d97706"/>
+        <text x="492" y="198.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">6</text>
+        <text x="512" y="199" font-size="13" font-weight="700" fill="#d97706">知识产权</text>
+        <text x="480" y="224" font-size="11" fill="#64748b">成果归属清晰，界定模</text>
+        <text x="480" y="242" font-size="11" fill="#64748b">仿与抄袭的边界</text>
+
+        <!-- ===== 第三行 ===== -->
+        <rect x="10" y="288" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="288" width="4" height="108" fill="#059669"/>
+        <rect x="24" y="300" width="24" height="20" rx="6" fill="#059669"/>
+        <text x="36" y="314.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">7</text>
+        <text x="56" y="315" font-size="13" font-weight="700" fill="#059669">供应链与合作</text>
+        <text x="24" y="340" font-size="11" fill="#64748b">供应商公平、合作诚信</text>
+        <text x="24" y="358" font-size="11" fill="#64748b">与履约责任</text>
+
+        <rect x="238" y="288" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="238" y="288" width="4" height="108" fill="#059669"/>
+        <rect x="252" y="300" width="24" height="20" rx="6" fill="#059669"/>
+        <text x="264" y="314.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">8</text>
+        <text x="284" y="315" font-size="13" font-weight="700" fill="#059669">社会与环境</text>
+        <text x="252" y="340" font-size="11" fill="#64748b">关注社区、环境与隐性</text>
+        <text x="252" y="358" font-size="11" fill="#64748b">利益相关者的影响</text>
+
+        <rect x="466" y="288" width="214" height="108" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="466" y="288" width="4" height="108" fill="#059669"/>
+        <rect x="480" y="300" width="24" height="20" rx="6" fill="#059669"/>
+        <text x="492" y="314.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">9</text>
+        <text x="512" y="315" font-size="13" font-weight="700" fill="#059669">国际经营</text>
+        <text x="480" y="340" font-size="11" fill="#64748b">价值标准全球统一，</text>
+        <text x="480" y="358" font-size="11" fill="#64748b">实践方式本地适应</text>
+
+        <!-- ===== 两条基准示例 ===== -->
+        <rect x="10" y="408" width="323" height="48" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="26" y="428" font-size="12" font-weight="700" fill="#3b82f6">财务环节 · 税务筹划基准</text>
+        <text x="26" y="446" font-size="11" fill="#475569">正当性取决于商业实质与法律形式是否一致</text>
+
+        <rect x="347" y="408" width="323" height="48" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="363" y="428" font-size="12" font-weight="700" fill="#059669">国际经营 · 应对准则</text>
+        <text x="363" y="446" font-size="11" fill="#475569">价值标准全球统一，实践方式本地适应</text>
+      </svg>
+      <div class="caption">图 1　创业实务九大类伦理议题图谱：九大业务环节 × 代表议题 × 两条判断基准示例</div>
+    </div>
+    <div class="quote">
+      九大环节的应对准则里藏着同一条逻辑：<b>灰色地带要有判断基准</b>——税务筹划看"商业实质与法律形式是否一致"，国际经营看"<b>价值标准全球统一，实践方式本地适应</b>"。有了基准，灰色地带才不至于变成凭感觉。
+    </div>
+  </section>
+
+  <!-- ============ 九环节详解 ============ -->
+  <section>
+    <h2>九环节详解</h2>
+    <div class="values compact">
+      <div class="value v1">
+        <div class="vt">1 · 人力资源</div>
+        <div class="vd">招聘、薪酬、考核、解雇中的公平与隐私问题，典型如员工隐私权与企业知情权的冲突。选人用人是伦理风险的第一道闸门。</div>
+      </div>
+      <div class="value v1">
+        <div class="vt">2 · 产品与营销</div>
+        <div class="vd">产品安全、宣传真实与消费者权益。营销话术的"合理夸张"与"误导"之间，是最常见的灰色地带。</div>
+      </div>
+      <div class="value v1">
+        <div class="vt">3 · 财务与税务</div>
+        <div class="vd">财务信息真实、税务筹划的正当性——判断基准是<b>商业实质与法律形式是否一致</b>，名实不符即为越界。</div>
+      </div>
+      <div class="value v2">
+        <div class="vt">4 · 融资与投资</div>
+        <div class="vd">资金来源是否正当、信息披露是否真实，以及对有道德争议的投资标的与资金的取舍。</div>
+      </div>
+      <div class="value v2">
+        <div class="vt">5 · 数据与算法</div>
+        <div class="vd">数据获取须合规——授权要真实，避免"默认勾选"式获取；算法设计要评估其社会影响，如防沉迷。</div>
+      </div>
+      <div class="value v2">
+        <div class="vt">6 · 知识产权</div>
+        <div class="vd">成果归属要清晰，划清模仿与抄袭的边界——既保护自己的成果，也不侵占他人的权益。</div>
+      </div>
+      <div class="value v3">
+        <div class="vt">7 · 供应链与合作</div>
+        <div class="vd">对供应商的公平对待、合作中的诚信与履约责任，不以强势地位转嫁风险、压榨伙伴。</div>
+      </div>
+      <div class="value v3">
+        <div class="vt">8 · 社会与环境</div>
+        <div class="vd">关注社区、环境以及未来世代等隐性利益相关者——他们的声音最容易被忽视，代价却由社会承担。</div>
+      </div>
+      <div class="value v3">
+        <div class="vt">9 · 国际经营</div>
+        <div class="vd">跨国经营中的文化差异与规则差异——<b>价值标准全球统一，实践方式本地适应</b>，不借"入乡随俗"放松底线。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐环节自查。</b>对照九宫格从 1 到 9 过一遍自己的业务，标记命中的议题——建议每季度一次，业务模式变化后随时加查。</li>
+      <li><b>区分性质。</b>对每个命中的议题先判断：是"明确违规"还是"灰色地带"。前者立即整改，后者进入下一步检核。</li>
+      <li><b>对照基准检核。</b>灰色地带逐条对照判断基准——税务看名实一致，数据看授权真实，营销看是否误导消费者。</li>
+      <li><b>预写应对准则。</b>为高频议题提前写好应对准则，写进制度与流程，而不是等事发后再临时表态。</li>
+      <li><b>升级处理难题。</b>重大且两难的灰色问题，升级到伦理决策流程（配套卡 9-01）走完整的四步法裁决。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>创业全周期的<b>例行伦理自查</b>：九个环节逐格过，不留死角</li>
+          <li>投资尽调、管理咨询中的<b>"伦理体检"</b>：快速生成风险清单</li>
+          <li>培训与工作坊中按业务环节组织<b>案例讨论</b>的分诊框架</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>图谱是"常见问题提示"而非法律意见，涉法事项须寻求专业意见</li>
+          <li>不同行业、法域的议题权重差异大，需结合自身业务<b>增删与排序</b></li>
+          <li>图谱负责<b>发现问题</b>，裁决与权衡需配合伦理决策四步法，不能单卡定案</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 9-01</div>
+        <h4>伦理决策四步法</h4>
+        <p>本卡负责"发现议题"，卡 9-01 负责"裁决议题"：澄清事实 → 诊断问题 → 设计方案与检验 → 执行反馈。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 9-02</div>
+        <h4>伦理困境三类型诊断</h4>
+        <p>自查命中的难题先分诊：权利冲突型、公平质疑型还是功利计算型，再匹配对应的分析工具。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-05</div>
+        <h4>股权结构设计七模块</h4>
+        <p>股权分配是"公平质疑型"议题的高发区，本卡发现问题后，用卡 10-05 完成落地设计。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 9 章，第 238—247 页</span>
+    <span>方法论卡 9-03 · 第 9 章 创业伦理</span>
+  </div>
+
+</div>
+</body>
+</html>

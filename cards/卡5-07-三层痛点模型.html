@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-07 · 三层痛点模型</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 层级详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-07 · 三层痛点模型＋待办任务访谈四原则</span><a class="card-nav-prev" href="卡5-06-用户功能场景三角交叉验证.html">← 卡 5-06</a><a class="card-nav-next" href="卡5-08-机会假设命题句式.html">卡 5-08 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-07</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>三层痛点模型</h1>
+  <div class="oneliner">把用户抱怨按深浅分三层，挖到底层再动手。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>多数创业者只盯着<b>"加载慢""价格贵"</b>这类一眼可见的抱怨，做出来的东西解决的是表层问题——<b>"最容易被识别，也最容易被模仿"</b>（P142）。你能看见的差距，对手也能看见。</p>
+    <p>当大家的功能都够用时，竞争就转向<b>情感与身份层面</b>。没有分层视角，就看不到这些被掩盖的机会：同样的抱怨，有人在意的是效率，有人在意的是感受，有人在意的是"这东西让我怎么看待自己"。本模型给出由浅入深的痛点分层，以及每一层各自的解法方向。</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">分层看抱怨</div>
+        <div class="vd">同一条抱怨背后可能是功能、情感或身份问题，先归类再出手。</div>
+      </div>
+      <div class="value">
+        <div class="vt">避开模仿红海</div>
+        <div class="vd">表层解法人人会做；情感与身份层的空白，才是差异化的入口。</div>
+      </div>
+      <div class="value">
+        <div class="vt">解法配层级</div>
+        <div class="vd">优化功能、注入情感关怀、重构身份关系——三档解法对应三层痛点。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 410" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 表层 ===== -->
+        <polygon points="50,24 420,24 370,92 100,92" fill="#3b82f6"/>
+        <text x="235" y="50" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">表层痛点 · 功能不满意</text>
+        <text x="235" y="76" text-anchor="middle" font-size="12" fill="#ffffff">「加载慢」「价格贵」「操作复杂」</text>
+
+        <line x1="235" y1="96" x2="235" y2="108" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="252" y="107" font-size="11" fill="#64748b">追问：这带来什么感受？</text>
+
+        <!-- ===== 中层 ===== -->
+        <polygon points="100,112 370,112 330,180 140,180" fill="#d97706"/>
+        <text x="235" y="138" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">中层痛点 · 情感不满足</text>
+        <text x="235" y="164" text-anchor="middle" font-size="12" fill="#ffffff">焦虑 · 羞耻 · 无力 · 挫败</text>
+
+        <line x1="235" y1="184" x2="235" y2="196" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="252" y="195" font-size="11" fill="#64748b">追问：这让他怎么看待自己？</text>
+
+        <!-- ===== 深层 ===== -->
+        <polygon points="140,200 330,200 300,268 170,268" fill="#059669"/>
+        <text x="235" y="226" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">深层 · 身份不一致</text>
+        <text x="235" y="252" text-anchor="middle" font-size="11" fill="#ffffff">「戴它，意味着我老了」</text>
+
+        <!-- ===== 右侧三档解法 ===== -->
+        <rect x="460" y="24" width="208" height="68" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="564" y="50" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">解法 · 优化功能、提升效率</text>
+        <text x="564" y="74" text-anchor="middle" font-size="11" fill="#475569">性能 · 操作 · 价格 · 响应</text>
+        <line x1="398" y1="58" x2="452" y2="58" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <rect x="460" y="112" width="208" height="68" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="564" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">解法 · 注入情感关怀</text>
+        <text x="564" y="162" text-anchor="middle" font-size="11" fill="#475569">让用户感到被理解、被支持</text>
+        <line x1="353" y1="146" x2="452" y2="146" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <rect x="460" y="200" width="208" height="68" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="564" y="226" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">解法 · 重构产品与身份的关系</text>
+        <text x="564" y="250" text-anchor="middle" font-size="11" fill="#475569">让产品成为身份认同的一部分</text>
+        <line x1="318" y1="234" x2="452" y2="234" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 底部提示 ===== -->
+        <rect x="40" y="296" width="600" height="34" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="318" text-anchor="middle" font-size="12" fill="#475569">表层痛点最容易被识别，也最容易被模仿——功能够用后，竞争转向情感与身份层面</text>
+
+        <rect x="40" y="342" width="600" height="34" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="340" y="364" text-anchor="middle" font-size="12" fill="#dc2626">被主流产品忽视的用户群体，其痛点往往更尖锐、更迫切（P142）</text>
+
+        <text x="340" y="398" text-anchor="middle" font-size="11" fill="#94a3b8">一条抱怨可以同时跨层；功能层仍是一切的地基，不能跳过表层直接空谈身份</text>
+      </svg>
+      <div class="caption">图 1　三层痛点模型：表层抱怨 → 中层情绪 → 深层身份，右侧对应三档解法</div>
+    </div>
+  </section>
+
+  <!-- ============ 逐层详解 ============ -->
+  <section>
+    <h2>逐层详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">表层</span>
+        <h3>功能层面的不满意</h3>
+        <span class="role">解法方向：<b>优化功能、提升效率</b></span>
+      </div>
+      <div class="q">用户说什么：<b>"不好用、太贵、太慢、太麻烦。"</b></div>
+      <dl class="kv">
+        <dt>典型表现</dt>
+        <dd>性能不足、操作复杂、价格过高、服务响应慢——一听就懂、一量就知道的功能性问题。</dd>
+        <dt>问题所在</dt>
+        <dd>这一层的痛点<b>"最容易被识别，也最容易被模仿"</b>（P142）：你修得快，对手抄得更快。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">停在表层</span><span class="td">把功能清单全部打勾就认为机会做完了，看不见下面两层的差异化空间。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">中层</span>
+        <h3>情感层面的不满足</h3>
+        <span class="role">解法方向：<b>注入情感关怀</b></span>
+      </div>
+      <div class="q">用户感受到什么：<b>焦虑、羞耻、无力感、挫败感。</b></div>
+      <dl class="kv">
+        <dt>典型表现</dt>
+        <dd>使用过程中的情绪负担：老年人面对智能设备的挫败感、新手父母备辅食的焦虑——这些情绪<b>"往往被现有产品忽视"</b>（P142）。</dd>
+        <dt>解法方向</dt>
+        <dd>在设计中注入情感关怀，<b>"让用户在使用过程中感到被理解、被支持"</b>。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">情绪当口号</span><span class="td">把"情感关怀"写成宣传语而不是设计动作，用户用起来依然感到不被理解。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">深层</span>
+        <h3>身份层面的不一致</h3>
+        <span class="role">解法方向：<b>重构产品与身份的关系</b></span>
+      </div>
+      <div class="q">用户怎么看待自己：<b>"用它，意味着我是什么人。"</b></div>
+      <dl class="kv">
+        <dt>典型表现</dt>
+        <dd>产品与用户的自我认同冲突：助听器用户拒绝佩戴，因为"戴助听器意味着我老了、残疾了"（P142）——不是产品不好，是身份过不去。</dd>
+        <dt>解法方向</dt>
+        <dd><b>"重新定义产品与用户之间的关系，让产品成为用户身份认同的一部分"</b>（P142）。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">仅凭推理下结论</span><span class="td">深层痛点涉及身份认同，验证难度大，不宜只靠推理就断定用户"应该"这么想。</span></div>
+      </div>
+    </div>
+
+    <div class="quote">
+      配套提示：<b>"被主流产品忽视的用户群体，其痛点往往更尖锐、更迫切。"</b>（P142）边缘用户（老年人、残障人士等）值得单独核查一遍痛点清单。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>收集抱怨。</b>从访谈、客服记录、社群帖子里摘出用户原话——抱怨要原样的，不要转述加工过的。</li>
+      <li><b>分层归类。</b>逐条判断它属于功能、情感还是身份层面，注意一条抱怨可以同时跨层，不必强行单选。</li>
+      <li><b>向下追问。</b>对表层抱怨连问两问："这带来什么感受？""这让他怎么看待自己？"把中层、深层痛点逼出来。</li>
+      <li><b>匹配解法。</b>按所在层选择解法：优化功能、注入情感关怀，或重构产品与身份的关系，解法与层级错位会白费力气。</li>
+      <li><b>核查边缘用户。</b>特别核查老年人、残障人士等被主流产品忽视的群体的痛点清单——他们的痛点往往更尖锐、更迫切。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>用户已有产品在用、需要找<b>差异化切入口</b>的场景</li>
+          <li>配合<b>"待办任务访谈法"</b>使用效果最佳：关注情境而非属性、行为而非态度、情绪而非事实、"未消费"的时刻（P142）</li>
+          <li>分析身边人抱怨属于哪一层，作为日常训练</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>深层痛点涉及身份认同，<b>验证难度大，不宜仅凭推理下结论</b></li>
+          <li><b>功能层仍是一切的地基</b>，不能跳过表层直接空谈身份</li>
+          <li>一条抱怨可同时跨层，归类时避免非此即彼的一刀切</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-06</div>
+        <h4>用户—功能—场景三角交叉验证</h4>
+        <p>痛点找到后，回到三角验证：这个缺口是否在用户、功能、场景多个维度同时出现。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-09</div>
+        <h4>四维度两阶段机会评估框架</h4>
+        <p>深层痛点转化的机会方案，进入市场、团队、资源、时机四维评估再投入。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-08</div>
+        <h4>机会假设命题句式</h4>
+        <p>把挖到的痛点写成"解决什么问题、谁愿意付费"的可验证命题。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 142 页</span>
+    <span>方法论卡 5-07 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

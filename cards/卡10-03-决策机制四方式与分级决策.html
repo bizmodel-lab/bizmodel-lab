@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡10-03 · 决策机制四方式与分级决策</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 方式详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=10">第 10 章 · 创业组织</a><span class="card-nav-meta">卡 10-03 · 决策机制四方式＋分级决策</span><a class="card-nav-prev" href="卡10-02-创业团队结构三型模型.html">← 卡 10-02</a><a class="card-nav-next" href="卡10-04-冲突管理四步递进.html">卡 10-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 10-03</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>决策机制四方式与分级决策</h1>
+  <div class="oneliner">共识、多数、授权、创始人四种方式 + 分级决策：让每一类事都有它的拍板方式。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业团队最常见的决策病有两种：一是<b>什么都开会</b>——小事议而不决，贻误战机；二是<b>什么都老大拍板</b>——速度是快了，团队却越来越沉默，能力也越来越弱。</p>
+    <p>教材的解法分两层：先按<b>事项性质、紧急程度和团队成熟度</b>，在共识、多数、授权、创始人四种决策方式中做匹配；再叠加<b>分级决策机制</b>——事先划清哪些事必须广泛共识、哪些事可以由谁定。这张卡帮你把"怎么拍板"从个人习惯变成团队制度。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">方式与事项匹配</div>
+        <div class="vd">没有最好的方式，只有最匹配的方式——重大事共识、紧急事快断。</div>
+      </div>
+      <div class="value">
+        <div class="vt">分级授权</div>
+        <div class="vd">把"谁对哪类事拍板"写下来，减少反复请示与越权决定。</div>
+      </div>
+      <div class="value">
+        <div class="vt">随成熟度演进</div>
+        <div class="vd">团队越成熟，授权越多——决策机制跟着团队一起成长。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 500" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">匹配依据：事项性质 × 紧急程度 × 团队成熟度——没有最好的方式，只有最匹配的方式</text>
+
+        <!-- ===== 四种决策方式 ===== -->
+        <rect x="11" y="56" width="157" height="201.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="11" y="56" width="157" height="30" rx="10" fill="#3b82f6"/>
+        <rect x="11" y="72" width="157" height="14" fill="#3b82f6"/>
+        <text x="89" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">共识决策</text>
+        <text x="23" y="106" font-size="11" font-weight="700" fill="#3b82f6">适用</text>
+        <text x="23" y="122" font-size="11" fill="#64748b">重大且需广泛认同的</text>
+        <text x="23" y="138" font-size="11" fill="#64748b">事项（如融资、并购）</text>
+        <text x="23" y="160" font-size="11" font-weight="700" fill="#3b82f6">优点</text>
+        <text x="23" y="176" font-size="11" fill="#64748b">认同度高，执行阻</text>
+        <text x="23" y="192" font-size="11" fill="#64748b">力小</text>
+        <text x="23" y="214" font-size="11" font-weight="700" fill="#dc2626">风险</text>
+        <text x="23" y="230" font-size="11" fill="#64748b">耗时较长，紧急事</text>
+        <text x="23" y="246" font-size="11" fill="#64748b">项易贻误时机</text>
+
+        <rect x="178" y="56" width="157" height="201.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="178" y="56" width="157" height="30" rx="10" fill="#d97706"/>
+        <rect x="178" y="72" width="157" height="14" fill="#d97706"/>
+        <text x="256" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">多数决策</text>
+        <text x="190" y="106" font-size="11" font-weight="700" fill="#d97706">适用</text>
+        <text x="190" y="122" font-size="11" fill="#64748b">重要但可接受少数</text>
+        <text x="190" y="138" font-size="11" fill="#64748b">分歧的事项</text>
+        <text x="190" y="160" font-size="11" font-weight="700" fill="#d97706">优点</text>
+        <text x="190" y="176" font-size="11" fill="#64748b">决策较快，多数</text>
+        <text x="190" y="192" font-size="11" fill="#64748b">人认同</text>
+        <text x="190" y="214" font-size="11" font-weight="700" fill="#dc2626">风险</text>
+        <text x="190" y="230" font-size="11" fill="#64748b">少数方挫败，需</text>
+        <text x="190" y="246" font-size="11" fill="#64748b">防情绪对立</text>
+
+        <rect x="345" y="56" width="157" height="201.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="345" y="56" width="157" height="30" rx="10" fill="#059669"/>
+        <rect x="345" y="72" width="157" height="14" fill="#059669"/>
+        <text x="423" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">授权决策</text>
+        <text x="357" y="106" font-size="11" font-weight="700" fill="#059669">适用</text>
+        <text x="357" y="122" font-size="11" fill="#64748b">专业性强的事项，</text>
+        <text x="357" y="138" font-size="11" fill="#64748b">授权专业负责人</text>
+        <text x="357" y="160" font-size="11" font-weight="700" fill="#059669">优点</text>
+        <text x="357" y="176" font-size="11" fill="#64748b">发挥专业判断，</text>
+        <text x="357" y="192" font-size="11" fill="#64748b">响应速度快</text>
+        <text x="357" y="214" font-size="11" font-weight="700" fill="#dc2626">风险</text>
+        <text x="357" y="230" font-size="11" fill="#64748b">授权边界不清易</text>
+        <text x="357" y="246" font-size="11" fill="#64748b">失控或推诿</text>
+
+        <rect x="512" y="56" width="157" height="201.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="512" y="56" width="157" height="30" rx="10" fill="#475569"/>
+        <rect x="512" y="72" width="157" height="14" fill="#475569"/>
+        <text x="590" y="75.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">创始人决策</text>
+        <text x="524" y="106" font-size="11" font-weight="700" fill="#475569">适用</text>
+        <text x="524" y="122" font-size="11" fill="#64748b">紧急事项与早期</text>
+        <text x="524" y="138" font-size="11" fill="#64748b">重大取舍</text>
+        <text x="524" y="160" font-size="11" font-weight="700" fill="#475569">优点</text>
+        <text x="524" y="176" font-size="11" fill="#64748b">决策最快，责任</text>
+        <text x="524" y="192" font-size="11" fill="#64748b">集中清晰</text>
+        <text x="524" y="214" font-size="11" font-weight="700" fill="#dc2626">风险</text>
+        <text x="524" y="230" font-size="11" fill="#64748b">易形成集权依</text>
+        <text x="524" y="246" font-size="11" fill="#64748b">赖，削弱参与感</text>
+
+        <!-- 过渡箭头与副题 -->
+        <line x1="340" y1="252" x2="340" y2="268" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="10" y="288" font-size="13" font-weight="700" fill="#1e293b">分级决策机制：先分事，再定方式</text>
+
+        <!-- ===== 分级决策金字塔 ===== -->
+        <polygon points="235,300 445,300 485,352 195,352" fill="#3b82f6"/>
+        <text x="340" y="322" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">共识决策</text>
+        <text x="340" y="342" text-anchor="middle" font-size="11" fill="#ffffff">融资、并购等重大事项</text>
+        <text x="188" y="330" text-anchor="end" font-size="11" font-weight="700" fill="#dc2626">必须广泛共识</text>
+
+        <polygon points="195,358 485,358 525,410 155,410" fill="#d97706"/>
+        <text x="340" y="380" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">多数决策 / 授权决策</text>
+        <text x="340" y="400" text-anchor="middle" font-size="11" fill="#ffffff">重要经营与专业事项</text>
+
+        <polygon points="155,416 525,416 565,468 115,468" fill="#059669"/>
+        <text x="340" y="438" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">创始人 / 专业负责人决策</text>
+        <text x="340" y="458" text-anchor="middle" font-size="11" fill="#ffffff">日常经营与常规事项</text>
+        <text x="572" y="445" font-size="11" font-weight="700" fill="#059669">可快速自主决定</text>
+
+        <!-- 底部注记 -->
+        <text x="340" y="492" text-anchor="middle" font-size="11" fill="#94a3b8">分级不是一次定死：随团队成熟度与业务演进，逐步上移授权边界</text>
+      </svg>
+      <div class="caption">图 1　四种决策方式 × 匹配依据 + 分级决策金字塔</div>
+    </div>
+    <div class="quote">
+      高效的创业团队往往采用<b>分级决策机制</b>：明确哪些事项必须达成广泛共识（如融资、并购），哪些事项可由创始人或专业负责人决定。
+    </div>
+  </section>
+
+  <!-- ============ 方式详解 ============ -->
+  <section>
+    <h2>方式详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">方式一</span>
+        <h3>共识决策</h3>
+        <span class="role">适用：<b>重大且需广泛认同的事项</b></span>
+      </div>
+      <dl class="kv">
+        <dt>典型事项</dt>
+        <dd>融资、并购等牵动全局、影响每一位成员的重大事项。</dd>
+        <dt>优点</dt>
+        <dd>认同度高，执行阻力小——大家都点过头的事，推进时不需要反复动员。</dd>
+        <dt>风险</dt>
+        <dd>耗时较长，紧急事项容易贻误时机；还可能出现"为共识而共识"的表面一致。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">方式二</span>
+        <h3>多数决策</h3>
+        <span class="role">适用：<b>重要但可接受少数分歧的事项</b></span>
+      </div>
+      <dl class="kv">
+        <dt>典型事项</dt>
+        <dd>重要但方向可逆、少数方可以保留意见的经营事项。</dd>
+        <dt>优点</dt>
+        <dd>决策较快且多数人认同，是效率与认同之间的平衡点。</dd>
+        <dt>风险</dt>
+        <dd>少数方的挫败感会累积，需防止演变为情绪对立与站队。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">方式三</span>
+        <h3>授权决策</h3>
+        <span class="role">适用：<b>专业性强的事项</b></span>
+      </div>
+      <dl class="kv">
+        <dt>典型事项</dt>
+        <dd>技术选型、投放策略等专业门槛高的事项，授权给专业负责人。</dd>
+        <dt>优点</dt>
+        <dd>发挥专业判断，响应速度快，也让负责人在担责中成长。</dd>
+        <dt>风险</dt>
+        <dd>授权边界不清，容易出现失控或推诿——授权必须同时明确"权限 + 汇报"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage">
+      <div class="stage-head">
+        <span class="sn" style="background:var(--ink-2);">方式四</span>
+        <h3>创始人决策</h3>
+        <span class="role">适用：<b>紧急事项与早期重大取舍</b></span>
+      </div>
+      <dl class="kv">
+        <dt>典型事项</dt>
+        <dd>窗口期极短的紧急事项，以及早期需要快速拍板的重大取舍。</dd>
+        <dt>优点</dt>
+        <dd>决策最快、责任集中清晰，与创业早期"决策集权"的组织特质相匹配。</dd>
+        <dt>风险</dt>
+        <dd>易形成集权依赖，削弱团队参与感——用得越多，团队越沉默。教材在知识链接中还讨论了"创始人模式"的争论，可作延伸阅读。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">叠加层</span>
+        <h3>分级决策机制</h3>
+        <span class="role">四种方式的<b>组合使用规则</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心做法</dt>
+        <dd>事先划清两类边界：<b>哪些事项必须达成广泛共识（如融资、并购），哪些事项可由创始人或专业负责人决定</b>——写成书面的决策权限划分表。</dd>
+        <dt>分级依据</dt>
+        <dd>不是层级高低，而是<b>事项的重要性 × 影响范围</b>：越重大、越不可逆的事，越往上收；越日常、越专业的事，越往下放。</dd>
+        <dt>动态调整</dt>
+        <dd>随团队成熟度提升逐步上移授权边界，缩小创始人直接拍板的范围，让决策机制与团队一起成长。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列事项清单。</b>把团队正在处理和即将面对的决策事项全部列出，按重要性与紧急程度分档。</li>
+      <li><b>逐档定方式。</b>对照四方式的适用条件匹配：重大事共识、重要事多数或授权、紧急事创始人快断。</li>
+      <li><b>写权限表。</b>形成书面的"决策权限划分表"：每类事项写清拍板人、需咨询谁、需知会谁。</li>
+      <li><b>设例外规则。</b>约定紧急情况下的临机处置权限与事后报备机制，避免"先斩后奏"变成常态。</li>
+      <li><b>定期复审。</b>每季度或团队扩编后复审一次权限表，随成熟度上移授权边界。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>三人以上合伙团队的<b>决策规则设计</b></li>
+          <li>会议冗长、决策反复"<b>翻烧饼</b>"的团队的纠偏</li>
+          <li>引入高管与专业负责人后的<b>授权体系搭建</b></li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>两人团队的方式选择有限，重点是<b>事先约定僵局裁决规则</b>（配合卡 10-04）</li>
+          <li>方式匹配解决的是"谁来定、怎么定"，<b>不能替代决策质量本身</b></li>
+          <li>分级应动态调整，切勿一次定死、越用越僵</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>团队结构三型模型</h4>
+        <p>决策方式要落在权力结构上：星状、网状、虚拟星状三型与决策方式的配套选择。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-04</div>
+        <h4>冲突管理四步递进</h4>
+        <p>事先约定的决策规则是冲突最有效的预防手段——两卡配合，先立规则再谈干预。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-05</div>
+        <h4>股权结构设计七模块</h4>
+        <p>投票权与控制权的落地设计：本卡管"日常怎么拍板"，卡 10-05 管"底层权力怎么配置"。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 10 章，第 259—261 页</span>
+    <span>方法论卡 10-03 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

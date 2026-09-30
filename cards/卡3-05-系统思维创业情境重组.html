@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-05 · 系统思维创业情境重组</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 模块详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:96px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:84px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-05 · 系统思维创业情境重组（5模块＋3系统原型＋4杠杆点）</span><a class="card-nav-prev" href="卡3-04-第一性原理三阶段法.html">← 卡 3-04</a><a class="card-nav-next" href="卡3-06-逆向思维两维度与闭环.html">卡 3-06 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-05</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>系统思维创业情境重组</h1>
+  <div class="oneliner">五个模块看懂系统 · 三种原型对号入座 · 四个杠杆点精准干预 —— 从"头痛医头"到"结构治病"。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业到一定阶段，问题就不再是"单个动作对不对"，而是<b>"整个系统怎么转"</b>：为什么越促销越亏？为什么加了人产能却上不去？为什么每次整改都只能好一阵子？头痛医头的干预之所以越治越乱，是因为<b>症状背后的结构没有变</b>。</p>
+    <p>系统思维源自德内拉·梅多斯《系统之美》，教材结合创业情境把这些概念重组为五个模块。它带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看懂结构</div>
+        <div class="vd">用反馈回路、时间延迟、存量流量三个模块，把生意画成一张会动的图。</div>
+      </div>
+      <div class="value">
+        <div class="vt">识别原型</div>
+        <div class="vd">三种反复出现的系统陷阱结构，让"怪圈"有名字、可对号入座。</div>
+      </div>
+      <div class="value">
+        <div class="vt">找到支点</div>
+        <div class="vd">四类杠杆点指明"在哪里用力最省力"，避免到处救火。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 600" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 第一层：诊断概念 ===== -->
+        <rect x="10" y="8" width="660" height="30" rx="6" fill="#3b82f6"/>
+        <text x="340" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第一层 · 诊断概念：三个基础模块看懂系统</text>
+
+        <rect x="10" y="46" width="210" height="160" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,56 a10,10 0 0 1 10,-10 h190 a10,10 0 0 1 10,10 v16 h-210 z" fill="#3b82f6"/>
+        <text x="115" y="64" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">反馈回路</text>
+        <text x="24" y="94" font-size="11" font-weight="700" fill="#3b82f6">增强回路</text>
+        <text x="24" y="112" font-size="11" fill="#334155">增长引擎 · 数据飞轮</text>
+        <text x="24" y="134" font-size="11" font-weight="700" fill="#3b82f6">调节回路</text>
+        <text x="24" y="152" font-size="11" fill="#334155">划定增长的天花板</text>
+        <text x="24" y="176" font-size="11" fill="#dc2626">警惕：烧钱补贴</text>
+        <text x="24" y="194" font-size="11" fill="#dc2626">式的「伪增强回路」</text>
+
+        <rect x="235" y="46" width="210" height="160" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M235,56 a10,10 0 0 1 10,-10 h190 a10,10 0 0 1 10,10 v16 h-210 z" fill="#d97706"/>
+        <text x="340" y="64" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">时间延迟</text>
+        <text x="249" y="94" font-size="11" fill="#334155">后果滞后于行动</text>
+        <text x="249" y="112" font-size="11" fill="#334155">两大风险：过早放弃</text>
+        <text x="249" y="130" font-size="11" fill="#334155">与错误归因</text>
+        <text x="249" y="154" font-size="11" fill="#334155">对策：把大延迟动作</text>
+        <text x="249" y="172" font-size="11" fill="#334155">拆成小延迟实验</text>
+        <text x="340" y="196" text-anchor="middle" font-size="11" fill="#94a3b8">例：3 城试点 · 6 周验证</text>
+
+        <rect x="460" y="46" width="210" height="160" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M460,56 a10,10 0 0 1 10,-10 h190 a10,10 0 0 1 10,10 v16 h-210 z" fill="#059669"/>
+        <text x="565" y="64" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">存量与流量</text>
+        <text x="474" y="94" font-size="11" font-weight="700" fill="#059669">存量 ＝ 流入 − 流出</text>
+        <text x="474" y="118" font-size="11" fill="#334155">存量思维，盯三个数：</text>
+        <text x="474" y="142" font-size="11" fill="#334155">现金跑道</text>
+        <text x="474" y="162" font-size="11" fill="#334155">活跃用户</text>
+        <text x="474" y="182" font-size="11" fill="#334155">可重复收入</text>
+
+        <!-- 下降箭头 1 -->
+        <line x1="340" y1="214" x2="340" y2="238" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="352" y="232" font-size="11" fill="#475569">用概念诊断</text>
+
+        <!-- ===== 第二层：系统原型 ===== -->
+        <rect x="10" y="244" width="660" height="30" rx="6" fill="#d97706"/>
+        <text x="340" y="264" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第二层 · 系统原型：三种反复出现的陷阱结构</text>
+
+        <rect x="10" y="282" width="210" height="100" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <path d="M10,292 a10,10 0 0 1 10,-10 h190 a10,10 0 0 1 10,10 v14 h-210 z" fill="#d97706"/>
+        <text x="115" y="298.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">饮鸩止渴</text>
+        <text x="115" y="330" text-anchor="middle" font-size="11" fill="#334155">用短期补救掩盖症状</text>
+        <text x="115" y="348" text-anchor="middle" font-size="11" fill="#334155">副作用不断累积</text>
+        <text x="115" y="366" text-anchor="middle" font-size="11" fill="#334155">根本问题越拖越重</text>
+
+        <rect x="235" y="282" width="210" height="100" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <path d="M235,292 a10,10 0 0 1 10,-10 h190 a10,10 0 0 1 10,10 v14 h-210 z" fill="#d97706"/>
+        <text x="340" y="298.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">增长上限</text>
+        <text x="340" y="330" text-anchor="middle" font-size="11" fill="#334155">增长引擎撞上隐性</text>
+        <text x="340" y="348" text-anchor="middle" font-size="11" fill="#334155">调节回路，越用力</text>
+        <text x="340" y="366" text-anchor="middle" font-size="11" fill="#334155">增长越吃力</text>
+
+        <rect x="460" y="282" width="210" height="100" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <path d="M460,292 a10,10 0 0 1 10,-10 h190 a10,10 0 0 1 10,10 v14 h-210 z" fill="#d97706"/>
+        <text x="565" y="298.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">目标侵蚀</text>
+        <text x="565" y="330" text-anchor="middle" font-size="11" fill="#334155">绩效不佳时悄悄</text>
+        <text x="565" y="348" text-anchor="middle" font-size="11" fill="#334155">调低目标，标准</text>
+        <text x="565" y="366" text-anchor="middle" font-size="11" fill="#334155">在不知不觉中下滑</text>
+
+        <!-- 下降箭头 2 -->
+        <line x1="340" y1="390" x2="340" y2="414" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="352" y="408" font-size="11" fill="#475569">选点干预</text>
+
+        <!-- ===== 第三层：杠杆点 ===== -->
+        <rect x="10" y="420" width="660" height="30" rx="6" fill="#059669"/>
+        <text x="340" y="440" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第三层 · 杠杆点：四两拨千斤的干预位置</text>
+
+        <rect x="10" y="458" width="155" height="100" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <path d="M10,468 a10,10 0 0 1 10,-10 h135 a10,10 0 0 1 10,10 v14 h-155 z" fill="#059669"/>
+        <text x="87" y="474.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">改变系统目标</text>
+        <text x="87" y="508" text-anchor="middle" font-size="11" fill="#334155">重新定义系统</text>
+        <text x="87" y="526" text-anchor="middle" font-size="11" fill="#334155">追求什么结果</text>
+
+        <rect x="178" y="458" width="155" height="100" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <path d="M178,468 a10,10 0 0 1 10,-10 h135 a10,10 0 0 1 10,10 v14 h-155 z" fill="#059669"/>
+        <text x="255" y="474.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">改变信息流动</text>
+        <text x="255" y="508" text-anchor="middle" font-size="11" fill="#334155">让关键信息流到</text>
+        <text x="255" y="526" text-anchor="middle" font-size="11" fill="#334155">需要它的人手里</text>
+
+        <rect x="346" y="458" width="155" height="100" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <path d="M346,468 a10,10 0 0 1 10,-10 h135 a10,10 0 0 1 10,10 v14 h-155 z" fill="#059669"/>
+        <text x="423" y="474.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">改变系统规则</text>
+        <text x="423" y="508" text-anchor="middle" font-size="11" fill="#334155">调整准入、激励</text>
+        <text x="423" y="526" text-anchor="middle" font-size="11" fill="#334155">与分配的规则</text>
+
+        <rect x="514" y="458" width="155" height="100" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <path d="M514,468 a10,10 0 0 1 10,-10 h135 a10,10 0 0 1 10,10 v14 h-155 z" fill="#059669"/>
+        <text x="591" y="474.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">改变心智模式</text>
+        <text x="591" y="508" text-anchor="middle" font-size="11" fill="#334155">升级决策者的</text>
+        <text x="591" y="526" text-anchor="middle" font-size="11" fill="#334155">底层假设与认知</text>
+
+        <!-- 底部提示 -->
+        <text x="340" y="584" text-anchor="middle" font-size="11" fill="#94a3b8">使用顺序：先用三个模块看懂系统 → 用三种原型对号入座 → 再挑一个杠杆点精准干预</text>
+      </svg>
+      <div class="caption">图 1　系统思维三层结构：基础模块（5 个概念）→ 系统原型（3 种）→ 杠杆点（4 类）</div>
+    </div>
+    <div class="quote">
+      系统思维的核心动作是<b>换一层看问题</b>：从"这件事谁做错了"上移到"是什么结构让这件事必然发生"——结构不变，换人也没用；结构一变，<b>同一个团队会自己长出不同的行为</b>。
+    </div>
+  </section>
+
+  <!-- ============ 模块详解 ============ -->
+  <section>
+    <h2>五模块详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">模块一</span>
+        <h3>反馈回路</h3>
+        <span class="role">系统的<b>发动机与刹车</b></span>
+      </div>
+      <div class="q">回答的问题："是什么在推动我，是什么在拽住我？"</div>
+      <dl class="kv">
+        <dt>增强回路</dt>
+        <dd>结果反过来强化原因，越滚越大——<b>增长引擎、数据飞轮</b>都属此类。</dd>
+        <dt>调节回路</dt>
+        <dd>系统自我稳定的力量，<b>划定增长的天花板</b>：产能、口碑、管理带宽，都可能是那只无形的手。</dd>
+        <dt>重点警惕</dt>
+        <dd><b>"烧钱补贴伪增强回路"</b>——用补贴买来的增长在补贴停止后消失，它看起来像飞轮，其实是漏斗。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">模块二</span>
+        <h3>时间延迟</h3>
+        <span class="role">系统的<b>时差</b></span>
+      </div>
+      <div class="q">回答的问题："为什么做了正确的事，却迟迟看不到效果？"</div>
+      <dl class="kv">
+        <dt>两大风险</dt>
+        <dd><b>过早放弃</b>（动作还没生效就撤了）与<b>错误归因</b>（把上一轮动作的结果记到这一轮头上）。</dd>
+        <dt>对策</dt>
+        <dd><b>将大延迟动作拆解为小延迟实验</b>——例如先做 3 个城市的试点，把验证周期压缩到 6 周，让反馈赶在耐心耗尽之前到达。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">模块三</span>
+        <h3>存量与流量</h3>
+        <span class="role">系统的<b>蓄水池</b></span>
+      </div>
+      <div class="q">回答的问题："池子里还剩多少水？进水还是出水快？"</div>
+      <dl class="kv">
+        <dt>基本公式</dt>
+        <dd><b>存量 ＝ 流入 − 流出</b>——账上的钱、手里的用户，都是存量；每笔收支、每次留存流失，都是流量。</dd>
+        <dt>存量思维</dt>
+        <dd>盯三个数：<b>现金跑道、活跃用户、可重复收入</b>。流量的热闹是幻觉，存量才是底气。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">模块四</span>
+        <h3>系统原型</h3>
+        <span class="role">给怪圈<b>起名字</b></span>
+      </div>
+      <div class="q">三种在创业情境中反复出现的陷阱结构。</div>
+      <dl class="kv">
+        <dt>饮鸩止渴</dt>
+        <dd>用短期补救掩盖症状，副作用不断累积，根本问题越拖越重——用降价保住销量、透支质量赶工期，都是典型开场。</dd>
+        <dt>增长上限</dt>
+        <dd>增长引擎撞上隐性调节回路：越用力推增长，天花板回压越强——该找的是那只拽住你的手，而不是更用力。</dd>
+        <dt>目标侵蚀</dt>
+        <dd>绩效不佳时悄悄调低目标，标准在不知不觉中下滑——每次"这次特殊"，都是一次系统性的退让。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">模块五</span>
+        <h3>杠杆点</h3>
+        <span class="role">在哪里用力<b>最省力</b></span>
+      </div>
+      <div class="q">教材从系统干预的支点中选列四类。</div>
+      <dl class="kv">
+        <dt>改变系统目标</dt>
+        <dd>重新定义系统追求的结果——目标一换，整个系统的行为随之重排。</dd>
+        <dt>改变信息流动</dt>
+        <dd>让关键信息流到需要它的人手里，有时仅此一项就能改变行为。</dd>
+        <dt>改变系统规则</dt>
+        <dd>调整准入、激励与分配的规则——规则决定人们"怎么玩"。</dd>
+        <dt>改变心智模式</dt>
+        <dd>升级决策者的底层假设与认知——最深也最难的支点，却是其余一切支点的源头。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>画出你的回路。</b>写下推动增长的增强回路（引擎在哪），和拽住增长的调节回路（天花板在哪），各至少一条。</li>
+      <li><b>做"伪增强回路"检查。</b>逐条追问：这个增长引擎离开补贴、离开创始人亲自下场，还转得动吗？转不动的，标记为漏斗。</li>
+      <li><b>给关键动作标注延迟。</b>列出每个重要举措的见效周期，把大延迟动作拆成小延迟实验，明确每个实验的观察窗口。</li>
+      <li><b>盯住三个存量。</b>把现金跑道、活跃用户、可重复收入做成每周必看的仪表盘，用存量而非流量做判断。</li>
+      <li><b>用三种原型对号入座。</b>对照饮鸩止渴、增长上限、目标侵蚀，给你的"怪圈"找到名字和结构。</li>
+      <li><b>挑一个杠杆点干预。</b>从四类杠杆点中选一个最可着手的，设计干预动作并配好测量指标——验证结构是否真的变了。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>规模化阶段</b>的增长诊断：业务复杂到看不清全局时</li>
+          <li>"越努力越差"的怪圈复盘：反复整改无效的老问题</li>
+          <li>寻找干预抓手：资源有限，必须找到<b>四两拨千斤</b>的位置</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>机会开发早期不宜过早做宏大系统规划——<b>先用效果逻辑探索，再用系统思维设计</b></li>
+          <li>概念工具不替代行业知识：回路画得对不对，取决于对业务的了解</li>
+          <li>杠杆点干预后仍需测量验证，<b>结构改变的效果要用数据确认</b>，不能靠感觉宣布胜利</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-09</div>
+        <h4>三阶段×思维组合</h4>
+        <p>系统思维是规模化阶段的主导思维：本卡的模块清单，就是该阶段的思维配置单。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP四步流程</h4>
+        <p>"大延迟拆小延迟实验"的执行工具：每个小实验都按 MVP 四步走，周期才压得下来。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-06</div>
+        <h4>逆向思维两维度与闭环</h4>
+        <p>规模化阶段的另一只手：失败预演找风险，系统思维找结构，两卡搭配做全面体检。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 68—74 页</span>
+    <span>方法论卡 3-05 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

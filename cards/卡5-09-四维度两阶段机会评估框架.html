@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-09 · 四维度两阶段机会评估框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 小节详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 产出文档 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s1);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-09 · 四维度两阶段机会评估框架</span><a class="card-nav-prev" href="卡5-08-机会假设命题句式.html">← 卡 5-08</a><a class="card-nav-next" href="卡5-10-机会验证三步与转型四类型.html">卡 5-10 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-09</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>四维度两阶段机会评估框架</h1>
+  <div class="oneliner">先粗筛再细验，用四个维度给机会做压力测试。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业者手上常常同时有多个方向，资源却极其有限。真正的问题不是"哪个机会看起来更好"，而是教材点出的核心一问：<b>"在所有可能的路径中，哪一条最值得用有限的资源优先探索？"</b>（P146）</p>
+    <p>本框架的答案是<b>"纸面推演"</b>——在投入真金白银之前，用市场、团队、资源、时机四个维度，先做一轮粗筛、再做一轮深评，快速过滤明显不可行的方向，让资源集中到值得验证的机会上。</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">先粗筛、再细验</div>
+        <div class="vd">初筛刻意不精确，快速剔除；深评逐项留痕，压力测试。</div>
+      </div>
+      <div class="value">
+        <div class="vt">四维全扫描</div>
+        <div class="vd">市场、团队、资源、时机——不只问"市场大不大"，也问"我们配不配"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">产出可直接验证</div>
+        <div class="vd">评估的终点是两份文档，天然成为验证阶段的起点。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 表头 ===== -->
+        <rect x="10" y="14" width="66" height="30" rx="6" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="43" y="34" text-anchor="middle" font-size="12" fill="#64748b">四维度</text>
+        <rect x="80" y="14" width="215" height="30" rx="6" fill="#3b82f6"/>
+        <text x="187" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">阶段一 · 初步吸引力筛查</text>
+        <rect x="299" y="14" width="211" height="30" rx="6" fill="#d97706"/>
+        <text x="404" y="34" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">阶段二 · 可行性深度评估</text>
+
+        <!-- ===== 行一 · 市场 ===== -->
+        <rect x="5.5" y="52" width="73" height="100" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="43" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#3b82f6">市场</text>
+        <text x="42" y="114" text-anchor="middle" font-size="11" fill="#64748b">需求真实性</text>
+        <text x="43" y="130" text-anchor="middle" font-size="11" fill="#64748b">与规模</text>
+        <rect x="80" y="52" width="215" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="92" y="80" font-size="12" font-weight="700" fill="#1e293b">市场潜力初判</text>
+        <text x="92" y="102" font-size="11" fill="#475569">（只需数量级正确）</text>
+        <text x="92" y="122" font-size="11" fill="#475569">千万级、亿级、十亿级</text>
+        <text x="92" y="140" font-size="11" fill="#475569">还是百亿级？</text>
+        <rect x="299" y="52" width="211" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="311" y="80" font-size="12" font-weight="700" fill="#1e293b">核心假设识别</text>
+        <text x="311" y="102" font-size="11" fill="#475569">列出未经证实的信念，</text>
+        <text x="311" y="122" font-size="11" fill="#475569">警惕伪需求</text>
+        <text x="311" y="140" font-size="11" fill="#475569">＋ 经济可行性预判（BotEC）</text>
+
+        <!-- ===== 行二 · 团队 ===== -->
+        <rect x="5.5" y="158" width="73" height="100" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="43" y="198" text-anchor="middle" font-size="14" font-weight="700" fill="#d97706">团队</text>
+        <text x="42" y="220" text-anchor="middle" font-size="11" fill="#64748b">能力与热情</text>
+        <text x="43" y="236" text-anchor="middle" font-size="11" fill="#64748b">匹配</text>
+        <rect x="80" y="158" width="215" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="92" y="186" font-size="12" font-weight="700" fill="#1e293b">团队初心自省</text>
+        <text x="92" y="208" font-size="11" fill="#475569">「我们是否愿意为此投入</text>
+        <text x="92" y="228" font-size="11" fill="#475569">至少数年时间？」</text>
+        <text x="92" y="248" font-size="11" fill="#475569">「遭遇连续挫折时，靠什么继续？」</text>
+        <rect x="299" y="158" width="211" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="311" y="186" font-size="12" font-weight="700" fill="#1e293b">能力匹配度诊断</text>
+        <text x="311" y="208" font-size="11" fill="#475569">技术 / 行业经验 / 运营</text>
+        <text x="311" y="228" font-size="11" fill="#475569">三层面逐项对照</text>
+
+        <!-- ===== 行三 · 资源 ===== -->
+        <rect x="10" y="264" width="66" height="100" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="43" y="304" text-anchor="middle" font-size="14" font-weight="700" fill="#059669">资源</text>
+        <text x="43" y="326" text-anchor="middle" font-size="11" fill="#64748b">启动条件</text>
+        <text x="43" y="342" text-anchor="middle" font-size="11" fill="#64748b">可及性</text>
+        <rect x="80" y="264" width="215" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="92" y="292" font-size="12" font-weight="700" fill="#1e293b">资源门槛预估</text>
+        <text x="92" y="314" font-size="11" fill="#475569">估算到下一个决策点</text>
+        <text x="92" y="334" font-size="11" fill="#475569">（如完成 MVP）的</text>
+        <text x="92" y="352" font-size="11" fill="#475569">最小成本</text>
+        <rect x="299" y="264" width="211" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="311" y="292" font-size="12" font-weight="700" fill="#1e293b">资源缺口分析</text>
+        <text x="311" y="314" font-size="11" fill="#475569">已具备 / 需获取 /</text>
+        <text x="311" y="334" font-size="11" fill="#475569">获取的难度与成本</text>
+
+        <!-- ===== 行四 · 时机 ===== -->
+        <rect x="10" y="370" width="66" height="100" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="43" y="410" text-anchor="middle" font-size="14" font-weight="700" fill="#475569">时机</text>
+        <text x="43" y="432" text-anchor="middle" font-size="11" fill="#64748b">窗口是否</text>
+        <text x="43" y="448" text-anchor="middle" font-size="11" fill="#64748b">打开</text>
+        <rect x="80" y="370" width="215" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="92" y="398" font-size="12" font-weight="700" fill="#1e293b">时机窗口判断</text>
+        <text x="92" y="420" font-size="11" fill="#475569">「过早进入可能成为先烈，</text>
+        <text x="92" y="440" font-size="11" fill="#475569">过晚则可能陷入红海」</text>
+        <rect x="299" y="370" width="211" height="100" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="311" y="398" font-size="12" font-weight="700" fill="#1e293b">致命风险排查</text>
+        <text x="311" y="420" font-size="11" fill="#475569">找出 1—2 个一旦发生</text>
+        <text x="311" y="440" font-size="11" fill="#475569">就会导致失败的根本风险</text>
+        <text x="311" y="458" font-size="11" fill="#475569">＋ 可承受损失评估</text>
+
+        <!-- ===== 右端产出文档 ===== -->
+        <rect x="528" y="52" width="142" height="196" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+        <rect x="528" y="52" width="142" height="6" rx="3" fill="#3b82f6"/>
+        <rect x="575" y="76" width="48" height="58" fill="#f8fafc" stroke="#64748b"/>
+        <path d="M607,76 l16,16 h-16 z" fill="#cbd5e1"/>
+        <text x="599" y="162" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">待验证假设清单</text>
+        <text x="599" y="184" text-anchor="middle" font-size="11" fill="#64748b">按证伪后果</text>
+        <text x="599" y="200" text-anchor="middle" font-size="11" fill="#64748b">严重程度排序</text>
+
+        <rect x="528" y="264" width="142" height="206" rx="8" fill="#ffffff" stroke="#94a3b8"/>
+        <rect x="528" y="264" width="142" height="6" rx="3" fill="#d97706"/>
+        <rect x="575" y="288" width="48" height="58" fill="#f8fafc" stroke="#64748b"/>
+        <path d="M607,288 l16,16 h-16 z" fill="#cbd5e1"/>
+        <text x="599" y="374" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">验证实验设计方案</text>
+        <text x="599" y="396" text-anchor="middle" font-size="11" fill="#64748b">MVP 形式 · 测试对象</text>
+        <text x="599" y="412" text-anchor="middle" font-size="11" fill="#64748b">收集数据 · 成败标准</text>
+        <text x="599" y="436" text-anchor="middle" font-size="11" fill="#64748b">既是评估的终点</text>
+        <text x="599" y="452" text-anchor="middle" font-size="11" fill="#64748b">也是验证的起点</text>
+
+        <line x1="513" y1="110" x2="525" y2="110" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="513" y1="190" x2="525" y2="190" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="513" y1="315" x2="525" y2="315" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="513" y1="425" x2="525" y2="425" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- ===== 底部提示 ===== -->
+        <text x="340" y="492" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">先粗筛、再细验：回答「哪一条路径最值得用有限的资源优先探索」（P146）</text>
+        <text x="340" y="510" text-anchor="middle" font-size="11" fill="#94a3b8">初筛刻意不精确——纸面推演的结论是「值得验证」，而非「必然成功」</text>
+      </svg>
+      <div class="caption">图 1　四维度两阶段评估矩阵：行 = 市场 / 团队 / 资源 / 时机，列 = 初筛 / 深评，右端挂两份产出文档</div>
+    </div>
+  </section>
+
+  <!-- ============ 初筛四项 ============ -->
+  <section>
+    <h2>初筛四项：快速过滤</h2>
+    <p>阶段一<b>"初步吸引力筛查"</b>的定位是快：每项只求方向性结论，<b>刻意不精确</b>，目标是把明显不可行的方向先剔除掉。</p>
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">阶段一</span>
+        <h3>初步吸引力筛查</h3>
+        <span class="role">要求：<b>只需数量级正确</b></span>
+      </div>
+      <div class="q">四个问题过一遍，过不了就淘汰。</div>
+      <dl class="kv">
+        <dt>市场潜力</dt>
+        <dd>初判市场规模——只需数量级正确：判断市场是千万级、亿级、十亿级还是百亿级即可，不必精确测算。</dd>
+        <dt>团队初心</dt>
+        <dd>自省两个问题：<b>"我们是否愿意为此投入至少数年时间？当遭遇连续挫折时，什么能让我们继续？"</b></dd>
+        <dt>资源门槛</dt>
+        <dd>估算到下一个决策点（如完成 MVP）的最小成本，看启动条件是否可及。</dd>
+        <dt>时机窗口</dt>
+        <dd>判断窗口是否打开：<b>"过早进入可能成为'先烈'，过晚则可能陷入红海"</b>。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">初筛过度耗数据</span><span class="td">初筛阶段刻意不精确，把时间花在数据上反而违背"快速过滤"的设计初衷。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 深评六步 ============ -->
+  <section>
+    <h2>深评六步：纸面压力测试</h2>
+    <p>阶段二<b>"可行性深度评估"</b>对初筛留下的备选逐项细验，每一步都要留下书面结论。</p>
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">阶段二</span>
+        <h3>可行性深度评估</h3>
+        <span class="role">要求：<b>每步留下书面结论</b></span>
+      </div>
+      <div class="q">六步走完，机会的筋骨就摸清了。</div>
+      <dl class="kv">
+        <dt>① 核心假设</dt>
+        <dd>识别核心假设：列出所有<b>"未经证实的信念"</b>，特别警惕那些把伪需求当真需求的假设。</dd>
+        <dt>② 能力匹配</dt>
+        <dd>能力匹配度诊断：在技术、行业经验、运营三个层面，逐项对照团队能力与机会要求。</dd>
+        <dt>③ 资源缺口</dt>
+        <dd>资源缺口分析：哪些已具备、哪些需获取、获取的难度与成本分别是什么。</dd>
+        <dt>④ 致命风险</dt>
+        <dd>致命风险排查：识别<b>"1—2 个一旦发生就会导致项目失败的根本性风险"</b>，并想清楚对策是否存在。</dd>
+        <dt>⑤ 经济可行</dt>
+        <dd>经济可行性预判：用<b>信封背面计算（BotEC）</b>——"客单价 × 目标用户数量 × 预期转化率"对比单位直接可变成本，判断是否存在正向毛利空间（P147）。</dd>
+        <dt>⑥ 风险与损失</dt>
+        <dd>风险评估与可承受损失评估：算清最坏情况下损失几何，团队是否承受得起。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">结论当成功</span><span class="td">评估依赖的仍是纸面推演与判断，结论是"值得验证"而非"必然成功"。</span></div>
+        <div class="trap"><span class="tn">忽视可承受损失</span><span class="td">只算"成了多赚"，不算"败了多亏"，一旦致命风险发生便没有退路。</span></div>
+      </div>
+    </div>
+
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">产出 ①</span>
+        <h4>待验证假设清单</h4>
+        <p>把深评识别出的假设汇总成清单，按证伪后果的严重程度排序——最经不起证伪的排最前。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">产出 ②</span>
+        <h4>验证实验设计方案</h4>
+        <p>为优先假设设计验证实验：MVP 形式、测试对象、收集哪些数据、成败标准如何判定。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      两份文档<b>"既是评估阶段的终点，也是验证阶段的起点"</b>（P148）——评估不是就此画句号，而是把接力棒交给验证。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>概要过初筛。</b>把每个候选机会各写成一页概要，逐个过初筛四项，快速剔除明显不可行的，只留 1—2 个备选。</li>
+      <li><b>深评留结论。</b>对备选逐一执行深评六步，每一步都留下书面结论——写得出来的判断，才是做过的评估。</li>
+      <li><b>算一笔粗账。</b>第六步后做信封背面计算，剔除"即便需求真实也无法自我维持"的方向（P147）。</li>
+      <li><b>汇总假设清单。</b>把假设汇总为"待验证假设清单"，按证伪后果严重程度排序。</li>
+      <li><b>设计验证实验。</b>据此写"验证实验设计方案"，明确 MVP 形式、测试对象、数据与成败标准，进入验证阶段。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>多方案待决</b>、需在投入前收敛的关口</li>
+          <li>配合在线实训系统"机会评估矩阵"（市场规模 / 痛点强度 / 付费意愿 / 竞争强度 / 团队匹配五维打分）使用</li>
+          <li>团队需要书面依据来对齐"先做哪个"的决策场景</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>初筛阶段<b>刻意不精确</b>，勿在数据上过度消耗时间</li>
+          <li>评估依赖纸面推演与判断，结论是<b>"值得验证"而非"必然成功"</b></li>
+          <li><b>高度不确定、无参照系的新兴领域</b>，应与建构路径配合使用</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-08</div>
+        <h4>机会假设命题句式</h4>
+        <p>评估之前先把机会写成标准命题；评估之后，命题拆解为待验证假设，两卡首尾相接。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>MVS 三闭环</h4>
+        <p>本卡产出"验证实验设计方案"，卡12承接验证阶段的落地：最小可行系统如何闭环。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-04</div>
+        <h4>三阶推演法</h4>
+        <p>上游工具：先从趋势推演出潜在机会点，再进入本卡的四维两阶段评估。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 146—148 页</span>
+    <span>方法论卡 5-09 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

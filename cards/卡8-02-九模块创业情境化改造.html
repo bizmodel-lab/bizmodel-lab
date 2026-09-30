@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-02 · 九模块创业情境化改造</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-02 · 九模块创业情境化改造（递进式细分/三类错误等）</span><a class="card-nav-prev" href="卡8-01-商业模式三根本问题.html">← 卡 8-01</a><a class="card-nav-next" href="卡8-03-画布三功能递进.html">卡 8-03 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-02</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>九模块创业情境化改造</h1>
+  <div class="oneliner">九个模块、九条初创规则——把通用画布改造成贴合创业情境的动态工具。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>商业模式画布（BMC）是通行的描述工具，但创业者拿到的往往只是一张"填空表格"——九个格子填满了，创业的关键难题却一个都没解决。教材在介绍画布之后，<b>针对初创期的动态情境，对九个模块逐一给出了操作规则</b>：什么时候该小、什么时候该专、什么时候该外包。</p>
+    <p>这张卡把这些规则从教材中抽出、集中成一张"画布使用说明书"，带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">从填表到决策</div>
+        <div class="vd">每个模块附判定规则，填完即可自查对错，而不是填完就束之高阁。</div>
+      </div>
+      <div class="value">
+        <div class="vt">适配初创情境</div>
+        <div class="vd">规则针对资源少、不确定性高的创业阶段，教你在约束下取舍。</div>
+      </div>
+      <div class="value">
+        <div class="vt">连成整体视角</div>
+        <div class="vd">九模块归入价值端与交付端两簇，一眼看清模式的两条主线。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 530" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部横幅 -->
+        <rect x="10" y="8" width="660" height="32" rx="16" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="12" fill="#475569">价值端（蓝）聚焦价值的传递与获取 ｜ 交付端（绿）聚焦价值的创造</text>
+
+        <!-- ===== 第一行 ===== -->
+        <rect x="10" y="56" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="56" width="210" height="24" rx="8" fill="#3b82f6"/>
+        <rect x="10" y="68" width="210" height="12" fill="#3b82f6"/>
+        <text x="22" y="73" font-size="12.5" font-weight="700" fill="#ffffff">客户细分</text>
+        <text x="208" y="71.7" text-anchor="end" font-size="10.5" fill="#ffffff">价值端</text>
+        <text x="22" y="98" font-size="11" fill="#334155">递进式细分：先选一个</text>
+        <text x="22" y="114" font-size="11" fill="#334155">「极端用户群体」切入，</text>
+        <text x="22" y="130" font-size="11" fill="#334155">验证成功后再逐步扩大</text>
+        <text x="22" y="150" font-size="11" fill="#dc2626">防三类错误：过宽、</text>
+        <text x="22" y="166" font-size="11" fill="#dc2626">过窄、错位</text>
+
+        <rect x="235" y="56" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="235" y="56" width="210" height="24" rx="8" fill="#3b82f6"/>
+        <rect x="235" y="68" width="210" height="12" fill="#3b82f6"/>
+        <text x="247" y="73" font-size="12.5" font-weight="700" fill="#ffffff">价值主张</text>
+        <text x="433" y="71.7" text-anchor="end" font-size="10.5" fill="#ffffff">价值端</text>
+        <text x="247" y="98" font-size="11" fill="#334155">三层面递进：核心特征</text>
+        <text x="247" y="114" font-size="11" fill="#334155">→独特优势→用户实际利益</text>
+        <text x="247" y="134" font-size="11" fill="#334155">警惕「技术自嗨陷阱」</text>
+        <text x="247" y="154" font-size="11" fill="#64748b">讲技术参数，更要讲</text>
+        <text x="247" y="170" font-size="11" fill="#64748b">客户拿到的实际利益</text>
+
+        <rect x="460" y="56" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="460" y="56" width="210" height="24" rx="8" fill="#3b82f6"/>
+        <rect x="460" y="68" width="210" height="12" fill="#3b82f6"/>
+        <text x="472" y="73" font-size="12.5" font-weight="700" fill="#ffffff">渠道通路</text>
+        <text x="658" y="71.7" text-anchor="end" font-size="10.5" fill="#ffffff">价值端</text>
+        <text x="472" y="98" font-size="11" fill="#334155">权衡控制力与覆盖度</text>
+        <text x="472" y="118" font-size="11" fill="#334155">测算渠道的</text>
+        <text x="472" y="134" font-size="11" fill="#334155">投入产出比</text>
+        <text x="472" y="154" font-size="11" fill="#64748b">不自建不等于不掌控，</text>
+        <text x="472" y="170" font-size="11" fill="#64748b">覆盖广不等于划得来</text>
+
+        <!-- ===== 第二行 ===== -->
+        <rect x="10" y="192" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="192" width="210" height="24" rx="8" fill="#3b82f6"/>
+        <rect x="10" y="204" width="210" height="12" fill="#3b82f6"/>
+        <text x="22" y="209" font-size="12.5" font-weight="700" fill="#ffffff">客户关系</text>
+        <text x="208" y="207.7" text-anchor="end" font-size="10.5" fill="#ffffff">价值端</text>
+        <text x="22" y="234" font-size="11" fill="#334155">关系递进路径：</text>
+        <text x="22" y="250" font-size="11" fill="#334155">交易→社群→专属→共创</text>
+        <text x="22" y="270" font-size="11" fill="#64748b">关系的深度决定</text>
+        <text x="22" y="286" font-size="11" fill="#64748b">客户资产的质量</text>
+
+        <rect x="235" y="192" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="235" y="192" width="210" height="24" rx="8" fill="#3b82f6"/>
+        <rect x="235" y="204" width="210" height="12" fill="#3b82f6"/>
+        <text x="247" y="209" font-size="12.5" font-weight="700" fill="#ffffff">收入来源</text>
+        <text x="433" y="207.7" text-anchor="end" font-size="10.5" fill="#ffffff">价值端</text>
+        <text x="247" y="234" font-size="11" fill="#dc2626">警惕「收入模式单一」</text>
+        <text x="247" y="250" font-size="11" fill="#dc2626">误区</text>
+        <text x="247" y="270" font-size="11" fill="#334155">用 A/B 测试</text>
+        <text x="247" y="286" font-size="11" fill="#334155">验证支付意愿</text>
+
+        <rect x="460" y="192" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="460" y="192" width="210" height="24" rx="8" fill="#059669"/>
+        <rect x="460" y="204" width="210" height="12" fill="#059669"/>
+        <text x="472" y="209" font-size="12.5" font-weight="700" fill="#ffffff">核心资源</text>
+        <text x="658" y="207.7" text-anchor="end" font-size="10.5" fill="#ffffff">交付端</text>
+        <text x="472" y="234" font-size="11" fill="#334155">识别「缺失即停摆」的</text>
+        <text x="472" y="250" font-size="11" fill="#334155">资源，优先内部构建</text>
+        <text x="472" y="270" font-size="11" fill="#64748b">问一句：没有它，</text>
+        <text x="472" y="286" font-size="11" fill="#64748b">模式还转得动吗？</text>
+
+        <!-- ===== 第三行 ===== -->
+        <rect x="10" y="328" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="328" width="210" height="24" rx="8" fill="#059669"/>
+        <rect x="10" y="340" width="210" height="12" fill="#059669"/>
+        <text x="22" y="345" font-size="12.5" font-weight="700" fill="#ffffff">关键业务</text>
+        <text x="208" y="343.7" text-anchor="end" font-size="10.5" fill="#ffffff">交付端</text>
+        <text x="22" y="370" font-size="11" fill="#334155">聚焦核心竞争力</text>
+        <text x="22" y="386" font-size="11" fill="#334155">相关活动，其余外包</text>
+        <text x="22" y="406" font-size="11" fill="#64748b">初创期的业务清单</text>
+        <text x="22" y="422" font-size="11" fill="#64748b">越短越好</text>
+
+        <rect x="235" y="328" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="235" y="328" width="210" height="24" rx="8" fill="#059669"/>
+        <rect x="235" y="340" width="210" height="12" fill="#059669"/>
+        <text x="247" y="345" font-size="12.5" font-weight="700" fill="#ffffff">合作伙伴</text>
+        <text x="433" y="343.7" text-anchor="end" font-size="10.5" fill="#ffffff">交付端</text>
+        <text x="247" y="370" font-size="11" fill="#334155">按资产专用性</text>
+        <text x="247" y="386" font-size="11" fill="#334155">设计治理机制</text>
+        <text x="247" y="406" font-size="11" fill="#64748b">投入越专属，</text>
+        <text x="247" y="422" font-size="11" fill="#64748b">越要约定清楚权责</text>
+
+        <rect x="460" y="328" width="210" height="124" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="460" y="328" width="210" height="24" rx="8" fill="#059669"/>
+        <rect x="460" y="340" width="210" height="12" fill="#059669"/>
+        <text x="472" y="345" font-size="12.5" font-weight="700" fill="#ffffff">成本结构</text>
+        <text x="658" y="343.7" text-anchor="end" font-size="10.5" fill="#ffffff">交付端</text>
+        <text x="472" y="370" font-size="11" fill="#334155">成本驱动型 vs 价值驱动型</text>
+        <text x="472" y="390" font-size="11" fill="#334155">引入单位经济（UE）</text>
+        <text x="472" y="406" font-size="11" fill="#334155">视角看成本</text>
+
+        <!-- 底部健康标准 -->
+        <rect x="10" y="468" width="660" height="32" rx="16" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="340" y="489" text-anchor="middle" font-size="12" fill="#059669">健康标准：价值端与交付端保持匹配与平衡 ｜ 画布本体源自奥斯特瓦德《商业模式新生代》</text>
+        <text x="340" y="518" text-anchor="middle" font-size="11" fill="#94a3b8">九条情境化规则摘自教材第二节对画布的创业情境化解析</text>
+      </svg>
+      <div class="caption">图 1　九模块简化画布 × 逐模块情境化规则标注（红字为该模块的高危误区）</div>
+    </div>
+    <div class="quote">
+      客户细分的递进要领：<b>初期先选择一个"极端用户群体"切入，验证成功后再逐步扩大。</b>极端用户需求最强烈、反馈最诚实，是初创期性价比最高的验证对象。
+    </div>
+  </section>
+
+  <!-- ============ 两端详解 ============ -->
+  <section>
+    <h2>价值端与交付端逐模块详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">价值端</span>
+        <h3>聚焦价值的传递与获取</h3>
+        <span class="role">五个模块：<b>细分 / 主张 / 渠道 / 关系 / 收入</b></span>
+      </div>
+      <div class="q">价值端回答的是：<b>"价值如何送达客户、又如何变成钱？"</b></div>
+      <dl class="kv">
+        <dt>客户细分</dt>
+        <dd>用<b>递进式细分</b>对抗贪大：先服务一个极端用户群体，跑通后再扩圈。细分的三类错误见下方警示区。</dd>
+        <dt>价值主张</dt>
+        <dd>按<b>三层面递进</b>打磨：从产品核心特征，到相对竞品的独特优势，最终落到<b>用户的实际利益</b>——客户买单的是最后一层。</dd>
+        <dt>渠道通路</dt>
+        <dd>在<b>控制力与覆盖度</b>之间做权衡：自建渠道掌控强但烧钱，借力渠道铺得快但命脉在别人手里；每条渠道都要<b>测算投入产出比</b>。</dd>
+        <dt>客户关系</dt>
+        <dd>沿<b>关系递进路径</b>升级：交易 → 社群 → 专属 → 共创。初创期不必一步到位，但要清楚当前停在哪一级、下一级靠什么爬上去。</dd>
+        <dt>收入来源</dt>
+        <dd>警惕<b>收入模式单一</b>的误区——所有收入押在一个来源上，来源一断模式即停；定价与付费方式用 <b>A/B 测试验证支付意愿</b>，不靠猜。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">客户细分的三类错误</div>
+        <div class="trap"><span class="tn">细分过宽</span><span class="td">"所有年轻人都是我的用户"——等于没有用户，验证无从下手。</span></div>
+        <div class="trap"><span class="tn">细分过窄</span><span class="td">锁定的群体太小，即便全部拿下也撑不起模式。</span></div>
+        <div class="trap"><span class="tn">细分错位</span><span class="td">把"买单的人"和"用产品的人"混为一谈，主张打错了对象。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">交付端</span>
+        <h3>聚焦价值的创造</h3>
+        <span class="role">四个模块：<b>资源 / 业务 / 伙伴 / 成本</b></span>
+      </div>
+      <div class="q">交付端回答的是：<b>"价值靠什么被实际做出来？"</b></div>
+      <dl class="kv">
+        <dt>核心资源</dt>
+        <dd>逐一识别<b>哪些资源缺失会导致整个模式停摆</b>——这类资源应优先内部构建，而不是外包或租用。</dd>
+        <dt>关键业务</dt>
+        <dd>只把与<b>核心竞争力直接相关</b>的活动留在手里，其余外包。初创公司最容易死于"什么都自己干"。</dd>
+        <dt>合作伙伴</dt>
+        <dd>按<b>资产专用性</b>设计治理机制：对方投入的资产越专属、越难挪作他用，越需要用合同条款把权责利锁定清楚。</dd>
+        <dt>成本结构</dt>
+        <dd>先判断自己是<b>成本驱动型还是价值驱动型</b>，再引入<b>单位经济（UE）</b>视角：算单个客户的账，而不是只算总账。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">两端的共同健康标准</div>
+        <div class="trap"><span class="tn">匹配与平衡</span><span class="td">教材的判定原话：<b>价值端与交付端保持匹配与平衡</b>。主张端许诺了高端体验，交付端却只有低成本产能，即为失衡。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>先铺底。</b>用画布把九模块现状如实填出来，每格一句话即可；不确定的内容照填，但用红黄绿灯标注确信度（做法见卡 8-03）。</li>
+      <li><b>逐条对照。</b>拿本卡九条情境化规则逐模块自查：细分是否犯了三类错误？主张是否停在特征层没落到利益层？收入是否单一？</li>
+      <li><b>标红修正。</b>命中的问题按优先级处理——客户细分与价值主张两格优先：这两格错了，后面七格都是白干。</li>
+      <li><b>极端用户切入。</b>如果细分过宽，立刻收窄到一个极端用户群体，把"验证成功后再扩大"写进计划，而不是嘴上说说。</li>
+      <li><b>定期复检。</b>模式任何模块发生调整后，把九条规则重新过一遍——画布是动态文件，规则也要动态执行。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>初创团队<b>第一次画商业模式画布</b>：填格之前先读规则</li>
+          <li>早期项目的客户、渠道与收入设计：规则全部针对初创动态情境</li>
+          <li>项目"跑不通"时的逐模块复盘：一条规则一条线索地排查</li>
+          <li>创业培训中的画布教学：规则即课堂上的判定标准</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>画布本体是奥斯特瓦德的工具，<b>引用时须注明来源</b>；本卡规则是教材叠加的情境化改造</li>
+          <li>规则针对初创情境，成熟企业的九模块用法（如多元业务、事业部结构）需另行分析</li>
+          <li>画布是<b>描述与设计工具，不是验证工具</b>——格子里写得再对，也要靠验证流程检验（卡 8-13、卡 8-14）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-01</div>
+        <h4>商业模式三根本问题</h4>
+        <p>填格子之前先过三问：为谁创造什么价值、如何创造传递、如何获取回报。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-03</div>
+        <h4>画布三功能递进</h4>
+        <p>格子填完之后怎么用：现状描述、未来设计、迭代演进三步走，配红黄绿灯标注。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-08</div>
+        <h4>模块耦合度诊断体系</h4>
+        <p>单模块规则之外，再看模块之间的齿轮咬合：三条主传动链与四种断裂模式。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 207—208 页</span>
+    <span>方法论卡 8-02 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

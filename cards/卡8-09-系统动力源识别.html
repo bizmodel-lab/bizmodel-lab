@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-09 · 系统动力源识别</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 回路详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 四问提示 ===== */
+  .mile-note{
+    margin-top:14px;background:#eff6ff;border:1px solid var(--s1-line);border-radius:12px;
+    padding:16px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s1);}
+  .mile-note ol{margin:8px 0 0;padding-left:20px;}
+  .mile-note ol li{margin-bottom:4px;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-09 · 系统动力源识别（三回路＋参数＋四问）</span><a class="card-nav-prev" href="卡8-08-模块耦合度诊断体系.html">← 卡 8-08</a><a class="card-nav-next" href="卡8-10-结构韧性三维评估.html">卡 8-10 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-09</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>系统动力源识别</h1>
+  <div class="oneliner">网络效应、规模经济、学习曲线——三个自我强化回路加四问，找到你商业模式的增长发动机。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多商业模式"设计得很漂亮"，却始终推不动——每一单都要重新使劲，用户不会带来用户，规模不会摊薄成本，经验也不会沉淀为壁垒。问题往往不在某个模块，而在<b>整个系统缺少动力源</b>。</p>
+    <p>教材的说法是：<b>"健康的商业模式必须具备自我强化的动力机制。缺乏动力源的商业模式，如同没有发条的钟表。"</b>这张卡帮你回答三件事：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">找到发动机</div>
+        <div class="vd">对照三种反馈回路，指认本模式靠什么自我强化，而不是靠外力推着走。</div>
+      </div>
+      <div class="value">
+        <div class="vt">测量健康度</div>
+        <div class="vd">每种回路都有专属健康度参数，逐项核对，避免"看起来像"的误判。</div>
+      </div>
+      <div class="value">
+        <div class="vt">预判中断风险</div>
+        <div class="vd">用动力源四问检查激活状态与单一依赖，提前发现"发条断掉"的隐患。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 524" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ab" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#3b82f6"/>
+          </marker>
+          <marker id="ao" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#d97706"/>
+          </marker>
+          <marker id="ag" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#059669"/>
+          </marker>
+          <marker id="ai" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">健康的商业模式必须具备自我强化的动力机制 —— 缺乏动力源的商业模式，如同没有发条的钟表</text>
+
+        <!-- ===== 回路一 · 网络效应 ===== -->
+        <rect x="10" y="54" width="200" height="332" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,64 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#3b82f6"/>
+        <text x="110" y="73.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">回路一 · 网络效应</text>
+        <path d="M110,116 A44,44 0 0 1 110,204" stroke="#3b82f6" stroke-width="3" fill="none" marker-end="url(#ab)"/>
+        <path d="M110,204 A44,44 0 0 1 110,116" stroke="#3b82f6" stroke-width="3" fill="none" marker-end="url(#ab)"/>
+        <text x="110" y="156" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">自我强化</text>
+        <text x="110" y="174" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">增强回路</text>
+        <text x="110" y="230" text-anchor="middle" font-size="11" fill="#94a3b8">同边 / 跨边 / 数据网络效应</text>
+        <text x="24" y="256" font-size="11" font-weight="700" fill="#3b82f6">健康度参数</text>
+        <text x="24" y="278" font-size="12" font-weight="700" fill="#334155">效应类型</text>
+        <text x="24" y="296" font-size="12" fill="#64748b">同边 · 跨边 · 数据</text>
+        <text x="24" y="318" font-size="12" font-weight="700" fill="#334155">效应强度</text>
+        <text x="24" y="336" font-size="12" fill="#64748b">递减 · 恒定 · 递增</text>
+        <text x="24" y="358" font-size="12" font-weight="700" fill="#334155">启动阈值</text>
+        <text x="24" y="376" font-size="12" fill="#64748b">临界用户基数</text>
+
+        <!-- ===== 回路二 · 规模经济 ===== -->
+        <rect x="240" y="54" width="200" height="335.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M240,64 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#d97706"/>
+        <text x="340" y="73.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">回路二 · 规模经济</text>
+        <path d="M340,116 A44,44 0 0 1 340,204" stroke="#d97706" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+        <path d="M340,204 A44,44 0 0 1 340,116" stroke="#d97706" stroke-width="3" fill="none" marker-end="url(#ao)"/>
+        <text x="340" y="156" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">自我强化</text>
+        <text x="340" y="174" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">增强回路</text>
+        <text x="340" y="230" text-anchor="middle" font-size="11" fill="#94a3b8">规模摊薄固定成本</text>
+        <text x="254" y="256" font-size="11" font-weight="700" fill="#d97706">健康度参数</text>
+        <text x="254" y="278" font-size="12" font-weight="700" fill="#334155">固定成本</text>
+        <text x="254" y="296" font-size="12" fill="#64748b">占比高低</text>
+        <text x="254" y="318" font-size="12" font-weight="700" fill="#334155">边际成本</text>
+        <text x="254" y="336" font-size="12" fill="#64748b">曲线形态</text>
+        <text x="254" y="362" font-size="11" fill="#94a3b8">例：软件边际成本趋零</text>
+        <text x="254" y="378" font-size="11" fill="#94a3b8">例：咨询人力线性增长</text>
+
+        <!-- ===== 回路三 · 学习曲线 ===== -->
+        <rect x="470" y="54" width="200" height="335.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M470,64 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v20 h-200 z" fill="#059669"/>
+        <text x="570" y="73.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">回路三 · 学习曲线</text>
+        <path d="M570,116 A44,44 0 0 1 570,204" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#ag)"/>
+        <path d="M570,204 A44,44 0 0 1 570,116" stroke="#059669" stroke-width="3" fill="none" marker-end="url(#ag)"/>
+        <text x="570" y="156" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">自我强化</text>
+        <text x="570" y="174" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">增强回路</text>
+        <text x="570" y="230" text-anchor="middle" font-size="11" fill="#94a3b8">经验越用越深</text>
+        <text x="484" y="256" font-size="11" font-weight="700" fill="#059669">健康度参数</text>
+        <text x="484" y="278" font-size="12" font-weight="700" fill="#334155">经验可编码性</text>
+        <text x="484" y="300" font-size="12" font-weight="700" fill="#334155">经验可传递性</text>
+        <text x="484" y="322" font-size="12" font-weight="700" fill="#334155">护城河深度</text>
+        <text x="484" y="362" font-size="11" fill="#94a3b8">例：先进制造经验曲线深</text>
+        <text x="484" y="378" font-size="11" fill="#94a3b8">例：一般电商经验曲线浅</text>
+
+        <!-- ===== 动力源四问 ===== -->
+        <text x="340" y="418" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">动力源四问 —— 逐问对照自检</text>
+
+        <rect x="10" y="430" width="152" height="84" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="22" y="430" width="48" height="21.1" rx="10" fill="#3b82f6"/>
+        <text x="46" y="444.8" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">第一问</text>
+        <text x="86" y="474" text-anchor="middle" font-size="11.5" fill="#334155">本商业模式的</text>
+        <text x="86" y="494" text-anchor="middle" font-size="11.5" fill="#334155">主动力源是什么？</text>
+
+        <line x1="164" y1="472" x2="176" y2="472" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+
+        <rect x="179" y="430" width="152" height="84" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="191" y="430" width="48" height="21.1" rx="10" fill="#3b82f6"/>
+        <text x="215" y="444.8" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">第二问</text>
+        <text x="255" y="474" text-anchor="middle" font-size="11.5" fill="#334155">该动力源</text>
+        <text x="255" y="494" text-anchor="middle" font-size="11.5" fill="#334155">是否已被激活？</text>
+
+        <line x1="333" y1="472" x2="345" y2="472" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+
+        <rect x="348" y="430" width="152" height="84" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="360" y="430" width="48" height="21.1" rx="10" fill="#3b82f6"/>
+        <text x="384" y="444.8" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">第三问</text>
+        <text x="424" y="466" text-anchor="middle" font-size="11.5" fill="#334155">若尚未激活，达到</text>
+        <text x="424" y="484" text-anchor="middle" font-size="11.5" fill="#334155">临界点的路径</text>
+        <text x="424" y="502" text-anchor="middle" font-size="11.5" fill="#334155">是否清晰？</text>
+
+        <line x1="502" y1="472" x2="514" y2="472" stroke="#475569" stroke-width="2" marker-end="url(#ai)"/>
+
+        <rect x="517" y="430" width="152" height="84" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="529" y="430" width="48" height="21.1" rx="10" fill="#3b82f6"/>
+        <text x="553" y="444.8" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">第四问</text>
+        <text x="593" y="466" text-anchor="middle" font-size="11.5" fill="#334155">若动力源单一，</text>
+        <text x="593" y="484" text-anchor="middle" font-size="11.5" fill="#334155">是否存在动力</text>
+        <text x="593" y="502" text-anchor="middle" font-size="11.5" fill="#334155">中断风险？</text>
+      </svg>
+      <div class="caption">图 1　系统动力源识别总览：三种自我强化回路 × 各自健康度参数 × 动力源四问</div>
+    </div>
+    <div class="quote">
+      <b>健康的商业模式必须具备自我强化的动力机制。</b>三种回路不必全部具备，但主动力源必须被指认、被激活，且单一动力源要警惕中断风险。
+    </div>
+  </section>
+
+  <!-- ============ 回路详解 ============ -->
+  <section>
+    <h2>三条回路逐条拆解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">回路一</span>
+        <h3>网络效应回路</h3>
+        <span class="role">典型情境：<b>平台与社区类模式</b></span>
+      </div>
+      <dl class="kv">
+        <dt>回路机制</dt>
+        <dd>用户越多，每个用户获得的价值越大，进而吸引更多用户——系统自己"滚雪球"。</dd>
+        <dt>健康度参数</dt>
+        <dd><b>效应类型</b>（同边 / 跨边 / 数据网络效应）、<b>效应强度</b>（边际价值递减、恒定还是递增）、<b>启动阈值</b>（临界用户基数）。</dd>
+        <dt>典型警示</dt>
+        <dd>社交类产品<b>同边效应显著，但启动门槛较高</b>——众多社交创业项目恰恰倒在冷启动阶段：回路真实存在，却在达到临界用户基数之前就没钱了。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">易错点</div>
+        <div class="trap"><span class="tn">类型不辨</span><span class="td">同边、跨边、数据三类效应的启动逻辑完全不同，不辨类型就无法估算临界点。</span></div>
+        <div class="trap"><span class="tn">强度高估</span><span class="td">边际价值递减的弱效应，撑不起"用户自然增长"的推演，计划会系统性失真。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">回路二</span>
+        <h3>规模经济回路</h3>
+        <span class="role">典型情境：<b>产品与软件类模式</b></span>
+      </div>
+      <dl class="kv">
+        <dt>回路机制</dt>
+        <dd>规模扩大摊薄固定成本，成本优势反过来支撑扩张——规模本身成为护城河。</dd>
+        <dt>健康度参数</dt>
+        <dd><b>固定成本占比</b>与<b>边际成本曲线形态</b>：软件的边际成本趋零，回路极强；咨询服务随人力线性增长，回路很弱。</dd>
+        <dt>判定要领</dt>
+        <dd>先画出边际成本曲线再谈规模化。曲线形态决定了"做大"到底是越来越轻松，还是越来越吃力。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">易错点</div>
+        <div class="trap"><span class="tn">错套回路</span><span class="td">把人力线性增长的业务当成规模经济业务来规划，扩张只会线性放大成本与风险。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">回路三</span>
+        <h3>学习曲线回路</h3>
+        <span class="role">典型情境：<b>制造与专业服务类模式</b></span>
+      </div>
+      <dl class="kv">
+        <dt>回路机制</dt>
+        <dd>做得越多、经验越深，效率与质量随累积产出持续改善——时间成为同盟军。</dd>
+        <dt>健康度参数</dt>
+        <dd><b>经验可编码性</b>（能否沉淀为可复用的规则）、<b>经验可传递性</b>（能否跨人、跨场景复用）、<b>护城河深度</b>（曲线的深浅）。</dd>
+        <dt>判定要领</dt>
+        <dd>同样是"经验"，先进制造的曲线深、一般电商的曲线浅——浅曲线的经验攒不出壁垒，不能按护城河估值。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">易错点</div>
+        <div class="trap"><span class="tn">不可编码</span><span class="td">经验只存在于个人身上、无法编码传递时，学习曲线无法形成组织层面的动力。</span></div>
+      </div>
+    </div>
+
+    <div class="mile-note">
+      <b>诊断落地：动力源四问。</b>三条回路看完之后，用教材给出的四个追问收口，把"识别"变成"判定"：
+      <ol>
+        <li>本商业模式的<b>主动力源</b>是什么？</li>
+        <li>该动力源<b>是否已被激活</b>？</li>
+        <li>若尚未激活，达到<b>临界点的路径</b>是否清晰？</li>
+        <li>若动力源单一，是否存在<b>动力中断风险</b>？</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>指认动力源。</b>对照三条回路，用一句话写出本模式的主动力源是哪一个；写不出来，说明动力源尚未被识别，先停在这里。</li>
+      <li><b>核对参数。</b>按所属回路的健康度参数逐项自查：效应类型与强度、临界用户基数；固定成本占比、边际成本形态；经验可编码性、可传递性、护城河深度。</li>
+      <li><b>回答四问。</b>依次回答动力源四问，重点确认"是否已被激活"——存在不等于起作用，钟表有发条还要上紧发条。</li>
+      <li><b>查中断风险。</b>若动力源单一，追问一旦它中断（用户流失、成本结构变化、经验流失），系统会发生什么；把答案写进风险清单。</li>
+      <li><b>定期复评。</b>模式调整、进入规模化之前，重新过一遍本卡——动力源会随阶段演化，昨天的发动机未必拉得动今天的车身。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>增长乏力诊断：分不清是"执行不力"还是<b>"系统缺动力源"</b></li>
+          <li>平台、社区、订阅、规模制造等模式的<b>增长引擎设计</b>与宣讲校准</li>
+          <li>投资与合伙评估前，判定模式的自我强化能力是否成立</li>
+          <li>规模化决策前的<b>就绪度检查</b>：发动机不转，放量只会放大问题</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三种回路<b>不必同时具备</b>，也不要强行套用网络效应逻辑改造本不适用的业务</li>
+          <li>临界用户基数、边际成本形态都需要数据支撑，<b>拍脑袋估阈值必然误判</b></li>
+          <li>动力源识别只是结构诊断的一半——还需配合耦合度与韧性评估（卡8-08、卡8-10）使用</li>
+          <li>动力源会被环境变化削弱，本卡结论<b>有保质期</b>，需定期复评</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-08</div>
+        <h4>模块耦合度诊断体系</h4>
+        <p>先做"CT 扫描"看齿轮是否咬合（结构），再用本卡看发条是否上紧（动力），两卡合成完整的静态诊断。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-10</div>
+        <h4>结构韧性三维评估</h4>
+        <p>本卡第四问发现的"动力中断风险"，用韧性三维（可替代、可重构、可扩展）进一步评估与对冲。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>MVS 三闭环</h4>
+        <p>识别出动力源后，用最小可行系统的增长闭环做低成本验证：增长飞轮是否真的转得起来。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 217—218 页</span>
+    <span>方法论卡 8-09 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

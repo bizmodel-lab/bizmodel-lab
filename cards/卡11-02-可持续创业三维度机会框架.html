@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-02 · 可持续创业三维度机会框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 维度详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .dirs{border-top:1px dashed var(--line);padding-top:12px;}
+  .dirs .dt2{font-size:13px;font-weight:700;color:var(--ink-3);margin-bottom:8px;}
+  .dir{display:grid;grid-template-columns:150px 1fr;gap:10px;margin-bottom:8px;}
+  .dir .dn{
+    font-size:13px;font-weight:700;color:var(--ink-2);text-align:right;padding-top:1px;
+  }
+  .dir .dd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.dir{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-02 · 可持续创业三维度机会框架</span><a class="card-nav-prev" href="卡11-01-四段式专题分析框架.html">← 卡 11-01</a><a class="card-nav-next" href="卡11-03-可持续商业模式四路径.html">卡 11-03 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-02</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>可持续创业三维度机会框架</h1>
+  <div class="oneliner">环境 — 社会 — 消费：三个维度、十二个方向，一张可持续创业的机会扫描清单。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>"可持续"听起来正确，却常让创业者无从下手——它太大了。环保、公平、绿色消费各说各话，机会到底在哪儿，没人给过一张清单。</p>
+    <p>教材把可持续创业的机会空间切成三个维度：<b>环境维度看资源与排放，社会维度看公平与包容，消费维度看需求侧的绿色化</b>。每个维度下再给出具体方向，一张清单扫完，可持续赛道的机会分布就清楚了。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">维度清晰</div>
+        <div class="vd">三个维度互不重叠，把宏大的"可持续"拆成可扫描的格子。</div>
+      </div>
+      <div class="value">
+        <div class="vt">方向具体</div>
+        <div class="vd">每个维度配四个具体方向，从"清洁能源"到"公平贸易"，不再停留在大词。</div>
+      </div>
+      <div class="value">
+        <div class="vt">先扫描后选择</div>
+        <div class="vd">用法是逐格打勾的清单，先看全貌，再挑与自己资源匹配的方向。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 368" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">环境 · 社会 · 消费：三个维度、十二个方向，一张可持续创业机会扫描清单</text>
+
+        <!-- ===== 环境维度 ===== -->
+        <rect x="10" y="58" width="200" height="212" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,82 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v14 h-200 z" fill="#3b82f6"/>
+        <text x="110" y="88.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">① 环境维度</text>
+        <text x="24" y="120" font-size="11" fill="#64748b">从末端治理转向源头预防，</text>
+        <text x="24" y="136" font-size="11" fill="#64748b">从成本外部化转向价值内部化</text>
+        <rect x="24" y="149.3" width="172" height="28.5" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="110" y="167.4" text-anchor="middle" font-size="11" fill="#3b82f6">清洁能源</text>
+        <rect x="24" y="179.3" width="172" height="28.5" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="110" y="197.4" text-anchor="middle" font-size="11" fill="#3b82f6">碳管理与碳交易</text>
+        <rect x="24" y="209.3" width="172" height="28.5" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="110" y="227.4" text-anchor="middle" font-size="11" fill="#3b82f6">循环经济与废弃物资源化</text>
+        <rect x="24" y="236.8" width="172" height="29.2" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="110" y="253.7" text-anchor="middle" font-size="11" fill="#3b82f6">可持续农业</text>
+
+        <!-- ===== 社会维度 ===== -->
+        <rect x="240" y="58" width="200" height="212" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M240,82 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v14 h-200 z" fill="#d97706"/>
+        <text x="340" y="88.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">② 社会维度</text>
+        <text x="254" y="120" font-size="11" fill="#64748b">聚焦市场机制未能有效覆盖的领域</text>
+        <rect x="254" y="149.3" width="172" height="28.5" rx="11" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="167.4" text-anchor="middle" font-size="11" fill="#d97706">普惠金融</text>
+        <rect x="254" y="179.3" width="172" height="28.5" rx="11" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="197.4" text-anchor="middle" font-size="11" fill="#d97706">农产品上行与小农户赋能</text>
+        <rect x="254" y="209.3" width="172" height="28.5" rx="11" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="227.4" text-anchor="middle" font-size="11" fill="#d97706">残障人士就业与包容性创业</text>
+        <rect x="254" y="236.8" width="172" height="29.2" rx="11" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="253.7" text-anchor="middle" font-size="11" fill="#d97706">公平贸易</text>
+
+        <!-- ===== 消费维度 ===== -->
+        <rect x="470" y="58" width="200" height="212" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M470,82 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v14 h-200 z" fill="#059669"/>
+        <text x="570" y="88.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">③ 消费维度</text>
+        <text x="484" y="120" font-size="11" fill="#64748b">需求侧：把绿色偏好做成生意</text>
+        <rect x="484" y="149.3" width="172" height="28.5" rx="11" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="570" y="167.4" text-anchor="middle" font-size="11" fill="#059669">绿色产品品牌</text>
+        <rect x="484" y="179.3" width="172" height="28.5" rx="11" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="570" y="197.4" text-anchor="middle" font-size="11" fill="#059669">循环消费平台</text>
+        <rect x="484" y="209.3" width="172" height="28.5" rx="11" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="570" y="227.4" text-anchor="middle" font-size="11" fill="#059669">替代蛋白与可持续食品</text>
+        <rect x="484" y="236.8" width="172" height="29.2" rx="11" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="570" y="253.7" text-anchor="middle" font-size="11" fill="#059669">循环时尚与共享消费</text>
+
+        <!-- 底部注解带 -->
+        <rect x="10" y="288" width="660" height="60" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="312" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">社会维度示范：包容性创业"能力评估—技能培训—岗位匹配—持续支持"完整服务链</text>
+        <text x="340" y="334" text-anchor="middle" font-size="11" fill="#64748b">维度之间允许交叉：扫描时一个方向可以同时命中多个维度，先记录再取舍</text>
+      </svg>
+      <div class="caption">图 1　可持续创业三维度机会框架：环境 / 社会 / 消费 × 每维度四个具体方向</div>
+    </div>
+    <div class="quote">
+      环境维度的方向感可以用一句话概括：<b>"从末端治理转向源头预防，从成本外部化转向价值内部化。"</b>机会不在"处理污染"，而在"让污染根本不产生、让环保的成本变成生意的价值"。社会维度同理——去<b>"市场机制未能有效覆盖的领域"</b>找那些被主流商业忽略的人群与需求。
+    </div>
+  </section>
+
+  <!-- ============ 维度详解 ============ -->
+  <section>
+    <h2>维度详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">维度一</span>
+        <h3>环境维度</h3>
+        <span class="role">看：<b>资源与排放</b></span>
+      </div>
+      <div class="q">这一维度回答：<b>"资源与环境压力把机会推到了哪里？"</b></div>
+      <dl class="kv">
+        <dt>机会逻辑</dt>
+        <dd>环境压力（排放约束、资源稀缺）正在从"合规成本"变成"定价要素"，谁能让别人省资源、减排放，谁就拿到了新价值。<b>"从末端治理转向源头预防，从成本外部化转向价值内部化。"</b></dd>
+      </dl>
+      <div class="dirs">
+        <div class="dt2">四个具体方向</div>
+        <div class="dir"><span class="dn">清洁能源</span><span class="dd">能源结构的替换与增效，从发电侧到用能侧都有切入点。</span></div>
+        <div class="dir"><span class="dn">碳管理与碳交易</span><span class="dd">围绕碳排放的核算、管理与交易形成的服务链条。</span></div>
+        <div class="dir"><span class="dn">循环经济与废弃物资源化</span><span class="dd">让废弃物重新进入价值链，"垃圾"变原料。</span></div>
+        <div class="dir"><span class="dn">可持续农业</span><span class="dd">在种植与养殖环节减少环境代价、保住长期产能。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">维度二</span>
+        <h3>社会维度</h3>
+        <span class="role">看：<b>公平与包容</b></span>
+      </div>
+      <div class="q">这一维度回答：<b>"哪些人群被主流市场漏掉了？"</b></div>
+      <dl class="kv">
+        <dt>机会逻辑</dt>
+        <dd>社会维度聚焦<b>"市场机制未能有效覆盖的领域"</b>——不是那里没有需求，而是传统商业算不过账。新的组织方式与技术手段，恰好可能让这些领域的账算得过来。</dd>
+      </dl>
+      <div class="dirs">
+        <div class="dt2">四个具体方向</div>
+        <div class="dir"><span class="dn">普惠金融</span><span class="dd">让小微与低收入群体获得可负担的金融服务。</span></div>
+        <div class="dir"><span class="dn">农产品上行与小农户赋能</span><span class="dd">帮小农户接入大市场，把分散生产组织起来。</span></div>
+        <div class="dir"><span class="dn">残障人士就业与包容性创业</span><span class="dd">构建<b>"能力评估—技能培训—岗位匹配—持续支持"</b>的完整服务链。</span></div>
+        <div class="dir"><span class="dn">公平贸易</span><span class="dd">用透明的交易规则保障链条上游的合理回报。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">维度三</span>
+        <h3>消费维度</h3>
+        <span class="role">看：<b>需求侧拉动</b></span>
+      </div>
+      <div class="q">这一维度回答：<b>"消费者愿意为绿色付钱吗？在哪里付？"</b></div>
+      <dl class="kv">
+        <dt>机会逻辑</dt>
+        <dd>绿色偏好正在从口号变成购买行为。消费维度的机会，是把这种偏好翻译成<b>可买、好用、可晒</b>的产品与平台——需求侧的每一次选择，都是对供给端绿色化的投票。</dd>
+      </dl>
+      <div class="dirs">
+        <div class="dt2">四个具体方向</div>
+        <div class="dir"><span class="dn">绿色产品品牌</span><span class="dd">以绿色属性建立品牌差异，进入日常消费决策。</span></div>
+        <div class="dir"><span class="dn">循环消费平台</span><span class="dd">二手交易、以旧换新等让物品多转几圈的载体。</span></div>
+        <div class="dir"><span class="dn">替代蛋白与可持续食品</span><span class="dd">用更低环境代价满足"吃"这件高频大事。</span></div>
+        <div class="dir"><span class="dn">循环时尚与共享消费</span><span class="dd">从"拥有"转向"使用"，服饰与耐用品的共享化。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐格扫描。</b>对着三个维度、十二个方向逐格打勾：完全不懂的标记"待了解"，与自身资源相关的标记"候选"。</li>
+      <li><b>圈定 2—3 个候选方向。</b>从打勾的格子里挑出既符合趋势、又能用上你现有资源（行业经验、渠道、技术）的方向。</li>
+      <li><b>写出转化式定义。</b>仿照教材句式，给你的候选方向写一句"本质上是把 A 转化为 B"——写不出来，说明对机会的理解还不够透。</li>
+      <li><b>对接模式选择。</b>候选方向拿着去对照卡 11-03 的四条路径，看哪条路径能把方向变成生意。</li>
+      <li><b>做小范围验证。</b>挑一个方向做最低成本的客户访谈或试点，验证需求真实存在，再投入资源。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>计划进入<b>可持续、绿色、双碳相关赛道</b>的创业者的第一步机会扫描</li>
+          <li>传统企业寻找<b>绿色转型切入点</b>时的方向清单</li>
+          <li>创业培训中的"机会识别"练习：三维度十二格的填空作业</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>它是<b>扫描清单而非验证工具</b>——命中某个方向不等于需求已被验证</li>
+          <li>三个维度有交叉重叠，<b>不必强行归类</b>，一个生意可以同时踩中两个维度</li>
+          <li>该领域<b>政策敏感度高</b>，进入前必须核对最新政策与补贴规则</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-03</div>
+        <h4>可持续商业模式四路径</h4>
+        <p>本卡管"机会在哪儿"，卡 11-03 管"怎么把机会变成钱"：溢价、成本重构、闭环、共享四条路径。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-01</div>
+        <h4>四段式专题分析框架</h4>
+        <p>本卡是"可持续创业"专题中第②段（主要创业机会）的展开，可与第③④段合并成完整专题简报。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-02</div>
+        <h4>三类信号总纲</h4>
+        <p>扫描完维度之后，用它判断哪些需求信号已经成熟到值得跟进。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 292—295 页</span>
+    <span>方法论卡 11-02 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

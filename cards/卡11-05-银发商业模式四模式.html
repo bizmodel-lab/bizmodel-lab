@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-05 · 银发商业模式四模式</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#64748b; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 模式详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--s4);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-05 · 银发商业模式四模式（平台嵌入/会员锁定/锚定入口/普惠网络）</span><a class="card-nav-prev" href="卡11-04-银发经济四维机会框架.html">← 卡 11-04</a><a class="card-nav-next" href="卡11-06-社群运营四步递进路径.html">卡 11-06 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-05</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>银发商业模式四模式</h1>
+  <div class="oneliner">平台化嵌入 — 会员制锁定 — 锚定入口 — 普惠型网络：银发生意的四种打法。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>机会地图（卡 11-04）回答"做什么"，但很多银发创业项目死在下一问上："怎么获客、怎么收钱、怎么守住？"——服务有了，现金流结构没想清楚。</p>
+    <p>教材把银发市场的商业模式归纳为四种：<b>平台化嵌入、会员制锁定、锚定入口、普惠型网络</b>。四种模式按获客方式与盈利结构区分，每种都按"核心逻辑—运营层面—盈利来源—核心挑战"展开，而且要与客群分层交叉使用。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">四种打法各有抓手</div>
+        <div class="vd">嵌入靠节点、锁定靠黏度、入口靠硬件、普惠靠规模——抓手不同，资源要求也不同。</div>
+      </div>
+      <div class="value">
+        <div class="vt">与客群交叉选型</div>
+        <div class="vd">四模式 × 客群三层（品质溢价 / 性价比 / 普惠补贴）交叉，构成银发模式选择矩阵。</div>
+      </div>
+      <div class="value">
+        <div class="vt">现金流结构清晰</div>
+        <div class="vd">每种模式对应不同的收入节奏：分账、会员费、服务费、规模毛利，先对号再设计。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 474" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">获客方式 × 盈利结构：四种打法——先定客群层级，再选模式</text>
+
+        <!-- ===== 模式① 平台化嵌入 ===== -->
+        <rect x="10" y="58" width="320" height="156" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,82 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#3b82f6"/>
+        <text x="170" y="88.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">模式① 平台化嵌入</text>
+        <text x="24" y="120" font-size="12" font-weight="700" fill="#1e293b">以社区服务中心为线下节点</text>
+        <text x="24" y="138" font-size="12" font-weight="700" fill="#1e293b">以线上平台为调度中枢</text>
+        <text x="24" y="158" font-size="12" fill="#334155">产出："15分钟养老服务圈"</text>
+        <text x="24" y="176" font-size="12" fill="#334155">盈利：服务分账与平台调度收益</text>
+        <text x="24" y="194" font-size="12" fill="#334155">挑战：线下节点重，区域复制慢</text>
+
+        <!-- ===== 模式② 会员制锁定 ===== -->
+        <rect x="350" y="58" width="320" height="156" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M350,82 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#d97706"/>
+        <text x="510" y="88.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">模式② 会员制锁定</text>
+        <text x="364" y="120" font-size="12" fill="#334155">逻辑：高价值、高黏度的核心服务</text>
+        <text x="364" y="138" font-size="12" fill="#334155">吸引付费会员，锁定长期关系</text>
+        <text x="364" y="158" font-size="12" font-weight="700" fill="#1e293b">盈利："长生命周期总价值"</text>
+        <text x="364" y="176" font-size="12" fill="#334155">运营：核心服务必须高频、高值</text>
+        <text x="364" y="194" font-size="12" fill="#334155">挑战：续费率是生命线</text>
+
+        <!-- ===== 模式③ 锚定入口 ===== -->
+        <rect x="10" y="228" width="320" height="156" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,252 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#059669"/>
+        <text x="170" y="258.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">模式③ 锚定入口</text>
+        <text x="24" y="290" font-size="12" font-weight="700" fill="#1e293b">以硬件为入口，以服务为利润</text>
+        <text x="24" y="308" font-size="12" font-weight="700" fill="#1e293b">来源，以社群为黏性工具</text>
+        <text x="24" y="328" font-size="12" fill="#334155">示例逻辑：手环 99 元＋月服务费 30 元</text>
+        <text x="24" y="348" font-size="12" fill="#334155">运营：硬件引客，服务与社群留客</text>
+        <text x="24" y="366" font-size="12" fill="#334155">挑战：硬件只是入口，留存才是生死线</text>
+
+        <!-- ===== 模式④ 普惠型网络 ===== -->
+        <rect x="350" y="228" width="320" height="156" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M350,252 a10,10 0 0 1 10,-10 h300 a10,10 0 0 1 10,10 v14 h-320 z" fill="#64748b"/>
+        <text x="510" y="258.6" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">模式④ 普惠型网络</text>
+        <text x="364" y="290" font-size="12" fill="#334155">逻辑：聚焦一种高频刚需的服务</text>
+        <text x="364" y="308" font-size="12" font-weight="700" fill="#1e293b">标准化运营，以量取胜</text>
+        <text x="364" y="328" font-size="12" font-weight="700" fill="#1e293b">壁垒："先发优势和规模效应"</text>
+        <text x="364" y="348" font-size="12" fill="#334155">运营：单品打透，流程高度标准化</text>
+        <text x="364" y="366" font-size="12" fill="#334155">挑战：毛利薄，跑不出规模就亏损</text>
+
+        <!-- 底部注解带 -->
+        <rect x="10" y="398" width="660" height="60" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="422" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">交叉使用：四模式 × 客群分层——先分层，后选式</text>
+        <text x="340" y="444" text-anchor="middle" font-size="11" fill="#64748b">银发经济是金字塔型的异质市场：高净值 · 品质溢价 / 中等收入 · 性价比 / 低收入 · 普惠补贴</text>
+      </svg>
+      <div class="caption">图 1　银发商业模式四模式：四种并列打法 × 客群三层交叉，构成模式选择矩阵</div>
+    </div>
+    <div class="quote">
+      选模式之前先记住市场的形状：银发经济是<b>金字塔型的异质市场</b>——<b>"面向高净值人群可追求品质溢价，面向中等收入群体应强调性价比，面向低收入群体则需争取政府补贴或公益支持。"</b>同一个模式打三层客群，注定哪层都打不透。
+    </div>
+  </section>
+
+  <!-- ============ 模式详解 ============ -->
+  <section>
+    <h2>模式详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">模式①</span>
+        <h3>平台化嵌入</h3>
+        <span class="role">抓手：<b>线下节点</b></span>
+      </div>
+      <div class="q">核心逻辑：<b>"以社区服务中心为线下节点，以线上平台为调度中枢"</b>，编织<b>"15分钟养老服务圈"</b>。</div>
+      <dl class="kv">
+        <dt>运营层面</dt>
+        <dd>线下节点负责"看得见的信任"——老人看得见、摸得着、走得进；线上平台负责"看不见的调度"——订单分发、服务记录、质量追溯。</dd>
+        <dt>盈利来源</dt>
+        <dd>平台上的服务分账与调度收益：不做重资产服务，做服务的组织者。</dd>
+        <dt>核心挑战</dt>
+        <dd>线下节点建设投入重、周期长，跨区域复制时每个节点都要重新落地。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">模式②</span>
+        <h3>会员制锁定</h3>
+        <span class="role">抓手：<b>核心服务黏度</b></span>
+      </div>
+      <div class="q">核心逻辑：<b>"高价值、高黏度的核心服务吸引付费会员"</b>，赚取<b>"长生命周期总价值"</b>。</div>
+      <dl class="kv">
+        <dt>运营层面</dt>
+        <dd>先把一项高频高值的核心服务做到"离不开"，再以会员体系把单次交易变成长期关系——会员买的不只是折扣，是确定性与优先权。</dd>
+        <dt>盈利来源</dt>
+        <dd>会员费及会员生命周期内的持续消费。银发客群一旦建立信任，<b>留存周期远长于一般消费群体</b>，前期获客成本可以在长周期中摊薄。</dd>
+        <dt>核心挑战</dt>
+        <dd>续费率是生命线：核心服务一旦"不再值得"，会员流失比获客快得多。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">模式③</span>
+        <h3>锚定入口</h3>
+        <span class="role">抓手：<b>低价硬件</b></span>
+      </div>
+      <div class="q">核心逻辑：<b>"以硬件为入口，以服务为利润来源，以社群为黏性工具。"</b></div>
+      <dl class="kv">
+        <dt>运营层面</dt>
+        <dd>典型结构是<b>硬件低价引流（如手环 99 元），每月服务费（如 30 元）持续贡献利润</b>；社群把"买过硬件的用户"变成"留在体系里的用户"。三层各司其职：硬件获客、服务变现、社群留客。</dd>
+        <dt>盈利来源</dt>
+        <dd>后续服务的持续订阅收入，硬件本身可以微利甚至平价。</dd>
+        <dt>核心挑战</dt>
+        <dd>硬件只是入口，留存才是生死线——用户拿到硬件却不开通服务，模式就不成立。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">模式④</span>
+        <h3>普惠型网络</h3>
+        <span class="role">抓手：<b>规模效应</b></span>
+      </div>
+      <div class="q">核心逻辑：<b>"聚焦一种高频刚需的服务"</b>，标准化运营，<b>"以量取胜"</b>；壁垒在<b>"先发优势和规模效应"</b>。</div>
+      <dl class="kv">
+        <dt>运营层面</dt>
+        <dd>只做一种服务、把它做到极致标准化：单一品类、统一流程、统一定价，摊薄单位成本，靠网点密度和复购取胜。</dd>
+        <dt>盈利来源</dt>
+        <dd>薄毛利 × 大流量：单笔赚得少，但频次高、规模大，总量可观。</dd>
+        <dt>核心挑战</dt>
+        <dd>毛利薄意味着容错小，跑不出规模就持续亏损；一旦对手先形成网络密度，后来者很难追。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>先定客群层级。</b>对照金字塔分层——高净值 / 中等收入 / 低收入——写下你要服务的那一层，以及它对应的付费逻辑（品质溢价 / 性价比 / 普惠补贴）。</li>
+      <li><b>对照四模式初选。</b>用"抓手"一栏快速匹配：有社区资源走①，有强服务能力走②，有硬件产品走③，有标准化运营能力走④。</li>
+      <li><b>用四要素表展开。</b>给候选模式逐项填"核心逻辑—运营层面—盈利来源—核心挑战"，特别核对你是否具备该模式的抓手资源。</li>
+      <li><b>设计现金流结构。</b>把盈利来源翻译成月度现金流：分账型看订单密度，会员型看续费率，入口型看服务开通率，普惠型看单点盈亏平衡网点数。</li>
+      <li><b>小范围验证再放大。</b>先在一个社区或一个城市跑通单点模型，验证盈利假设成立后再复制——银发生意尤其输不起信任。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>养老服务、社区商业、银发消费连锁</b>项目的模式设计与诊断</li>
+          <li>已有产品或服务、正在设计<b>获客与收费结构</b>的银发创业者</li>
+          <li>培训与咨询中的"模式选择矩阵"练习：四模式 × 三层客群的交叉决策</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>模式选择必须与<b>客群层级交叉验证</b>，脱离客群谈模式没有意义</li>
+          <li>入口模式的低价硬件获客<b>涉及预付费与持续扣款，务必合规、透明</b>，透支信任等于自毁</li>
+          <li>①④模式重线下、重网络密度，<b>扩张节奏宁慢勿快</b>，单点未盈利前不复制</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-04</div>
+        <h4>银发经济四维机会框架</h4>
+        <p>先用四维框架定"进哪个维度的机会"，再用本卡定"用什么模式收钱"，两卡前后相接。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-04</div>
+        <h4>六类型矩阵</h4>
+        <p>把银发四模式放回一般商业模式类型矩阵中比对，看清它的特殊性与通用结构。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-06</div>
+        <h4>社群运营四步递进路径</h4>
+        <p>模式③"锚定入口"中社群黏性工具的展开：低门槛进入—高频互动—深度认同—自发传播。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 301—303 页</span>
+    <span>方法论卡 11-05 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

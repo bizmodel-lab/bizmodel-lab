@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-06 · 逆向思维两维度与闭环</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 维度详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:96px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:84px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-06 · 逆向思维两维度＋逆向—正向闭环</span><a class="card-nav-prev" href="卡3-05-系统思维创业情境重组.html">← 卡 3-05</a><a class="card-nav-next" href="卡3-07-设计思维五阶段.html">卡 3-07 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-06</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>逆向思维两维度与闭环</h1>
+  <div class="oneliner">对立面思考找差异，终点思考定方向 —— 再用一条闭环，把逆向想出来的风险交给正向验证。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>大家都顺着想，顺着想的路上最拥挤：行业怎么做，我就怎么做，结果只能拼效率、拼价格。逆向思维把方向调过来——<b>从对立面想、从终点想</b>，常常一下就看到别人看不见的空间与风险。</p>
+    <p>教材把逆向思维的应用整理为两个维度加一条闭环，带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">对立面思考</div>
+        <div class="vd">把行业"理所当然"翻过来，找到结构性差异与反向定位。</div>
+      </div>
+      <div class="value">
+        <div class="vt">终点思考</div>
+        <div class="vd">从理想终局倒推路线，从假想败局倒推风险——方向与底线一次看全。</div>
+      </div>
+      <div class="value">
+        <div class="vt">逆向—正向闭环</div>
+        <div class="vd">逆向识别的风险交给正向实验验证，反着想完不空转。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 500" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">反着想，往往想得更清楚：两个思考维度 ＋ 一条验证闭环</text>
+
+        <!-- ===== 维度一 ===== -->
+        <rect x="10" y="58" width="325" height="252" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,68 a10,10 0 0 1 10,-10 h305 a10,10 0 0 1 10,10 v24 h-325 z" fill="#3b82f6"/>
+        <text x="172" y="79.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">维度一 · 从对立面思考</text>
+        <text x="24" y="118" font-size="13" font-weight="700" fill="#334155">把行业的「理所当然」翻过来</text>
+        <text x="24" y="146" font-size="12" fill="#334155">① 列出行业默认规则</text>
+        <text x="24" y="170" font-size="12" fill="#334155">② 逐一追问：</text>
+        <rect x="24" y="180" width="297" height="30" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="172" y="200" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">「如果反过来会怎样？」</text>
+        <rect x="24" y="226" width="297" height="66" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+        <text x="172" y="246" text-anchor="middle" font-size="11" font-weight="700" fill="#3b82f6">反向定位示例</text>
+        <text x="172" y="264" text-anchor="middle" font-size="11" fill="#475569">高频低价 ↔ 低频高价定制</text>
+        <text x="172" y="282" text-anchor="middle" font-size="11" fill="#475569">标准化产品 ↔ 深度定制服务</text>
+
+        <!-- ===== 维度二 ===== -->
+        <rect x="345" y="58" width="325" height="252" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M345,68 a10,10 0 0 1 10,-10 h305 a10,10 0 0 1 10,10 v24 h-325 z" fill="#d97706"/>
+        <text x="507" y="79.9" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">维度二 · 从终点思考</text>
+        <text x="359" y="118" font-size="13" font-weight="700" fill="#334155">从「终局」和「败局」倒着推</text>
+        <rect x="359" y="134" width="297" height="66" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="507" y="154" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">终局思考（正向推演）</text>
+        <text x="507" y="172" text-anchor="middle" font-size="11" fill="#475569">从理想终局倒推</text>
+        <text x="507" y="190" text-anchor="middle" font-size="11" fill="#475569">里程碑与优先事项</text>
+        <rect x="359" y="210" width="297" height="66" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="507" y="230" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">失败预演（反向推演）</text>
+        <text x="507" y="248" text-anchor="middle" font-size="11" fill="#475569">假设项目已经失败</text>
+        <text x="507" y="266" text-anchor="middle" font-size="11" fill="#475569">倒推最可能的失败原因</text>
+        <text x="507" y="296" text-anchor="middle" font-size="11" fill="#94a3b8">操作形式：定期召开「失败会议」</text>
+
+        <!-- ===== 闭环标题条 ===== -->
+        <rect x="10" y="322" width="660" height="28" rx="6" fill="#059669"/>
+        <text x="340" y="341" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">闭环 · 逆向识别风险 → 正向验证假设</text>
+
+        <!-- 闭环节点 -->
+        <rect x="80" y="378" width="190" height="60" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+        <text x="175" y="402" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">失败预演 · 逆向</text>
+        <text x="175" y="424" text-anchor="middle" font-size="11" fill="#475569">识别最致命的风险假设</text>
+        <rect x="410" y="378" width="190" height="60" rx="10" fill="#ecfdf5" stroke="#059669"/>
+        <text x="505" y="402" text-anchor="middle" font-size="12" font-weight="700" fill="#047857">小成本验证 · 正向</text>
+        <text x="505" y="424" text-anchor="middle" font-size="11" fill="#475569">验证优先级最高的假设</text>
+
+        <!-- 闭环环箭头 -->
+        <path d="M175,378 C250,344 430,344 505,378" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+        <path d="M505,438 C430,476 250,476 175,438" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+        <text x="340" y="372" text-anchor="middle" font-size="11" fill="#475569">预演暴露的风险 ＝ 待验证的关键假设</text>
+        <text x="340" y="478" text-anchor="middle" font-size="11" fill="#475569">验证结果回流：更新失败清单，进入下一轮预演</text>
+      </svg>
+      <div class="caption">图 1　逆向思维两维度与闭环：对立面思考 × 终点思考，落到「逆向识别风险 → 正向验证假设」</div>
+    </div>
+    <div class="quote">
+      逆向思维的价值不止于"想得不一样"——<b>"失败预演所暴露的风险，往往正是精益创业中需要优先验证的关键假设"</b>。逆着想出来的东西，最终要交给正向的实验去裁决。
+    </div>
+  </section>
+
+  <!-- ============ 模型详解 ============ -->
+  <section>
+    <h2>模型详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">维度一</span>
+        <h3>从对立面思考</h3>
+        <span class="role">回答的问题：<b>"如果反过来会怎样？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>第一步</dt>
+        <dd><b>列出行业"理所当然"的规则清单</b>——所有人都在遵守、却没人解释过为什么的那些做法。</dd>
+        <dt>第二步</dt>
+        <dd>对每一条<b>逐一追问"如果反过来会怎样"</b>：反着做，用户会失去什么、得到什么？成本结构会怎么变？</dd>
+        <dt>落地工具</dt>
+        <dd><b>反向定位</b>：高频低价 ↔ 低频高价定制化、标准化 ↔ 深度定制……每一个"反"，都可能是一个空着的生态位。</dd>
+      </dl>
+      <p>注意：对立面思考不是抬杠，是<b>寻找结构性差异</b>——翻过来的做法必须真的改变价值组合，而不是单纯唱反调。</p>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">维度二</span>
+        <h3>从终点思考</h3>
+        <span class="role">回答的问题：<b>"从终局和败局倒着推，现在该做什么？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>终局思考</dt>
+        <dd><b>从理想终局倒推里程碑与优先事项</b>——先想清楚"五年后这件事做成了是什么样"，再倒排这一季度该干什么，顺序与"从现状往前爬"完全不同。</dd>
+        <dt>失败预演</dt>
+        <dd><b>"假设项目已经失败，倒推最可能导致失败的原因"</b>——在还有得选的时候，提前把死因看一遍。</dd>
+        <dt>操作形式</dt>
+        <dd><b>失败会议</b>：团队定期坐下来，郑重其事地给项目"办追悼会"——门槛低、冲击大，是最容易落地的逆向练习。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">闭环</span>
+        <h3>逆向—正向闭环</h3>
+        <span class="role">让逆向思维<b>接到行动上</b></span>
+      </div>
+      <div class="q">逆向想完不是终点，而是行动的起点。</div>
+      <dl class="kv">
+        <dt>正向半环</dt>
+        <dd>失败预演暴露的风险，按"杀死项目的杀伤力"排序，转成<b>优先验证的关键假设清单</b>，交给小成本实验（见卡 3-08）。</dd>
+        <dt>逆向半环</dt>
+        <dd>验证结果回流：某个假设被证伪或验证，失败清单随之更新，下一轮预演的问题更准。</dd>
+      </dl>
+      <p>教材的判断一针见血：<b>"'逆向识别风险→正向验证假设'的闭环，正是创业思维中'认知—行动'协同的典型体现。"</b>只有逆向没有正向，是想清楚但不动手；只有正向没有逆向，是埋头跑错方向。</p>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列默认规则清单。</b>写下你所在行业十条"人人如此"的做法，越多越好——这是反向的弹药库。</li>
+      <li><b>逐条"如果反过来会怎样"。</b>筛选出翻过来后价值组合确实改变、且你有能力承接的条目，形成反向定位候选。</li>
+      <li><b>做终局思考。</b>写下理想终局的样子，倒推出未来四个季度的里程碑，对照检查当前优先事项是否在主线上。</li>
+      <li><b>开一次失败会议。</b>假设项目今天已经失败，全员倒推最可能的死因，汇总成风险清单。</li>
+      <li><b>把死因排成验证队列。</b>按杀伤力从大到小排序，转写成可验证的假设，安排小成本实验优先验证最致命的。</li>
+      <li><b>让结果回流。</b>每轮验证后更新失败清单与终局想象，进入下一轮预演——闭环持续转动，认知持续校准。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>红海市场</b>找差异化定位：正向路径挤满对手时</li>
+          <li>重大决策（融资、转型、大投入）前的<b>风险盘点</b></li>
+          <li>规模化阶段探索<b>第二曲线</b>：用终局思考跳出当前业务惯性</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>反向不等于为反而反——反向定位仍需<b>验证需求真实存在</b>，不是所有"反"都有人买单</li>
+          <li>终局想象受个人经验限制，<b>需引入外部视角交叉校验</b>，避免把偏见当成远见</li>
+          <li>只有逆向没有正向，闭环就断了——<b>风险清单必须落到验证实验</b>，否则只是焦虑清单</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-04</div>
+        <h4>第一性原理三阶段法</h4>
+        <p>同属认知层的重构工具：第一性原理拆"行业惯例"，逆向思维翻"行业规则"，配合使用看得更深。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP四步流程</h4>
+        <p>闭环的正向一环：失败预演排出的关键假设，用 MVP 四步落成一个个小成本验证。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-05</div>
+        <h4>系统思维创业情境重组</h4>
+        <p>规模化阶段的搭档：逆向思维负责探索第二曲线的方向，系统思维负责设计新业务的结构。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 71—74 页</span>
+    <span>方法论卡 3-06 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡2-04 · 动机觉察三路径与引导三技术</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解区块 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:110px 1fr;gap:10px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 驾驭结语 ===== */
+  .mile-note{
+    margin-top:14px;background:var(--s3-bg);border:1px solid var(--s3-line);border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s3);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:86px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=2">第 2 章 · 创业者</a><span class="card-nav-meta">卡 2-04 · 动机觉察三路径＋引导三技术</span><a class="card-nav-prev" href="卡2-03-动机触发四要素.html">← 卡 2-03</a><a class="card-nav-next" href="卡2-05-创业者四大核心能力框架.html">卡 2-05 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 2-04</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>动机觉察三路径与引导三技术</h1>
+  <div class="oneliner">觉察三路径 ＋ 引导三技术：看清自己为何创业，再主动管理这份动机。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>许多创业者起步时，对动机只有模糊感受——<b>"就是想做点事""不想上班了"</b>（P44）。带着一团模糊上路，方向感和韧性都无从谈起。</p>
+    <p>更麻烦的是深层动机的隐蔽性：隐性动机<b>「若不被觉察，便会以直觉、原则、习惯等方式悄然左右决策，而创业者却误以为是理性选择的结果」</b>（P44）——你以为自己在理性权衡，其实是没被看见的动机在暗中掌舵。这套方法提供从<b>觉察</b>到<b>引导</b>的完整动作，价值有三：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看清起点</div>
+        <div class="vd">把"为什么创业"从模糊感受变成可以讨论、可以排序的清单。</div>
+      </div>
+      <div class="value">
+        <div class="vt">防止暗中掌舵</div>
+        <div class="vd">觉察隐性动机，避免把动机的偏好误当成理性的决策。</div>
+      </div>
+      <div class="value">
+        <div class="vt">主动管理</div>
+        <div class="vd">动机不是只能被驱使——排序、调适、转化，皆可主动作为。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">总纲：从被动机驱使转向驾驭动机 —— 创业者心智成熟的核心标志之一（P45）</text>
+
+        <!-- ===== 第一步：觉察三路径 ===== -->
+        <rect x="10" y="56" width="240" height="330" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,86 a10,10 0 0 1 10,-10 h220 a10,10 0 0 1 10,10 v10 h-240 z" fill="#3b82f6"/>
+        <text x="130" y="90.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第一步 · 觉察三路径</text>
+
+        <rect x="20" y="96" width="220" height="84" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="30" y="116" font-size="12" font-weight="700" fill="#3b82f6">① 关键节点追问「为什么」</text>
+        <text x="30" y="136" font-size="11" fill="#475569">如果没有所有外部压力，</text>
+        <text x="30" y="153" font-size="11" fill="#475569">我是否还会做同样的选择？</text>
+
+        <rect x="20" y="188" width="220" height="84" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="30" y="208" font-size="12" font-weight="700" fill="#3b82f6">② 从情绪反应中读取线索</text>
+        <text x="30" y="228" font-size="11" fill="#475569">「情绪是动机的晴雨表」：</text>
+        <text x="30" y="245" font-size="11" fill="#475569">莫名抗拒、强烈在意，都</text>
+        <text x="30" y="262" font-size="11" fill="#475569">指向未觉察的动机</text>
+
+        <rect x="20" y="280" width="220" height="84" rx="8" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="30" y="300" font-size="12" font-weight="700" fill="#3b82f6">③ 借助他人视角</text>
+        <text x="30" y="320" font-size="11" fill="#475569">请信任者反馈：「你觉得</text>
+        <text x="30" y="337" font-size="11" fill="#475569">我真正在意的是什么？」</text>
+
+        <!-- 箭头 1 -->
+        <line x1="254" y1="221" x2="280" y2="221" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="267" y="206" text-anchor="middle" font-size="11" fill="#64748b">识别</text>
+
+        <!-- ===== 第二步：引导三技术 ===== -->
+        <rect x="284" y="56" width="210" height="330" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M284,86 a10,10 0 0 1 10,-10 h190 a10,10 0 0 1 10,10 v10 h-210 z" fill="#d97706"/>
+        <text x="389" y="90.5" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">第二步 · 引导三技术</text>
+
+        <rect x="294" y="96" width="190" height="84" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="304" y="116" font-size="12" font-weight="700" fill="#d97706">排序 · 分清主次</text>
+        <text x="304" y="136" font-size="11" fill="#475569">区分核心与次要动机，</text>
+        <text x="304" y="153" font-size="11" fill="#475569">明确当下优先满足项</text>
+
+        <rect x="294" y="188" width="190" height="84" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="304" y="208" font-size="12" font-weight="700" fill="#d97706">调适 · 调节负面效应</text>
+        <text x="304" y="228" font-size="11" fill="#475569">对带来负面效应的动机</text>
+        <text x="304" y="245" font-size="11" fill="#475569">有意识地加以调节，如</text>
+        <text x="304" y="262" font-size="11" fill="#475569">过度求自主者学授权</text>
+
+        <rect x="294" y="280" width="190" height="84" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="304" y="300" font-size="12" font-weight="700" fill="#d97706">转化 · 主动升级</text>
+        <text x="304" y="320" font-size="11" fill="#475569">借重大经历完成动机</text>
+        <text x="304" y="337" font-size="11" fill="#475569">结构的主动升级</text>
+
+        <!-- 箭头 2 -->
+        <line x1="498" y1="221" x2="524" y2="221" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="511" y="206" text-anchor="middle" font-size="11" fill="#64748b">内化</text>
+
+        <!-- ===== 第三步：驾驭 ===== -->
+        <rect x="528" y="56" width="142" height="330" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M528,86 a10,10 0 0 1 10,-10 h122 a10,10 0 0 1 10,10 v10 h-142 z" fill="#059669"/>
+        <text x="599" y="90.2" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">第三步 · 驾驭</text>
+        <text x="599" y="190" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">从被动机驱使</text>
+        <text x="599" y="210" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">转向驾驭动机</text>
+        <text x="599" y="245" text-anchor="middle" font-size="11" fill="#64748b">创业者心智成熟</text>
+        <text x="599" y="262" text-anchor="middle" font-size="11" fill="#64748b">的核心标志之一</text>
+
+        <!-- ===== 底部警示 ===== -->
+        <rect x="10" y="402" width="660" height="56" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="340" y="426" text-anchor="middle" font-size="12" fill="#dc2626">隐性动机若不被觉察，便会以直觉、原则、习惯等方式悄然左右决策，</text>
+        <text x="340" y="446" text-anchor="middle" font-size="12" fill="#991b1b">而创业者却误以为是理性选择的结果（P44）</text>
+      </svg>
+      <div class="caption">图 1　动机管理全景：觉察（三路径）→ 引导（三技术）→ 驾驭，配隐性动机警示</div>
+    </div>
+    <div class="quote">
+      总纲只有一句：<b>「从被动机驱使转向驾驭动机」，这是「创业者心智成熟的核心标志之一」</b>（P45）。觉察负责"看见"，引导负责"管理"，两步走完，才谈得上驾驭。
+    </div>
+  </section>
+
+  <!-- ============ 详解：觉察三路径 ============ -->
+  <section>
+    <h2>详解：觉察三路径</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">路径一</span>
+        <h3>在关键节点追问"为什么"</h3>
+        <span class="role">用法：<b>自我追问</b></span>
+      </div>
+      <div class="q">核心问句：<b>"如果没有所有外部压力，我是否还会做同样的选择？"</b></div>
+      <dl class="kv">
+        <dt>怎么用</dt>
+        <dd>每次重大决策前，把这个问句认真问自己一遍。剥掉外部压力（别人的期待、面子上、随大流）之后还剩下的答案，才更接近真实动机。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">路径二</span>
+        <h3>从情绪反应中读取线索</h3>
+        <span class="role">用法：<b>情绪日志</b></span>
+      </div>
+      <div class="q">依据：<b>"情绪是动机的晴雨表"</b></div>
+      <dl class="kv">
+        <dt>怎么用</dt>
+        <dd>留意那些莫名而至的情绪反应——说不清原因的抗拒、超乎寻常的强烈在意，往往正指向尚未觉察的动机。情绪不是噪音，是信号。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">路径三</span>
+        <h3>借助他人视角</h3>
+        <span class="role">用法：<b>信任者反馈</b></span>
+      </div>
+      <div class="q">核心问句（问信任的人）：<b>"你觉得我真正在意的是什么？"</b></div>
+      <dl class="kv">
+        <dt>怎么用</dt>
+        <dd>自己看自己总有盲区，信任你的人常常看得更准。请他们直接反馈"你真正在意什么"，用外部镜子照出内在动机。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 详解：引导三技术 ============ -->
+  <section>
+    <h2>详解：引导三技术</h2>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">技术一</span>
+        <h3>排序</h3>
+        <span class="role">作用于：<b>动机结构</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做什么</dt>
+        <dd><b>区分核心与次要动机</b>，明确当下优先满足哪一项。动机往往不止一个，不排序就会互相打架、轮流掌舵。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">技术二</span>
+        <h3>调适</h3>
+        <span class="role">作用于：<b>负面效应</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做什么</dt>
+        <dd>对带来负面效应的动机<b>「有意识地加以调节」</b>。例如过度追求自主的创业者，刻意学习授权——动机不必消灭，但可以驯化。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">技术三</span>
+        <h3>转化</h3>
+        <span class="role">作用于：<b>动机层级</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做什么</dt>
+        <dd>借助重大经历（大的挫折或成功），<b>「完成动机结构的主动升级」</b>——让"证明自己"升级为"解决问题"，让动机随事业一起长大。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>觉察 → 引导 → 驾驭，是一个持续循环，不是一次性作业。</b>处境变化、事业升级，动机也会跟着变——定期回来重新觉察、重新引导。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>决策三问。</b>列出最近一次重大决策，写下路径一那个问句的答案：没有外部压力，我还会这么选吗？为什么？</li>
+      <li><b>记情绪日志。</b>记录一周内强烈的情绪事件——莫名抗拒的、格外在意的，逐条标注背后可能的动机。</li>
+      <li><b>找信任者反馈。</b>约一位信任的人做一次动机反馈对话，直接问："你觉得我真正在意的是什么？"</li>
+      <li><b>给动机排序。</b>把识别出的动机列成清单，标出核心、次要与暂缓，明确当下优先满足哪一项。</li>
+      <li><b>设计调适动作。</b>对负面效应明显的动机，设计具体的调节动作（如过度求自主 → 练习授权），并付诸行动。</li>
+      <li><b>节点转化复盘。</b>在大的挫折或成功节点，有意识地做一次动机转化复盘：我的动机结构需要升级吗？升级到什么层级？</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>创业启动前</b>的自我澄清：先看清为什么出发</li>
+          <li><b>重大决策关口</b>与困境期的动力复盘</li>
+          <li><b>联合创始人之间</b>的动机对齐对话</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li><b>不能替代战略判断</b>——动机清晰不等于方向正确，两者是两回事</li>
+          <li>隐性动机的觉察<b>需要时间与信任关系</b>，一次问卷式自评难以完成</li>
+          <li>情绪线索只是入口，下结论前宜多路径交叉验证，避免过度解读单一情绪</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-01</div>
+        <h4>创业思维三层次框架</h4>
+        <p>动机属于心理层修炼的深处：看清动机，是稳住成长型思维与自我效能感的前提。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-06</div>
+        <h4>价值观四步法</h4>
+        <p>动机往深处走就是价值观：觉察"为何创业"之后，用四步法把价值排序落成行为准则。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-06</div>
+        <h4>创业者角色—身份协变模型</h4>
+        <p>动机与身份互相塑造：动机转化常伴随身份升级，两卡可对照使用。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 2 章，第 44—45 页</span>
+    <span>方法论卡 2-04 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

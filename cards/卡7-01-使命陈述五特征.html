@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡7-01 · 使命陈述五特征</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 特征详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=7">第 7 章 · 创业战略</a><span class="card-nav-meta">卡 7-01 · 使命陈述五特征</span><a class="card-nav-prev" href="卡6-07-四大核心张力与资源风险监控.html">← 卡 6-07</a><a class="card-nav-next" href="卡7-02-愿景金字塔.html">卡 7-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 7-01</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>使命陈述五特征</h1>
+  <div class="oneliner">一句使命写得好不好，用五个特征逐条检验——它是行动指南，还是墙上的口号。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>许多创业团队的使命陈述，读起来轰轰烈烈，读完却没人知道明天该干什么。问题往往不在"没有使命"，而在<b>使命陈述的质量不达标</b>：形容词堆砌、无法验证、缺乏感召，最终沦为墙上的装饰。</p>
+    <p>教材把高质量使命陈述归纳为五个特征：<b>清晰指向、可信、挑战性、感召力、内在一致</b>。五个特征本身就是五条评估标准——逐条对照，就能为一份使命陈述打分、定位最薄弱的环节。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">现成的评分标准</div>
+        <div class="vd">不必另造工具，拿五个特征逐条对照，即可评估使命陈述的质量。</div>
+      </div>
+      <div class="value">
+        <div class="vt">直接筛掉口号</div>
+        <div class="vd">"动词驱动的行动指南"这一条，就足以淘汰大多数形容词式空话。</div>
+      </div>
+      <div class="value">
+        <div class="vt">检验三者统一</div>
+        <div class="vd">内在一致要求初心、能力禀赋与市场需求统一，让使命立得住、走得远。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 585" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">使命陈述 = 动词驱动的行动指南 · 五个特征同时达标，才称得上高质量</text>
+
+        <!-- 五特征与中心圆的连线 -->
+        <line x1="340" y1="248" x2="340" y2="156" stroke="#94a3b8" stroke-width="1.5"/>
+        <line x1="409" y1="298" x2="455" y2="283" stroke="#94a3b8" stroke-width="1.5"/>
+        <line x1="271" y1="298" x2="225" y2="283" stroke="#94a3b8" stroke-width="1.5"/>
+        <line x1="382" y1="378" x2="430" y2="444" stroke="#94a3b8" stroke-width="1.5"/>
+        <line x1="298" y1="378" x2="250" y2="444" stroke="#94a3b8" stroke-width="1.5"/>
+
+        <!-- 中心圆 -->
+        <circle cx="340" cy="320" r="72" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+        <text x="340" y="315" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">高质量使命陈述</text>
+        <text x="340" y="345" text-anchor="middle" font-size="11" fill="#64748b">五个特征同时达标</text>
+
+        <!-- 特征① 清晰指向（上） -->
+        <rect x="255" y="64" width="170" height="92" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="269" y="92" font-size="13" font-weight="700" fill="#3b82f6">① 清晰指向</text>
+        <text x="269" y="116" font-size="11.5" fill="#64748b">动词驱动的行动指南</text>
+        <text x="269" y="136" font-size="11.5" fill="#64748b">而非形容词堆砌</text>
+
+        <!-- 特征② 可信（右上） -->
+        <rect x="455" y="209" width="170" height="92" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="469" y="237" font-size="13" font-weight="700" fill="#059669">② 可信</text>
+        <text x="469" y="261" font-size="11.5" fill="#64748b">可信度建立在</text>
+        <text x="469" y="281" font-size="11.5" fill="#64748b">早期证据之上</text>
+
+        <!-- 特征③ 挑战性（右下） -->
+        <rect x="378" y="444" width="170" height="92" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="392" y="472" font-size="13" font-weight="700" fill="#d97706">③ 挑战性</text>
+        <text x="392" y="496" font-size="11.5" fill="#64748b">如同踮脚方能</text>
+        <text x="392" y="516" font-size="11.5" fill="#64748b">触碰的目标</text>
+
+        <!-- 特征④ 感召力（左下） -->
+        <rect x="132" y="444" width="170" height="92" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="146" y="472" font-size="13" font-weight="700" fill="#3b82f6">④ 感召力</text>
+        <text x="146" y="496" font-size="11.5" fill="#64748b">连接个人、组织</text>
+        <text x="146" y="516" font-size="11.5" fill="#64748b">与社会三层价值</text>
+
+        <!-- 特征⑤ 内在一致（左上） -->
+        <rect x="65" y="209" width="170" height="92" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="79" y="237" font-size="13" font-weight="700" fill="#059669">⑤ 内在一致</text>
+        <text x="79" y="261" font-size="11.5" fill="#64748b">初心、能力禀赋</text>
+        <text x="79" y="281" font-size="11.5" fill="#64748b">与市场需求统一</text>
+
+        <!-- 底部说明 -->
+        <text x="340" y="570" text-anchor="middle" font-size="12" fill="#475569">五特征即五条评估标准——逐条对照，即可为一份使命陈述定位最薄弱的环节</text>
+      </svg>
+      <div class="caption">图 1　使命陈述五特征环绕图：一份高质量使命陈述 = 五个特征同时达标</div>
+    </div>
+    <div class="quote">
+      高质量使命陈述是<b>动词驱动的行动指南，而非形容词堆砌</b>；其中的挑战性目标<b>如同踮脚方能触碰</b>——伸手可及则太平凡，遥不可及则不可信。
+    </div>
+  </section>
+
+  <!-- ============ 逐特征详解 ============ -->
+  <section>
+    <h2>逐特征详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">特征 ①</span>
+        <h3>清晰指向</h3>
+        <span class="role">检验的是：<b>方向是否明确</b></span>
+      </div>
+      <div class="q">检验问题：<b>"读完这句使命，团队知道该做什么吗？"</b></div>
+      <dl class="kv">
+        <dt>判断标准</dt>
+        <dd>使命陈述应当是<b>动词驱动的行动指南</b>——用行动性语言指明方向，而不是用形容词自我夸耀。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">形容词堆砌</span><span class="td">满纸"卓越、领先、极致"，唯独没有一个动作；读完热血沸腾，转身不知道干什么。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">特征 ②</span>
+        <h3>可信</h3>
+        <span class="role">检验的是：<b>陈述有没有根基</b></span>
+      </div>
+      <div class="q">检验问题：<b>"别人凭什么相信这是真的？"</b></div>
+      <dl class="kv">
+        <dt>判断标准</dt>
+        <dd>使命的可信度<b>建立在早期证据之上</b>——它不是凭空许下的愿望，而是从已经发生的验证中生长出来的。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">无凭据叙事</span><span class="td">把愿望当承诺、把口号当证据，团队听着激动，细问一句"凭什么"就露馅。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">特征 ③</span>
+        <h3>挑战性</h3>
+        <span class="role">检验的是：<b>目标的高度是否合适</b></span>
+      </div>
+      <div class="q">检验问题：<b>"这个目标需要踮起脚才够得着吗？"</b></div>
+      <dl class="kv">
+        <dt>判断标准</dt>
+        <dd>好的使命<b>如同踮脚方能触碰的目标</b>——比现状高出一截，有牵引力，但又不脱离现实。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">目标两极化</span><span class="td">定得太低，毫无牵引力；定得太高，没人当真。两种极端都会让使命失去作用。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">特征 ④</span>
+        <h3>感召力</h3>
+        <span class="role">检验的是：<b>能不能聚人</b></span>
+      </div>
+      <div class="q">检验问题：<b>"它能让谁愿意持续投入？"</b></div>
+      <dl class="kv">
+        <dt>判断标准</dt>
+        <dd>感召力来自<b>连接个人、组织与社会三层价值</b>——让每个参与者在使命里看到自己的意义，而不仅是公司的生意。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">只剩生意逻辑</span><span class="td">使命里只有赚钱一件事，既吸引不了用户，也留不住想做成一件事的人才。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">特征 ⑤</span>
+        <h3>内在一致</h3>
+        <span class="role">检验的是：<b>三个要素是否咬合</b></span>
+      </div>
+      <div class="q">检验问题：<b>"想做的、擅长的、被需要的，是同一件事吗？"</b></div>
+      <dl class="kv">
+        <dt>判断标准</dt>
+        <dd><b>初心、能力禀赋与市场需求三者统一</b>——缺任何一角，使命都会在执行中变形。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">三者错位</span><span class="td">凭一腔初心闯进自己不擅长、市场也不需要的领域——使命越"坚定"，偏得越远。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>写出初稿。</b>用一句动词开头的句子写下"我们为什么存在、为谁创造什么价值"，先求清楚，不求文采。</li>
+      <li><b>逐条对照五特征。</b>按清晰指向 → 可信 → 挑战性 → 感召力 → 内在一致的顺序，一条一条打分：达标 / 勉强 / 不达标。</li>
+      <li><b>定位最弱项返工。</b>哪条不达标就改哪条：形容词堆砌就改成动词句式，没有证据就先回去积累证据，三者错位就重新对表。</li>
+      <li><b>找三类人检验。</b>让团队伙伴、目标客户、外部顾问各读一遍，分别问："读完知道该做什么吗？你相信吗？你愿意投入吗？"</li>
+      <li><b>阶段性回看。</b>业务进入新阶段后重读使命，检查它与新的初心、能力禀赋和市场需求是否仍然一致，不一致就更新。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>初创团队制定第一版使命陈述，或修订<b>"挂在墙上没人信"</b>的旧版本</li>
+          <li>招募合伙人与核心员工前，检验事业叙事的成色</li>
+          <li>商业计划书与路演材料中使命部分的打磨</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>五特征是<b>质量标准而非内容模板</b>——它能检验一句使命写得好不好，不能替你回答使命本身是什么</li>
+          <li>使命陈述会随创业阶段演化，<b>定期回看比一次成型更重要</b></li>
+          <li>"内在一致"的检验依赖对自身能力与市场的诚实判断，自欺时这条标准会失灵</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-02</div>
+        <h4>愿景金字塔</h4>
+        <p>使命回答"为什么存在"，愿景回答"最终成为什么"——本卡管陈述质量，下一卡管结构层次。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-03</div>
+        <h4>三种基本竞争战略情境化</h4>
+        <p>使命校准之后，选择实现使命的竞争打法：成本领先、差异化还是聚焦利基。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-06</div>
+        <h4>安索夫情境化与增长四原则</h4>
+        <p>增长方向的选择要回到使命校准，防止规模扩张把团队带偏离初心。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 7 章，第 183 页</span>
+    <span>方法论卡 7-01 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

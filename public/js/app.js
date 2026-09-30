@@ -1,5 +1,5 @@
 /* ============================================================
-   创见 BizLab 2.0 · 前端 SPA
+   mAtlas BizLab 2.0 · 前端 SPA
    ============================================================ */
 "use strict";
 
@@ -53,8 +53,8 @@ function renderAuthPage(mode) {
   root.innerHTML = `
   <div class="auth-page">
     <div class="card auth-card">
-      <h1>创见 BizLab</h1>
-      <p class="sub">商业模式设计实训系统 · 从机会开发到完整商业计划</p>
+      <h1>mAtlas BizLab</h1>
+      <p class="sub">创业实训系统 · 从机会开发到完整商业计划</p>
       <div class="form-error" id="authErr"></div>
       ${mode === "register" ? `
         <div class="role-pick">
@@ -84,7 +84,6 @@ function renderAuthPage(mode) {
           : '已有账号？<a href="#" id="switchMode">直接登录</a>'}
       </div>
       <div class="auth-features">
-        <p>学生：邀请码加入课程 → 六阶段学习 → 自测与逐阶段提交 → 查看批改<br>教师：创建课程 → 学生管理 → 成果评阅（打分/评语/退回） → 进度看板与成绩导出</p>
       </div>
     </div>
   </div>`;

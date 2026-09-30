@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-04 · 双维度商业模式六类型矩阵</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 三重启示 ===== */
+  .miles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--s2);
+    border:1px solid var(--s2);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-04 · 双维度商业模式六类型矩阵</span><a class="card-nav-prev" href="卡8-03-画布三功能递进.html">← 卡 8-03</a><a class="card-nav-next" href="卡8-05-商业模式类型演化四路径.html">卡 8-05 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-04</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>双维度商业模式六类型矩阵</h1>
+  <div class="oneliner">用两个维度锁定商业模式当前的结构位置。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业者描述自己的模式时，常堆砌表面特征——"我们是做APP的""我们做电商"。这样的描述<b>抓不住价值创造与价值获取的底层逻辑</b>，也看不清自己处在哪一阶段、下一步能往哪走；和竞品比较时，比的也多是表面动作而非结构位置。</p>
+    <p>本方法用<b>两个维度交叉出六种类型</b>，给模式定位和演化规划提供一张地图。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">说清底层逻辑</div>
+        <div class="vd">用"谁创造价值＋怎么获取价值"两个问题替代表面特征堆砌。</div>
+      </div>
+      <div class="value">
+        <div class="vt">一张地图定位</div>
+        <div class="vd">六类型矩阵让团队、投资人、竞品在同一张图上对齐位置。</div>
+      </div>
+      <div class="value">
+        <div class="vt">定位之后接演化</div>
+        <div class="vd">在矩阵中站稳后，用卡 8-05 的演化四路径看下一步能往哪走。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 310" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah15" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 轴标题 -->
+        <text x="377" y="16" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">横轴 · 价值获取机制（怎么收钱）</text>
+        <text x="22" y="170" text-anchor="middle" font-size="12" font-weight="700" fill="#475569" transform="rotate(-90 22 170)">纵轴 · 价值创造逻辑（谁创造）</text>
+
+        <!-- 列标题 -->
+        <rect x="88" y="26" width="178" height="26" rx="13" fill="#3b82f6"/>
+        <text x="177" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">交易型</text>
+        <rect x="288" y="26" width="178" height="26" rx="13" fill="#d97706"/>
+        <text x="377" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">订阅型</text>
+        <rect x="488" y="26" width="178" height="26" rx="13" fill="#059669"/>
+        <text x="577" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">授权型</text>
+
+        <!-- 行标签 -->
+        <rect x="10" y="58" width="64" height="102" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="42" y="102" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">方案</text>
+        <text x="42" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">整合型</text>
+        <rect x="10" y="162" width="64" height="102" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="42" y="206" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">连接</text>
+        <text x="42" y="226" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">赋能型</text>
+
+        <!-- 行1 · 方案整合型 -->
+        <rect x="78" y="58" width="198" height="102" rx="8" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="177" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">产品型</text>
+        <text x="177" y="112" text-anchor="middle" font-size="11" fill="#64748b">一次性离散交换</text>
+        <text x="177" y="130" text-anchor="middle" font-size="11" fill="#64748b">现金流依赖持续销售转化</text>
+        <text x="177" y="150" text-anchor="middle" font-size="11" fill="#94a3b8">多数创业企业的起点</text>
+        <rect x="278" y="58" width="198" height="102" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <text x="377" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">订阅服务型</text>
+        <text x="377" y="112" text-anchor="middle" font-size="11" fill="#64748b">周期性费用</text>
+        <text x="377" y="130" text-anchor="middle" font-size="11" fill="#64748b">追求客户终身价值</text>
+        <text x="377" y="150" text-anchor="middle" font-size="11" fill="#94a3b8">代表：钉钉、Salesforce</text>
+        <rect x="478" y="58" width="198" height="102" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <text x="577" y="88" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">IP运营型</text>
+        <text x="577" y="112" text-anchor="middle" font-size="11" fill="#64748b">知识产权·品牌使用权</text>
+        <text x="577" y="130" text-anchor="middle" font-size="11" fill="#64748b">授出收费</text>
+        <text x="577" y="150" text-anchor="middle" font-size="11" fill="#94a3b8">代表：阅文、泡泡玛特、ARM</text>
+
+        <!-- 行2 · 连接赋能型 -->
+        <rect x="78" y="162" width="198" height="102" rx="8" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="177" y="192" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">平台型</text>
+        <text x="177" y="216" text-anchor="middle" font-size="11" fill="#64748b">连接多边群体</text>
+        <text x="177" y="234" text-anchor="middle" font-size="11" fill="#64748b">规则设计·网络效应</text>
+        <text x="177" y="254" text-anchor="middle" font-size="11" fill="#94a3b8">代表：淘宝、美团</text>
+        <rect x="278" y="162" width="198" height="102" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <text x="377" y="192" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">会员型</text>
+        <text x="377" y="216" text-anchor="middle" font-size="11" fill="#64748b">周期性会员费</text>
+        <text x="377" y="234" text-anchor="middle" font-size="11" fill="#64748b">可预测的经常性收入</text>
+        <text x="377" y="254" text-anchor="middle" font-size="11" fill="#94a3b8">代表：Costco、Netflix</text>
+        <rect x="478" y="162" width="198" height="102" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <text x="577" y="192" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">生态型</text>
+        <text x="577" y="216" text-anchor="middle" font-size="11" fill="#64748b">生态构建·授权赋能</text>
+        <text x="577" y="234" text-anchor="middle" font-size="11" fill="#64748b">网络效应×授权收费</text>
+        <text x="577" y="254" text-anchor="middle" font-size="11" fill="#94a3b8">代表：腾讯、苹果</text>
+
+        <!-- 关键限定 -->
+        <text x="340" y="292" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">「六种类型并非互斥的静态『标签』，而是不同发展阶段的『结构快照』」</text>
+      </svg>
+      <div class="caption">图 1　双维度六类型矩阵（表8-1）：价值创造逻辑 × 价值获取机制 → 六类型</div>
+    </div>
+    <div class="quote">
+      关键限定（教材原文）：<b>"六种类型并非互斥的静态'标签'，而是商业模式在不同发展阶段的'结构快照'"</b>；类型转换<b>"本质是系统模块连接方式的重构"</b>——四条典型演化路径，见卡 8-05。
+    </div>
+  </section>
+
+  <!-- ============ 详解 ============ -->
+  <section>
+    <h2>模型详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一步</span>
+        <h3>判定两个维度</h3>
+        <span class="role">定位的<b>坐标系</b></span>
+      </div>
+      <div class="q">先别急着对号入座——把两个维度各自的判定标准想清楚。</div>
+      <dl class="kv">
+        <dt>维度一</dt>
+        <dd><b>价值创造逻辑</b>：方案整合型——企业作为价值的<b>直接创造者与交付者</b>，核心竞争力在"对特定资源、知识或流程的深度控制、优化与创新"；连接赋能型——<b>平台与生态的构建者</b>，核心竞争力在"规则设计、交易成本降低与网络效应管理"。</dd>
+        <dt>维度二</dt>
+        <dd><b>价值获取机制</b>：交易型——一次性离散交换，现金流依赖持续销售转化；订阅型——周期性费用，追求客户终身价值与可预测的经常性收入；授权型——知识产权或品牌使用权授出收费。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二步</span>
+        <h3>六类型定位</h3>
+        <span class="role">矩阵中<b>找位置</b></span>
+      </div>
+      <div class="q">两个维度交叉，得到六种类型（教材表8-1）。</div>
+      <dl class="kv">
+        <dt>方案整合</dt>
+        <dd>×交易＝<b>产品型</b>；×订阅＝<b>订阅服务型</b>（钉钉、Salesforce）；×授权＝<b>IP运营型</b>（阅文、泡泡玛特、ARM）。</dd>
+        <dt>连接赋能</dt>
+        <dd>×交易＝<b>平台型</b>（淘宝、美团）；×订阅＝<b>会员型</b>（Costco、Netflix）；×授权＝<b>生态型</b>（腾讯、苹果）。</dd>
+        <dt>判定纪律</dt>
+        <dd>判断依据是<b>底层逻辑（核心竞争力与收入机制）</b>，不能只看行业表面特征——"做APP的"可能落在六个格子中的任何一个。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>判定价值创造逻辑。</b>企业是直接交付完整方案（方案整合型），还是搭建市场、连接多边群体（连接赋能型）？看核心竞争力在哪，不看行业说法。</li>
+      <li><b>判定价值获取机制。</b>收入来自交易、订阅还是授权？看现金流的底层机制，不看收入形式的花样。</li>
+      <li><b>在矩阵中定位所属类型。</b>写出该类型对应的竞争优势来源与关键业务，确认定位依据站得住脚。</li>
+      <li><b>检验定位依据。</b>与团队、投资人当面复核两维判定：核心竞争力与收入机制的证据是否确凿，行业表面特征有没有干扰判断。</li>
+      <li><b>对接演化规划。</b>定位确认后，用卡 8-05 的演化四路径与三重启示，规划下一步的模块重构方向与能力储备清单。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>模式定位讨论</b>：团队/投资人对齐"我们是什么型"</li>
+          <li>竞品横向比较：同格比较结构，跨格比较演化</li>
+          <li>战略规划课与培训中的"模式定位练习"</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>定位结果只是<b>当前阶段的结构快照</b>，不构成对企业性质的定义</li>
+          <li>多数创业企业从产品型起步，<b>"不盲目跨越"阶段是首要纪律</b></li>
+          <li>判断依据是底层逻辑（核心竞争力与收入机制），<b>不能只看行业表面特征</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related" style="grid-template-columns:repeat(2,1fr)">
+      <div class="rel">
+        <div class="rn">卡 8-05</div>
+        <h4>商业模式类型演化四路径</h4>
+        <p>本卡管"定位"，卡 8-05 管"演化"：产品型到生态型的四条典型路径与三重启示，看清下一步往哪走。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持/调优/重构三分决策</h4>
+        <p>类型转换"本质是模块连接方式的重构"——用什么路径换挡，按卡 8-16 的重构三路径来选。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>最小可行系统（MVS）三闭环</h4>
+        <p>定位之后模式能不能转，交给卡 8-13 的三闭环验证——地图指方向，闭环验成色。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>"提前储备下一阶段关键能力"的前提，是先识别哪些资源算关键资源。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 210 页</span>
+    <span>方法论卡 8-04 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-11 · 数字文化四模式</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 模式详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--ink-3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--ink-3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-11 · 数字文化四模式（IP全链路/创作者平台/情感具象化/体验即服务）</span><a class="card-nav-prev" href="卡11-10-注意力情感变现价值闭环.html">← 卡 11-10</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-11</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>数字文化四模式</h1>
+  <div class="oneliner">IP 全链路 — 创作者平台 — 情感具象化 — 体验即服务：数字文化变现的四条路径。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>同样做数字文化，有人靠一个 IP 吃十年，有人搭平台聚起成千上万创作者，有人把"喜欢"做成了能卖钱的商品，也有人把"看"升级成"参与"按次收费——<b>变现路径不同，生意逻辑完全不同</b>。选错模式，是内容创业者最常见的战略浪费。</p>
+    <p>教材把数字文化商业模式归纳为四种模式，它们都是"注意力捕获—情感沉淀—价值变现"闭环在内容、平台、情绪、场景上的具体形态。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">有谱可选</div>
+        <div class="vd">四模式谱系清晰，把"怎么变现"从感觉变成选型题。</div>
+      </div>
+      <div class="value">
+        <div class="vt">对应强项</div>
+        <div class="vd">内容、聚人、情绪、场景四种强项各有其位，按长处选模式。</div>
+      </div>
+      <div class="value">
+        <div class="vt">接驳闭环</div>
+        <div class="vd">四模式共享价值闭环总纲，选型后仍可用三格逐一检验。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="40" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="33" text-anchor="middle" font-size="12" fill="#475569">四模式都是"注意力—情感—变现"闭环在内容、平台、情绪、场景上的具体形态</text>
+
+        <!-- ===== 模式一 ===== -->
+        <rect x="10" y="60" width="330" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,90 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#3b82f6"/>
+        <text x="175" y="97" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">① IP 全链路开发</text>
+        <text x="34" y="130" font-size="12" fill="#334155">以自产版权内容为源头，通过</text>
+        <text x="34" y="148" font-size="12" fill="#334155">影视、动漫、游戏、衍生品等</text>
+        <text x="34" y="166" font-size="12" fill="#334155">多轮次、多场景开发，</text>
+        <text x="34" y="184" font-size="12" fill="#334155">最大化 IP 的生命周期价值</text>
+
+        <!-- ===== 模式二 ===== -->
+        <rect x="340" y="60" width="330" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M340,90 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#d97706"/>
+        <text x="505" y="97" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">② 创作者经济平台</text>
+        <text x="364" y="130" font-size="12" fill="#334155">构建"创作者—平台—用户"</text>
+        <text x="364" y="148" font-size="12" fill="#334155">的共生生态，</text>
+        <text x="364" y="166" font-size="12" fill="#334155">形成网络效应飞轮</text>
+        <text x="364" y="184" font-size="11" fill="#92400e">关键词：共生生态 · 飞轮效应</text>
+
+        <!-- ===== 模式三 ===== -->
+        <rect x="10" y="218" width="330" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,248 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#059669"/>
+        <text x="175" y="255" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">③ 情感具象化</text>
+        <text x="34" y="288" font-size="12" fill="#334155">将粉丝对虚拟 IP 的情感投射，</text>
+        <text x="34" y="306" font-size="12" fill="#334155">转化为对实体商品的购买意愿；</text>
+        <text x="34" y="324" font-size="12" fill="#334155">通过限量、盲盒、社交属性设计</text>
+        <text x="34" y="342" font-size="12" fill="#334155">激发收藏热情</text>
+
+        <!-- ===== 模式四 ===== -->
+        <rect x="340" y="218" width="330" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M340,248 a10,10 0 0 1 10,-10 h310 a10,10 0 0 1 10,10 v14 h-330 z" fill="#475569"/>
+        <text x="505" y="255" text-anchor="middle" font-size="13.5" font-weight="700" fill="#ffffff">④ 体验即服务</text>
+        <text x="364" y="288" font-size="12" fill="#334155">将一次性内容消费，升级为</text>
+        <text x="364" y="306" font-size="12" fill="#334155">需付费参与的、可互动、可社交、</text>
+        <text x="364" y="324" font-size="12" fill="#334155">可重复体验的沉浸式"事件"</text>
+        <text x="364" y="342" font-size="12" fill="#334155">或"场景"</text>
+
+        <!-- ===== 底部选型提示 ===== -->
+        <rect x="10" y="384" width="660" height="64" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="406" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">共同底座：无论哪种模式，都要走通"注意力捕获—情感沉淀—价值变现"的闭环</text>
+        <text x="340" y="428" text-anchor="middle" font-size="11.5" fill="#64748b">选型先问：强项在内容（①）、聚人（②）、情绪（③）还是场景（④）？强项在哪，模式靠哪端</text>
+      </svg>
+      <div class="caption">图 1　数字文化商业模式四模式 × 共同的价值闭环底座</div>
+    </div>
+    <div class="quote">
+      四模式回答的是同一个问题的四种答案：<b>"情感认同到底以什么形态变现？"</b>——以内容生命周期变现、以生态规模变现、以实体商品变现，还是以沉浸体验变现。
+    </div>
+  </section>
+
+  <!-- ============ 逐模式详解 ============ -->
+  <section>
+    <h2>逐模式详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">模式一</span>
+        <h3>IP 全链路开发</h3>
+        <span class="role">变现载体：<b>内容生命周期</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"一个源头内容，能开发多少轮、多少场景？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd><b>以自产版权内容为源头，通过影视、动漫、游戏、衍生品等多轮次、多场景开发，最大化 IP 的生命周期价值</b>。</dd>
+        <dt>通俗理解</dt>
+        <dd>不在一个渠道里榨干内容，而是<b>让同一个 IP 在不同形态里反复产生收入</b>——每开发一轮，IP 的总价值就抬高一截。</dd>
+        <dt>适合谁</dt>
+        <dd>手里握有自产版权内容或自有 IP、且有耐心经营长周期的团队。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">模式二</span>
+        <h3>创作者经济平台</h3>
+        <span class="role">变现载体：<b>生态规模</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"能不能不自己生产，而是让创作者替生态生产？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd>构建<b>"创作者—平台—用户"的共生生态</b>，以网络效应飞轮驱动增长：创作者越多，内容越丰富，用户越多，创作者又越多。</dd>
+        <dt>通俗理解</dt>
+        <dd>平台赚的是<b>生态循环的钱</b>，不是单件内容的钱；飞轮转起来的前提，是三方在同一生态里都能拿到各自想要的价值。</dd>
+        <dt>适合谁</dt>
+        <dd>能同时聚起创作者与用户两端、有运营双边市场能力的团队。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">模式三</span>
+        <h3>情感具象化</h3>
+        <span class="role">变现载体：<b>实体商品</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"看不见的喜爱，能不能变成拿在手里的商品？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd><b>将粉丝对虚拟 IP 的情感投射，转化为对实体商品的购买意愿，通过限量、盲盒、社交属性设计，激发收藏热情</b>。</dd>
+        <dt>教材呼应</dt>
+        <dd>教材在"谷子经济"知识链接中归纳的<b>情感联结—身份认同—社交互动</b>三重动因，正是这一模式的消费心理基础：买的是商品，满足的是认同。</dd>
+        <dt>适合谁</dt>
+        <dd>运营虚拟 IP 或粉丝社群、情绪浓度高、具备商品化供应链的团队。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">模式四</span>
+        <h3>体验即服务</h3>
+        <span class="role">变现载体：<b>沉浸式场景</b></span>
+      </div>
+      <div class="q">本模式回答的问题：<b>"能不能把'看'升级成付费参与的'经历'？"</b></div>
+      <dl class="kv">
+        <dt>核心逻辑</dt>
+        <dd><b>将一次性内容消费，升级为需付费参与的、可互动、可社交、可重复体验的沉浸式"事件"或"场景"</b>。</dd>
+        <dt>通俗理解</dt>
+        <dd>内容不再"卖给你看"，而是<b>邀请你进来</b>：从一张门票式的单次消费，变成可持续复购的体验服务。</dd>
+        <dt>适合谁</dt>
+        <dd>有场景策划与现场运营能力，能把文化内容落成"事件"的团队。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>盘点强项。</b>在内容、聚人、情绪、场景四个方向上，如实写下团队的真实长项——只写有证据的，不写希望中的。</li>
+      <li><b>对照选型。</b>内容强选 IP 全链路，聚人强选创作者平台，情绪浓度高选情感具象化，场景运营强选体验即服务；混合打法要先写明主模式。</li>
+      <li><b>接闭环。</b>用卡 11-10 的三格检验所选模式：靠什么捕获注意力、靠什么沉淀情感、靠什么变现，三格缺一即回炉。</li>
+      <li><b>定变现物。</b>明确把情感"卖给谁、以什么形态"：内容轮次、生态服务、实体商品，还是沉浸体验，并给出第一件具体产品。</li>
+      <li><b>控节奏。</b>多轮次开发讲究生命周期节奏，不做涸泽而渔；体验类模式讲究可重复，一次惊艳不算数。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>数字文化创业项目的<b>商业模式选型</b>：从四模式中对号入座再细化</li>
+          <li>内容、IP 持有者规划<b>开发路径与变现节奏</b>的参照系</li>
+          <li>情绪消费类产品的<b>设计评审</b>：对照"限量、盲盒、社交属性"逐项检查</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>IP 全链路开发投入大、周期长，<b>单一内容源头风险集中</b>，须评估承受力</li>
+          <li>平台模式需创作者与用户双边同时起步，<b>冷启动难度高</b>，飞轮未转先别讲规模</li>
+          <li>情感具象化依赖情绪浓度，<b>情绪退潮商品即贬值</b>；体验即服务对场景运营能力要求高</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-10</div>
+        <h4>注意力—情感—变现价值闭环</h4>
+        <p>四模式共同的总纲：选任何一种模式前，先用三格闭环检验是否成立。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-09</div>
+        <h4>数字文化四维机会框架</h4>
+        <p>先定产业链位置，再选模式——两卡构成"位置 × 模式"的组合选型。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-06</div>
+        <h4>社群运营四步递进路径</h4>
+        <p>情感具象化与平台模式都依赖的社群方法：进入—互动—认同—传播。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 315—316 页</span>
+    <span>方法论卡 11-11 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

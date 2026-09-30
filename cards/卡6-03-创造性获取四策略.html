@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡6-03 · 创造性获取四策略</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 策略详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--ink-2);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--ink-2);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 三问卡片 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--s2);
+    border:1px solid var(--s2);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fffbeb;border:1px solid #fde68a;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s2);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=6">第 6 章 · 创业资源</a><span class="card-nav-meta">卡 6-03 · 创造性获取四策略（拼凑/杠杆/社会网络/战略合作）</span><a class="card-nav-prev" href="卡6-02-必要性掌控度矩阵.html">← 卡 6-02</a><a class="card-nav-next" href="卡6-04-资源整合四阶段模型.html">卡 6-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 6-03</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>创造性获取四策略</h1>
+  <div class="oneliner">拼凑 — 杠杆 — 社会网络 — 战略合作：不以拥有为前提，也能获取资源。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>经过关键资源识别与优先级排序，创业者手中已有了一份清晰的资源缺口清单。然而，资源不会自动填满缺口——尤其在资金有限、信誉不足、渠道匮乏的创业初期，<b>传统采购或融资方式往往行不通</b>：它们要求的，恰恰是你还没有的东西。</p>
+    <p>此时需要跳出<b>"只有先拥有才能使用"</b>的思维定式，转而创造性地获取和调动资源。教材给出四种被实践证明行之有效的创造性获取策略，共同的核心逻辑是：<b>"不以资源匮乏为借口，而以创造性行动为出路"</b>。这张卡带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">换掉"先拥有"</div>
+        <div class="vd">四条路径绕开采购与融资的高门槛，先让资源流动起来。</div>
+      </div>
+      <div class="value">
+        <div class="vt">四策略对号入座</div>
+        <div class="vd">拼凑、杠杆、社会网络、战略合作，各带操作清单。</div>
+      </div>
+      <div class="value">
+        <div class="vt">阶段动态适配</div>
+        <div class="vd">随创业阶段调整各策略的主辅角色，而非一套用到底。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">四种创造性获取策略的共同逻辑：不以资源匮乏为借口，而以创造性行动为出路</text>
+
+        <!-- ===== 策略一：资源拼凑 ===== -->
+        <rect x="10" y="56" width="158" height="290" rx="10" fill="#ffffff" stroke="#bfdbfe"/>
+        <path d="M10,86 a10,10 0 0 1 10,-10 h138 a10,10 0 0 1 10,10 v14 h-158 z" fill="#3b82f6"/>
+        <text x="89" y="92.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">资源拼凑</text>
+        <text x="24" y="124" font-size="11.5" font-weight="700" fill="#3b82f6">核心要义</text>
+        <text x="24" y="144" font-size="11" fill="#475569">手边资源的</text>
+        <text x="24" y="160" font-size="11" fill="#475569">创造性重组</text>
+        <text x="24" y="190" font-size="11.5" font-weight="700" fill="#3b82f6">操作要点</text>
+        <rect x="24" y="198" width="130" height="61.3" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="89" y="218" text-anchor="middle" font-size="10.5" fill="#1e293b">盘点手边资源，</text>
+        <text x="89" y="234" text-anchor="middle" font-size="10.5" fill="#1e293b">重新定义其功能，</text>
+        <text x="89" y="248" text-anchor="middle" font-size="10.5" fill="#1e293b">以目的为导向链接</text>
+        <text x="24" y="278" font-size="11.5" font-weight="700" fill="#3b82f6">三类型</text>
+        <text x="24" y="298" font-size="11" fill="#475569">实物 / 技能 / 制度拼凑</text>
+        <text x="24" y="326" font-size="10.5" fill="#94a3b8">机会开发期为主导策略</text>
+
+        <!-- ===== 策略二：资源杠杆 ===== -->
+        <rect x="178" y="56" width="158" height="290" rx="10" fill="#ffffff" stroke="#fde68a"/>
+        <path d="M178,86 a10,10 0 0 1 10,-10 h138 a10,10 0 0 1 10,10 v14 h-158 z" fill="#d97706"/>
+        <text x="257" y="92.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">资源杠杆</text>
+        <text x="192" y="124" font-size="11.5" font-weight="700" fill="#d97706">核心要义</text>
+        <text x="192" y="144" font-size="11" fill="#475569">小支点撬动</text>
+        <text x="192" y="160" font-size="11" fill="#475569">大量外部资源</text>
+        <text x="192" y="190" font-size="11.5" font-weight="700" fill="#d97706">操作要点</text>
+        <rect x="192" y="198" width="130" height="61.3" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="257" y="218" text-anchor="middle" font-size="10.5" fill="#1e293b">识别并放大资源的</text>
+        <text x="257" y="234" text-anchor="middle" font-size="10.5" fill="#1e293b">可交换价值，</text>
+        <text x="257" y="248" text-anchor="middle" font-size="10.5" fill="#1e293b">设计双方都认的机制</text>
+        <text x="192" y="278" font-size="11.5" font-weight="700" fill="#d97706">四模式</text>
+        <text x="192" y="298" font-size="11" fill="#475569">无形/存量/柔性/远期</text>
+        <text x="192" y="326" font-size="10.5" fill="#94a3b8">支点随阶段演进更换</text>
+
+        <!-- ===== 策略三：社会网络 ===== -->
+        <rect x="346" y="56" width="158" height="290" rx="10" fill="#ffffff" stroke="#a7f3d0"/>
+        <path d="M346,86 a10,10 0 0 1 10,-10 h138 a10,10 0 0 1 10,10 v14 h-158 z" fill="#059669"/>
+        <text x="425" y="92.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">社会网络</text>
+        <text x="360" y="124" font-size="11.5" font-weight="700" fill="#059669">核心要义</text>
+        <text x="360" y="144" font-size="11" fill="#475569">资源流通的</text>
+        <text x="360" y="160" font-size="11" fill="#475569">非正式管道</text>
+        <text x="360" y="190" font-size="11.5" font-weight="700" fill="#059669">操作要点</text>
+        <rect x="360" y="198" width="130" height="61.3" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="425" y="218" text-anchor="middle" font-size="10.5" fill="#1e293b">主动建构而非被动</text>
+        <text x="425" y="234" text-anchor="middle" font-size="10.5" fill="#1e293b">依赖：选择性参与，</text>
+        <text x="425" y="248" text-anchor="middle" font-size="10.5" fill="#1e293b">价值先行，定期维护</text>
+        <text x="360" y="278" font-size="11.5" font-weight="700" fill="#059669">三类型</text>
+        <text x="360" y="298" font-size="11" fill="#475569">强关系 / 弱关系 / 桥接</text>
+        <text x="360" y="326" font-size="10.5" fill="#94a3b8">弱关系带来异质性信息</text>
+
+        <!-- ===== 策略四：战略合作 ===== -->
+        <rect x="514" y="56" width="158" height="290" rx="10" fill="#ffffff" stroke="#cbd5e1"/>
+        <path d="M514,86 a10,10 0 0 1 10,-10 h138 a10,10 0 0 1 10,10 v14 h-158 z" fill="#475569"/>
+        <text x="593" y="92.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">战略合作</text>
+        <text x="528" y="124" font-size="11.5" font-weight="700" fill="#475569">核心要义</text>
+        <text x="528" y="144" font-size="11" fill="#475569">通过合作"借用"</text>
+        <text x="528" y="160" font-size="11" fill="#475569">或"共享"资源</text>
+        <text x="528" y="190" font-size="11.5" font-weight="700" fill="#475569">操作要点</text>
+        <rect x="528" y="198" width="130" height="61.3" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="593" y="218" text-anchor="middle" font-size="10.5" fill="#1e293b">按战略重要性 ×</text>
+        <text x="593" y="234" text-anchor="middle" font-size="10.5" fill="#1e293b">可交易性，在连续</text>
+        <text x="593" y="248" text-anchor="middle" font-size="10.5" fill="#1e293b">谱系上选合作模式</text>
+        <text x="528" y="278" font-size="11.5" font-weight="700" fill="#475569">谱系</text>
+        <text x="528" y="298" font-size="11" fill="#475569">交易→合作→联盟</text>
+        <text x="528" y="314" font-size="11" fill="#475569">→合资→生态依附</text>
+        <text x="528" y="336" font-size="10.5" fill="#94a3b8">开放与保护须平衡</text>
+
+        <!-- ===== 底部：适用情境带 ===== -->
+        <rect x="10" y="366" width="660" height="86" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="392" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">怎么选：按缺口性质与手边条件对号</text>
+        <text x="120" y="418" text-anchor="middle" font-size="11" fill="#475569">手边有闲置资源可重组 → 拼凑</text>
+        <text x="340" y="418" text-anchor="middle" font-size="11" fill="#475569">有独占且稀缺的支点资源 → 杠杆</text>
+        <text x="560" y="418" text-anchor="middle" font-size="11" fill="#475569">缺口嵌在关系网络中 → 网络</text>
+        <text x="120" y="440" text-anchor="middle" font-size="11" fill="#475569">无法拥有、难以撬动 → 合作</text>
+        <text x="340" y="440" text-anchor="middle" font-size="11" fill="#64748b">四策略常组合使用，随阶段调整主辅</text>
+        <text x="560" y="440" text-anchor="middle" font-size="11" fill="#64748b">——见下方"怎么用"</text>
+      </svg>
+      <div class="caption">图 1　创造性获取四策略：四列并列 × 核心要义 × 操作要点 × 适用情境</div>
+    </div>
+    <div class="quote">
+      四种策略共同的核心逻辑：<b>"不以资源匮乏为借口，而以创造性行动为出路"</b>——从"只有先拥有才能使用"，转向"先让资源流动起来"。
+    </div>
+  </section>
+
+  <!-- ============ 逐策略详解 ============ -->
+  <section>
+    <h2>逐策略详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">策略一</span>
+        <h3>资源拼凑</h3>
+        <span class="role">手边资源的<b>创造性重组</b></span>
+      </div>
+      <div class="q">本策略回答的问题：<b>"不等最优配置，手边的东西能先拼出什么？"</b></div>
+      <dl class="kv">
+        <dt>策略定义</dt>
+        <dd>资源高度约束下的即兴智慧——不等待最优配置，而是创造性地激活手边既有甚至看似无关的资源，通过"将就"与重新组合，将资源从原有语境中<b>"脱钩"</b>，赋予其解决新问题的新功能。</dd>
+        <dt>实践价值</dt>
+        <dd>一是<b>快速行动、验证学习</b>：以极低成本将想法转化为可测试的产品，加速"构建—测量—学习"循环；二是<b>构建独特性与韧性</b>：拼凑植根于创业者独特的资源禀赋与即兴创意，方案往往难以被竞争对手模仿。</dd>
+        <dt>三种类型</dt>
+        <dd><b>实物拼凑</b>（对有形实体进行重组）、<b>技能拼凑</b>（将个人或团队的多种技能、知识碎片组合成新的解决方案）、<b>制度拼凑</b>（利用、规避或重新诠释现有制度、规则与社会认知，为创业活动创造空间）。</dd>
+        <dt>四步操作法</dt>
+        <dd>①<b>盘点手边资源</b>：制作"非传统资源清单"，涵盖可免费或低成本接触的公共资源、闲置资源、废弃资源；②<b>重新定义资源功能</b>：追问"这个资源除了常规用途，还能用来做什么？"；③<b>以目的为导向进行链接</b>：围绕最紧迫的问题，将不同属性的资源强行组合；④<b>接受并迭代"最小可行"方案</b>：接受不完美但可及的解决方案，不追求最优配置。</dd>
+        <dt>阶段角色</dt>
+        <dd>机会开发阶段是<b>主导策略</b>（以极低成本验证概念）；模式验证阶段是<b>辅助策略</b>（在非核心环节使用，核心价值交付环节仍需可靠性）；规模化阶段是<b>补充策略</b>（激发创新、应对突发挑战，大规模运营需系统化投入）。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">慎用提醒</div>
+        <div class="trap"><span class="tn">过度拼凑</span><span class="td">规模化阶段过度拼凑会带来质量和稳定性风险——拼凑是"将就"出来的起点，不是长久之计。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">策略二</span>
+        <h3>资源杠杆</h3>
+        <span class="role">以小博大的<b>交换设计</b></span>
+      </div>
+      <div class="q">本策略回答的问题：<b>"我手里哪样东西，别人愿意拿资源来换？"</b></div>
+      <dl class="kv">
+        <dt>策略定义</dt>
+        <dd>创业者<b>利用少量关键资源作为支点，撬动大量外部资源的能力。其核心在于识别并放大资源的可交换价值</b>。</dd>
+        <dt>四种模式</dt>
+        <dd><b>以无形撬动有形</b>：用愿景、知识产权、个人声誉等无形资源，撬动资金、设备、人才等有形资源；<b>以存量撬动增量</b>：用已有资源创造更多同类或更高级资源——初始用户撬动更多用户（推荐机制、口碑传播），首笔订单撬动供应链信用；<b>以柔性撬动刚性</b>：用灵活性、速度等软实力，以独家合作、快速定制开发为条件，换取大公司的重资产、渠道与平台流量入口；<b>以远期价值撬动当前资源</b>：将未来的增长潜力和股权价值折现为当前的资源投入，股权融资、员工期权、对赌协议都是典型体现。</dd>
+        <dt>支点资格线</dt>
+        <dd>四种模式都要求支点资源具备<b>独占性与吸引力</b>——没有这两样，任何机制设计都撬不动。</dd>
+        <dt>阶段演进</dt>
+        <dd>创业早期，杠杆的核心是<b>创始人的信用、愿景与初步验证数据</b>，目标是小规模撬动生存与发展所需资源；成长期，核心转向<b>已验证的商业模式、增长数据与用户资产</b>，目标是规模化撬动资本、人才与市场渠道。支点不换，杠杆就会失效。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">杠杆设计三问</div>
+        <div class="trap"><span class="tn">一问支点</span><span class="td">哪项资源是你独有的优势，且对其他资源方具有高吸引力？</span></div>
+        <div class="trap"><span class="tn">二问杠杆</span><span class="td">你准备设计怎样的交换机制（如股权、未来收益分成、独家合作权）？</span></div>
+        <div class="trap"><span class="tn">三问风险</span><span class="td">杠杆是否过长？是否存在控制权丧失、资源依赖或声誉透支的风险？</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">策略三</span>
+        <h3>社会网络</h3>
+        <span class="role">资源流通的<b>非正式管道</b></span>
+      </div>
+      <div class="q">本策略回答的问题：<b>"信息、信任、渠道、早期客户，藏在谁的关系里？"</b></div>
+      <dl class="kv">
+        <dt>策略定义</dt>
+        <dd>信息、信任、渠道、早期客户等关键资源并不存在于公开市场，而是<b>嵌入在人与人之间的关系网络之中</b>——社会网络正是这些资源流通的非正式管道。</dd>
+        <dt>三种类型</dt>
+        <dd><b>强关系网络</b>：由深厚信任与情感纽带构成（家人、挚友、长期紧密合作的伙伴），资源可靠、支持性强，是生存危机时可依赖的港湾；局限在资源<b>同质性</b>——知识背景、信息渠道高度重叠，难带来突破性新机会。<b>弱关系网络</b>：互动不那么频繁的联系（行业同仁、校友、业务往来的伙伴），<b>更可能成为新颖信息与跨界机会的桥梁</b>——他们掌握着你接触不到的异质性信息流，是感知市场趋势、发现潜在客户、招募人才的重要渠道。<b>桥接网络</b>：能够连接两个或多个原本互不关联的社会群体的关键节点，价值在于<b>促成异质性资源的创造性组合</b>，从而催生创新。</dd>
+        <dt>主动建构</dt>
+        <dd>创业者不应被动依赖既有网络，而应有意识地主动建构，四原则：<b>选择性参与</b>（有选择地参加能连接目标资源方的会议、社群与活动，而非漫无目的地社交）；<b>价值先行</b>（索取之前先思考如何分享信息、提供帮助、连接他人，使自己成为网络中的价值节点而非纯粹的索取者）；<b>关系深化</b>（有意识地将弱关系转化为强关系、一次性交易关系转化为长期伙伴关系）；<b>定期维护</b>（梳理核心资源网络图，评估关键节点的健康状况，投入时间维护）。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">策略四</span>
+        <h3>战略合作</h3>
+        <span class="role">生态化获取</span>
+      </div>
+      <div class="q">本策略回答的问题：<b>"资源无法拥有、难以直接撬动时，能不能'借'或'共享'？"</b></div>
+      <dl class="kv">
+        <dt>策略定义</dt>
+        <dd>当资源无法拥有、难以直接撬动时，通过合作"借用"或"共享"便成为理性选择——从<b>"企业本位"的资源观转向"生态位"的资源观</b>：识别自身所在或可接入的生态系统，理解其中的资源分布、关键节点与流动规律，找到最有利的生态位。</dd>
+        <dt>连续谱系</dt>
+        <dd>从松散到紧密，可选合作模式构成一个连续谱系：<b>市场交易 → 短期项目合作 → 战略联盟 → 合资企业 → 生态平台依附或共生</b>。</dd>
+        <dt>双维选择</dt>
+        <dd>选择何种模式，取决于两个维度：<b>资源的战略重要性</b>（对构建核心竞争力有多关键）与<b>资源的可交易性</b>（能否在市场上被清晰界定、定价和交割）。高重要性、低可交易性的资源（如核心算法、独特文化），倾向内部构建或深度绑定；高重要性、高可交易性的资源（如标准服务器、通用营销服务），可通过长期合约或战略采购获取；低重要性资源，直接市场采购即可，无需耗费过多管理精力。</dd>
+        <dt>开放与保护</dt>
+        <dd>合作过程中需在开放与保护之间建立平衡：<b>保护核心资源</b>（明确合作边界，以分阶段披露、保密协议等方式防止核心能力外溢）、<b>创造协同效应</b>（设立联合团队、共享流程与系统，使各方获得单独行动无法实现的好处）、<b>动态管理</b>（定期评估合作效益，既不固守僵化，也不频繁变更，保持必要的稳定性以积累合作成果）。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>对照缺口选策略。</b>拿着资源缺口清单问：缺口能否用手边资源拼出来（拼凑）？能否用支点资源换出来（杠杆）？是否嵌在关系网络里（网络）？只能通过合作共享（战略合作）？多数团队需要组合使用。</li>
+      <li><b>拼凑走四步。</b>盘点手边资源 → 重新定义资源功能 → 以目的为导向强行组合 → 接受并迭代"最小可行"方案——先跑起来，再谈优化。</li>
+      <li><b>杠杆答三问。</b>写下支点是什么、交换机制怎么设计、风险清单有哪些；三问答不齐就暂缓出手，尤其警惕支点毫无独占性的空手撬动。</li>
+      <li><b>网络按四原则建构。</b>选择性参与能连接目标资源方的活动，价值先行再谈索取，有意识地把弱关系深化为强关系，并定期维护关键节点。</li>
+      <li><b>合作按双维定位。</b>对每项目标资源判定战略重要性与可交易性，在连续谱系上选模式；合作全程守住开放与保护的平衡。</li>
+      <li><b>随阶段调整主辅。</b>拼凑从主导降为辅助再降为补充；杠杆支点从创始人信用升级为已验证模式与用户资产——阶段变了，策略组合要跟着变。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>初创期<b>"资金有限、信誉不足、渠道匮乏"</b>的资源约束局面</li>
+          <li>拥有闲置资源、无形资产或先发存量（首批用户、首单）的团队</li>
+          <li>设计合作条款、融资方案与资源谈判前的<b>策略选择框架</b></li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>拼凑是权宜之计，<b>规模化阶段过度拼凑危及质量与稳定</b></li>
+          <li>杠杆放大收益也放大风险——<b>控制权丧失与资源依赖是硬约束</b></li>
+          <li>过度依赖强关系或桥接网络也有代价（人情负担、信息同质化、合作方利益冲突）</li>
+          <li>合作涉及核心资源让渡，<b>开放前先设保护边界</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>获取之前先知道"什么最值得要"：三步法定义的关键节点资源，是四策略的目标清单。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-02</div>
+        <h4>必要性—掌控度矩阵</h4>
+        <p>矩阵里"高必要 × 低掌控"的致命缺口，正是四策略要优先攻克的目标资源。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>获取只是第一步：拼来、撬来、借来的资源，要靠四阶段模型完成从结构化到常规化的整合。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 6 章，第 163—167 页</span>
+    <span>方法论卡 6-03 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

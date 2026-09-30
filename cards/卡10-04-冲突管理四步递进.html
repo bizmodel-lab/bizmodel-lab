@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡10-04 · 冲突管理四步递进</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 步骤详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=10">第 10 章 · 创业组织</a><span class="card-nav-meta">卡 10-04 · 冲突管理四步递进（预防→识别→干预→僵局）</span><a class="card-nav-prev" href="卡10-03-决策机制四方式与分级决策.html">← 卡 10-03</a><a class="card-nav-next" href="卡10-05-股权结构设计七模块.html">卡 10-05 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 10-04</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>冲突管理四步递进</h1>
+  <div class="oneliner">预防 → 识别 → 干预 → 僵局处理：冲突越早介入，手段越温和，代价越小。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>有人的地方就有冲突，创业团队尤其如此——高压、高不确定、高利益绑定。但冲突本身不是坏事：<b>任务层面的分歧往往孕育更好的方案</b>；真正致命的，是分歧滑向人身与信任的对立。</p>
+    <p>教材把创业团队的冲突管理组织为一个递进框架：<b>预防 → 识别 → 干预 → 僵局处理</b>。前一步做得好，后一步就用不上——<b>预防的成本最低，僵局的代价最高</b>。这张卡把四步连同每一步可用的工具做成一份干预手册。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">分级递进</div>
+        <div class="vd">按冲突发展阶段匹配手段：能用预防解决的不等识别，能干预的不拖到僵局。</div>
+      </div>
+      <div class="value">
+        <div class="vt">类型分流</div>
+        <div class="vd">任务冲突与关系冲突用完全不同的处理方式——先分类型，再选手段。</div>
+      </div>
+      <div class="value">
+        <div class="vt">工具齐备</div>
+        <div class="vd">心理安全感、决策规则、4A 反馈准则等工具嵌入各步骤，拿来即用。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 488" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ahr" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#dc2626"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部核心命题横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#dc2626">核心命题：从任务冲突滑向关系冲突，往往是冲突管理的分水岭</text>
+
+        <!-- ===== 四步箭头 ===== -->
+        <polygon points="10,54 147,54 173,81 147,108 10,108" fill="#3b82f6"/>
+        <text x="81" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">① 预防</text>
+
+        <polygon points="173,54 310,54 336,81 310,108 173,108 199,81" fill="#d97706"/>
+        <text x="254" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">② 识别</text>
+
+        <polygon points="336,54 473,54 499,81 473,108 336,108 362,81" fill="#059669"/>
+        <text x="417" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">③ 干预</text>
+
+        <polygon points="499,54 636,54 662,81 636,108 499,108 525,81" fill="#dc2626"/>
+        <text x="580" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">④ 僵局处理</text>
+
+        <!-- ===== 步骤详解卡 ===== -->
+        <rect x="11" y="124" width="157" height="212" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="23" y="150" font-size="11" fill="#475569"><tspan fill="#3b82f6" font-weight="700">• </tspan>营造心理安全感，</text>
+        <text x="33" y="169" font-size="11" fill="#64748b">让分歧敢上桌面</text>
+        <text x="23" y="192" font-size="11" fill="#475569"><tspan fill="#3b82f6" font-weight="700">• </tspan>事先约定决策规则</text>
+        <text x="33" y="211" font-size="11" fill="#64748b">（不同意但致力于</text>
+        <text x="33" y="230" font-size="11" fill="#64748b">执行）</text>
+        <text x="23" y="253" font-size="11" fill="#475569"><tspan fill="#3b82f6" font-weight="700">• </tspan>制度化冲突渠道，</text>
+        <text x="33" y="272" font-size="11" fill="#64748b">常态表达不满</text>
+        <text x="23" y="310" font-size="11" fill="#94a3b8">把冲突挡在发生前</text>
+
+        <rect x="178" y="124" width="157" height="212" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="190" y="150" font-size="11" fill="#475569"><tspan fill="#d97706" font-weight="700">• </tspan>判断类型：任务冲</text>
+        <text x="200" y="169" font-size="11" fill="#64748b">突还是关系冲突</text>
+        <text x="190" y="192" font-size="11" fill="#475569"><tspan fill="#d97706" font-weight="700">• </tspan>评估等级：影响</text>
+        <text x="200" y="211" font-size="11" fill="#64748b">范围与激化程度</text>
+        <text x="190" y="234" font-size="11" fill="#475569"><tspan fill="#d97706" font-weight="700">• </tspan>越早识别，干预</text>
+        <text x="200" y="253" font-size="11" fill="#64748b">手段越温和</text>
+        <text x="190" y="310" font-size="11" fill="#94a3b8">抢在滑落之前</text>
+
+        <rect x="345" y="124" width="157" height="212" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="357" y="150" font-size="11" fill="#475569"><tspan fill="#059669" font-weight="700">• </tspan>任务冲突：保持建</text>
+        <text x="367" y="169" font-size="11" fill="#64748b">设性，对事不对人</text>
+        <text x="357" y="192" font-size="11" fill="#475569"><tspan fill="#059669" font-weight="700">• </tspan>关系冲突：先降温</text>
+        <text x="367" y="211" font-size="11" fill="#64748b">修复，再回头谈事</text>
+        <text x="357" y="234" font-size="11" fill="#475569"><tspan fill="#059669" font-weight="700">• </tspan>两类冲突，策略</text>
+        <text x="367" y="253" font-size="11" fill="#64748b">分化处理</text>
+        <text x="357" y="310" font-size="11" fill="#94a3b8">用错顺序会火上浇油</text>
+
+        <rect x="512" y="124" width="157" height="212" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="524" y="150" font-size="11" fill="#475569"><tspan fill="#dc2626" font-weight="700">• </tspan>启动最终裁决机</text>
+        <text x="534" y="169" font-size="11" fill="#64748b">制，限期了断</text>
+        <text x="524" y="192" font-size="11" fill="#475569"><tspan fill="#dc2626" font-weight="700">• </tspan>「速度比完美更</text>
+        <text x="534" y="211" font-size="11" fill="#64748b">重要」：先裁决，</text>
+        <text x="534" y="230" font-size="11" fill="#64748b">后优化完善</text>
+        <text x="524" y="253" font-size="11" fill="#475569"><tspan fill="#dc2626" font-weight="700">• </tspan>裁决后全员对齐，</text>
+        <text x="534" y="272" font-size="11" fill="#64748b">不再翻旧账</text>
+        <text x="524" y="310" font-size="11" fill="#94a3b8">僵局的消耗大于次优决定</text>
+
+        <!-- ===== 分水岭示意 ===== -->
+        <rect x="50" y="356" width="210" height="62" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="155" y="380" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">任务冲突</text>
+        <text x="155" y="400" text-anchor="middle" font-size="11" fill="#475569">围绕「事」：可建设性利用</text>
+
+        <line x1="265" y1="387" x2="415" y2="387" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#ahr)"/>
+        <text x="340" y="376" text-anchor="middle" font-size="11" fill="#dc2626">处理不当时滑落</text>
+        <text x="340" y="408" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">分水岭</text>
+
+        <rect x="420" y="356" width="210" height="62" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="525" y="380" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626">关系冲突</text>
+        <text x="525" y="400" text-anchor="middle" font-size="11" fill="#475569">围绕「人」：侵蚀信任</text>
+
+        <!-- 底部注记 -->
+        <rect x="10" y="436" width="660" height="40" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="461" text-anchor="middle" font-size="12" fill="#475569">预防的成本最低，僵局的代价最高——越早介入，手段越温和</text>
+      </svg>
+      <div class="caption">图 1　冲突管理四步递进：预防 → 识别 → 干预 → 僵局处理 + 任务 / 关系冲突分水岭</div>
+    </div>
+    <div class="quote">
+      <b>从任务冲突滑向关系冲突，往往是冲突管理的分水岭。</b>任务层面的分歧可以是建设性的；人身与信任层面的对立则会持续消耗团队。识别的要务，就是抢在滑落之前。
+    </div>
+  </section>
+
+  <!-- ============ 逐步骤详解 ============ -->
+  <section>
+    <h2>逐步骤详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一步</span>
+        <h3>预防</h3>
+        <span class="role">目标：<b>把冲突挡在发生之前</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做法一</dt>
+        <dd>营造<b>心理安全感</b>——让成员敢于把不同意见摆上桌面，分歧在明处流动，就不会在暗处发酵。</dd>
+        <dt>做法二</dt>
+        <dd>事先约定<b>决策规则</b>，如"不同意但致力于执行"：表达反对是义务，执行决议也是义务。</dd>
+        <dt>做法三</dt>
+        <dd>设置<b>制度化的冲突表达渠道</b>，让不满有常态出口，而不是攒到爆发。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二步</span>
+        <h3>识别</h3>
+        <span class="role">目标：<b>抢在滑落之前</b></span>
+      </div>
+      <dl class="kv">
+        <dt>判断类型</dt>
+        <dd>是<b>任务冲突</b>（围绕事：方案、路线、资源分配）还是<b>关系冲突</b>（围绕人：情绪、地位、信任）——两者性质完全不同。</dd>
+        <dt>评估等级</dt>
+        <dd>衡量影响范围与激化程度：涉及几个人？是否已影响协作？是否开始"对人不对事"？</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三步</span>
+        <h3>干预</h3>
+        <span class="role">目标：<b>策略分化，各治其本</b></span>
+      </div>
+      <dl class="kv">
+        <dt>任务冲突</dt>
+        <dd>宜<b>保持建设性</b>——聚焦事情本身，鼓励充分辩论后收敛，把分歧转化为更优方案。</dd>
+        <dt>关系冲突</dt>
+        <dd>宜<b>先行降温修复</b>——先处理情绪与关系，再回头解决事情；顺序用反了会火上浇油。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">第四步</span>
+        <h3>僵局处理</h3>
+        <span class="role">目标：<b>限期了断，止住消耗</b></span>
+      </div>
+      <dl class="kv">
+        <dt>核心手段</dt>
+        <dd>启动<b>最终裁决机制</b>——按事先约定的规则由裁决人限期拍板，不再无限期辩论。</dd>
+        <dt>教材态度</dt>
+        <dd><b>"速度比完美更重要"</b>——僵局本身的消耗，往往大于一个次优决定。</dd>
+        <dt>裁决之后</dt>
+        <dd>全员对齐、不再翻旧账；裁决的结果与教训应沉淀进决策规则，防止同类冲突复发。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>平时做预防。</b>逐项检查：团队心理安全感够吗？决策规则写了吗？冲突表达渠道通吗？缺哪项补哪项。</li>
+      <li><b>出现摩擦先识别。</b>判断是任务冲突还是关系冲突、评估等级，再决定用什么手段——不要跳过识别直接开吵或直接和稀泥。</li>
+      <li><b>干预分流。</b>对事的冲突用辩论收敛，对人的冲突先降温修复；两类手段切勿用错顺序。</li>
+      <li><b>僵局果断裁决。</b>设定期限、启动最终裁决机制，先定再优化——记住"速度比完美更重要"。</li>
+      <li><b>事后复盘。</b>把这次冲突的起因与教训写进决策规则，让同类冲突下一次在更早的步骤被拦住。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>合伙人分歧升级期的<b>干预与止损</b></li>
+          <li>团队例会出现<b>沉默、站队、绕道沟通</b>等信号时的诊断</li>
+          <li>融资、转型等高压期来临前的<b>冲突预案</b></li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>四步是管理框架，涉及<b>违法违纪的行为不适用"调解"</b>，应直接依规处理</li>
+          <li>关系冲突的修复需要时间沉淀，<b>一次谈话往往不够</b></li>
+          <li>重大股权僵局仅靠裁决机制不够，需配合卡 10-05 的股权与治理机制设计</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-01</div>
+        <h4>团队组建五原则</h4>
+        <p>从源头减少冲突：愿景共融、承诺对等做得好，多数冲突根本不会发生。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-03</div>
+        <h4>决策机制四方式与分级决策</h4>
+        <p>事先约定的决策规则是最有效的冲突预防手段——"不同意但致力于执行"即出自这里。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-06</div>
+        <h4>价值观建设四步法</h4>
+        <p>心理安全感的土壤是共同价值观：提炼 → 翻译 → 制度化 → 活化。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 10 章，第 261—264 页</span>
+    <span>方法论卡 10-04 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

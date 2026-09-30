@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-08 · 模块耦合度诊断体系</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.risk{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .risk .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-08 · 模块耦合度诊断体系（3链/3维/4断裂）</span><a class="card-nav-prev" href="卡8-07-价值主张四步深化.html">← 卡 8-07</a><a class="card-nav-next" href="卡8-09-系统动力源识别.html">卡 8-09 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-08</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>模块耦合度诊断体系</h1>
+  <div class="oneliner">扫描商业模式内部齿轮的咬合与断裂——给画布做一次"CT"。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>画布（奥斯特瓦德与皮尼厄开发的商业模式画布）画出来只是九格填空，但模块之间是<b>"相互嵌套的""如同机械钟表的齿轮，各自独立却不孤立，通过咬合、传动、反馈形成动态整体"</b>。创业者常看不出哪一格拖垮全局——每一格单看都合理，合起来却在内耗。</p>
+    <p>本方法在大规模资源投入之前，对商业模式系统结构做<b>"CT扫描"</b>，识别耦合紧密度与潜在断裂点。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看见齿轮关系</div>
+        <div class="vd">九格不是并列填空，而是三条传动链上相互咬合的齿轮，链断则系统停转。</div>
+      </div>
+      <div class="value">
+        <div class="vt">投入前做体检</div>
+        <div class="vd">在大规模资源投入之前完成结构诊断，而不是在亏损发生后才追查。</div>
+      </div>
+      <div class="value">
+        <div class="vt">输出明确结论</div>
+        <div class="vd">给出"断裂位置＋断裂模式"的诊断结论，直接转入调优或重构决策。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 686" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah13" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部横幅 -->
+        <rect x="10" y="8" width="660" height="32" rx="16" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="13" fill="#475569">画布 CT 扫描：三条主传动链 × 耦合三维评估 × 四种断裂模式</text>
+
+        <!-- ===== 链① 基础链 ===== -->
+        <text x="10" y="66" font-size="13" font-weight="700" fill="#3b82f6">链① 价值主张 → 客户细分 → 收入来源</text>
+        <rect x="10" y="82" width="118" height="36" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="69" y="105" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">最基础耦合链</text>
+        <rect x="140" y="78" width="140" height="44" rx="8" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="210" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">价值主张</text>
+        <line x1="282" y1="100" x2="316" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#ah13)"/>
+        <rect x="320" y="78" width="140" height="44" rx="8" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="390" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">客户细分</text>
+        <line x1="462" y1="100" x2="496" y2="100" stroke="#475569" stroke-width="2" marker-end="url(#ah13)"/>
+        <rect x="500" y="78" width="140" height="44" rx="8" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="570" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">收入来源</text>
+        <!-- 每段耦合的三维评分点 -->
+        <circle cx="288" cy="134" r="4" fill="#3b82f6"/><circle cx="299" cy="134" r="4" fill="#d97706"/><circle cx="310" cy="134" r="4" fill="#059669"/>
+        <circle cx="468" cy="134" r="4" fill="#3b82f6"/><circle cx="479" cy="134" r="4" fill="#d97706"/><circle cx="490" cy="134" r="4" fill="#059669"/>
+        <!-- 收入—成本倒挂：链①与链②之间的纵向断裂 -->
+        <path d="M570,122 L570,208" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,4" fill="none"/>
+        <circle cx="570" cy="165" r="9" fill="#dc2626"/>
+        <text x="570" y="169" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">!</text>
+        <text x="556" y="162" text-anchor="end" font-size="11" font-weight="700" fill="#dc2626">收入—成本倒挂</text>
+        <text x="10" y="152" font-size="11" fill="#94a3b8">教材：若此链条断裂，商业模式便失去存在根基</text>
+
+        <!-- ===== 链② 供应链 ===== -->
+        <text x="10" y="196" font-size="13" font-weight="700" fill="#d97706">链② 关键业务 → 核心资源 → 成本结构</text>
+        <rect x="10" y="212" width="118" height="36" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="69" y="235" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">供给侧链</text>
+        <rect x="140" y="208" width="140" height="44" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <text x="210" y="235" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">关键业务</text>
+        <line x1="282" y1="230" x2="316" y2="230" stroke="#475569" stroke-width="2" marker-end="url(#ah13)"/>
+        <rect x="320" y="208" width="140" height="44" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <text x="390" y="235" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">核心资源</text>
+        <line x1="462" y1="230" x2="496" y2="230" stroke="#475569" stroke-width="2" marker-end="url(#ah13)"/>
+        <rect x="500" y="208" width="140" height="44" rx="8" fill="#ffffff" stroke="#fde68a"/>
+        <text x="570" y="235" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">成本结构</text>
+        <circle cx="288" cy="264" r="4" fill="#3b82f6"/><circle cx="299" cy="264" r="4" fill="#d97706"/><circle cx="310" cy="264" r="4" fill="#059669"/>
+        <circle cx="468" cy="264" r="4" fill="#3b82f6"/><circle cx="479" cy="264" r="4" fill="#d97706"/><circle cx="490" cy="264" r="4" fill="#059669"/>
+        <!-- 断裂警示：资源—业务锁定 -->
+        <circle cx="299" cy="222" r="9" fill="#dc2626"/>
+        <text x="299" y="226" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">!</text>
+        <text x="10" y="282" font-size="11" fill="#94a3b8">教材：防隐性亏损——警惕早期用户增长掩盖单位经济模型的恶化</text>
+
+        <!-- ===== 链③ 交付链 ===== -->
+        <text x="10" y="326" font-size="13" font-weight="700" fill="#059669">链③ 渠道通路 → 客户关系 → 价值主张</text>
+        <rect x="10" y="342" width="118" height="36" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="69" y="365" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">交付侧链</text>
+        <rect x="140" y="338" width="140" height="44" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <text x="210" y="365" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">渠道通路</text>
+        <line x1="282" y1="360" x2="316" y2="360" stroke="#475569" stroke-width="2" marker-end="url(#ah13)"/>
+        <rect x="320" y="338" width="140" height="44" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <text x="390" y="365" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">客户关系</text>
+        <line x1="462" y1="360" x2="496" y2="360" stroke="#475569" stroke-width="2" marker-end="url(#ah13)"/>
+        <rect x="500" y="338" width="140" height="44" rx="8" fill="#ffffff" stroke="#a7f3d0"/>
+        <text x="570" y="365" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">价值主张</text>
+        <circle cx="288" cy="394" r="4" fill="#3b82f6"/><circle cx="299" cy="394" r="4" fill="#d97706"/><circle cx="310" cy="394" r="4" fill="#059669"/>
+        <circle cx="468" cy="394" r="4" fill="#3b82f6"/><circle cx="479" cy="394" r="4" fill="#d97706"/><circle cx="490" cy="394" r="4" fill="#059669"/>
+        <!-- 断裂警示：价值—渠道错配 -->
+        <circle cx="299" cy="352" r="9" fill="#dc2626"/>
+        <text x="299" y="356" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">!</text>
+        <text x="10" y="412" font-size="11" fill="#94a3b8">教材：防渠道稀释价值主张</text>
+
+        <!-- ===== 第二层 · 三维评估 ===== -->
+        <text x="10" y="446" font-size="13" font-weight="700" fill="#1e293b">第二层 · 耦合三维评估</text>
+        <text x="670" y="446" text-anchor="end" font-size="11" fill="#64748b">链上每段耦合，按<tspan fill="#3b82f6">匹配</tspan>/<tspan fill="#d97706">冗余</tspan>/<tspan fill="#059669">反馈</tspan>三维打分</text>
+        <rect x="10" y="456" width="210" height="83.4" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="22" y="478" font-size="12" font-weight="700" fill="#3b82f6">匹配度</text>
+        <text x="22" y="496" font-size="11" fill="#475569">上游输出是否恰好构成</text>
+        <text x="22" y="512" font-size="11" fill="#475569">下游有效输入？</text>
+        <text x="22" y="528" font-size="11" fill="#94a3b8">例：极速配送×层层分销＝错配</text>
+        <rect x="235" y="456" width="210" height="83.4" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="247" y="478" font-size="12" font-weight="700" fill="#d97706">冗余度</text>
+        <text x="247" y="496" font-size="11" fill="#475569">有无备用路径？</text>
+        <text x="247" y="512" font-size="11" fill="#475569">例：单一渠道获客＝冗余不足</text>
+        <text x="247" y="528" font-size="11" fill="#94a3b8">在「安全垫」与「效率」间平衡</text>
+        <rect x="460" y="456" width="210" height="83.4" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="472" y="478" font-size="12" font-weight="700" fill="#059669">反馈度</text>
+        <text x="472" y="496" font-size="11" fill="#475569">下游变化能否反向调节上游？</text>
+        <text x="472" y="512" font-size="11" fill="#94a3b8">例：留存率下降是否自动触发</text>
+        <text x="472" y="528" font-size="11" fill="#94a3b8">产品迭代优先级调整？</text>
+
+        <!-- ===== 第三层 · 四种断裂模式 ===== -->
+        <text x="10" y="562" font-size="13" font-weight="700" fill="#dc2626">第三层 · 四种断裂模式（对低分耦合段归类）</text>
+        <rect x="10" y="572" width="328" height="46" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <path d="M26,580 L32,592 L26,600 L34,612" stroke="#dc2626" stroke-width="2" fill="none"/>
+        <text x="46" y="592" font-size="12" font-weight="700" fill="#dc2626">价值—渠道错配</text>
+        <text x="46" y="606.6" font-size="11" fill="#64748b">例：高端定制 × 自助电商</text>
+        <rect x="342" y="572" width="328" height="46" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <path d="M358,580 L364,592 L358,600 L366,612" stroke="#dc2626" stroke-width="2" fill="none"/>
+        <text x="378" y="592" font-size="12" font-weight="700" fill="#dc2626">收入—成本倒挂</text>
+        <text x="378" y="606.6" font-size="11" fill="#64748b">隐蔽性：早期增长掩盖单位经济恶化</text>
+        <rect x="10" y="622" width="328" height="49.4" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <path d="M26,630 L32,642 L26,650 L34,662" stroke="#dc2626" stroke-width="2" fill="none"/>
+        <text x="46" y="642" font-size="12" font-weight="700" fill="#dc2626">资源—业务锁定</text>
+        <text x="46" y="660" font-size="11" fill="#64748b">沉没成本＋资产专用性→能力陷阱</text>
+        <rect x="342" y="622" width="328" height="49.4" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <path d="M358,630 L364,642 L358,650 L366,662" stroke="#dc2626" stroke-width="2" fill="none"/>
+        <text x="378" y="642" font-size="12" font-weight="700" fill="#dc2626">合作—控制失衡</text>
+        <text x="378" y="660" font-size="11" fill="#64748b">例：单一流量入口依赖</text>
+
+        <text x="340" y="682" text-anchor="middle" font-size="11" fill="#94a3b8">健康判据：高匹配 · 适度冗余 · 强反馈——任一维度缺失，可能在某节点断裂并引发连锁失效</text>
+      </svg>
+      <div class="caption">图 1　画布 CT 扫描：三条主传动链 → 三维耦合评估 → 四种断裂模式归类的三层诊断</div>
+    </div>
+    <div class="quote">
+      模块<b>如同机械钟表的齿轮，各自独立却不孤立，通过咬合、传动、反馈形成动态整体</b>——诊断的对象不是某一格，而是格与格之间的传动关系。
+    </div>
+  </section>
+
+  <!-- ============ 三层详解 ============ -->
+  <section>
+    <h2>三层结构详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一层</span>
+        <h3>三条主传动链</h3>
+        <span class="role">诊断对象：<b>链</b></span>
+      </div>
+      <div class="q">先把"九格填空"还原成"三条咬合的齿轮链"——断裂总是发生在链上。</div>
+      <dl class="kv">
+        <dt>链① 基础链</dt>
+        <dd>价值主张 → 客户细分 → 收入来源。最基础的耦合链，<b>"若此链条断裂，商业模式便失去存在根基"</b>。</dd>
+        <dt>链② 供应链</dt>
+        <dd>关键业务 → 核心资源 → 成本结构。供给侧链，核心任务是<b>防隐性亏损</b>。</dd>
+        <dt>链③ 交付链</dt>
+        <dd>渠道通路 → 客户关系 → 价值主张。交付侧链，核心任务是<b>防渠道稀释价值主张</b>。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二层</span>
+        <h3>耦合三维评估</h3>
+        <span class="role">诊断工具：<b>打分</b></span>
+      </div>
+      <div class="q">对链上每一段耦合，从三个维度打分并记录依据。</div>
+      <dl class="kv">
+        <dt>匹配度</dt>
+        <dd>上游输出是否恰好构成下游的有效输入。反例：主张<b>"极速配送"</b>却依赖层层分销，即为错配。</dd>
+        <dt>冗余度</dt>
+        <dd>有无备用路径。反例：完全依赖抖音单一渠道获客即冗余不足；需在<b>"安全垫"与"效率"间平衡</b>。</dd>
+        <dt>反馈度</dt>
+        <dd>下游状态变化能否反向调节上游。自问：<b>"客户留存率下降是否自动触发产品迭代优先级调整？"</b></dd>
+      </dl>
+    </div>
+
+    <div class="stage risk">
+      <div class="stage-head">
+        <span class="sn">第三层</span>
+        <h3>四种断裂模式</h3>
+        <span class="role">诊断结论：<b>归类</b></span>
+      </div>
+      <div class="q">对低分耦合段逐一归类——断裂模式决定了后续该调优还是重构。</div>
+      <div class="traps">
+        <div class="tt">四种断裂模式</div>
+        <div class="trap"><span class="tn">价值—渠道错配</span><span class="td">高端定制配自助电商：主张与渠道的传递方式相互打架。</span></div>
+        <div class="trap"><span class="tn">收入—成本倒挂</span><span class="td">隐蔽性在于"早期用户增长可以掩盖单位经济模型的恶化"——增长越好，越晚被发现。</span></div>
+        <div class="trap"><span class="tn">资源—业务锁定</span><span class="td">沉没成本＋资产专用性，把企业锁死在旧能力里，形成"能力陷阱"。</span></div>
+        <div class="trap"><span class="tn">合作—控制失衡</span><span class="td">单一流量入口依赖：合作方一变脸，获客系统整体瘫痪。</span></div>
+      </div>
+      <div class="traps">
+        <div class="tt">健康判据</div>
+        <div class="trap"><span class="tn">健康系统</span><span class="td">高匹配、适度冗余、强反馈者健康；任一维度缺失，可能在某节点断裂并<b>"引发连锁失效"</b>。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>绘制九模块画布。</b>先把画布画完整——前提是信息真实完整，信息不全，扫描结果必然失真。</li>
+      <li><b>画出三条主传动链。</b>在画布上把三条链的箭头逐一连出来，让"九格"变成"三链"，咬合关系立刻显形。</li>
+      <li><b>逐链三维打分并记依据。</b>每一段耦合按匹配度/冗余度/反馈度打分，写下判断依据；耦合关系复杂时需多方交叉判断，避免单人主观定论。</li>
+      <li><b>对低分耦合段归类断裂模式。</b>低分段是裂痕高发区，对照四种断裂模式逐一归类，判断是错配、倒挂、锁定还是失衡。</li>
+      <li><b>输出诊断结论并转入决策。</b>给出"断裂位置＋断裂模式"的明确结论，转入调优或重构决策（衔接卡8-16）。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>评估阶段的静态结构诊断</b>（前提：画布信息真实完整）</li>
+          <li>大规模资源投入之前的结构体检</li>
+          <li>培训与咨询中的"画布诊断工作坊"、3链×3维评分矩阵练习</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>属设计层<b>"是否具备运转可能性"</b>的检查，不能替代 MVS 动态验证</li>
+          <li>冗余并非越多越好——<b>过度冗余会分散资源、稀释焦点</b></li>
+          <li>模块间耦合关系复杂时，评分需多方交叉判断，避免单人主观定论</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>最小可行系统（MVS）三闭环</h4>
+        <p>本卡判断结构"能不能转"，卡8-13 让最小系统真的转起来——静态扫描之后接动态验证。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-11</div>
+        <h4>耦合假设提取法</h4>
+        <p>诊断出的薄弱耦合段，用卡8-11 改写成可检验的若/则命题，进入受控实验。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持/调优/重构三分决策</h4>
+        <p>"断裂位置＋断裂模式"是决策输入：参数层问题走调优，模块属性冲突走重构。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 216—217 页</span>
+    <span>方法论卡 8-08 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

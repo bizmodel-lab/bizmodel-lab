@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡6-01 · 关键资源识别三步法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 步骤详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 里程碑 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=6">第 6 章 · 创业资源</a><span class="card-nav-meta">卡 6-01 · 关键资源识别三步法（命门/灵魂）</span><a class="card-nav-prev" href="卡5-10-机会验证三步与转型四类型.html">← 卡 5-10</a><a class="card-nav-next" href="卡6-02-必要性掌控度矩阵.html">卡 6-02 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 6-01</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>关键资源识别三步法</h1>
+  <div class="oneliner">沿价值流程找准"命门"与"灵魂"，锁定必争资源。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>创业者的资源普遍匮乏，却常常把有限的精力平摊在所有环节上：什么都想补、什么都缺，最后什么都没补到位。本方法提供一套<b>战略性诊断流程</b>——在全面罗列资源需求之前，先精准判断<b>"哪些资源决定成败"</b>，把有限的资本投到刀刃上。</p>
+    <p>它的关键洞见是：不是每个环节都同等重要。沿价值流程逐环检查，你会发现少数几个节点决定全局，它们对应的那几项资源，才是真正必争的。这张卡带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">先诊断、后投入</div>
+        <div class="vd">在罗列需求之前先判断轻重缓急，避免资源平均用力。</div>
+      </div>
+      <div class="value">
+        <div class="vt">命门与灵魂双焦</div>
+        <div class="vd">控制点失效则系统瘫痪，瓶颈出彩则主张胜出——两类节点分开识别。</div>
+      </div>
+      <div class="value">
+        <div class="vt">资源落到承载物</div>
+        <div class="vd">每个关键节点都回答"用什么资源攻克它"，越具体越有行动方向。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 392" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部三步横幅 -->
+        <rect x="10" y="6" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="13" fill="#475569">第一步 画流程 → 第二步 找命门与灵魂 → 第三步 配资源承载物：把有限资本投到刀刃上</text>
+
+        <!-- 图例 -->
+        <rect x="16" y="60" width="12" height="12" rx="2" fill="#dc2626"/>
+        <text x="34" y="71" font-size="11.5" fill="#dc2626">命门＝关键控制点：一旦失效，整个系统便无法运行</text>
+        <rect x="310" y="60" width="12" height="12" rx="2" fill="#d97706"/>
+        <text x="328" y="71" font-size="11.5" fill="#d97706">灵魂＝价值瓶颈：最具差异化的环节</text>
+
+        <!-- 命门 / 灵魂 标签 -->
+        <rect x="27" y="86" width="52" height="22" rx="11" fill="#d97706"/>
+        <text x="53" y="101" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">灵魂</text>
+        <line x1="53" y1="108" x2="53" y2="122" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <rect x="109" y="86" width="52" height="22" rx="11" fill="#dc2626"/>
+        <text x="135" y="101" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">命门</text>
+        <line x1="135" y1="108" x2="135" y2="122" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <rect x="601" y="86" width="52" height="22" rx="11" fill="#d97706"/>
+        <text x="627" y="101" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">灵魂</text>
+        <line x1="627" y1="108" x2="627" y2="122" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+        <!-- 价值流程链：八个环节 -->
+        <rect x="14.5" y="122" width="84" height="36" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+        <text x="56.5" y="144" text-anchor="middle" font-size="11" fill="#334155">用户痛点洞察</text>
+        <rect x="100" y="122" width="80" height="36" rx="8" fill="#ffffff" stroke="#dc2626" stroke-width="2"/>
+        <text x="140" y="144" text-anchor="middle" font-size="10" fill="#334155">技术方案设计</text>
+        <rect x="182" y="122" width="70" height="36" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="217" y="144" text-anchor="middle" font-size="11" fill="#334155">原型开发</text>
+        <rect x="264" y="122" width="70" height="36" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="299" y="144" text-anchor="middle" font-size="11" fill="#334155">供应链采购</text>
+        <rect x="346" y="122" width="70" height="36" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="381" y="144" text-anchor="middle" font-size="11" fill="#334155">生产制造</text>
+        <rect x="428" y="122" width="70" height="36" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="463" y="144" text-anchor="middle" font-size="11" fill="#334155">市场推广</text>
+        <rect x="510" y="122" width="70" height="36" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="545" y="144" text-anchor="middle" font-size="11" fill="#334155">销售交付</text>
+        <rect x="592" y="122" width="70" height="36" rx="8" fill="#ffffff" stroke="#d97706" stroke-width="2"/>
+        <text x="627" y="144" text-anchor="middle" font-size="11" fill="#334155">售后服务</text>
+
+        <!-- 环节间箭头 -->
+        <line x1="89" y1="140" x2="98" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="171" y1="140" x2="180" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="253" y1="140" x2="262" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="335" y1="140" x2="344" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="417" y1="140" x2="426" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="499" y1="140" x2="508" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="581" y1="140" x2="590" y2="140" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 连接线到资源承载物 -->
+        <line x1="53" y1="158" x2="120" y2="212" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="135" y1="158" x2="340" y2="212" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <line x1="627" y1="158" x2="560" y2="212" stroke="#d97706" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+        <!-- 资源承载物清单 A -->
+        <rect x="18" y="212" width="204" height="113.5" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="34" y="236" font-size="12.5" font-weight="700" fill="#d97706">灵魂 · 用户痛点洞察</text>
+        <text x="34" y="258" font-size="11" font-weight="700" fill="#b45309">资源承载物</text>
+        <text x="34" y="278" font-size="11.5" fill="#475569">· 用户研究机制与洞察方法</text>
+        <text x="34" y="296" font-size="11.5" fill="#475569">· 洞察工具链与数据来源</text>
+        <text x="34" y="314" font-size="11.5" fill="#475569">· 稳定可触达的用户社群</text>
+
+        <!-- 资源承载物清单 B -->
+        <rect x="238" y="212" width="204" height="113.5" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="254" y="236" font-size="12.5" font-weight="700" fill="#dc2626">命门 · 技术方案设计</text>
+        <text x="254" y="258" font-size="11" font-weight="700" fill="#b91c1c">资源承载物</text>
+        <text x="254" y="278" font-size="11.5" fill="#475569">· 核心技术人才团队</text>
+        <text x="254" y="296" font-size="11.5" fill="#475569">· 专利与知识产权</text>
+        <text x="254" y="314" font-size="11.5" fill="#475569">· 足额研发资金与设备</text>
+
+        <!-- 资源承载物清单 C -->
+        <rect x="458" y="212" width="204" height="113.5" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="474" y="236" font-size="12.5" font-weight="700" fill="#d97706">灵魂 · 售后服务</text>
+        <text x="474" y="258" font-size="11" font-weight="700" fill="#b45309">资源承载物</text>
+        <text x="474" y="278" font-size="11.5" fill="#475569">· 服务标准与响应机制</text>
+        <text x="474" y="296" font-size="11.5" fill="#475569">· 服务网络与专业人才</text>
+        <text x="474" y="314" font-size="11.5" fill="#475569">· 数字化服务工具</text>
+
+        <!-- 动态聚焦 -->
+        <text x="340" y="342" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">动态聚焦——同一流程，不同阶段的重心不同</text>
+        <rect x="18" y="352" width="204" height="30" rx="15" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="120" y="371" text-anchor="middle" font-size="11.5" fill="#3b82f6">机会开发期｜聚焦可能性验证</text>
+        <rect x="238" y="352" width="204" height="30" rx="15" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="371" text-anchor="middle" font-size="11.5" fill="#3b82f6">模式验证期｜跑通最小闭环</text>
+        <rect x="458" y="352" width="204" height="30" rx="15" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="560" y="371" text-anchor="middle" font-size="11.5" fill="#3b82f6">规模化期｜构建系统能力</text>
+      </svg>
+      <div class="caption">图 1　关键资源识别三步法：完整价值流程链 × 命门与灵魂 × 资源承载物（环节示例为硬件产品公司）</div>
+    </div>
+    <div class="quote">
+      <b>"缺一环则链条断裂"</b>。关键控制点是<b>"一旦失效、整个系统便无法运行的环节"</b>，即项目的"命门"；价值瓶颈是<b>"决定价值主张能否脱颖而出的最具差异化的环节"</b>，即项目的"灵魂"。
+    </div>
+  </section>
+
+  <!-- ============ 三步详解 ============ -->
+  <section>
+    <h2>三步递进详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一步</span>
+        <h3>描绘完整价值流程</h3>
+        <span class="role">产出：<b>一条从概念到客户价值的价值链</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"价值在我的生意里是如何一步步生成与传递的？"</b></div>
+      <dl class="kv">
+        <dt>核心任务</dt>
+        <dd>把创业机会具象为<b>从概念到客户获得价值的完整链条</b>，逐环节写出价值如何生成与传递。</dd>
+        <dt>示例</dt>
+        <dd>硬件公司的流程链：用户痛点洞察 → 技术方案设计 → 原型开发 → 供应链采购 → 生产制造 → 市场推广 → 销售交付 → 售后服务。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见走偏</div>
+        <div class="trap"><span class="tn">环节漏画</span><span class="td">只画到"卖出"就停，漏掉售后与口碑回流——链条不完整，后面的节点判断必然失真。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二步</span>
+        <h3>识别命门与灵魂</h3>
+        <span class="role">产出：<b>两类关键节点清单</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"哪些环节一旦失效全盘瘫痪？哪些环节最能让我脱颖而出？"</b></div>
+      <dl class="kv">
+        <dt>命门</dt>
+        <dd><b>关键控制点</b>——一旦失效、整个系统便无法运行的环节，是项目的"命门"。</dd>
+        <dt>灵魂</dt>
+        <dd><b>价值瓶颈</b>——决定价值主张能否脱颖而出的最具差异化的环节，是项目的"灵魂"。</dd>
+        <dt>关键判据</dt>
+        <dd>同一流程中，<b>两类节点可能并不相同</b>：技术驱动型项目，研发环节是控制点；体验驱动型项目，洞察与售后环节是价值瓶颈。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三步</span>
+        <h3>定义资源承载物</h3>
+        <span class="role">产出：<b>每个关键节点的资源清单</b></span>
+      </div>
+      <div class="q">本步回答的问题：<b>"用什么资源来攻克这个节点？"</b></div>
+      <dl class="kv">
+        <dt>核心任务</dt>
+        <dd>为每个命门与灵魂节点<b>定义具体的资源承载物</b>——人、专利、资金、机制、工具链，越具体越有方向。</dd>
+        <dt>价值</dt>
+        <dd>资源诉求从"我们什么都缺"变成"我们必须拿下这几件"，后续的评估与获取才有靶心。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>动态补充：聚焦点随创业阶段移动。</b>机会开发期，资源聚焦于可能性验证；模式验证期，聚焦于跑通最小闭环；规模化期，聚焦于构建系统能力。同一个"命门"，在不同阶段对应的资源承载物也不同，需要定期重估。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>画出流程链。</b>把创业机会画成一条从想法到客户价值交付的完整流程链，逐环节写出价值如何生成与传递——流程画不清，资源重点就无从谈起。</li>
+      <li><b>逐环节双问。</b>先问：此环节失效，整个系统是否瘫痪？命中即标"命门"。再问：此环节是否最具差异化？命中即标"灵魂"。两类节点可以分布在不同环节。</li>
+      <li><b>定义资源承载物。</b>为每个命门与灵魂节点写下"用什么资源攻克它"——人、专利、资金、机制、工具链，写得越具体，行动越有方向。</li>
+      <li><b>随阶段动态调整。</b>对照所处创业阶段校准聚焦点：机会开发期验证可能性、模式验证期跑通最小闭环、规模化期构建系统能力，不同阶段不平均用力。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>资源紧缺、又面临多项资源诉求的<b>初创期战略取舍</b></li>
+          <li>业务流程可清晰描绘的<b>产品型 / 服务型创业</b></li>
+          <li>团队对齐工具：用同一条流程链统一大家对"必争资源"的认识</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>流程高度不确定的<b>极早期探索</b>不适用——流程本身尚未成形</li>
+          <li>本卡解决"投什么"，不解决"如何获取"——需衔接后续评估与获取工具</li>
+          <li>命门与灵魂的判断依赖对流程的真实理解，避免凭感觉贴标签</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-02</div>
+        <h4>必要性—掌控度矩阵</h4>
+        <p>识别出关键资源后，用"必要性 × 掌控度"为它们排优先级：哪些是优势、哪些是缺口、哪些该放弃。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>资源杠杆四模式与三问</h4>
+        <p>对"命门"对应的缺口资源，设计以小博大的交换机制去撬动，而非硬碰硬地采购。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-04</div>
+        <h4>商业模式六类型</h4>
+        <p>不同商业模式的价值流程各不相同，画流程链时可对照类型确定环节构成。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 6 章，第 160—161 页</span>
+    <span>方法论卡 6-01 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

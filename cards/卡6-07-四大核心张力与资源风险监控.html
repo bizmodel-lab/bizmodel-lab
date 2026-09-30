@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡6-07 · 四大核心张力与资源风险监控</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--ink-3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--ink-3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 风险监控 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=6">第 6 章 · 创业资源</a><span class="card-nav-meta">卡 6-07 · 四大核心张力＋资源风险四类监控</span><a class="card-nav-prev" href="卡6-06-战略匹配度资源缺口矩阵.html">← 卡 6-06</a><a class="card-nav-next" href="卡7-01-使命陈述五特征.html">卡 7-01 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 6-07</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>四大核心张力与资源风险监控</h1>
+  <div class="oneliner">平衡四对张力，盯住四类风险：资源配置是一场持续的走钢丝。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>用矩阵排完优先级（卡 6-06）只是决定了"往哪投"。真正的考验在投出去之后：<b>创业者在四对矛盾之间来回摆动</b>——只顾眼前还是留一份未来？靠自己还是靠外部？集中还是分散？——而摆过头的每一端，都会沉淀为具体的风险。</p>
+    <p>这张卡把"动态平衡"和"风险管控"配成一套：上半场给四对张力各自的可操作平衡法则，下半场给四类风险各自量化的预警信号。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">配置不是一锤子买卖</div>
+        <div class="vd">排完座次之后，日常的动态平衡才是资源管理的主战场。</div>
+      </div>
+      <div class="value">
+        <div class="vt">张力有法则可依</div>
+        <div class="vd">四对矛盾不必二选一：教材给出配比、红线等可操作的平衡法则。</div>
+      </div>
+      <div class="value">
+        <div class="vt">风险有仪表可盯</div>
+        <div class="vd">四类风险配量化预警信号，亮灯即行动，不靠后知后觉。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 585" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah7" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">先平衡四对张力，再盯住四类风险——配置是持续动作</text>
+
+        <!-- ===== 上半场标签 ===== -->
+        <rect x="10" y="52" width="170" height="22" rx="11" fill="#3b82f6"/>
+        <text x="95" y="67" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">上半场 · 四大核心张力</text>
+        <text x="190" y="67" font-size="11" fill="#94a3b8">平衡而非二选一，配比随阶段调整</text>
+
+        <!-- ===== 张力①：利用与探索 ===== -->
+        <rect x="20" y="80" width="310" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="20" y="80" width="310" height="24" rx="10" fill="#3b82f6"/>
+        <rect x="20" y="94" width="310" height="10" fill="#3b82f6"/>
+        <text x="175" y="96.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">张力① 利用与探索</text>
+        <line x1="42" y1="142" x2="112" y2="130" stroke="#64748b" stroke-width="2.5"/>
+        <polygon points="77,152 69,176 85,176" fill="#64748b"/>
+        <line x1="42" y1="142" x2="42" y2="150" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="26" y="150" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="46" y="168.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">利用</text>
+        <line x1="112" y1="130" x2="112" y2="138" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="96" y="138" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="116" y="156.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">探索</text>
+        <text x="135" y="132" font-size="12" font-weight="700" fill="#3b82f6">721 法则：70% 核心</text>
+        <text x="135" y="152" font-size="11.5" fill="#334155">20% 相邻业务 · 10% 探索尝试</text>
+        <text x="135" y="170" font-size="11" fill="#94a3b8">既要收获当下，也要播种未来</text>
+
+        <!-- ===== 张力②：内部与外部 ===== -->
+        <rect x="350" y="80" width="310" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="350" y="80" width="310" height="24" rx="10" fill="#d97706"/>
+        <rect x="350" y="94" width="310" height="10" fill="#d97706"/>
+        <text x="505" y="96.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">张力② 内部与外部</text>
+        <line x1="372" y1="142" x2="442" y2="130" stroke="#64748b" stroke-width="2.5"/>
+        <polygon points="407,152 399,176 415,176" fill="#64748b"/>
+        <line x1="372" y1="142" x2="372" y2="150" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="356" y="150" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="376" y="168.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">内部</text>
+        <line x1="442" y1="130" x2="442" y2="138" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="426" y="138" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="446" y="156.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">外部</text>
+        <text x="465" y="132" font-size="12" font-weight="700" fill="#d97706">内部培养 vs 外部获取</text>
+        <text x="465" y="152" font-size="11.5" fill="#334155">按可控性与速度找配比</text>
+        <text x="465" y="170" font-size="11" fill="#94a3b8">关键资源尽量自主可控</text>
+
+        <!-- ===== 张力③：集中与分散 ===== -->
+        <rect x="20" y="198" width="310" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="20" y="198" width="310" height="24" rx="10" fill="#059669"/>
+        <rect x="20" y="212" width="310" height="10" fill="#059669"/>
+        <text x="175" y="214.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">张力③ 集中与分散</text>
+        <line x1="42" y1="260" x2="112" y2="248" stroke="#64748b" stroke-width="2.5"/>
+        <polygon points="77,270 69,294 85,294" fill="#64748b"/>
+        <line x1="42" y1="260" x2="42" y2="268" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="26" y="268" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="46" y="286.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">集中</text>
+        <line x1="112" y1="248" x2="112" y2="256" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="96" y="256" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="116" y="274.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">分散</text>
+        <text x="135" y="250" font-size="12" font-weight="700" fill="#059669">集中形成压强与优势</text>
+        <text x="135" y="270" font-size="11.5" fill="#334155">分散对冲单一方向风险</text>
+        <text x="135" y="288" font-size="11" fill="#94a3b8">防孤注一掷，也防撒胡椒面</text>
+
+        <!-- ===== 张力④：长期与短期 ===== -->
+        <rect x="350" y="198" width="310" height="110" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="350" y="198" width="310" height="24" rx="10" fill="#475569"/>
+        <rect x="350" y="212" width="310" height="10" fill="#475569"/>
+        <text x="505" y="214.6" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">张力④ 长期与短期</text>
+        <line x1="372" y1="260" x2="442" y2="248" stroke="#64748b" stroke-width="2.5"/>
+        <polygon points="407,270 399,294 415,294" fill="#64748b"/>
+        <line x1="372" y1="260" x2="372" y2="268" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="356" y="268" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="376" y="286.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">长期</text>
+        <line x1="442" y1="248" x2="442" y2="256" stroke="#64748b" stroke-width="1.5"/>
+        <rect x="426" y="256" width="40" height="29.2" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="446" y="274.5" text-anchor="middle" font-size="11" font-weight="700" fill="#475569">短期</text>
+        <text x="465" y="250" font-size="12" font-weight="700" fill="#475569">为长期投入设"红线"</text>
+        <text x="465" y="270" font-size="11.5" fill="#334155">短期压力再大，也不挤占</text>
+        <text x="465" y="288" font-size="11" fill="#94a3b8">红线内投入足额保障</text>
+
+        <!-- 中缝箭头 -->
+        <line x1="340" y1="312" x2="340" y2="344" stroke="#475569" stroke-width="1.5" marker-end="url(#ah7)"/>
+        <text x="354" y="332" font-size="11" fill="#dc2626">张力失衡 → 风险显形</text>
+
+        <!-- ===== 下半场标签 ===== -->
+        <rect x="10" y="352" width="196" height="22" rx="11" fill="#dc2626"/>
+        <text x="108" y="367" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">下半场 · 四类风险监控仪表盘</text>
+        <text x="216" y="367" font-size="11" fill="#94a3b8">红针所指 = 预警信号已触发</text>
+
+        <!-- ===== 仪表盘①：依赖风险 ===== -->
+        <rect x="20" y="384" width="155" height="170" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M34,450 A44,44 0 0 1 56,412" fill="none" stroke="#059669" stroke-width="10"/>
+        <path d="M56,412 A44,44 0 0 1 100,412" fill="none" stroke="#d97706" stroke-width="10"/>
+        <path d="M100,412 A44,44 0 0 1 122,450" fill="none" stroke="#dc2626" stroke-width="10"/>
+        <line x1="78" y1="450" x2="112" y2="422" stroke="#dc2626" stroke-width="2.5"/>
+        <circle cx="78" cy="450" r="4" fill="#334155"/>
+        <text x="98" y="474" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">依赖风险</text>
+        <text x="98" y="492" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">预警信号</text>
+        <text x="98" y="510" text-anchor="middle" font-size="11" fill="#475569">单一客户收入</text>
+        <text x="98" y="526" text-anchor="middle" font-size="11" fill="#475569">占比超三成</text>
+
+        <!-- ===== 仪表盘②：错配风险 ===== -->
+        <rect x="185" y="384" width="155" height="170" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M199,450 A44,44 0 0 1 221,412" fill="none" stroke="#059669" stroke-width="10"/>
+        <path d="M221,412 A44,44 0 0 1 265,412" fill="none" stroke="#d97706" stroke-width="10"/>
+        <path d="M265,412 A44,44 0 0 1 287,450" fill="none" stroke="#dc2626" stroke-width="10"/>
+        <line x1="243" y1="450" x2="277" y2="422" stroke="#dc2626" stroke-width="2.5"/>
+        <circle cx="243" cy="450" r="4" fill="#334155"/>
+        <text x="263" y="474" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">错配风险</text>
+        <text x="263" y="492" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">预警信号</text>
+        <text x="263" y="510" text-anchor="middle" font-size="11" fill="#475569">融资后烧钱</text>
+        <text x="263" y="526" text-anchor="middle" font-size="11" fill="#475569">速度失控</text>
+
+        <!-- ===== 仪表盘③：稀释风险 ===== -->
+        <rect x="350" y="384" width="155" height="170" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M364,450 A44,44 0 0 1 386,412" fill="none" stroke="#059669" stroke-width="10"/>
+        <path d="M386,412 A44,44 0 0 1 430,412" fill="none" stroke="#d97706" stroke-width="10"/>
+        <path d="M430,412 A44,44 0 0 1 452,450" fill="none" stroke="#dc2626" stroke-width="10"/>
+        <line x1="408" y1="450" x2="442" y2="422" stroke="#dc2626" stroke-width="2.5"/>
+        <circle cx="408" cy="450" r="4" fill="#334155"/>
+        <text x="428" y="474" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">稀释风险</text>
+        <text x="428" y="492" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">预警信号</text>
+        <text x="428" y="510" text-anchor="middle" font-size="11" fill="#475569">资源分散在过多</text>
+        <text x="428" y="526" text-anchor="middle" font-size="11" fill="#475569">项目、无一成优势</text>
+
+        <!-- ===== 仪表盘④：枯竭风险 ===== -->
+        <rect x="515" y="384" width="155" height="170" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M529,450 A44,44 0 0 1 551,412" fill="none" stroke="#059669" stroke-width="10"/>
+        <path d="M551,412 A44,44 0 0 1 595,412" fill="none" stroke="#d97706" stroke-width="10"/>
+        <path d="M595,412 A44,44 0 0 1 617,450" fill="none" stroke="#dc2626" stroke-width="10"/>
+        <line x1="573" y1="450" x2="607" y2="422" stroke="#dc2626" stroke-width="2.5"/>
+        <circle cx="573" cy="450" r="4" fill="#334155"/>
+        <text x="593" y="474" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1e293b">枯竭风险</text>
+        <text x="593" y="492" text-anchor="middle" font-size="11" font-weight="700" fill="#dc2626">预警信号</text>
+        <text x="593" y="510" text-anchor="middle" font-size="11" fill="#475569">现金流持续为负</text>
+
+        <!-- 底部提示 -->
+        <text x="340" y="576" text-anchor="middle" font-size="11" fill="#94a3b8">预警信号已量化为可监测的阈值，可直接列入月度经营看板</text>
+      </svg>
+      <div class="caption">图 1　资源配置的动态平衡：四大核心张力天平 × 四类风险监控仪表盘</div>
+    </div>
+    <div class="quote">
+      四对张力<b>不是四道二选一的单选题，而是四个需要持续校准的配比</b>；而配比一旦失衡，最先亮起来的，是四类风险的预警信号——<b>信号亮了就行动，不要等风险爆发再补救</b>。
+    </div>
+  </section>
+
+  <!-- ============ 四大核心张力详解 ============ -->
+  <section>
+    <h2>四大核心张力详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">张力①</span>
+        <h3>利用与探索</h3>
+        <span class="role">平衡法则：<b>721 法则</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"把资源全押在成熟业务，还是留一份去试新？"</b></div>
+      <dl class="kv">
+        <dt>张力本质</dt>
+        <dd>利用（收割当下的确定性）与探索（播种未来的可能性）争夺同一份资源——钱、人、注意力都只有一份。</dd>
+        <dt>平衡法则</dt>
+        <dd><b>721 法则</b>：约 70% 投核心业务，20% 投相邻业务，10% 投探索尝试——既不让未来断档，也不让眼下断粮。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">失衡表现</div>
+        <div class="trap"><span class="tn">只利用不探索</span><span class="td">眼前赚钱、未来断档——核心业务一旦见顶，手里没有第二张牌。</span></div>
+        <div class="trap"><span class="tn">只探索不利用</span><span class="td">故事很大、现金很紧——探索投入超出现金流能承载的极限。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">张力②</span>
+        <h3>内部与外部</h3>
+        <span class="role">平衡法则：<b>按可控性与速度权衡</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"资源靠自己攒，还是向外去借？"</b></div>
+      <dl class="kv">
+        <dt>张力本质</dt>
+        <dd>内部培养可控但慢，外部获取快但受制于人——两条路各有代价，缺谁都走不远。</dd>
+        <dt>平衡法则</dt>
+        <dd>按<b>可控性与速度</b>找配比：对速度敏感的环节多用外部，关键资源尽量自主可控（承接卡 6-02 对掌控度的评估）。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">失衡表现</div>
+        <div class="trap"><span class="tn">全靠外部</span><span class="td">命门握在别人手里——合作方一变卦，业务停摆，且没有替代方案。</span></div>
+        <div class="trap"><span class="tn">全靠自建</span><span class="td">什么都自己攒，速度拖不起——窗口期过了，资源才攒齐。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">张力③</span>
+        <h3>集中与分散</h3>
+        <span class="role">平衡法则：<b>先成一处优势</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"鸡蛋放几个篮子？"</b></div>
+      <dl class="kv">
+        <dt>张力本质</dt>
+        <dd>集中能形成压强与优势，分熟能对冲单一方向的风险——两者都是对的，麻烦在于资源只够偏向一头。</dd>
+        <dt>平衡法则</dt>
+        <dd>以<b>先形成至少一处优势</b>为前提再谈分散：没有压强的分散，只是撒胡椒面。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">失衡表现</div>
+        <div class="trap"><span class="tn">孤注一掷</span><span class="td">全部资源押一个方向，方向错了就一损俱损，没有翻盘本钱。</span></div>
+        <div class="trap"><span class="tn">撒胡椒面</span><span class="td">处处开花、处处不结果——这正是下半场"稀释风险"的典型来源。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">张力④</span>
+        <h3>长期与短期</h3>
+        <span class="role">平衡法则：<b>基础投入红线</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"今天的生存和明天的能力，钱怎么分？"</b></div>
+      <dl class="kv">
+        <dt>张力本质</dt>
+        <dd>短期生存投入与长期基础投入（研发、品牌、组织能力等）争夺同一笔预算——短期永远更紧急，长期永远更容易被砍。</dd>
+        <dt>平衡法则</dt>
+        <dd>为长期基础投入设<b>"基础投入红线"</b>：短期压力再大，也不挤占红线内的投入。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">失衡表现</div>
+        <div class="trap"><span class="tn">红线失守</span><span class="td">基础投入被短期生存一轮轮蚕食——失守一次，往往就再也回不来：能力断代是补不回来的。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 四类风险监控 ============ -->
+  <section>
+    <h2>四类风险与预警信号</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">依赖风险</span>
+        <h4>预警信号：单一客户收入占比超三成</h4>
+        <p>命脉系于一处，对方一变脸就是生存危机。触发信号后的行动方向：客户与供应来源多元化，把"超三成"的比例逐步压下来。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">错配风险</span>
+        <h4>预警信号：融资后烧钱速度失控</h4>
+        <p>钱多了反而乱：投入结构与战略脱节，花钱的速度跑在验证的前面。行动方向：回到卡 6-06 重排优先级，让每一笔支出重新对齐战略。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">稀释风险</span>
+        <h4>预警信号：资源分散在过多项目、无一形成优势</h4>
+        <p>什么都做一点，什么都没做透——集中与分散的张力彻底失衡。行动方向：砍项目、做减法，聚焦核心资源组合（承接卡 6-05）。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">枯竭风险</span>
+        <h4>预警信号：现金流持续为负</h4>
+        <p>收入追不上支出，跑道越烧越短，所有战略都失去腾挪空间。行动方向：收缩开支、加速造血，或按融资节奏（第 6 章第四节）及时补位。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      教材将预警信号<b>量化为可监测的阈值</b>（如"单一客户收入占比超三成"），<b>可直接抄进月度经营看板：亮灯即行动</b>。风险监控的意义不在"看出风险"，而在"比别人早看出风险"——等风险显形再补救，代价通常大一个量级。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>先定投向。</b>用卡 6-06 的矩阵决定资源往哪投——张力与风险是"投出去之后"的日常管理，顺序不能反。</li>
+      <li><b>对表四张力。</b>每月对照四对张力自查一遍：探索投入还剩几个点？基础投入红线守住了吗？关键资源还握在自己手里吗？</li>
+      <li><b>设预警阈值。</b>把四类预警信号写进经营看板：单一客户收入占比、烧钱速度、项目资源分布、现金流——四块仪表盘各设责任人。</li>
+      <li><b>触发即行动。</b>红灯亮了立即处置，不拖延、不侥幸：依赖风险做分散，稀释风险做减法，枯竭风险启动融资或收缩，错配风险重排优先级。</li>
+      <li><b>复盘调配比。</b>张力的配比不是一劳永逸：随创业阶段推进定期复盘调整——不同阶段，四对张力的合理位置不同。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>已进入持续经营、资源需要<b>动态调配</b>的创业团队</li>
+          <li>月度 / 季度<b>经营复盘会</b>的标配议程：先对张力，再看仪表盘</li>
+          <li><b>融资后扩张期</b>——钱一多，错配与稀释风险进入高发段</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>零资源起步期重点是"获取"而非"平衡"——先用卡 6-03 把资源弄到手</li>
+          <li>阈值（如"超三成"）是<b>预警参考线，不是机械红线</b>：行业与阶段不同，需自行校准</li>
+          <li>张力管理靠定期复盘维持，<b>不能指望一次配置一劳永逸</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-06</div>
+        <h4>战略匹配度—资源缺口矩阵</h4>
+        <p>流程上游：先定"往哪投"，本卡才谈"怎么平衡、怎么盯防"。错配风险的处置也要回到这张矩阵重排。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-05</div>
+        <h4>资源组合优势框架</h4>
+        <p>稀释风险的解药：与其处处撒网，不如围绕价值主张组好 3—4 项核心资源，把优势做实。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>枯竭与缺口的另一条出路：拼凑、杠杆、网络、合作——不动用大笔现金也能把资源补上。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 6 章，第 170 页</span>
+    <span>方法论卡 6-07 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

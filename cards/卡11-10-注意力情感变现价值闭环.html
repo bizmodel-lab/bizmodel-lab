@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-10 · 注意力—情感—变现价值闭环</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 环节详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 断点提示 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-10 · “注意力—情感—变现”价值闭环</span><a class="card-nav-prev" href="卡11-09-数字文化四维机会框架.html">← 卡 11-09</a><a class="card-nav-next" href="卡11-11-数字文化四模式.html">卡 11-11 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-10</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>注意力—情感—变现价值闭环</h1>
+  <div class="oneliner">注意力捕获 — 情感沉淀 — 价值变现：数字文化商业模式的闭环设计总纲。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>数字文化创业者最常遇到的三种"单点繁荣"：<b>有流量没收入、有粉丝没认同、有情怀没现金流</b>。三者共同的病根，是没有把商业模式当作一个闭环来设计，而是各点各干、彼此不通气。</p>
+    <p>教材在商业模式创新一节开篇即给出总纲：数字文化创业的商业模式，必须围绕"注意力捕获—情感沉淀—价值变现"的闭环设计。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">一图定纲</div>
+        <div class="vd">一句话级的总纲，先于任何具体模式，是所有数字文化生意的设计起点。</div>
+      </div>
+      <div class="value">
+        <div class="vt">断点诊断</div>
+        <div class="vd">三格逐一填写，哪格写不出来，问题就断在哪一格。</div>
+      </div>
+      <div class="value">
+        <div class="vt">闭环增强</div>
+        <div class="vd">变现收入回流内容生产，转起来的闭环会越转越快。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="40" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="33" text-anchor="middle" font-size="12" fill="#475569">总纲：数字文化创业的商业模式，必须围绕"注意力捕获—情感沉淀—价值变现"的闭环设计</text>
+
+        <!-- 循环箭头 -->
+        <path d="M 445,110 C 560,130 640,190 585,292" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <path d="M 465,332 C 390,368 270,368 218,332" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <path d="M 100,292 C 50,220 100,150 238,108" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 箭头标签 -->
+        <text x="565" y="170" text-anchor="middle" font-size="11" fill="#64748b">引发共鸣</text>
+        <text x="340" y="374" text-anchor="middle" font-size="11" fill="#64748b">认同转化为付费</text>
+        <text x="80" y="200" text-anchor="middle" font-size="11" fill="#64748b">收入反哺内容</text>
+
+        <!-- 中心说明 -->
+        <text x="340" y="222" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">三段闭环</text>
+        <text x="340" y="244" text-anchor="middle" font-size="12" fill="#64748b">缺一不可 · 循环增强</text>
+
+        <!-- 节点一：注意力捕获 -->
+        <rect x="250" y="70" width="180" height="64" rx="10" fill="#3b82f6"/>
+        <text x="340" y="98" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">注意力捕获</text>
+        <text x="340" y="120" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.92">让内容被看见</text>
+
+        <!-- 节点二：情感沉淀 -->
+        <rect x="470" y="300" width="180" height="64" rx="10" fill="#d97706"/>
+        <text x="560" y="328" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">情感沉淀</text>
+        <text x="560" y="350" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.92">让关注变认同</text>
+
+        <!-- 节点三：价值变现 -->
+        <rect x="30" y="300" width="180" height="64" rx="10" fill="#059669"/>
+        <text x="120" y="328" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">价值变现</text>
+        <text x="120" y="350" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.92">让认同变收入</text>
+
+        <!-- 底部教材旁证 -->
+        <rect x="10" y="392" width="660" height="64" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="416" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">教材旁证 · 谷子经济三重递进动因：情感联结 — 身份认同 — 社交互动</text>
+        <text x="340" y="438" text-anchor="middle" font-size="11.5" fill="#64748b">由此形成"消费—展示—互动—再消费"的循环链路，与三段闭环同构</text>
+      </svg>
+      <div class="caption">图 1　"注意力捕获 — 情感沉淀 — 价值变现"价值闭环</div>
+    </div>
+    <div class="quote">
+      <b>"其商业模式必须围绕'注意力捕获—情感沉淀—价值变现'的闭环设计。"</b>三段是顺序，更是依赖：没有捕获就无物可沉淀，没有沉淀就无认同可变现，没有变现回流，闭环就转不动第二圈。
+    </div>
+  </section>
+
+  <!-- ============ 逐环节详解 ============ -->
+  <section>
+    <h2>逐环节详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">环节一</span>
+        <h3>注意力捕获</h3>
+        <span class="role">闭环角色：<b>起点与入口</b></span>
+      </div>
+      <div class="q">本环节回答的问题：<b>"怎么被看见？"</b></div>
+      <dl class="kv">
+        <dt>核心含义</dt>
+        <dd>闭环的起点——内容、人设、话题必须先捕获注意力，否则后面的一切都无从谈起。</dd>
+        <dt>设计要点</dt>
+        <dd>追求的不是一次性爆款，而是<b>稳定、可持续的注意力入口</b>：知道自己的内容在何处、被谁、因为什么被看见。</dd>
+        <dt>常见断点</dt>
+        <dd>把"被看见"寄托在单次运气上，入口随平台波动大起大落，闭环第二圈就断了。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">环节二</span>
+        <h3>情感沉淀</h3>
+        <span class="role">闭环角色：<b>从看过到认了</b></span>
+      </div>
+      <div class="q">本环节回答的问题：<b>"看完之后，留下了什么？"</b></div>
+      <dl class="kv">
+        <dt>核心含义</dt>
+        <dd>把一次性关注转化为<b>持续的情感联结与身份认同</b>——用户从"看过"变成"认了"，从路过变成归属。</dd>
+        <dt>教材旁证</dt>
+        <dd>教材在"谷子经济"知识链接中归纳的三重递进动因——<b>情感联结、身份认同、社交互动</b>，正是情感沉淀在消费者一端的具体形态。</dd>
+        <dt>常见断点</dt>
+        <dd>只有曝光没有互动：粉丝量涨了，认同没涨——变现时才发现无"情"可变。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">环节三</span>
+        <h3>价值变现</h3>
+        <span class="role">闭环角色：<b>回收与再投入</b></span>
+      </div>
+      <div class="q">本环节回答的问题：<b>"认同如何变成收入？"</b></div>
+      <dl class="kv">
+        <dt>核心含义</dt>
+        <dd>把情感认同转化为<b>付费行为</b>——商品、服务、体验皆可作为载体；变现所得再投入内容生产，闭环得以循环增强。</dd>
+        <dt>设计要点</dt>
+        <dd>变现形态要与沉淀的情感相匹配：<b>透支情感换短期收入，会直接打断闭环</b>，"再消费"就无从发生。</dd>
+        <dt>常见断点</dt>
+        <dd>收入不回流：赚一笔花一笔，内容投入停滞，下一轮注意力捕获失血。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 断点诊断 ============ -->
+  <section>
+    <h2>两个高发断点</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">断点 ①</span>
+        <h4>有流量、没认同</h4>
+        <p>注意力捕获做到了，情感沉淀缺位：靠猎奇与流量话术涨来的关注，不会转化为身份认同，变现无从发生。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">断点 ②</span>
+        <h4>有认同、没回流</h4>
+        <p>变现做成了，收入却没有反哺内容：上一轮的收入没有变成下一轮的注意力与情感投入，闭环变成单程票。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      <b>诊断口径：三格齐备才叫闭环。</b>"靠什么捕获注意力—靠什么沉淀情感—靠什么变现"，三格都能写出具体答案，生意才成立；哪一格写不出来，就先补哪一格，而不是急于放大投入。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>画出自己的闭环。</b>准备三个格子，依次写下答案：靠什么捕获注意力？靠什么沉淀情感？靠什么变现？答案要具体到动作，不能只写方向。</li>
+      <li><b>找断点。</b>哪一格写不出来或写不具体，闭环就断在那里；优先补那一格，其余环节先按兵不动。</li>
+      <li><b>设计回流。</b>明确变现收入的去向：多少钱、多少时间、多少人力反哺内容生产与粉丝互动，让"再消费"有发生的理由。</li>
+      <li><b>对照四模式。</b>用卡 11-11 检验自己的闭环最适合哪种具体形态：IP 全链路、创作者平台、情感具象化还是体验即服务。</li>
+      <li><b>小成本试转。</b>用最小的内容单元先转一圈完整闭环——被看见、留认同、收到钱、再投入——转通之后再放大投入。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>数字文化、内容型项目<b>商业模式设计的第一性检查</b>：先闭环，再谈规模</li>
+          <li>情绪消费类产品的<b>需求分析透镜</b>：对照三重动因看情感沉淀是否成立</li>
+          <li>项目诊断：<b>有流量没收入、有粉丝没认同时</b>，用三格定位断点</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>闭环是<b>设计原则不是收入承诺</b>——三格齐备只是必要条件，经营仍靠执行</li>
+          <li>注意力入口受平台规则与算法影响大，<b>入口不能只押一个渠道</b></li>
+          <li>变现节奏须与情感浓度匹配，<b>过度变现会侵蚀沉淀的情感</b>，得不偿失</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-09</div>
+        <h4>数字文化四维机会框架</h4>
+        <p>闭环跑在产业链的哪一环？先用生产—流通—消费—工具四维定位，再设计闭环。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-11</div>
+        <h4>数字文化四模式</h4>
+        <p>闭环的四种具体形态与变现载体：总纲定方向，四模式定做法。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-06</div>
+        <h4>社群运营四步递进路径</h4>
+        <p>"情感沉淀"一格的操作化工具：低门槛进入—高频互动—深度认同—自发传播。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 314 页</span>
+    <span>方法论卡 11-10 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

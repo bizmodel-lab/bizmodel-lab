@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================
-# 创见 BizLab · 腾讯云 Lighthouse 一键部署脚本
+# mAtlas BizLab · 腾讯云 Lighthouse 一键部署脚本
 # 适用系统：Ubuntu 22.04 LTS / Debian 11+（腾讯云 Lighthouse 默认）
 # 用法：bash install-on-tencent.sh <git-repo-url> [port]
 # 示例：bash install-on-tencent.sh https://github.com/zhangsan/bizmodel-lab.git 8700
@@ -23,7 +23,7 @@ SERVICE_NAME="bizlab"
 APP_PORT="$PORT"
 
 echo "============================================================"
-echo " 创见 BizLab · 腾讯云 Lighthouse 一键部署"
+echo " mAtlas BizLab · 腾讯云 Lighthouse 一键部署"
 echo " 仓库: $REPO_URL"
 echo " 端口: $APP_PORT"
 echo "============================================================"

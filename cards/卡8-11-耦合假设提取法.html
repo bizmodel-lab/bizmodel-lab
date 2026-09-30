@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡8-11 · 耦合假设提取法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.risk{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .risk .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 层级对照 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--s1);
+    border:1px solid var(--s1);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile .mno.green{color:var(--s3);border-color:var(--s3);}
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=8">第 8 章 · 商业模式</a><span class="card-nav-meta">卡 8-11 · 耦合假设提取法（三条件/四类型/PMF层级论）</span><a class="card-nav-prev" href="卡8-10-结构韧性三维评估.html">← 卡 8-10</a><a class="card-nav-next" href="卡8-12-财务三链检验.html">卡 8-12 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 8-11</span>
+    <span class="domain">教材体系 · <b>第 8 章 商业模式</b></span>
+  </div>
+  <h1>耦合假设提取法</h1>
+  <div class="oneliner">把商业模式的因果猜测写成可实验的若/则命题。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>进入验证阶段，创业者手里往往是一堆模糊的猜想：<b>"用户会更愿意付费""换个渠道可能更便宜"</b>。猜想说不出因果对象、测不了真伪，实验就无从设计——不是不想验证，是猜想本身还没到"可验证"的形态。</p>
+    <p>本方法把猜想<b>转译为模块间可检验的条件命题</b>，为受控实验提供直接输入。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">猜想变成命题</div>
+        <div class="vd">从"我觉得会"到"若A以X方式运作，B是否产生Y响应"——因果对象明确。</div>
+      </div>
+      <div class="value">
+        <div class="vt">实验可设计</div>
+        <div class="vd">命题满足可观测、可隔离、可判定三条件，才能进入受控实验。</div>
+      </div>
+      <div class="value">
+        <div class="vt">PMF 不被误拆</div>
+        <div class="vd">分清"模块间因果命题"与"系统整体状态判断"，避免拿 PMF 当单条假设测。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 486" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah17" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 假设卡片 · 正面 ===== -->
+        <rect x="12" y="24" width="315" height="256" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="12" y="24" width="315" height="28" rx="10" fill="#3b82f6"/>
+        <text x="169" y="43" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">假设卡片 · 正面</text>
+        <text x="24" y="74" font-size="12" font-weight="700" fill="#3b82f6">耦合类型：价值—收入</text>
+        <text x="24" y="98" font-size="11" fill="#64748b">若／则命题（模块间因果联动）</text>
+        <rect x="24" y="108" width="291" height="76" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="36" y="132" font-size="12" fill="#1e293b">若价值主张从「功能型」升级为</text>
+        <text x="36" y="152" font-size="12" fill="#1e293b">「身份象征型」，客户细分的支</text>
+        <text x="36" y="172" font-size="12" fill="#1e293b">付意愿是否提升 50% 以上？</text>
+        <text x="24" y="212" font-size="11" fill="#64748b">通用句式：若模块A以X方式运作，</text>
+        <text x="24" y="228" font-size="11" fill="#64748b">模块B是否会产生预期的Y响应</text>
+        <text x="24" y="258" font-size="11" fill="#94a3b8">命题通常呈「若……则……」形式</text>
+
+        <!-- 正反面衔接箭头 -->
+        <line x1="329" y1="152" x2="349" y2="152" stroke="#475569" stroke-width="2" marker-end="url(#ah17)"/>
+
+        <!-- ===== 假设卡片 · 背面 ===== -->
+        <rect x="353" y="24" width="315" height="259.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="353" y="24" width="315" height="28" rx="10" fill="#d97706"/>
+        <text x="510" y="43" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">假设卡片 · 背面</text>
+        <rect x="367" y="60" width="15" height="15" rx="3" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+        <text x="390" y="72" font-size="12" fill="#334155">可观测：能够产生数据</text>
+        <rect x="367" y="90" width="15" height="15" rx="3" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+        <text x="390" y="102" font-size="12" fill="#334155">可隔离：可控制变量干扰</text>
+        <rect x="367" y="120" width="15" height="15" rx="3" fill="#ffffff" stroke="#475569" stroke-width="1.5"/>
+        <text x="390" y="132" font-size="12" fill="#334155">可判定：能明确判定支持或证伪</text>
+        <rect x="367" y="148" width="287" height="54" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="379" y="172" font-size="12" font-weight="700" fill="#d97706">判定标准（预设量化阈值）</text>
+        <text x="379" y="192" font-size="12" fill="#475569">例：支付意愿提升 ≥ 50%</text>
+        <text x="367" y="232" font-size="12" font-weight="700" fill="#dc2626">任一条件不满足 → 退回重写</text>
+        <text x="367" y="256" font-size="11" fill="#64748b">同时剔除两类误提：产品功能假设 /</text>
+        <text x="367" y="272" font-size="11" fill="#64748b">宏观趋势假设</text>
+
+        <!-- ===== 层级图 ===== -->
+        <text x="340" y="316" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">层级区分：耦合假设层 与 PMF 涌现层</text>
+        <rect x="90" y="330" width="500" height="64" rx="10" fill="#eff6ff" stroke="#3b82f6"/>
+        <text x="104" y="352" font-size="12" font-weight="700" fill="#3b82f6">耦合假设层——模块间具体因果命题（单一实验可检验）</text>
+        <rect x="104" y="360.8" width="112" height="28" rx="11" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="160" y="377" text-anchor="middle" font-size="11" fill="#1e293b">价值—收入</text>
+        <rect x="224" y="360.8" width="112" height="28" rx="11" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="280" y="377" text-anchor="middle" font-size="11" fill="#1e293b">渠道—获客</text>
+        <rect x="344" y="360.8" width="112" height="28" rx="11" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="400" y="377" text-anchor="middle" font-size="11" fill="#1e293b">资源—交付</text>
+        <rect x="464" y="360.8" width="112" height="28" rx="11" fill="#ffffff" stroke="#bfdbfe"/>
+        <text x="520" y="377" text-anchor="middle" font-size="11" fill="#1e293b">合作—风险</text>
+
+        <line x1="340" y1="394" x2="340" y2="414" stroke="#475569" stroke-width="2" marker-end="url(#ah17)"/>
+        <text x="352" y="408" font-size="11" fill="#475569">多条耦合路径协同验证</text>
+
+        <rect x="90" y="418" width="500" height="52" rx="10" fill="#ecfdf5" stroke="#059669"/>
+        <text x="104" y="440" font-size="12" font-weight="700" fill="#059669">PMF 涌现层——系统整体的状态判断，验证的终点指向</text>
+        <text x="104" y="460" font-size="11" fill="#475569">PMF 是价值主张 × 客户细分深度耦合的涌现结果，不可拆解为单一假设</text>
+      </svg>
+      <div class="caption">图 1　假设卡片（正面命题 / 背面三条件）＋ 耦合假设层与 PMF 涌现层的层级区分</div>
+    </div>
+    <div class="quote">
+      命题形式（教材原文）：<b>"若模块A以X方式运作，模块B是否会产生预期的Y响应"</b>——验证即<b>"通过受控实验检验模块间的耦合假设"</b>。
+    </div>
+  </section>
+
+  <!-- ============ 模型详解 ============ -->
+  <section>
+    <h2>模型详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">基础</span>
+        <h3>三条件</h3>
+        <span class="role">命题的<b>准入门槛</b></span>
+      </div>
+      <div class="q">一个猜想要成为可实验的耦合假设，必须同时过三道关：</div>
+      <dl class="kv">
+        <dt>可观测</dt>
+        <dd>能够产生数据——命题里的事必须能被看见、被记录。</dd>
+        <dt>可隔离</dt>
+        <dd>可控制变量干扰——能把其他因素的影响挡在实验外面。</dd>
+        <dt>可判定</dt>
+        <dd>能够明确判定支持或证伪——预设量化阈值，实验结束能给出"是/否"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">归类</span>
+        <h3>四类耦合假设</h3>
+        <span class="role">按<b>模块对</b>归档</span>
+      </div>
+      <div class="q">写好的命题按耦合的模块对归入四类，并套用教材例句校准量化预期：</div>
+      <dl class="kv">
+        <dt>价值—收入</dt>
+        <dd>例：<b>"若价值主张从'功能型'升级为'身份象征型'，客户细分的支付意愿是否提升50%以上？"</b></dd>
+        <dt>渠道—获客</dt>
+        <dd>例：地推切换社群裂变，获客成本下降且客户质量不劣化？</dd>
+        <dt>资源—交付</dt>
+        <dd>例：自研换"开源方案＋定制开发"，交付质量是否维持阈值以上？</dd>
+        <dt>合作—风险</dt>
+        <dd>例：独家绑定改多源采购，稳定性提升的同时协调成本是否可控？</dd>
+      </dl>
+    </div>
+
+    <div class="stage risk">
+      <div class="stage-head">
+        <span class="sn">防错</span>
+        <h3>两类提取错误与 PMF 定位</h3>
+        <span class="role">最容易<b>提错</b>的地方</span>
+      </div>
+      <div class="traps">
+        <div class="tt">两类提取错误</div>
+        <div class="trap"><span class="tn">产品功能假设</span><span class="td">"用户是否喜欢新界面"属产品验证——它测的是单个模块的体验，不是模块间的耦合。</span></div>
+        <div class="trap"><span class="tn">宏观趋势假设</span><span class="td">"市场规模是否增长"属环境判断——它在系统之外，受控实验隔离不了它。</span></div>
+      </div>
+      <div class="traps">
+        <div class="tt">PMF 的正确位置</div>
+        <div class="trap"><span class="tn">涌现结果</span><span class="td">教材原文：<b>"PMF……并非商业模式的某一孤立模块，而是价值主张模块与客户细分模块深度耦合的涌现结果"</b>。</span></div>
+        <div class="trap"><span class="tn">终点指向</span><span class="td"><b>"应将 PMF 视为验证的终点指向，而非可拆解的单一假设"</b>——不要把"是否达到 PMF"写成某条耦合链的检验命题。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 层级对照 ============ -->
+  <section>
+    <h2>两级假设的层级差异</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">耦合假设层</span>
+        <h4>模块间具体因果命题</h4>
+        <p>锁定两个模块的联动关系，可通过<b>单一实验</b>检验——是实验设计的直接输入。</p>
+      </div>
+      <div class="mile">
+        <span class="mno green">PMF 涌现层</span>
+        <h4>系统整体的状态判断</h4>
+        <p>需<b>多条耦合路径协同验证</b>才能逼近——是所有耦合假设验证工作的终点指向，而非其中一条。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>回看耦合度诊断结论。</b>列出待实证检验的薄弱耦合段——假设来自诊断，不来自灵感。</li>
+      <li><b>改写成标准句式。</b>把每段疑点改写为"若模块A以X方式运作，模块B是否产生预期Y响应"的句式，因果对象与响应一目了然。</li>
+      <li><b>用三条件过滤。</b>不可观测、不可隔离或不可判定的命题，一律退回重写，不带入实验。</li>
+      <li><b>归入四类并校准预期。</b>按价值—收入、渠道—获客、资源—交付、合作—风险归类，套用教材例句校准量化预期（如"提升50%以上"）。</li>
+      <li><b>剔除误提项，输出假设清单。</b>剔掉产品功能假设与宏观趋势假设，清单进入实验设计环节。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>完成静态诊断后的验证启动环节</b>——实验设计的前置工序</li>
+          <li>验证团队对齐"我们到底要检验什么"的命题清单</li>
+          <li>培训中的"假设卡片"生成工作坊、命题互评练习</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>仅适用于<b>模块间因果命题</b>——单点产品体验与外部环境判断都超出其范围</li>
+          <li>判定标准必须<b>预设量化阈值</b>，否则"可判定"条件不成立</li>
+          <li>不要把<b>"是否达到 PMF"直接当作某条耦合链的检验命题</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 8-08</div>
+        <h4>模块耦合度诊断体系</h4>
+        <p>本卡的假设来源：卡8-08 诊断出的低分耦合段，正是最值得写成因命题去实验的地方。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>最小可行系统（MVS）三闭环</h4>
+        <p>假设要落在实验单元上跑——MVS 三闭环是耦合假设的受控实验载体。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-08</div>
+        <h4>机会假设句式</h4>
+        <p>机会层的假设用卡5-08 的句式写；到了模式层，换本卡的"模块A—模块B"句式。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 8 章，第 219—220 页</span>
+    <span>方法论卡 8-11 · 第 8 章 商业模式</span>
+  </div>
+
+</div>
+</body>
+</html>

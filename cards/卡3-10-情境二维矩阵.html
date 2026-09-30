@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-10 · 情境二维矩阵</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --s4:#334155; --s4-bg:#f1f5f9; --s4-line:#cbd5e1;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 象限详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--s4);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--s4);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-10 · 情境二维矩阵（不确定性×资源四象限）</span><a class="card-nav-prev" href="卡3-09-三阶段思维组合动态应用.html">← 卡 3-09</a><a class="card-nav-next" href="卡3-11-认知偏误三层护栏.html">卡 3-11 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-10</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>情境二维矩阵</h1>
+  <div class="oneliner">不确定性 × 资源充裕度：按两个坐标定位处境，选对思维组合。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>同样的思维工具，在不同处境下效果迥异——<b>资源受限时追求根本性重构会断资金链，资源充裕时只做微创新又浪费筹码</b>。工具没有错，错的是工具与处境的错配。</p>
+    <p>该矩阵用<b>「不确定性程度与资源约束强度这两个关键情境变量」</b>（P84）帮创业者定位处境、配置思维。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">定位处境</div>
+        <div class="vd">两个坐标一打分，就能说清自己"在什么牌桌上打牌"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">配置思维</div>
+        <div class="vd">每个象限都有对应的主导与辅助思维，组合现成可查。</div>
+      </div>
+      <div class="value">
+        <div class="vt">避免误配</div>
+        <div class="vd">处境变了思维没变，是许多战略失误的共同根源，矩阵让误配一眼可见。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 516" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 坐标轴 ===== -->
+        <line x1="72" y1="485" x2="72" y2="52" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <line x1="72" y1="485" x2="658" y2="485" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="64" y="68" text-anchor="end" font-size="12" font-weight="700" fill="#475569">高</text>
+        <text x="64" y="274" text-anchor="end" font-size="12" font-weight="700" fill="#475569">资源充裕度</text>
+        <text x="64" y="478" text-anchor="end" font-size="12" font-weight="700" fill="#475569">低</text>
+        <text x="86" y="507" font-size="12" font-weight="700" fill="#475569">低</text>
+        <text x="366" y="507" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">不确定性</text>
+        <text x="646" y="507" text-anchor="end" font-size="12" font-weight="700" fill="#475569">高</text>
+
+        <!-- ===== 象限④：低不确定 · 资源充裕（左上）===== -->
+        <rect x="92" y="56" width="270" height="200" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M92,82 a10,10 0 0 1 10,-10 h250 a10,10 0 0 1 10,10 v9.2 h-270 z" fill="#334155"/>
+        <text x="227" y="85.8" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">④ 低不确定 · 资源充裕</text>
+        <text x="104" y="102" font-size="11" fill="#94a3b8">场景：成熟企业的业务延伸</text>
+        <text x="104" y="122" font-size="11" font-weight="700" fill="#334155">主导：系统思维——诊断新旧</text>
+        <text x="104" y="138" font-size="11" font-weight="700" fill="#334155">业务的协同关系</text>
+        <text x="104" y="160" font-size="11" fill="#475569">辅助：反脆弱「杠铃策略」——</text>
+        <text x="104" y="176" font-size="11" fill="#475569">大部分资源投稳健业务，小</text>
+        <text x="104" y="192" font-size="11" fill="#475569">部分做探索＋逆向思维（第二</text>
+        <text x="104" y="208" font-size="11" fill="#475569">曲线）＋效果逻辑（小规模试点）</text>
+        <text x="104" y="230" font-size="11" fill="#94a3b8">避免：—</text>
+
+        <!-- ===== 象限②：高不确定 · 资源充裕（右上）===== -->
+        <rect x="382" y="56" width="270" height="200" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M382,82 a10,10 0 0 1 10,-10 h250 a10,10 0 0 1 10,10 v9.2 h-270 z" fill="#059669"/>
+        <text x="517" y="85.8" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">② 高不确定 · 资源充裕</text>
+        <text x="394" y="102" font-size="11" fill="#94a3b8">场景：大厂内部创业 · 二次创业</text>
+        <text x="394" y="122" font-size="11" font-weight="700" fill="#059669">主导：第一性原理——识别行业</text>
+        <text x="394" y="138" font-size="11" font-weight="700" fill="#059669">底层假设</text>
+        <text x="394" y="160" font-size="11" fill="#475569">辅助：设计思维（回应用户深层</text>
+        <text x="394" y="176" font-size="11" fill="#475569">需求）＋系统思维（生态位进入，</text>
+        <text x="394" y="192" font-size="11" fill="#475569">如双边网络效应）＋反脆弱（快速</text>
+        <text x="394" y="208" font-size="11" fill="#475569">试错但控制单次损失）＋逆向思维</text>
+        <text x="394" y="224" font-size="11" fill="#475569">（终局倒推、失败预演）</text>
+        <text x="394" y="246" font-size="11" fill="#94a3b8">避免：—</text>
+
+        <!-- ===== 象限③：低不确定 · 资源受限（左下）===== -->
+        <rect x="92" y="266" width="270" height="200" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M92,292 a10,10 0 0 1 10,-10 h250 a10,10 0 0 1 10,10 v9.2 h-270 z" fill="#d97706"/>
+        <text x="227" y="295.8" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">③ 低不确定 · 资源受限</text>
+        <text x="104" y="312" font-size="11" fill="#94a3b8">场景：微创新 · 副业 · 技能变现</text>
+        <text x="104" y="332" font-size="11" font-weight="700" fill="#d97706">主导：系统思维——用「系统原</text>
+        <text x="104" y="348" font-size="11" font-weight="700" fill="#d97706">型」预判结构性陷阱</text>
+        <text x="104" y="366" font-size="11" fill="#475569">（饮鸩止渴、增长上限、目标侵蚀）</text>
+        <text x="104" y="388" font-size="11" fill="#475569">辅助：失败预演＋成长型思维</text>
+        <text x="104" y="404" font-size="11" fill="#475569">（把有限投入转化为能力积累）</text>
+        <text x="104" y="426" font-size="11" fill="#94a3b8">避免：—</text>
+
+        <!-- ===== 象限①：高不确定 · 资源受限（右下）===== -->
+        <rect x="382" y="266" width="270" height="200" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M382,292 a10,10 0 0 1 10,-10 h250 a10,10 0 0 1 10,10 v9.2 h-270 z" fill="#3b82f6"/>
+        <text x="517" y="295.8" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">① 高不确定 · 资源受限</text>
+        <text x="394" y="312" font-size="11" fill="#94a3b8">场景：草根创业 · 经济下行期被迫创业</text>
+        <text x="394" y="332" font-size="11" font-weight="700" fill="#3b82f6">主导：效果逻辑——从既有技能、</text>
+        <text x="394" y="348" font-size="11" font-weight="700" fill="#3b82f6">人脉出发，快速拼凑最小可行方案</text>
+        <text x="394" y="370" font-size="11" fill="#475569">辅助：精益创业（行动框架）＋</text>
+        <text x="394" y="386" font-size="11" fill="#475569">成长型思维（心理支撑）</text>
+        <text x="394" y="408" font-size="11" font-weight="700" fill="#dc2626">避免：第一性原理的「颠覆幻想」</text>
+      </svg>
+      <div class="caption">图 1　情境二维矩阵：横轴不确定性 × 纵轴资源充裕度，四象限各配主导 / 辅助 / 避免思维</div>
+    </div>
+    <div class="quote">
+      选思维的底线原则：<b>"不存在绝对'最好'的思维，只有最适合当前情境的思维组合"</b>（P83）。矩阵就是帮你找到"当前情境"的那张地图。
+    </div>
+  </section>
+
+  <!-- ============ 逐象限详解 ============ -->
+  <section>
+    <h2>逐象限详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">象限①</span>
+        <h3>高不确定 × 资源受限</h3>
+        <span class="role">典型场景：<b>草根创业 · 经济下行期被迫创业</b></span>
+      </div>
+      <div class="q">本象限的处境：<b>"看不清方向，手里也没多少牌。"</b></div>
+      <dl class="kv">
+        <dt>主导思维</dt>
+        <dd><b>效果逻辑</b>——从既有技能、人脉出发，快速拼凑出最小可行性方案。别问"市场要什么"，先问"我手上有什么"。</dd>
+        <dt>辅助思维</dt>
+        <dd><b>精益创业</b>提供行动框架，<b>成长型思维</b>做心理支撑——日子紧、变数多，心态不垮才能撑到验证完成。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">应避免</div>
+        <p style="font-size:13.5px;color:var(--ink-3);margin:0;">第一性原理的<b>「颠覆幻想」</b>——资源撑不起根本性重构，追求大破大立反而先断资金链。</p>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">象限②</span>
+        <h3>高不确定 × 资源充裕</h3>
+        <span class="role">典型场景：<b>大厂内部创业 · 二次创业</b></span>
+      </div>
+      <div class="q">本象限的处境：<b>"看不清方向，但手里有充足筹码。"</b></div>
+      <dl class="kv">
+        <dt>主导思维</dt>
+        <dd><b>第一性原理</b>——识别行业底层假设。既然有本钱质疑"行业一直这么做"，就该问一句"为什么必须这样"。</dd>
+        <dt>辅助思维</dt>
+        <dd><b>设计思维</b>回应用户深层需求；<b>系统思维</b>设计生态位进入策略（如双边网络效应）；<b>反脆弱思维</b>快速试错但控制单次损失；<b>逆向思维</b>辅助（终局倒推、失败预演）。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">象限③</span>
+        <h3>低不确定 × 资源受限</h3>
+        <span class="role">典型场景：<b>微创新 · 副业 · 技能变现</b></span>
+      </div>
+      <div class="q">本象限的处境：<b>"路看得清，但投入必须精打细算。"</b></div>
+      <dl class="kv">
+        <dt>主导思维</dt>
+        <dd><b>系统思维</b>——用<b>「系统原型」</b>（饮鸩止渴、增长上限、目标侵蚀）预判结构性陷阱：很多小生意的死法，是结构注定的。</dd>
+        <dt>辅助思维</dt>
+        <dd><b>失败预演</b>提前想清楚会怎么输；<b>成长型思维</b>把有限投入转化为能力积累——钱花完了，本事留在身上。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">象限④</span>
+        <h3>低不确定 × 资源充裕</h3>
+        <span class="role">典型场景：<b>成熟企业的业务延伸</b></span>
+      </div>
+      <div class="q">本象限的处境：<b>"路看得清，筹码也够——别浪费。"</b></div>
+      <dl class="kv">
+        <dt>主导思维</dt>
+        <dd><b>系统思维</b>——诊断新旧业务的协同关系：新业务到底和老业务相互成就，还是相互消耗。</dd>
+        <dt>辅助思维</dt>
+        <dd><b>反脆弱「杠铃策略」</b>——大部分资源投稳健业务、小部分做探索；<b>逆向思维</b>探索第二曲线；<b>效果逻辑</b>做小规模试点。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>两项自评。</b>给自己的处境打两个分：不确定性高不高？资源约束强不强？凭最近一段时间的真实体感作答，别只看计划书。</li>
+      <li><b>定位象限。</b>把两项评分放到矩阵上，找到自己所处的象限——先定位置，再谈打法。</li>
+      <li><b>核对配置。</b>对照该象限的主导与辅助思维，检查自己当前实际在用什么思维：匹配吗？</li>
+      <li><b>误配即调。</b>若发现误配（如身在象限①却用第一性原理做颠覆），立即调整主导思维，不要恋战。</li>
+      <li><b>按象限排训练。</b>按象限给出的思维组合，设计自己的学习与训练重点——补的是当前处境最需要的那几样。</li>
+      <li><b>处境变了重新定位。</b>拿到融资、市场剧变、业务转型，都会改变你的象限——处境一变，配置就要重算。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>创业启动前</b>的思维配置：先定位处境，再选工具箱</li>
+          <li><b>培训学员分班定位</b>与咨询诊断的第一步</li>
+          <li>与<b>"三阶段 × 思维组合"</b>（P83—84）联用，形成"阶段 ＋ 情境"双维导航</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li><b>象限是粗定位</b>，实际处境可能介于两格之间，需结合具体任务微调</li>
+          <li>矩阵给出的是<b>思维组合方向，不替代具体业务决策</b></li>
+          <li>两项自评易受主观感受影响，重要决策前宜与团队或外部视角交叉校验</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-01</div>
+        <h4>创业思维三层次框架</h4>
+        <p>本卡决定"选哪套思维"，卡02决定"思维分几层、怎么练"——先配置，再训练。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>与本卡叠加形成双维导航：阶段（业务走到哪）＋情境（牌桌什么样），定位更准。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-16</div>
+        <h4>坚持—调优—重构</h4>
+        <p>处境变化、象限迁移时的下一步：判断该坚持、调优还是重构当前路径。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 84—86 页（"三阶段 × 思维组合"见第 83—84 页）</span>
+    <span>方法论卡 3-10 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

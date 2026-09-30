@@ -1,5 +1,5 @@
 /**
- * 创见 BizLab 2.0 — 商业模式设计实训系统服务端
+ * mAtlas BizLab 2.0 — 创业实训系统服务端
  * 零依赖（Node 内置模块）：HTTP 服务 + 静态文件 + REST API + JSON 文件数据库
  * 启动：node server.js  （默认端口 8700，可用环境变量 PORT 覆盖）
  */
@@ -597,6 +597,47 @@ function serveStatic(req, res, pathname) {
   });
 }
 
+/* ================= 整合站点静态路由（大众创业学门户 + 方法论卡） ================= */
+// 部署结构：门户站副本在 site/，方法论卡副本在 cards/（由 tools/sync-deploy.py 同步生成）
+// 门户文件未部署时自动回退到 BizLab 原有行为（serveStatic），保证升级顺序安全
+const SITE_DIR = process.env.SITE_DIR || path.join(__dirname, "site");
+const CARDS_DIR = process.env.CARDS_DIR || path.join(__dirname, "cards");
+
+function serveFileFrom(res, full, onMiss) {
+  fs.readFile(full, (err, buf) => {
+    if (err) {
+      if (onMiss) return onMiss();
+      res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      res.end("Not found");
+      return;
+    }
+    const ext = path.extname(full).toLowerCase();
+    res.writeHead(200, { "Content-Type": MIME[ext] || "application/octet-stream" });
+    res.end(buf);
+  });
+}
+
+function dispatchStatic(req, res, pathname) {
+  // 门户站页面：/ 与两个站点页；注意 /index.html 留给 BizLab 登录页使用
+  if (pathname === "/" || pathname === "/cards.html" || pathname === "/chapter.html") {
+    const rel = pathname === "/" ? "index.html" : pathname.slice(1);
+    return serveFileFrom(res, path.join(SITE_DIR, rel), () => serveStatic(req, res, pathname));
+  }
+  // 门户站静态资源：/assets/*
+  if (pathname.startsWith("/assets/")) {
+    if (pathname.includes("..")) { res.writeHead(400); res.end("Bad request"); return; }
+    return serveFileFrom(res, path.join(SITE_DIR, pathname));
+  }
+  // 方法论卡：/cards/*
+  if (pathname.startsWith("/cards/")) {
+    const rel = pathname.slice("/cards/".length);
+    if (!rel || rel.includes("..")) { res.writeHead(400); res.end("Bad request"); return; }
+    return serveFileFrom(res, path.join(CARDS_DIR, rel));
+  }
+  // 其余：BizLab v2 前端（public/，含 SPA 回退）
+  serveStatic(req, res, pathname);
+}
+
 /* ================= 服务器 ================= */
 function readBody(req) {
   return new Promise(resolve => {
@@ -647,7 +688,7 @@ const server = http.createServer(async (req, res) => {
       res.end(JSON.stringify({ error: "接口不存在" }));
       return;
     }
-    serveStatic(req, res, pathname);
+    dispatchStatic(req, res, pathname);
   } catch (e) {
     console.error("Server error:", e);
     res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
@@ -687,7 +728,7 @@ cleanSessionStore();
   if (changed) save();
 })();
 server.listen(PORT, () => {
-  console.log(`创见 BizLab 2.0 实训系统已启动`);
+  console.log(`mAtlas BizLab 2.0 实训系统已启动`);
   console.log(`访问地址: http://localhost:${PORT}`);
   console.log(`数据文件: ${require("./db").DB_FILE}`);
   console.log(`教师注册码: ${db.settings.teacherCode}（教师注册时填写；可用环境变量 TEACHER_CODE 自定义）`);

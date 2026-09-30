@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-03 · PESTEL 与机会转化提问表</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 表 5-1 提问表 ===== */
+  .qtbl{width:100%;border-collapse:collapse;background:var(--card);margin:16px 0 6px;}
+  .qtbl th{
+    background:var(--ink);color:#fff;font-size:13.5px;font-weight:700;
+    padding:10px 12px;text-align:left;letter-spacing:1px;
+  }
+  .qtbl td{
+    border:1px solid var(--line);font-size:13.5px;color:var(--ink-2);
+    padding:10px 12px;vertical-align:top;line-height:1.7;
+  }
+  .qtbl td.dim{font-weight:700;color:var(--ink);white-space:nowrap;}
+  .qtbl td.q b{color:var(--ink);}
+  .tbl-note{font-size:12.5px;color:var(--ink-3);margin-bottom:12px;}
+
+  /* ===== 详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:110px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:96px 1fr;}
+    .qtbl th,.qtbl td{padding:8px;font-size:12.5px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel,.qtbl{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-03 · PESTEL＋机会转化提问表</span><a class="card-nav-prev" href="卡5-02-机会识别三类信号总纲.html">← 卡 5-02</a><a class="card-nav-next" href="卡5-04-三阶推演法.html">卡 5-04 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-03</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>PESTEL 与机会转化提问表</h1>
+  <div class="oneliner">六维扫描环境，再用一个提问把"变化"翻译成"机会"。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>谈趋势的创业者常犯两类错误：一是<b>只看自己关心的维度</b>——做技术的只看技术，做消费的只看人群，六个维度漏掉五个；二是<b>看到了变化却停在"趋势判断"</b>——"老龄化在加速"说完了，然后呢？机会在哪里，落不下来。PESTEL 是经典的环境扫描工具，教材在其传统六维上做出关键改造：增加第三列<b>"机会转化提问"</b>（表 5-1），把每个维度的监测指标直接推进为一个可追问的机会问题。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">六维不漏</div>
+        <div class="vd">政治、经济、社会、技术、环境、法律逐一过，盲区无处藏身。</div>
+      </div>
+      <div class="value">
+        <div class="vt">三列推进</div>
+        <div class="vd">维度→监测指标→机会转化提问，每一步都比上一步更靠近机会。</div>
+      </div>
+      <div class="value">
+        <div class="vt">从判断到追问</div>
+        <div class="vd">把"环境在变"的陈述句改写成"哪里有机会"的疑问句，分析立即落地。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">PESTEL 六维扫描 × 机会转化提问：把环境变化翻译成机会问题</text>
+
+        <!-- ===== 左侧：六维雷达 ===== -->
+        <!-- 外环 -->
+        <polygon points="168,150 265,206 265,318 168,374 71,318 71,206" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+        <!-- 中环 -->
+        <polygon points="168,187 233,225 233,300 168,337 103,300 103,225" fill="none" stroke="#bfdbfe" stroke-width="1.2"/>
+        <!-- 内环 -->
+        <polygon points="168,224 201,243 201,281 168,300 135,281 135,243" fill="none" stroke="#bfdbfe" stroke-width="1.2"/>
+        <!-- 轮辐 -->
+        <line x1="168" y1="262" x2="168" y2="150" stroke="#bfdbfe" stroke-width="1"/>
+        <line x1="168" y1="262" x2="265" y2="206" stroke="#bfdbfe" stroke-width="1"/>
+        <line x1="168" y1="262" x2="265" y2="318" stroke="#bfdbfe" stroke-width="1"/>
+        <line x1="168" y1="262" x2="168" y2="374" stroke="#bfdbfe" stroke-width="1"/>
+        <line x1="168" y1="262" x2="71" y2="318" stroke="#bfdbfe" stroke-width="1"/>
+        <line x1="168" y1="262" x2="71" y2="206" stroke="#bfdbfe" stroke-width="1"/>
+        <!-- 六维标签 -->
+        <text x="168" y="140" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">政治 P</text>
+        <text x="275" y="208" font-size="12.5" font-weight="700" fill="#1e293b">经济 E</text>
+        <text x="275" y="328" font-size="12.5" font-weight="700" fill="#1e293b">社会 S</text>
+        <text x="168" y="392" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">技术 T</text>
+        <text x="61" y="328" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">环境 E</text>
+        <text x="61" y="208" text-anchor="end" font-size="12.5" font-weight="700" fill="#1e293b">法律 L</text>
+        <!-- 雷达小注 -->
+        <text x="168" y="418" text-anchor="middle" font-size="11.5" fill="#64748b">六维雷达：逐一扫描，不漏一维</text>
+        <text x="168" y="438" text-anchor="middle" font-size="11" fill="#94a3b8">第二列监测指标做核对清单</text>
+
+        <!-- ===== 右侧：机会转化提问表 ===== -->
+        <rect x="330" y="70" width="340" height="30" rx="8" fill="#1e293b"/>
+        <text x="500" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">机会转化提问（表 5-1 第三列）</text>
+
+        <!-- 行 1：政治 -->
+        <rect x="330" y="110" width="340" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="340" y="121" width="56" height="30" rx="15" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="368" y="141" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1d4ed8">政治</text>
+        <text x="406" y="132" font-size="11" fill="#475569">新政策正在创造哪些新需求？</text>
+        <text x="406" y="150" font-size="11" fill="#475569">又重构了哪些环节的成本？</text>
+
+        <!-- 行 2：经济 -->
+        <rect x="330" y="164" width="340" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="340" y="175" width="56" height="30" rx="15" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="368" y="195" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309">经济</text>
+        <text x="406" y="186" font-size="11" fill="#475569">购买力与消费结构的变化，</text>
+        <text x="406" y="204" font-size="11" fill="#475569">正把需求推向哪里？</text>
+
+        <!-- 行 3：社会（教材原句） -->
+        <rect x="330" y="218" width="340" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="340" y="229" width="56" height="30" rx="15" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="368" y="249" text-anchor="middle" font-size="12.5" font-weight="700" fill="#047857">社会</text>
+        <text x="406" y="240" font-size="11" fill="#475569">哪些群体的"待办任务"因社会</text>
+        <text x="406" y="258" font-size="11" fill="#475569">变化而被重新定义？</text>
+        <text x="660" y="235" text-anchor="end" font-size="10" font-weight="700" fill="#dc2626">教材原句</text>
+
+        <!-- 行 4：技术（教材原句） -->
+        <rect x="330" y="272" width="340" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="340" y="283" width="56" height="30" rx="15" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="368" y="303" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1d4ed8">技术</text>
+        <text x="406" y="294" font-size="11" fill="#475569">技术经济性拐点将释放哪些</text>
+        <text x="406" y="312" font-size="11" fill="#475569">被压抑的需求？</text>
+        <text x="660" y="289" text-anchor="end" font-size="10" font-weight="700" fill="#dc2626">教材原句</text>
+
+        <!-- 行 5：环境 -->
+        <rect x="330" y="326" width="340" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="340" y="337" width="56" height="30" rx="15" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="368" y="357" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309">环境</text>
+        <text x="406" y="348" font-size="11" fill="#475569">绿色与可持续约束，正催生</text>
+        <text x="406" y="366" font-size="11" fill="#475569">哪些替代性供给？</text>
+
+        <!-- 行 6：法律 -->
+        <rect x="330" y="380" width="340" height="52" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="340" y="391" width="56" height="30" rx="15" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="368" y="411" text-anchor="middle" font-size="12.5" font-weight="700" fill="#047857">法律</text>
+        <text x="406" y="402" font-size="11" fill="#475569">新规落地前后，谁先合规</text>
+        <text x="406" y="420" font-size="11" fill="#475569">谁先受益？</text>
+
+        <!-- 表底小注 -->
+        <text x="500" y="454" text-anchor="middle" font-size="11" fill="#94a3b8">社会、技术两问引自教材表 5-1，其余按各维度机制整理</text>
+      </svg>
+      <div class="caption">图 1　PESTEL 六维雷达 × 机会转化提问：先扫六维，再逐维一问</div>
+    </div>
+    <div class="quote">
+      表 5-1 的关键在第三列。社会维度问：<b>"哪些群体的'待办任务'因社会变化而被重新定义？"</b>技术维度问：<b>"技术经济性拐点将释放哪些被压抑的需求？"</b>——每个维度都被推到"机会在哪里"这一步才罢休。
+    </div>
+  </section>
+
+  <!-- ============ 详解 ============ -->
+  <section>
+    <h2>逐部分详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一步</span>
+        <h3>六维扫描</h3>
+        <span class="role">回答的问题：<b>"环境层面，哪些维度正在起变化？"</b></span>
+      </div>
+      <div class="q">用六个维度给环境做体检，一个都不许跳。</div>
+      <dl class="kv">
+        <dt>六个维度</dt>
+        <dd><b>政治 P</b>（政策法规、产业规划、补贴与牌照）、<b>经济 E</b>（宏观景气、收入与购买力、资本冷热）、<b>社会 S</b>（人口结构、代际更替、生活方式与价值观）、<b>技术 T</b>（技术成熟度、成本曲线、基础设施）、<b>环境 E</b>（绿色约束、资源与能耗、可持续标准）、<b>法律 L</b>（监管调整、合规要求、知识产权）。</dd>
+        <dt>监测指标</dt>
+        <dd>表 5-1 第二列为每个维度列出可观察的监测指标，作为核对清单——写不出指标的变化，多半是想当然。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">偏好式扫描</span><span class="td">只扫自己熟悉或喜欢的维度，六维雷达变成单维手电筒。</span></div>
+        <div class="trap"><span class="tn">罗列不判断</span><span class="td">抄一堆新闻当"变化"，不辨真伪与方向性——变化要先确认真实性与方向性。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二步</span>
+        <h3>机会转化提问</h3>
+        <span class="role">回答的问题：<b>"从'看到了变化'到'哪里有机会'，差一个什么？"</b></span>
+      </div>
+      <div class="q">差的正是一个提问——表 5-1 的第三列。</div>
+      <dl class="kv">
+        <dt>三列结构</dt>
+        <dd>表 5-1 每行依次是：<b>维度 → 监测指标 → 机会转化提问</b>。前两列回答"哪里在变"，第三列把变化翻译成机会问题。</dd>
+        <dt>关键改造</dt>
+        <dd>传统 PESTEL 止步于监测；教材的改造是给每个维度增加机会转化提问，让环境扫描直接通向机会识别。</dd>
+      </dl>
+      <table class="qtbl">
+        <tr><th>维度</th><th>监测指标（示例）</th><th>机会转化提问</th></tr>
+        <tr><td class="dim">政治 P</td><td>政策法规、产业规划、补贴与牌照</td><td class="q">新政策创造了哪些新需求？重构了哪些成本？</td></tr>
+        <tr><td class="dim">经济 E</td><td>宏观景气、收入与购买力、资本冷热</td><td class="q">购买力与消费结构的变化，正把需求推向哪里？</td></tr>
+        <tr><td class="dim">社会 S</td><td>人口结构、代际更替、生活方式与价值观</td><td class="q"><b>哪些群体的"待办任务"因社会变化而被重新定义？</b></td></tr>
+        <tr><td class="dim">技术 T</td><td>技术成熟度、成本曲线、基础设施</td><td class="q"><b>技术经济性拐点将释放哪些被压抑的需求？</b></td></tr>
+        <tr><td class="dim">环境 E</td><td>绿色约束、资源与能耗、可持续标准</td><td class="q">绿色与可持续约束，正催生哪些替代性供给？</td></tr>
+        <tr><td class="dim">法律 L</td><td>监管调整、合规要求、知识产权</td><td class="q">新规落地前后，谁先合规、谁先受益？</td></tr>
+      </table>
+      <p class="tbl-note">注：社会、技术两行的提问引自教材表 5-1；其余各行依据教材各维度的监测要点与机制整理。</p>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三步</span>
+        <h3>衔接三阶推演</h3>
+        <span class="role">回答的问题：<b>"提问之后，如何落到机会点？"</b></span>
+      </div>
+      <div class="q">PESTEL 回答"哪里在变"，三阶推演法（卡 5-04）回答"变化通向什么机会"。</div>
+      <dl class="kv">
+        <dt>推演路径</dt>
+        <dd>识别一种正在发生的变化（确认真实性与方向性）→ 推演这一变化可能引发的<b>连锁反应</b> → 对比现有供给与新生需求之间的<b>差距</b>——这一差距便是潜在的机会点。</dd>
+        <dt>总纲句</dt>
+        <dd><b>"趋势分析的目的不是预测未来，而是在变化中定位可能的错位。新趋势与旧供给之间的差距，正是机会的藏身之处。"</b></dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型误用</div>
+        <div class="trap"><span class="tn">一步跳到底</span><span class="td">看到变化就直接宣布机会，跳过连锁反应与供需差距两步推演，结论站不住。</span></div>
+        <div class="trap"><span class="tn">停在提问</span><span class="td">写完提问表就束之高阁——提问是用来追的，不是用来交的。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐维扫描。</b>按 P、E、S、T、E、L 的顺序，每维写下 1—3 条正在发生的变化，宁多勿漏，暂不评判。</li>
+      <li><b>指标核对。</b>用第二列监测指标逐条核对：变化是否真实？方向是否明确？经不起核对的划掉。</li>
+      <li><b>逐维提问。</b>对每条通过核对的变化，写出第三列式的机会转化提问——把陈述句改成疑问句。</li>
+      <li><b>三阶推演。</b>挑出最有把握的 2—3 条变化，用三阶推演法（卡 5-04）走完"变化 → 连锁反应 → 供需差距"全程。</li>
+      <li><b>结转线索库。</b>把推演得到的差距记入机会线索库，与来源分类学（卡 5-01）的九条通道交叉对照。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>趋势信号扫描的<b>第一站</b>：先广度后深度，六维齐扫</li>
+          <li>年度／季度的<b>环境复盘会</b>：团队共创，分维度认领</li>
+          <li>进入新行业、新市场前的<b>环境摸底</b></li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>PESTEL 是<b>扫描工具不是预测工具</b>——产出是"值得追问的问题"，不是"必然发生的前景"</li>
+          <li>六维权重因行业而异，不必平均用力——监管敏感行业重政治法律，技术驱动行业重技术与经济</li>
+          <li>宏观变化到个体机会链条较长，须配合三阶推演与结构、问题分析才能落地</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-04</div>
+        <h4>三阶推演法</h4>
+        <p>本卡扫出"哪里在变"，三阶推演法接着走"变化→连锁反应→供需差距"，把变化推到机会点。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-02</div>
+        <h4>机会识别三类信号总纲</h4>
+        <p>PESTEL 是趋势信号的深挖工具；扫描完趋势，还要轮到结构与问题两个入口。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-01</div>
+        <h4>机会来源分类学</h4>
+        <p>宏观五类来源与 PESTEL 六维互为对照：分类学管"找什么"，PESTEL 管"怎么扫"。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 136 页</span>
+    <span>方法论卡 5-03 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

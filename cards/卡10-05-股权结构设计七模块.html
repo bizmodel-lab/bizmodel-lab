@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡10-05 · 股权结构设计七模块</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 模块详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--risk);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);}
+  .s3 .sn{background:var(--s3);} .s4 .sn{background:var(--risk);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=10">第 10 章 · 创业组织</a><span class="card-nav-meta">卡 10-05 · 股权结构设计七模块体系</span><a class="card-nav-prev" href="卡10-04-冲突管理四步递进.html">← 卡 10-04</a><a class="card-nav-next" href="卡10-06-价值观建设四步法.html">卡 10-06 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 10-05</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>股权结构设计七模块</h1>
+  <div class="oneliner">生命线、分配、调整、控制权、退出、治理、陷阱：七个模块管好股权这件事。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>股权是创业公司里<b>最难改的决策</b>：分配错了，日后的每一次调整都要付出高昂的谈判成本，谈不拢就散伙——而且往往是在公司最有价值的时候散伙。</p>
+    <p>教材以中国《公司法》为基准，把股权结构设计整理成一套<b>条款级颗粒度的实操体系</b>：从关键持股比例的"生命线"，到初始分配、动态调整、控制权保护，再到退出机制与陷阱规避，覆盖股权的全生命周期。这张卡是总览：先看七模块全局，再逐模块深入。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">全生命周期</div>
+        <div class="vd">从"第一次怎么分"到"有人退出怎么办"，七个模块一条线管到底。</div>
+      </div>
+      <div class="value">
+        <div class="vt">中国法条基准</div>
+        <div class="vd">以现行《公司法》为基准，比例与工具都有明确的法条依托。</div>
+      </div>
+      <div class="value">
+        <div class="vt">陷阱前置规避</div>
+        <div class="vd">七大陷阱清单让常见错误在设计阶段就被拦截，而非事后补救。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 536" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">以中国《公司法》为基准的条款级设计体系：从分配到退出的全生命周期股权治理</text>
+
+        <!-- ===== 第一行模块 ===== -->
+        <rect x="10" y="54" width="214" height="152" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="54" width="214" height="26" rx="10" fill="#3b82f6"/>
+        <rect x="10" y="68" width="214" height="12" fill="#3b82f6"/>
+        <text x="117" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">① 股权生命线</text>
+        <text x="22" y="98" font-size="12" fill="#334155">67% 绝对控制线</text>
+        <text x="22" y="117" font-size="12" fill="#334155">51% 相对控制线</text>
+        <text x="22" y="136" font-size="12" fill="#334155">34% 一票否决线</text>
+        <text x="22" y="155" font-size="12" fill="#334155">10% 股东请求权线</text>
+        <text x="22" y="186" font-size="11" fill="#94a3b8">持股比例即控制权边界</text>
+
+        <rect x="237" y="54" width="214" height="152" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="237" y="54" width="214" height="26" rx="10" fill="#d97706"/>
+        <rect x="237" y="68" width="214" height="12" fill="#d97706"/>
+        <text x="344" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">② 初始分配</text>
+        <text x="249" y="98" font-size="11" fill="#334155">五要素：创意价值、资金</text>
+        <text x="249" y="117" font-size="11" fill="#334155">投入、时间承诺、战略地</text>
+        <text x="249" y="136" font-size="11" fill="#334155">位、人力资本不可替代性</text>
+        <text x="249" y="155" font-size="11" fill="#334155">创始人参考区间 50%—60%</text>
+        <text x="249" y="186" font-size="11" fill="#94a3b8">先定贡献要素，再算比例</text>
+
+        <rect x="464" y="54" width="214" height="152" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="464" y="54" width="214" height="26" rx="10" fill="#059669"/>
+        <rect x="464" y="68" width="214" height="12" fill="#059669"/>
+        <text x="571" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">③ 动态调整</text>
+        <text x="476" y="98" font-size="11" fill="#334155">四机制：股权成熟、回购、</text>
+        <text x="476" y="117" font-size="11" fill="#334155">增发、转让限制</text>
+        <text x="476" y="136" font-size="11" fill="#334155">成熟期 4 年＋悬崖期 1 年</text>
+        <text x="476" y="155" font-size="11" fill="#334155">核心目的：人变股动</text>
+        <text x="476" y="186" font-size="11" fill="#94a3b8">人进股进，人退股收</text>
+
+        <!-- ===== 第二行模块 ===== -->
+        <rect x="10" y="212" width="214" height="152" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="10" y="212" width="214" height="26" rx="10" fill="#3b82f6"/>
+        <rect x="10" y="226" width="214" height="12" fill="#3b82f6"/>
+        <text x="117" y="230" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">④ 控制权保护</text>
+        <text x="22" y="256" font-size="11" fill="#334155">五工具：AB 股、有限合</text>
+        <text x="22" y="275" font-size="11" fill="#334155">伙持股平台、一致行动人</text>
+        <text x="22" y="294" font-size="11" fill="#334155">协议、章程定制、董事会</text>
+        <text x="22" y="313" font-size="11" fill="#334155">席位</text>
+        <text x="22" y="344" font-size="11" fill="#94a3b8">少股权不等于失去控制权</text>
+
+        <rect x="237" y="212" width="214" height="152" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="237" y="212" width="214" height="26" rx="10" fill="#d97706"/>
+        <rect x="237" y="226" width="214" height="12" fill="#d97706"/>
+        <text x="344" y="230" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">⑤ 退出机制</text>
+        <text x="249" y="256" font-size="11" fill="#334155">触发事件 → 退出方式 →</text>
+        <text x="249" y="275" font-size="11" fill="#334155">回购定价（四种）→ 支付</text>
+        <text x="249" y="294" font-size="11" fill="#334155">安排</text>
+        <text x="249" y="313" font-size="11" fill="#334155">投资人五种特殊权利、技</text>
+        <text x="249" y="332" font-size="11" fill="#334155">术团队特别锁定、争议解</text>
+        <text x="341" y="351" font-size="11" fill="#334155">决五途径</text>
+
+        <rect x="464" y="212" width="214" height="152" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <rect x="464" y="212" width="214" height="26" rx="10" fill="#059669"/>
+        <rect x="464" y="226" width="214" height="12" fill="#059669"/>
+        <text x="571" y="230" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">⑥ 董事会治理</text>
+        <text x="476" y="256" font-size="11" fill="#334155">三原则：席位分配要有</text>
+        <text x="476" y="275" font-size="11" fill="#334155">数、议事规则要可行、外</text>
+        <text x="476" y="294" font-size="11" fill="#334155">部董事要善用</text>
+        <text x="476" y="325" font-size="11" fill="#94a3b8">股权定所有权，董事会定</text>
+        <text x="476" y="344" font-size="11" fill="#94a3b8">日常控制权</text>
+
+        <!-- ===== 第三行：七大陷阱 ===== -->
+        <rect x="10" y="372" width="660" height="72" rx="10" fill="#ffffff" stroke="#fecaca"/>
+        <text x="22" y="394" font-size="13" font-weight="700" fill="#dc2626">⑦ 陷阱规避 —— 七大陷阱自查清单</text>
+        <rect x="22" y="406" width="60" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="52" y="424.5" text-anchor="middle" font-size="11" fill="#dc2626">股权均分</text>
+        <rect x="94" y="406" width="71" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="129" y="424.5" text-anchor="middle" font-size="11" fill="#dc2626">小股东称霸</text>
+        <rect x="177" y="406" width="71" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="212" y="424.5" text-anchor="middle" font-size="11" fill="#dc2626">仅按资入股</text>
+        <rect x="260" y="406" width="82" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="301" y="424.5" text-anchor="middle" font-size="11" fill="#dc2626">股东人数过多</text>
+        <rect x="354" y="406" width="104" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="406" y="424.5" text-anchor="middle" font-size="11" fill="#dc2626">外部股权过早过多</text>
+        <rect x="470" y="406" width="71" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="505" y="424.5" text-anchor="middle" font-size="11" fill="#dc2626">未预留股权</text>
+        <rect x="553" y="406" width="93" height="29.2" rx="12" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="599" y="424.5" text-anchor="middle" font-size="11" fill="#dc2626">法律手续不完善</text>
+
+        <!-- ===== 生命线刻度尺 ===== -->
+        <text x="10" y="470" font-size="13" font-weight="700" fill="#1e293b">附：股权「生命线」刻度尺（关键持股比例）</text>
+        <line x1="40" y1="502" x2="640" y2="502" stroke="#475569" stroke-width="2"/>
+        <line x1="100" y1="492" x2="100" y2="512" stroke="#475569" stroke-width="2"/>
+        <circle cx="100" cy="502" r="4" fill="#3b82f6"/>
+        <text x="100" y="486" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">10%</text>
+        <text x="100" y="526" text-anchor="middle" font-size="11" fill="#64748b">股东请求权</text>
+
+        <line x1="244" y1="492" x2="244" y2="512" stroke="#475569" stroke-width="2"/>
+        <circle cx="244" cy="502" r="4" fill="#3b82f6"/>
+        <text x="244" y="486" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">34%</text>
+        <text x="244" y="526" text-anchor="middle" font-size="11" fill="#64748b">一票否决线</text>
+
+        <line x1="346" y1="492" x2="346" y2="512" stroke="#475569" stroke-width="2"/>
+        <circle cx="346" cy="502" r="4" fill="#3b82f6"/>
+        <text x="346" y="486" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">51%</text>
+        <text x="346" y="526" text-anchor="middle" font-size="11" fill="#64748b">相对控制线</text>
+
+        <line x1="436" y1="492" x2="436" y2="512" stroke="#475569" stroke-width="2"/>
+        <circle cx="436" cy="502" r="4" fill="#3b82f6"/>
+        <text x="436" y="486" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">67%</text>
+        <text x="436" y="526" text-anchor="middle" font-size="11" fill="#64748b">绝对控制线</text>
+      </svg>
+      <div class="caption">图 1　股权结构设计七模块总览 + 股权「生命线」刻度尺</div>
+    </div>
+    <div class="quote">
+      动态调整四机制的核心目的是<b>"人变股动"</b>——让股权结构随人的进退、贡献的消长而流动，而不是一次分配、终身不变。设计任何方案前，先对照生命线检查各方的控制权边界。
+    </div>
+  </section>
+
+  <!-- ============ 逐模块详解 ============ -->
+  <section>
+    <h2>逐模块详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">模块一</span>
+        <h3>股权生命线</h3>
+        <span class="role">作用：<b>持股比例即控制权边界</b></span>
+      </div>
+      <dl class="kv">
+        <dt>四条线</dt>
+        <dd><b>67% 绝对控制线</b>、<b>51% 相对控制线</b>、<b>34% 一票否决线</b>、<b>10% 股东请求权线</b>——比例背后对应《公司法》上不同的权利边界。</dd>
+        <dt>用法</dt>
+        <dd>设计或变动任何股权方案前，先测算相关各方落在哪条线的哪一侧，再谈分配与稀释。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">模块二</span>
+        <h3>初始分配</h3>
+        <span class="role">作用：<b>第一次怎么分</b></span>
+      </div>
+      <dl class="kv">
+        <dt>五要素</dt>
+        <dd><b>创意价值、资金投入、时间承诺、战略地位、人力资本不可替代性</b>——按贡献要素拆解开分，而不是拍脑袋或讲感情。</dd>
+        <dt>参考区间</dt>
+        <dd>创始人 <b>50%—60%</b>：既保住控制力，又给团队与未来融资留出空间。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">模块三</span>
+        <h3>动态调整</h3>
+        <span class="role">作用：<b>人变股动</b></span>
+      </div>
+      <dl class="kv">
+        <dt>四机制</dt>
+        <dd><b>股权成熟</b>（常见设置：4 年成熟期＋1 年悬崖期）、<b>回购</b>、<b>增发</b>、<b>转让限制</b>。</dd>
+        <dt>核心目的</dt>
+        <dd><b>"人变股动"</b>——人进股进、人退股收、贡献变则股权变，防止"拿了股份不干活"与"干了活没股份"。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">模块四</span>
+        <h3>控制权保护</h3>
+        <span class="role">作用：<b>少股权不等于失去控制权</b></span>
+      </div>
+      <dl class="kv">
+        <dt>五工具</dt>
+        <dd><b>AB 股</b>、<b>有限合伙持股平台</b>、<b>一致行动人协议</b>、<b>章程定制</b>、<b>董事会席位</b>。</dd>
+        <dt>用法</dt>
+        <dd>融资稀释不可避免，五工具让创始团队在股权比例下降后仍保有决策控制——通常组合使用，并需在融资前预先设计。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">模块五</span>
+        <h3>退出机制</h3>
+        <span class="role">作用：<b>好聚也好散</b></span>
+      </div>
+      <dl class="kv">
+        <dt>主体框架</dt>
+        <dd><b>触发事件</b>（离职、过错、身故等）→ <b>退出方式</b> → <b>回购定价（四种）</b> → <b>支付安排</b>。</dd>
+        <dt>配套条款</dt>
+        <dd>投资人的<b>五种特殊权利</b>、<b>技术团队的特别锁定</b>安排，以及<b>争议解决五途径</b>。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">模块六</span>
+        <h3>董事会治理</h3>
+        <span class="role">作用：<b>股权定所有权，董事会定日常控制权</b></span>
+      </div>
+      <dl class="kv">
+        <dt>三原则</dt>
+        <dd><b>席位分配要有数、议事规则要可行、外部董事要善用</b>——席位对应控制，规则对应效率，外部董事对应制衡与专业输入。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">模块七</span>
+        <h3>陷阱规避</h3>
+        <span class="role">作用：<b>常见错误前置拦截</b></span>
+      </div>
+      <dl class="kv">
+        <dt>七大陷阱</dt>
+        <dd><b>股权均分、小股东称霸、仅按资入股、股东人数过多、外部股权过早过多、未预留股权、法律手续不完善</b>。</dd>
+        <dt>用法</dt>
+        <dd>任何股权动作（分配、融资、激励）之前，把七条陷阱当检查清单过一遍——命中任何一条，先补设计、再签文件。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>初创期定盘。</b>先用生命线确定控制权目标，再用五要素做初始分配，创始人持股落在 50%—60% 的参考区间。</li>
+      <li><b>动作前查陷阱。</b>任何股权变动前过一遍七大陷阱清单，命中即先补手续、再谈分配。</li>
+      <li><b>写进动态机制。</b>把成熟、回购、增发、转让限制四机制写进协议，落实"人变股动"，不留静态股权的隐患。</li>
+      <li><b>融资前护控制权。</b>设计控制权保护工具组合，测算每一轮稀释后各方相对生命线的位置。</li>
+      <li><b>预设退出通道。</b>预先写好退出机制与争议解决途径——不留"散伙无规则"的空档，好聚也好散。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>初创团队<b>首次股权分配</b>的设计与谈判准备</li>
+          <li><b>首轮融资前</b>的股权结构审查与控制权测算</li>
+          <li>合伙人进退、股权回购谈判的<b>条款对照</b></li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>条款涉及法律效力，本卡是框架与自查清单，<b>具体文件必须由专业律师起草</b></li>
+          <li>比例与工具的适用以<b>现行《公司法》及公司章程</b>为准，法规修订后须复核</li>
+          <li>各企业情况差异大，<b>参考区间不可机械套用</b>，须结合贡献结构与融资规划测算</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-01</div>
+        <h4>团队组建五原则</h4>
+        <p>"承诺对等"是股权分配的前提：投入没谈清，比例就分不平。先过五原则，再分股权。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 9-03</div>
+        <h4>九大类伦理议题图谱</h4>
+        <p>股权分配是"公平质疑型"伦理议题的高发区：贡献与回报的匹配问题，两卡配合检视。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-03</div>
+        <h4>决策机制四方式与分级决策</h4>
+        <p>本卡管"底层权力怎么配置"，卡 10-03 管"日常决策怎么拍板"——静态结构 + 动态运行。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 10 章，第 267—274 页</span>
+    <span>方法论卡 10-05 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

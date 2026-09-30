@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡5-06 · 用户—功能—场景三角交叉验证</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 维度详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=5">第 5 章 · 创业机会</a><span class="card-nav-meta">卡 5-06 · 用户—功能—场景三角交叉验证</span><a class="card-nav-prev" href="卡5-05-结构分析法三子工具.html">← 卡 5-05</a><a class="card-nav-next" href="卡5-07-三层痛点模型.html">卡 5-07 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-06</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>用户—功能—场景三角交叉验证</h1>
+  <div class="oneliner">用三个视角交叉印证，筛掉伪需求机会。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>单看一个角度发现的"空白"往往站不住脚——只看到<b>某类用户没人服务</b>，或只看到<b>某个功能缺失</b>，都容易掉进伪需求陷阱：观察是真的，结论却是错的。一个缺口要让机会成立，必须在更多维度上同时被看见。</p>
+    <p>本框架要求<b>同一缺口必须在多个维度同时出现</b>，才算站得住脚的创业机会。三个维度不是三张独立的清单，而是同一块商业拼图的三次观察。</p>
+    <div class="quote">
+      教材指出：<b>"用户空白、功能空白与场景空白三个维度并非彼此割裂的分析工具，而是同一商业现实的不同观察切面。"</b>（P139）
+    </div>
+    <div class="values">
+      <div class="value">
+        <div class="vt">三个观察切面</div>
+        <div class="vd">用户、功能、场景，同一商业现实的三面镜子，各有各的盲区。</div>
+      </div>
+      <div class="value">
+        <div class="vt">交叉印证</div>
+        <div class="vd">同一缺口多维同现才晋级，单维缺口先记入观察清单，不急着投入。</div>
+      </div>
+      <div class="value">
+        <div class="vt">筛掉伪需求</div>
+        <div class="vd">提高识别可靠性，让有限资源只押在经得起推敲的机会上。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 515" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+          <marker id="ahs" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- ===== 顶点：用户空白 ===== -->
+        <rect x="235" y="14" width="210" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M245,14 h190 a10,10 0 0 1 10,10 v16 h-210 v-16 a10,10 0 0 1 10,-10 z" fill="#3b82f6"/>
+        <text x="340" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">用户空白</text>
+        <text x="340" y="60" text-anchor="middle" font-size="11" fill="#475569">回答「为谁做」· 需求主体盲区</text>
+        <rect x="249" y="70" width="88" height="29.2" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="293" y="88.5" text-anchor="middle" font-size="11" fill="#3b82f6">未被服务</text>
+        <rect x="343" y="70" width="88" height="29.2" rx="11" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="387" y="88.5" text-anchor="middle" font-size="11" fill="#3b82f6">被错误服务</text>
+
+        <!-- ===== 顶点：功能空白 ===== -->
+        <rect x="18" y="330" width="210" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M28,330 h190 a10,10 0 0 1 10,10 v16 h-210 v-16 a10,10 0 0 1 10,-10 z" fill="#d97706"/>
+        <text x="123" y="348" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">功能空白</text>
+        <text x="123" y="376" text-anchor="middle" font-size="11" fill="#475569">回答「做什么」· 产品匹配偏差</text>
+        <rect x="32" y="386" width="88" height="29.2" rx="11" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="76" y="404.5" text-anchor="middle" font-size="11" fill="#d97706">功能过剩</text>
+        <rect x="126" y="386" width="88" height="29.2" rx="11" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="170" y="404.5" text-anchor="middle" font-size="11" fill="#d97706">功能不足</text>
+
+        <!-- ===== 顶点：场景空白 ===== -->
+        <rect x="452" y="330" width="210" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M462,330 h190 a10,10 0 0 1 10,10 v16 h-210 v-16 a10,10 0 0 1 10,-10 z" fill="#059669"/>
+        <text x="557" y="348" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">场景空白</text>
+        <text x="557" y="376" text-anchor="middle" font-size="11" fill="#475569">回答「何时何地做」· 情境适配缺口</text>
+        <rect x="482" y="386" width="150" height="29.2" rx="11" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="557" y="404.5" text-anchor="middle" font-size="11" fill="#059669">往往出现在「跨界」地带</text>
+
+        <!-- ===== 顶点间互证箭头（双向） ===== -->
+        <line x1="247" y1="112" x2="223" y2="326" stroke="#475569" stroke-width="1.8" marker-start="url(#ahs)" marker-end="url(#ah)"/>
+        <line x1="433" y1="112" x2="457" y2="326" stroke="#475569" stroke-width="1.8" marker-start="url(#ahs)" marker-end="url(#ah)"/>
+        <line x1="232" y1="378" x2="448" y2="378" stroke="#475569" stroke-width="1.8" marker-start="url(#ahs)" marker-end="url(#ah)"/>
+
+        <text x="175" y="215" text-anchor="middle" font-size="11" fill="#64748b">互证</text>
+        <text x="505" y="215" text-anchor="middle" font-size="11" fill="#64748b">互证</text>
+        <text x="340" y="366" text-anchor="middle" font-size="11" fill="#64748b">互证</text>
+
+        <!-- ===== 中心：结构性机会 ===== -->
+        <ellipse cx="340" cy="240" rx="80" ry="32" fill="#3b82f6"/>
+        <text x="340" y="246" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">结构性机会</text>
+
+        <!-- ===== 判据横幅 ===== -->
+        <rect x="30" y="444" width="620" height="40" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="469" text-anchor="middle" font-size="12" font-weight="700" fill="#1e40af">判据：当同一个缺口同时出现在多个维度 → 结构性的、经得起推敲的创业机会</text>
+        <text x="340" y="504" text-anchor="middle" font-size="11" fill="#94a3b8">三个维度并非彼此割裂的分析工具，而是同一商业现实的不同观察切面（P139）</text>
+      </svg>
+      <div class="caption">图 1　三角交叉验证：三个顶点互证，同一缺口多维同现方为结构性机会</div>
+    </div>
+  </section>
+
+  <!-- ============ 逐维度详解 ============ -->
+  <section>
+    <h2>逐维度详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">维度一</span>
+        <h3>用户空白</h3>
+        <span class="role">回答的问题：<b>"为谁做？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>聚焦</dt>
+        <dd><b>需求主体的覆盖盲区</b>——哪些人没有被服务好。</dd>
+        <dt>两类群体</dt>
+        <dd><b>未被服务</b>的用户：现有市场完全没覆盖到；<b>被错误服务</b>的用户：有产品用，但用得别扭、勉强、不对路（P138）。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">没人做=有人要</span><span class="td">把"没人服务这类用户"直接当成"这类用户愿意买单"，跳过了需求真实性检验。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">维度二</span>
+        <h3>功能空白</h3>
+        <span class="role">回答的问题：<b>"做什么？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>聚焦</dt>
+        <dd><b>产品的匹配偏差</b>——产品与需求对不上号的地方。</dd>
+        <dt>两种形态</dt>
+        <dd><b>功能过剩</b>：用户为一堆用不上的复杂买单；<b>功能不足</b>：真正要紧的能力没人做（P139）。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">只盯功能表</span><span class="td">对着竞品功能清单找缺口，却没回到用户端确认这个缺口对谁成立。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">维度三</span>
+        <h3>场景空白</h3>
+        <span class="role">回答的问题：<b>"何时何地做？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>聚焦</dt>
+        <dd><b>使用情境的适配缺口</b>——产品在哪些时间、哪些场合下失效。</dd>
+        <dt>分布规律</dt>
+        <dd>场景空白<b>"往往出现在'跨界'地带"</b>（P139）：两个行业、两类情境交界之处，最容易无人认领。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">典型陷阱</div>
+        <div class="trap"><span class="tn">伪场景</span><span class="td">想象出一个听起来成立、实际很少发生的"使用场景"，缺口只在 PPT 里存在。</span></div>
+      </div>
+    </div>
+
+    <div class="quote">
+      关键判据：<b>"当同一个缺口同时出现在多个维度的分析中时，便意味着发现了一个结构性的、经得起推敲的创业机会。"</b>（P139）
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>逐维扫描。</b>分别列出三张清单："谁没被服务好""哪些功能过剩或不足""哪些场景下产品失效"，扫描时一次只看一个维度，不急着下结论。</li>
+      <li><b>找重叠。</b>将三张清单中的缺口配对，寻找指向同一问题的组合——例如某边缘用户＋某功能不足＋某场景失效，指向同一个缺口。</li>
+      <li><b>验证交叉。</b>对每个候选机会反问：它在另外两个维度上是否也能观察到？观察不到，说明证据还单薄。</li>
+      <li><b>分级处置。</b>只保留<b>两维以上同时出现缺口</b>的候选；单维缺口记入观察清单，暂不投入资源。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>已有<b>多个创意待筛选</b>、需要提高识别可靠性的关口</li>
+          <li>三个维度可各自单独作为扫描工具使用</li>
+          <li>课堂上做"缺口重叠矩阵"工作坊，把一批创意过三遍打交叉标记</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>维度单独可用，但<b>只有交叉印证才发挥其完整价值</b></li>
+          <li>它是识别阶段的过滤器，<b>不能替代后续对付费意愿的真实市场验证</b></li>
+          <li>对需求尚未成形的<b>全新建构型机会不完全适用</b>，需转向用户共创</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-07</div>
+        <h4>三层痛点模型</h4>
+        <p>交叉验证锁定用户群后，用痛点分层继续向下挖：功能层背后还有情感层与身份层。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-09</div>
+        <h4>四维度两阶段机会评估框架</h4>
+        <p>通过三角验证的机会进入评估：市场、团队、资源、时机四维压力测试。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-08</div>
+        <h4>机会假设命题句式</h4>
+        <p>把验证后的结构性机会压缩成一句可检验的"如果—那么"命题。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 5 章，第 138—139 页</span>
+    <span>方法论卡 5-06 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

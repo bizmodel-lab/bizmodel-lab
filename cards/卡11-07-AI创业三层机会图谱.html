@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡11-07 · AI创业三层机会图谱</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 层级详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=11">第 11 章 · 前沿专题</a><span class="card-nav-meta">卡 11-07 · AI创业三层机会图谱（应用/赋能/基础设施）</span><a class="card-nav-prev" href="卡11-06-社群运营四步递进路径.html">← 卡 11-06</a><a class="card-nav-next" href="卡11-08-AI商业模式四模式.html">卡 11-08 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 11-07</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>AI创业三层机会图谱</h1>
+  <div class="oneliner">应用 — 赋能 — 基础设施：先看清你的 AI 创业站在哪一层，再谈机会与打法。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>AI 创业赛道热度极高，但很多创业者的第一个失误不是"做错了产品"，而是<b>"站错了位置"</b>——用做应用层的打法去啃基础设施，或用底座思维去做本该贴近用户的智能体应用，资源与任务全面错配。</p>
+    <p>教材在趋势背景中先给出方向辨析：<b>"AI+"是以技术为中心，寻找技术可以落地的场景；"+AI"则是以场景为中心，用 AI 优化和重构业务流程</b>。在此基础上，三层机会图谱把 AI 创业的巨大空间压成一张可定位的地图。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看清位置</div>
+        <div class="vd">应用、赋能、基础设施三层各有机遇，先定位自己站在哪一层。</div>
+      </div>
+      <div class="value">
+        <div class="vt">匹配资源</div>
+        <div class="vd">每层对团队、资金、技术的要求不同，定位错层等于资源错配。</div>
+      </div>
+      <div class="value">
+        <div class="vt">校准方向</div>
+        <div class="vd">分清"AI+ 找场景"与"+AI 重构流程"，两条路径的打法完全不同。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 450" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#94a3b8"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="12" fill="#475569">三层图谱 · 每层一种"本质转化"——定位的关键不是哪层更好，而是与你的资源禀赋匹配</text>
+
+        <!-- ===== 金字塔 ===== -->
+        <!-- 应用层 -->
+        <polygon points="120,70 220,70 270,140 70,140" fill="#3b82f6"/>
+        <text x="170" y="108" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">应用层</text>
+        <text x="170" y="128" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.92">面向用户与场景</text>
+
+        <!-- 赋能层 -->
+        <polygon points="70,150 270,150 310,240 30,240" fill="#d97706"/>
+        <text x="170" y="196" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">赋能层</text>
+        <text x="170" y="216" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.92">连接技术与行业</text>
+
+        <!-- 基础设施层 -->
+        <polygon points="30,250 310,250 330,350 10,350" fill="#059669"/>
+        <text x="170" y="298" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">基础设施层</text>
+        <text x="170" y="318" text-anchor="middle" font-size="11" fill="#ffffff" opacity="0.92">支撑上层一切运转</text>
+
+        <!-- 连接虚线 -->
+        <line x1="246" y1="105" x2="350" y2="110" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#ah)"/>
+        <line x1="290" y1="195" x2="350" y2="195" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#ah)"/>
+        <line x1="320" y1="300" x2="350" y2="300" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4" marker-end="url(#ah)"/>
+
+        <!-- ===== 右侧说明块 ===== -->
+        <rect x="350" y="70" width="320" height="80" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="366" y="94" font-size="12.5" font-weight="700" fill="#1e40af">应用层 · 智能体应用</text>
+        <text x="366" y="116" font-size="12" fill="#334155">将传统软件"人操作工具"的交互逻辑，</text>
+        <text x="366" y="134" font-size="12" fill="#334155">重构为"智能体自主执行任务"的协作逻辑</text>
+
+        <rect x="350" y="155" width="320" height="80" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="366" y="179" font-size="12.5" font-weight="700" fill="#92400e">赋能层 · 行业翻译者</text>
+        <text x="366" y="201" font-size="12" fill="#334155">将通用 AI 能力"翻译"为特定行业的</text>
+        <text x="366" y="219" font-size="12" fill="#334155">专业语言，从技术供给转向价值交付</text>
+
+        <rect x="350" y="260" width="320" height="80" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="366" y="284" font-size="12.5" font-weight="700" fill="#065f46">基础设施层 · 工业化底座</text>
+        <text x="366" y="306" font-size="12" fill="#334155">将 AI 开发的"手工作坊"，转化为</text>
+        <text x="366" y="324" font-size="12" fill="#334155">"工业化流水线"</text>
+
+        <!-- ===== 底部定位要点 ===== -->
+        <rect x="10" y="370" width="660" height="64" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="340" y="394" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">定位要点：越往上越贴近用户与场景，越往下越贴近技术与底座</text>
+        <text x="340" y="416" text-anchor="middle" font-size="11.5" fill="#64748b">教材同时指出，智能体协同让"一人公司"成为可能——一个人指挥多个智能体，完成过去需要一个团队的工作</text>
+      </svg>
+      <div class="caption">图 1　AI 创业三层机会图谱：应用 — 赋能 — 基础设施 × 本质定义 × 定位要点</div>
+    </div>
+    <div class="quote">
+      "AI+"与"+AI"是两种创业起点：<b>以技术找场景，与以场景用技术，路径完全不同</b>；三层图谱不分高下，定位的关键是与团队能力、资源禀赋的匹配。
+    </div>
+  </section>
+
+  <!-- ============ 逐层详解 ============ -->
+  <section>
+    <h2>逐层详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一层</span>
+        <h3>应用层</h3>
+        <span class="role">竞争关键：<b>场景理解</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"用户愿意为什么样的'智能干活'付费？"</b></div>
+      <dl class="kv">
+        <dt>核心定义</dt>
+        <dd>将传统软件<b>"人操作工具"的交互逻辑，重构为"智能体自主执行任务"的协作逻辑</b>。</dd>
+        <dt>关键转化</dt>
+        <dd>从"人用工具"到"智能体自主执行"——价值来自<b>把任务整个接过去</b>，而不是把界面做得更好用。</dd>
+        <dt>适合谁</dt>
+        <dd>最贴近用户的一层，价值直观、反馈快，适合能深入具体场景、快速打磨产品的团队。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二层</span>
+        <h3>赋能层</h3>
+        <span class="role">竞争关键：<b>行业积累</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"通用 AI 能力如何'翻译'成某个行业的专业语言？"</b></div>
+      <dl class="kv">
+        <dt>核心定义</dt>
+        <dd>将通用 AI 能力<b>"翻译"为特定行业的专业语言，从技术供给转向价值交付</b>。</dd>
+        <dt>关键转化</dt>
+        <dd>竞争点不在"技术更强"，而在<b>"更懂行业"</b>——懂术语、懂流程、懂痛点，做技术与行业之间的桥梁。</dd>
+        <dt>适合谁</dt>
+        <dd>适合有行业积累（经验、数据、客户关系）的创业者，把行业知识变成 AI 落地的通行证。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三层</span>
+        <h3>基础设施层</h3>
+        <span class="role">竞争关键：<b>技术与资金厚度</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"AI 开发如何从手工作坊走向工业化？"</b></div>
+      <dl class="kv">
+        <dt>核心定义</dt>
+        <dd>将 AI 开发的<b>"手工作坊"转化为"工业化流水线"</b>。</dd>
+        <dt>关键转化</dt>
+        <dd>卖的不是单点模型效果，而是<b>开发效率、稳定性与规模化供给能力</b>——让 AI 生产本身成为流水线。</dd>
+        <dt>适合谁</dt>
+        <dd>投入大、周期长、技术门槛高，适合有资金、技术与人才厚底的团队；大众创业者宜先做谨慎评估。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>辨方向。</b>先分清自己是"AI+"还是"+AI"：是拿着技术找落地的场景，还是拿着场景用 AI 重构流程？两种起点的打法完全不同。</li>
+      <li><b>定层级。</b>对照三层的"本质定义"，写下自己的项目主要落在哪一层；跨层的项目要写明主层与次层，不能含糊。</li>
+      <li><b>核资源。</b>按所在层的要求盘点家底：应用层看场景理解，赋能层看行业积累，基础设施层看技术与资金厚度。资源与层级对不上，先调定位再动手。</li>
+      <li><b>接模式。</b>层级定完接"怎么收钱"：对照卡 11-08 的四模式，确定价值计量与交付方式，让位置落到收入上。</li>
+      <li><b>修护城河。</b>按教材提示，聚焦场景理解、数据积累、用户体验等"慢变量"，构建<b>超越模型本身的价值护城河</b>——模型会迭代，慢变量才是自己的。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>技术背景或行业背景创业者进入 AI 赛道时的<b>第一张定位地图</b></li>
+          <li>培训与咨询中的"AI 创业机会扫描"环节，用三层做结构化提问</li>
+          <li>AI 项目复盘：先查"是不是站错了层"，再谈产品与执行问题</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三层是<b>逻辑划分而非刚性边界</b>，实际项目常跨层组合，定位时写清主次即可</li>
+          <li>基础设施层投入门槛高，<b>大众创业者量力而行</b>，不宜仅凭技术热情入场</li>
+          <li>图谱给的是位置不是优劣——<b>每层都有机会</b>，判断标准是资源匹配，不是追逐热点</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-08</div>
+        <h4>AI商业模式四模式</h4>
+        <p>定完"在哪层"，接着定"怎么收钱"——四模式给出从卖工具到卖结果的计量谱系。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-01</div>
+        <h4>四段式专题分析框架</h4>
+        <p>三层图谱嵌在"趋势—机会—模式—挑战"的完整分析里，配合使用不漏环节。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-02</div>
+        <h4>三类信号总纲</h4>
+        <p>定位之前的上游工具：先用信号识别判断 AI 赛道机会的真伪，再进图谱定层。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 11 章，第 306—308 页</span>
+    <span>方法论卡 11-07 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡10-02 · 创业团队结构三型模型</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 型详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 情境适配 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--ink-2);
+    border:1px solid var(--ink-3);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s1);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=10">第 10 章 · 创业组织</a><span class="card-nav-meta">卡 10-02 · 创业团队结构三型模型</span><a class="card-nav-prev" href="卡10-01-创业团队组建五原则.html">← 卡 10-01</a><a class="card-nav-next" href="卡10-03-决策机制四方式与分级决策.html">卡 10-03 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 5-09-02</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>创业团队结构三型模型</h1>
+  <div class="oneliner">按权力配置把团队分为星状、网状、虚拟星状三型：看清优劣、配好应对机制、主动设计演化路径。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>合伙人之间的<b>权力与互动方式</b>，决定了信息如何流动、决策有多快、冲突以什么形态爆发。但多数团队的结构是<b>"长出来的"而非"设计出来的"</b>——先合作再说，结构问题往往等闹翻了才第一次被看见。</p>
+    <p>三型模型以网络拓扑类比权力配置，给出三种结构原型各自的优劣势与应对之道，以及清晰的演化路径，让创业者有能力<b>自觉做组织设计</b>。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看清结构原型</div>
+        <div class="vd">画出团队实际的权力与信息流动图，判定最接近哪一型，不再雾里看花。</div>
+      </div>
+      <div class="value">
+        <div class="vt">优劣心里有数</div>
+        <div class="vd">每型的优势、劣势与应对之道都摆在明处，长处敢用、短处有补。</div>
+      </div>
+      <div class="value">
+        <div class="vt">主动设计演化</div>
+        <div class="vd">预设目标形态与切换时机，随团队发展主动调适，而非等问题爆发被动重构。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">以网络拓扑类比权力配置：三型原型 · 各有优劣 · 可沿两条路径演化</text>
+
+        <!-- ===== 星状结构 ===== -->
+        <rect x="10" y="56" width="200" height="229.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,86 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v14 h-200 z" fill="#3b82f6"/>
+        <text x="110" y="93" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">星状结构</text>
+        <text x="110" y="118" text-anchor="middle" font-size="11" fill="#64748b">核心主导型</text>
+        <!-- 拓扑：中心＋行星 -->
+        <line x1="110" y1="162" x2="154" y2="162" stroke="#bfdbfe" stroke-width="1.5"/>
+        <line x1="110" y1="162" x2="132" y2="200" stroke="#bfdbfe" stroke-width="1.5"/>
+        <line x1="110" y1="162" x2="88" y2="200" stroke="#bfdbfe" stroke-width="1.5"/>
+        <line x1="110" y1="162" x2="66" y2="162" stroke="#bfdbfe" stroke-width="1.5"/>
+        <line x1="110" y1="162" x2="88" y2="124" stroke="#bfdbfe" stroke-width="1.5"/>
+        <line x1="110" y1="162" x2="132" y2="124" stroke="#bfdbfe" stroke-width="1.5"/>
+        <circle cx="154" cy="162" r="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+        <circle cx="132" cy="200" r="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+        <circle cx="88" cy="200" r="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+        <circle cx="66" cy="162" r="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+        <circle cx="88" cy="124" r="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+        <circle cx="132" cy="124" r="8" fill="#ffffff" stroke="#3b82f6" stroke-width="1.5"/>
+        <circle cx="110" cy="162" r="12" fill="#3b82f6"/>
+        <text x="110" y="166" text-anchor="middle" font-size="11" fill="#ffffff">核心</text>
+        <text x="110" y="222" text-anchor="middle" font-size="11" fill="#94a3b8">成员如行星围绕</text>
+        <text x="110" y="238" text-anchor="middle" font-size="11" fill="#059669">优势：向心力强 · 决策效率高</text>
+        <text x="110" y="256" text-anchor="middle" font-size="11" fill="#dc2626">劣势：核心依赖 · 一言堂风险</text>
+        <text x="110" y="274" text-anchor="middle" font-size="11" fill="#475569">应对：接班人计划 · 轮岗授权</text>
+
+        <!-- ===== 网状结构 ===== -->
+        <rect x="235" y="56" width="200" height="229.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M235,86 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v14 h-200 z" fill="#d97706"/>
+        <text x="335" y="93" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">网状结构</text>
+        <text x="335" y="121.8" text-anchor="middle" font-size="11" fill="#64748b">伙伴协作型</text>
+        <!-- 拓扑：五点全连接 -->
+        <line x1="335" y1="118" x2="293" y2="148" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="335" y1="118" x2="309" y2="198" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="335" y1="118" x2="361" y2="198" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="335" y1="118" x2="377" y2="148" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="293" y1="148" x2="309" y2="198" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="293" y1="148" x2="361" y2="198" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="293" y1="148" x2="377" y2="148" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="309" y1="198" x2="361" y2="198" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="309" y1="198" x2="377" y2="148" stroke="#fde68a" stroke-width="1.5"/>
+        <line x1="361" y1="198" x2="377" y2="148" stroke="#fde68a" stroke-width="1.5"/>
+        <circle cx="335" cy="118" r="8" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+        <circle cx="293" cy="148" r="8" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+        <circle cx="309" cy="198" r="8" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+        <circle cx="361" cy="198" r="8" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+        <circle cx="377" cy="148" r="8" fill="#ffffff" stroke="#d97706" stroke-width="1.5"/>
+        <text x="335" y="222" text-anchor="middle" font-size="11" fill="#94a3b8">全连接 · 无绝对中心</text>
+        <text x="335" y="238" text-anchor="middle" font-size="11" fill="#059669">优势：信任深厚 · 多元碰撞</text>
+        <text x="335" y="256" text-anchor="middle" font-size="11" fill="#dc2626">劣势：决策迟滞 · 权责模糊</text>
+        <text x="335" y="274" text-anchor="middle" font-size="11" fill="#475569">应对：议事规则 · 表决机制</text>
+
+        <!-- ===== 虚拟星状结构 ===== -->
+        <rect x="460" y="56" width="200" height="229.4" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M460,86 a10,10 0 0 1 10,-10 h180 a10,10 0 0 1 10,10 v14 h-200 z" fill="#059669"/>
+        <text x="560" y="93" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">虚拟星状结构</text>
+        <text x="560" y="118" text-anchor="middle" font-size="11" fill="#64748b">演化混合型</text>
+        <!-- 拓扑：半透明中心＋行星 -->
+        <line x1="560" y1="162" x2="604" y2="162" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="560" y1="162" x2="582" y2="200" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="560" y1="162" x2="538" y2="200" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="560" y1="162" x2="516" y2="162" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="560" y1="162" x2="538" y2="124" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="560" y1="162" x2="582" y2="124" stroke="#a7f3d0" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="604" cy="162" r="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+        <circle cx="582" cy="200" r="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+        <circle cx="538" cy="200" r="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+        <circle cx="516" cy="162" r="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+        <circle cx="538" cy="124" r="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+        <circle cx="582" cy="124" r="8" fill="#ffffff" stroke="#059669" stroke-width="1.5"/>
+        <circle cx="560" cy="162" r="12" fill="#059669" fill-opacity="0.3" stroke="#059669" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="560" y="166" text-anchor="middle" font-size="11" fill="#059669">核心</text>
+        <text x="560" y="222" text-anchor="middle" font-size="11" fill="#94a3b8">核心是代言人而非主导者</text>
+        <text x="560" y="238" text-anchor="middle" font-size="11" fill="#059669">优势：效率与民主的平衡</text>
+        <text x="560" y="256" text-anchor="middle" font-size="11" fill="#dc2626">劣势：权责边界易模糊</text>
+        <text x="560" y="274" text-anchor="middle" font-size="11" fill="#475569">应对：协议明确授权范围</text>
+
+        <!-- ===== 两条演化箭头 ===== -->
+        <line x1="135" y1="288" x2="512" y2="336" stroke="#475569" stroke-width="1.8" marker-end="url(#ah)"/>
+        <line x1="335" y1="288" x2="512" y2="354" stroke="#475569" stroke-width="1.8" marker-end="url(#ah)"/>
+        <text x="325" y="301" text-anchor="middle" font-size="11" fill="#475569">星状</text>
+        <text x="427" y="312" text-anchor="middle" font-size="11" fill="#475569">网状</text>
+        <text x="530" y="348" font-size="12" font-weight="700" fill="#059669">虚拟星状结构</text>
+        <text x="530" y="366" font-size="11" fill="#94a3b8">演化归宿</text>
+
+        <!-- 底部说明 -->
+        <text x="340" y="396" text-anchor="middle" font-size="12" fill="#475569">情境适配四变量：创业阶段 · 行业特征 · 团队构成 · 创始人特质</text>
+        <text x="340" y="414" text-anchor="middle" font-size="11" fill="#94a3b8">试错期宜星状 · 规模化宜虚拟星状 · 转型期宜网状</text>
+      </svg>
+      <div class="caption">图 1　创业团队结构三型模型：星状 / 网状 / 虚拟星状拓扑 × 两条演化路径</div>
+    </div>
+    <div class="quote">
+      虚拟星状结构<b>是创业团队最常见的演化归宿</b>：核心成员的地位<b>源于团队协商与能力认可，而非原始产权或绝对权威</b>——核心是代言人而非主导者，在效率与民主之间求平衡。
+    </div>
+  </section>
+
+  <!-- ============ 逐型详解 ============ -->
+  <section>
+    <h2>逐型详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">型一</span>
+        <h3>星状结构</h3>
+        <span class="role">又称：<b>核心主导型</b></span>
+      </div>
+      <div class="q">权力在哪？——<b>存在明确的"恒星"式核心人物</b></div>
+      <dl class="kv">
+        <dt>结构特征</dt>
+        <dd>创业构想源于核心，其掌握关键决策权，其他成员如<b>"行星"</b>围绕运转。</dd>
+        <dt>优势</dt>
+        <dd>组织向心力强、决策效率高、协调成本低。</dd>
+        <dt>劣势</dt>
+        <dd>核心依赖风险大；过度集权易成<b>"一言堂"</b>；核心人物认知偏差或变故将造成系统性冲击。</dd>
+        <dt>应对之道</dt>
+        <dd>制订<b>接班人计划、轮岗授权</b>；引入外部独立董事或顾问制衡；将关键知识资产制度化，避免<b>"人走技失"</b>。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">型二</span>
+        <h3>网状结构</h3>
+        <span class="role">又称：<b>伙伴协作型</b></span>
+      </div>
+      <div class="q">权力在哪？——<b>去中心化的全连接网络，没有绝对中心</b></div>
+      <dl class="kv">
+        <dt>结构特征</dt>
+        <dd>成员多有同学、亲友等<b>先验关系</b>，共同孕育想法；基于能力自发定位，彼此是<b>协作而非上下级关系</b>。</dd>
+        <dt>优势</dt>
+        <dd>信任深厚、多元知识碰撞，利于<b>创意孵化与方向探索</b>。</dd>
+        <dt>劣势</dt>
+        <dd>决策迟滞；多头易引发<b>权责模糊</b>；紧急时难以统一行动。</dd>
+        <dt>应对之道</dt>
+        <dd>制定<b>议事规则与表决机制</b>；设<b>"紧急状态条款"</b>授权临时决策；引入外部导师或 CEO 打破僵局。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">型三</span>
+        <h3>虚拟星状结构</h3>
+        <span class="role">又称：<b>演化混合型</b></span>
+      </div>
+      <div class="q">权力在哪？——<b>介于两者之间：承认核心，但核心是代言人而非主导者</b></div>
+      <dl class="kv">
+        <dt>结构特征</dt>
+        <dd>承认核心成员，但其地位<b>源于团队协商与能力认可，而非原始产权或绝对权威</b>；在效率与民主之间求平衡。</dd>
+        <dt>优势</dt>
+        <dd><b>是创业团队最常见的演化归宿</b>，兼顾决策效率与伙伴参与。</dd>
+        <dt>劣势</dt>
+        <dd>面临<b>权责模糊</b>的挑战：核心与成员的边界没有制度文本时容易扯皮。</dd>
+        <dt>应对之道</dt>
+        <dd>以<b>合伙人协议或章程明确授权范围</b>；建立述职与绩效评估；设置<b>"退出条款"</b>。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 情境适配与演化 ============ -->
+  <section>
+    <h2>情境适配与演化</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">变量一</span>
+        <h4>创业阶段</h4>
+        <p>试错期宜星状——需要快决策；规模化宜虚拟星状——需要平衡；转型期宜网状——需要多元探索。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">变量二</span>
+        <h4>行业特征</h4>
+        <p>行业变化速度与不确定性越高，越需要保留网状的探索弹性；流程性强的行业更能承受星状的集中。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">变量三</span>
+        <h4>团队构成</h4>
+        <p>成员的先验关系、能力结构与互补程度，决定了哪种结构能自然运转、哪种需要额外机制补位。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">变量四</span>
+        <h4>创始人特质</h4>
+        <p>创始人的能力密度、控制欲与放权意愿，直接决定星状结构是资产还是风险源。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      <b>两条演化路径：网状 → 虚拟星状，星状 → 虚拟星状。</b>无论起点是散是聚，多数成熟团队都汇向虚拟星状——但演化不会自动发生：先诊断现状，再对照四变量评估适配，落地应对机制，最后预设演化的目标形态与切换时机。
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>诊断现状。</b>画出团队实际的权力与信息流动图：谁发起构想？谁掌握关键决策？信息经谁中转？对照三型特征，判定当前最接近哪一型。</li>
+      <li><b>评估适配。</b>对照创业阶段、行业特征、团队构成、创始人特质四个变量，评估现有结构与情境的适配度——试错期宜星状、规模化宜虚拟星状、转型期宜网状。</li>
+      <li><b>落地应对机制。</b>针对本型的结构风险补机制：星状补接班人计划与外部制衡，网状补议事规则与紧急状态条款，虚拟星状补合伙人协议与授权章程。</li>
+      <li><b>规划演化。</b>预设演化的目标形态与切换时机，随团队发展主动调适，而非等问题爆发后被动重构。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li><b>合伙创业之前</b>的结构设计——先把权力配置想清楚，再谈股权与分工</li>
+          <li>团队扩张期、战略转型期的<b>结构再设计</b></li>
+          <li>判断"该不该引入职业 CEO、如何放权"有直接指引</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三型是<b>理想化原型</b>，实际团队常为混合形态，重在看清主导特征而非贴死标签</li>
+          <li>结构调整牵动股权与情感，须配合治理工具（合伙人协议、章程）推进</li>
+          <li><b>单人创业或纯雇佣关系的团队不适用</b>本模型</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-06</div>
+        <h4>价值观建设四步法</h4>
+        <p>结构决定权力的形状，价值观决定权力的用法：三型结构选定后，用卡23让文化接住决策。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>情境适配的第一变量就是创业阶段：机会开发、模式验证、规模化各配不同的结构形态。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-06</div>
+        <h4>创业者角色—身份协变模型</h4>
+        <p>星状结构的风险评估要结合创始人角色演化：核心人物能否随阶段自我转换，决定星状是资产还是隐患。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 10 章，第 258—259 页</span>
+    <span>方法论卡 5-09-02 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

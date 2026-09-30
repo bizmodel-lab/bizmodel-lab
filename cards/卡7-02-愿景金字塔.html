@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡7-02 · 愿景金字塔</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 层级详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=7">第 7 章 · 创业战略</a><span class="card-nav-meta">卡 7-02 · 愿景金字塔（塔尖—塔身—塔基）</span><a class="card-nav-prev" href="卡7-01-使命陈述五特征.html">← 卡 7-01</a><a class="card-nav-next" href="卡7-03-三种基本竞争战略情境化.html">卡 7-03 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 7-02</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>愿景金字塔</h1>
+  <div class="oneliner">塔尖—塔身—塔基三层结构：让宏伟理想与当下行动在一张图上对齐。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多创业团队的愿景与行动是<b>"两张皮"</b>：愿景挂在墙上，行动陷在琐事里。问题往往不是愿景错了，而是<b>从理想到行动之间断了层</b>——没有中间目标做桥，也没有近期重点做锚。</p>
+    <p>教材的"愿景金字塔"用三层结构打通这条断层：<b>塔尖（终极愿景）、塔身（中期战略目标）、塔基（近期战略重点）</b>，层层承接、上下校验。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">一张图接通理想与行动</div>
+        <div class="vd">塔尖到塔基层层承接，愿景不再悬空，行动不再盲目。</div>
+      </div>
+      <div class="value">
+        <div class="vt">目标有了层次感</div>
+        <div class="vd">终极、中期、近期三个尺度各归其位，不互相挤压、不彼此冒充。</div>
+      </div>
+      <div class="value">
+        <div class="vt">隐喻好记好用</div>
+        <div class="vd">使命是指南针，愿景是灯塔——方向与终点各司其职，一张图讲清楚。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 515" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">三层一体的结构化工具：从塔尖到塔基，让宏伟理想接上当下行动</text>
+
+        <!-- ===== 金字塔三层 ===== -->
+        <polygon points="250,70 305,170 195,170" fill="#3b82f6"/>
+        <polygon points="195,170 305,170 377,300 123,300" fill="#d97706"/>
+        <polygon points="123,300 377,300 460,450 40,450" fill="#059669"/>
+
+        <!-- 塔尖文字 -->
+        <text x="250" y="115" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">塔尖</text>
+        <text x="250" y="148" text-anchor="middle" font-size="13" fill="#ffffff">终极愿景</text>
+
+        <!-- 塔身文字 -->
+        <text x="250" y="215" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">塔身</text>
+        <text x="250" y="245" text-anchor="middle" font-size="13" fill="#ffffff">中期战略目标</text>
+
+        <!-- 塔基文字 -->
+        <text x="250" y="345" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">塔基</text>
+        <text x="250" y="378" text-anchor="middle" font-size="13" fill="#ffffff">近期战略重点</text>
+
+        <!-- 层级引线与右侧注解 -->
+        <line x1="282" y1="128" x2="490" y2="128" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="490" y="80" width="180" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="500" y="106" font-size="12.5" font-weight="700" fill="#3b82f6">塔尖 · 终极愿景</text>
+        <text x="500" y="132" font-size="11.5" fill="#64748b">组织最终想成为的样子</text>
+        <text x="500" y="152" font-size="11.5" fill="#64748b">为长期奋斗提供方向感</text>
+
+        <line x1="354" y1="258" x2="490" y2="258" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="490" y="210" width="180" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="500" y="236" font-size="12.5" font-weight="700" fill="#d97706">塔身 · 中期战略目标</text>
+        <text x="500" y="262" font-size="11.5" fill="#64748b">把愿景翻译成可衡量</text>
+        <text x="500" y="282" font-size="11.5" fill="#64748b">的中期目标</text>
+
+        <line x1="426" y1="388" x2="490" y2="388" stroke="#94a3b8" stroke-width="1.5"/>
+        <rect x="490" y="340" width="180" height="96" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="500" y="366" font-size="12.5" font-weight="700" fill="#059669">塔基 · 近期战略重点</text>
+        <text x="500" y="392" font-size="11.5" fill="#64748b">当下行动的优先级排序</text>
+        <text x="500" y="412" font-size="11.5" fill="#64748b">明确先做什么、不做什么</text>
+
+        <!-- 底部隐喻条 -->
+        <rect x="10" y="470" width="660" height="44" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="340" y="497" text-anchor="middle" font-size="13.5" font-weight="700" fill="#92400e">使命是指南针，愿景是灯塔</text>
+      </svg>
+      <div class="caption">图 1　愿景金字塔：塔尖（终极愿景）— 塔身（中期战略目标）— 塔基（近期战略重点）</div>
+    </div>
+    <div class="quote">
+      三层结构<b>确保从宏伟理想到当下行动的逻辑连贯性</b>——塔尖给方向，塔身做承接，塔基管落地。
+    </div>
+  </section>
+
+  <!-- ============ 逐层详解 ============ -->
+  <section>
+    <h2>逐层详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">塔尖</span>
+        <h3>终极愿景</h3>
+        <span class="role">时间尺度：<b>长周期</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"组织最终要成为什么？"</b></div>
+      <dl class="kv">
+        <dt>定位</dt>
+        <dd>愿景的最高层，凝练组织长周期的<b>终极状态</b>。</dd>
+        <dt>作用</dt>
+        <dd>为所有中长期选择提供<b>方向感</b>，是塔身与塔基的校准原点。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">愿景空转</span><span class="td">把愿景写成口号或数字堆砌——既不指向终极状态，也无法校准下层目标。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">塔身</span>
+        <h3>中期战略目标</h3>
+        <span class="role">时间尺度：<b>中期</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"通往愿景的中途要达成什么？"</b></div>
+      <dl class="kv">
+        <dt>定位</dt>
+        <dd>把终极愿景翻译成<b>可衡量的中期目标</b>，是理想与现实之间的转换层。</dd>
+        <dt>作用</dt>
+        <dd><b>承上启下</b>——向上呼应塔尖，向下约束塔基的优先级排序。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">目标脱节</span><span class="td">中期目标自成一套，全部达成之后才发现并不通向塔尖——白走一段弯路。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">塔基</span>
+        <h3>近期战略重点</h3>
+        <span class="role">时间尺度：<b>当下</b></span>
+      </div>
+      <div class="q">本层回答的问题：<b>"眼下最该先做什么？"</b></div>
+      <dl class="kv">
+        <dt>定位</dt>
+        <dd>落到近期行动的<b>优先级排序</b>，明确先做什么、暂不做什么。</dd>
+        <dt>作用</dt>
+        <dd>让每天的资源配置有明确依据——这是三层中唯一"每天都在花"的一层。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见毛病</div>
+        <div class="trap"><span class="tn">行动漂移</span><span class="td">日常忙的活与塔身目标对不上号：团队很忙，但忙碌并不通向愿景。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>先写塔尖。</b>用一句话写下组织最终想成为的样子——宁可朴素，不要空洞；写不出时就回到使命问自己"为什么出发"。</li>
+      <li><b>分解塔身。</b>自问"要走到那里，中期必须拿下的关键目标是什么"，控制在少数几条，条条可衡量。</li>
+      <li><b>排出塔基。</b>把中期目标落成近期的战略重点，明确先做什么、暂不做什么，并给出取舍理由。</li>
+      <li><b>上下校验。</b>从塔尖读到塔基，再从塔基读回塔尖：行动支撑目标、目标通向愿景，逻辑连贯才算通过。</li>
+      <li><b>定期回看。</b>环境或阶段变化时三层联动更新，防止只改下层、上层名存实亡。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>战略制定初期<b>搭建目标体系</b>：先有结构，再填内容</li>
+          <li>团队对齐会：用一张图检验"我们忙的事通不通向愿景"</li>
+          <li>向投资人与新成员讲述"从愿景到打法"的完整逻辑</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三层须<b>联动更新</b>——只改塔基不动塔尖，会造成新的断裂</li>
+          <li>愿景是方向锚<b>不是预测</b>，应随认知深化而演进，不追求一次定终身</li>
+          <li>塔基重点宜少不宜多——<b>列得太多，等于没有重点</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-01</div>
+        <h4>使命陈述五特征</h4>
+        <p>先用五特征把"为什么存在"写扎实，再来搭"要成为什么"的金字塔——使命定质量，愿景定结构。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-03</div>
+        <h4>三种基本竞争战略情境化</h4>
+        <p>塔身的中期目标落到竞争层面，需要选定成本领先、差异化或聚焦利基的打法。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-05</div>
+        <h4>市场进入三维选择模型</h4>
+        <p>塔基的近期重点若涉及"进入哪个市场"，用机会窗口 × 行业格局 × 资源能力三维定夺。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 7 章，第 184 页</span>
+    <span>方法论卡 7-02 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

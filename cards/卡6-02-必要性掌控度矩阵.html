@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡6-02 · 必要性—掌控度矩阵</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 象限详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage.s4{border-top-color:var(--risk);}
+  .stage.s0{border-top-color:var(--ink-3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .s4 .sn{background:var(--risk);} .s0 .sn{background:var(--ink-3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=6">第 6 章 · 创业资源</a><span class="card-nav-meta">卡 6-02 · 资源评估三步（资源地图→属性诊断→必要性—掌控度矩阵）</span><a class="card-nav-prev" href="卡6-01-关键资源识别三步法.html">← 卡 6-01</a><a class="card-nav-next" href="卡6-03-创造性获取四策略.html">卡 6-03 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 6-02</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>必要性—掌控度矩阵</h1>
+  <div class="oneliner">按重要性与把控力给资源分四格，各配处置打法。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>盘点出一份资源清单之后，创业者常常陷入<b>"什么都想要、什么都缺"</b>的焦虑：每项资源看起来都有用，每项又都拿不稳。继续平均用力，只会把本来就紧的资源摊得更薄。</p>
+    <p>本矩阵用<b>两个维度</b>给所有资源排序——"它对创业成功有多关键"与"我们目前能不能拿到、控得住"——把资源分成四格，每格配一句话打法。排序之后，三个问题就有了答案：哪些资源是优势要守住？哪些是<b>生死缺口要倾力攻克</b>？哪些该果断放弃？</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">排序代替焦虑</div>
+        <div class="vd">两维打分让"哪件事最急"从直觉变成可讨论的坐标。</div>
+      </div>
+      <div class="value">
+        <div class="vt">一格一打法</div>
+        <div class="vd">四象限各有明确处置动作：守、攻、变现、放弃，不再含糊。</div>
+      </div>
+      <div class="value">
+        <div class="vt">团队共识工具</div>
+        <div class="vd">集体打分落位，避免创始人个人的盲区决定资源去向。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="up" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+            <path d="M4,0 L8,8 L0,8 Z" fill="#94a3b8"/>
+          </marker>
+          <marker id="rt" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#94a3b8"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部横幅 -->
+        <rect x="10" y="6" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="13" fill="#475569">两项打分定坐标：必要性＝对创业成功的关键程度；掌控度＝团队的获取与控制能力</text>
+
+        <!-- 坐标轴 -->
+        <line x1="70" y1="340" x2="70" y2="48" stroke="#94a3b8" stroke-width="2" marker-end="url(#up)"/>
+        <line x1="70" y1="338" x2="648" y2="338" stroke="#94a3b8" stroke-width="2" marker-end="url(#rt)"/>
+        <text x="28" y="196" text-anchor="middle" font-size="13" font-weight="700" fill="#475569" transform="rotate(-90 28 196)">必要性</text>
+        <text x="58" y="76" text-anchor="end" font-size="12" font-weight="700" fill="#475569">高</text>
+        <text x="58" y="330" text-anchor="end" font-size="12" font-weight="700" fill="#475569">低</text>
+        <text x="360" y="364" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">掌控度</text>
+        <text x="78" y="364" font-size="12" font-weight="700" fill="#475569">低</text>
+        <text x="642" y="364" text-anchor="end" font-size="12" font-weight="700" fill="#475569">高</text>
+
+        <!-- 象限一：致命缺口（高必要 / 低掌控） -->
+        <rect x="70" y="58" width="290" height="140" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="86" y="80" font-size="11" fill="#94a3b8">高必要 × 低掌控</text>
+        <text x="215" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="#dc2626">致命缺口</text>
+        <text x="215" y="130" text-anchor="middle" font-size="12" fill="#334155">必须倾尽全力攻克：集中资金时间</text>
+        <text x="215" y="148" text-anchor="middle" font-size="12" fill="#334155">自主研发、对接关键人脉或绕开依赖</text>
+        <circle cx="150" cy="172" r="4" fill="#dc2626"/>
+        <text x="159" y="176" font-size="11" fill="#dc2626">大额资金</text>
+        <circle cx="260" cy="172" r="4" fill="#dc2626"/>
+        <text x="269" y="176" font-size="11" fill="#dc2626">关键渠道</text>
+
+        <!-- 象限二：核心优势（高必要 / 高掌控） -->
+        <rect x="360" y="58" width="290" height="140" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="376" y="80" font-size="11" fill="#94a3b8">高必要 × 高掌控</text>
+        <text x="505" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="#059669">核心优势</text>
+        <text x="505" y="130" text-anchor="middle" font-size="12" fill="#334155">着力保护与强化，持续投入维护升级</text>
+        <text x="505" y="148" text-anchor="middle" font-size="12" fill="#334155">并作为杠杆，撬动"致命缺口"资源</text>
+        <circle cx="440" cy="172" r="4" fill="#059669"/>
+        <text x="449" y="176" font-size="11" fill="#059669">创始团队</text>
+        <circle cx="550" cy="172" r="4" fill="#059669"/>
+        <text x="559" y="176" font-size="11" fill="#059669">核心专利</text>
+
+        <!-- 象限三：可忽略项（低必要 / 低掌控） -->
+        <rect x="70" y="198" width="290" height="140" rx="10" fill="#f8fafc" stroke="#e2e8f0"/>
+        <text x="86" y="220" font-size="11" fill="#94a3b8">低必要 × 低掌控</text>
+        <text x="215" y="246" text-anchor="middle" font-size="15" font-weight="700" fill="#64748b">可忽略项</text>
+        <text x="215" y="270" text-anchor="middle" font-size="12" fill="#334155">果断放弃投入，定期从计划中剔除</text>
+        <text x="215" y="288" text-anchor="middle" font-size="12" fill="#334155">以保持战略聚焦</text>
+        <circle cx="170" cy="312" r="4" fill="#64748b"/>
+        <text x="179" y="316" font-size="11" fill="#64748b">豪华办公室</text>
+
+        <!-- 象限四：冗余资源（低必要 / 高掌控） -->
+        <rect x="360" y="198" width="290" height="140" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="376" y="220" font-size="11" fill="#94a3b8">低必要 × 高掌控</text>
+        <text x="505" y="246" text-anchor="middle" font-size="15" font-weight="700" fill="#3b82f6">冗余资源</text>
+        <text x="505" y="270" text-anchor="middle" font-size="12" fill="#334155">出租、出售或用于合作谈判</text>
+        <text x="505" y="288" text-anchor="middle" font-size="12" fill="#334155">以换取更紧缺的"致命缺口"资源</text>
+        <circle cx="440" cy="312" r="4" fill="#3b82f6"/>
+        <text x="449" y="316" font-size="11" fill="#3b82f6">闲置设备</text>
+        <circle cx="550" cy="312" r="4" fill="#3b82f6"/>
+        <text x="559" y="316" font-size="11" fill="#3b82f6">富余场地</text>
+
+        <!-- 底部：使用前置与迭代观 -->
+        <rect x="70" y="388" width="280" height="74" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="86" y="410" font-size="12" font-weight="700" fill="#475569">使用前置：资源地图与属性诊断</text>
+        <text x="86" y="432" font-size="11" fill="#475569">逐项列名称、类型、存量，质量与可控性</text>
+        <text x="86" y="450" font-size="11" fill="#475569">各按高 / 中 / 低三分；再做可替代性诊断</text>
+        <rect x="370" y="388" width="280" height="74" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="386" y="410" font-size="12" font-weight="700" fill="#d97706">迭代观</text>
+        <text x="386" y="432" font-size="11" fill="#475569">昨天的"致命缺口"，可能今天已成为</text>
+        <text x="386" y="450" font-size="11" fill="#475569">"核心优势"——每个战略阶段复盘重排落位</text>
+      </svg>
+      <div class="caption">图 1　必要性—掌控度矩阵：四象限 × 一句话处置策略 × 资源项圆点落位（圆点为示例）</div>
+    </div>
+    <div class="quote">
+      对核心优势，要持续投入维护升级，并<b>"善于将这些核心优势作为杠杆，去撬动那些'致命缺口'"</b>；对致命缺口，则<b>"必须倾尽全力攻克"</b>——"这是决定项目生死的关键控制点"。
+    </div>
+  </section>
+
+  <!-- ============ 逐象限详解 ============ -->
+  <section>
+    <h2>逐象限详解</h2>
+
+    <div class="stage s0">
+      <div class="stage-head">
+        <span class="sn">使用前置</span>
+        <h3>资源地图与属性诊断</h3>
+        <span class="role">落位之前：<b>先把家底摸清</b></span>
+      </div>
+      <dl class="kv">
+        <dt>资源地图</dt>
+        <dd>逐项列出资源的<b>名称、类型与存量</b>，并对其质量、可控性各按高 / 中 / 低三档评级——坐标打分要有事实基础。</dd>
+        <dt>属性诊断</dt>
+        <dd>对候选关键资源做内在属性诊断：能否被替代？能否绕过？与其他资源的协同如何？必要时可用 VRIO 四问与互补性分析辅助。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">象限一</span>
+        <h3>核心优势</h3>
+        <span class="role">坐标：<b>高必要 × 高掌控</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"哪些家底必须守住、还能拿去换什么？"</b></div>
+      <dl class="kv">
+        <dt>处置策略</dt>
+        <dd><b>着力保护与强化</b>，持续投入维护升级，防止优势在忙乱中被稀释。</dd>
+        <dt>进阶用法</dt>
+        <dd><b>把核心优势当作杠杆</b>，去撬动"致命缺口"资源——优势不只是用来守的，更是用来交换的。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-head">
+        <span class="sn">象限二</span>
+        <h3>致命缺口</h3>
+        <span class="role">坐标：<b>高必要 × 低掌控</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"哪块短板不补上，项目就活不下去？"</b></div>
+      <dl class="kv">
+        <dt>处置策略</dt>
+        <dd><b>必须倾尽全力攻克</b>：集中资金与时间自主研发、利用关键人脉紧急对接，或调整技术路线绕开依赖。</dd>
+        <dt>地位</dt>
+        <dd>"<b>这是决定项目生死的关键控制点</b>"——矩阵输出中最优先的行动项，资源计划应向它倾斜。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见走偏</div>
+        <div class="trap"><span class="tn">缺口并列</span><span class="td">把三四个资源都标成"致命缺口"，等于没有缺口——缺口必须收敛到极少数。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">象限三</span>
+        <h3>冗余资源</h3>
+        <span class="role">坐标：<b>低必要 × 高掌控</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"手里哪些东西其实用不上，却占着资源？"</b></div>
+      <dl class="kv">
+        <dt>处置策略</dt>
+        <dd><b>出租、出售或用于合作谈判</b>，以换取更紧缺的"致命缺口"资源——把低必要性资产变成交易筹码。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">象限四</span>
+        <h3>可忽略项</h3>
+        <span class="role">坐标：<b>低必要 × 低掌控</b></span>
+      </div>
+      <div class="q">本格回答的问题：<b>"哪些诉求可以直接从计划里划掉？"</b></div>
+      <dl class="kv">
+        <dt>处置策略</dt>
+        <dd><b>果断放弃投入</b>，并定期从计划中剔除，以保持聚焦。对这格资源，"不做什么"比"做什么"更重要。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>绘制资源地图。</b>团队共同盘点现有资源，逐项列出名称、类型、存量，并给质量与可控性各按高 / 中 / 低打分——集体盘点能补上创始人个人的盲区。</li>
+      <li><b>做属性诊断。</b>对候选关键资源追问：能否被替代？能否绕过？与其他资源的协同如何？内在属性决定它值不值得倾力争。</li>
+      <li><b>双维打分落位。</b>逐项给"必要性"（对创业成功的关键程度）与"掌控度"（获取与控制能力）打分，把每项资源落进四象限。</li>
+      <li><b>按象限执行策略。</b>核心优势保护强化、致命缺口全力攻克、冗余资源变现换缺、可忽略项果断剔除——一格一打法，不混着办。</li>
+      <li><b>定期复盘重排。</b>每个战略阶段重新打分落位。资源地位会变化：昨天的"致命缺口"，可能今天已成为"核心优势"。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>完成资源识别后、<b>制定获取计划前</b>的优先级排序</li>
+          <li>团队共同评审，避免创始人盲区单独决定资源去向</li>
+          <li>每轮战略复盘时的定期重排工具</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>两维打分<b>偏主观</b>，需以事实与证据支撑，不能拍脑袋</li>
+          <li>它排序但<b>不提供获取手段</b>，缺口攻克需衔接创造性获取策略</li>
+          <li>环境剧变时打分需重估，历史落位不可直接沿用</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>矩阵排序的对象从哪来？先用三步法沿价值流程锁定命门与灵魂，再进入本矩阵打分。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>资源杠杆四模式与三问</h4>
+        <p>"致命缺口"要倾力攻克，杠杆四模式提供了"不靠硬采购"的攻克路径。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>攻克缺口、拿到资源之后，用四阶段模型让资源从"拥有"走向"可用"。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 6 章，第 162—163 页</span>
+    <span>方法论卡 6-02 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

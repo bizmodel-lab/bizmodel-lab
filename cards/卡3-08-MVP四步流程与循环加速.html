@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-08 · MVP四步流程与循环加速</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 步骤详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 测量与学习 ===== */
+  .miles{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .mile{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;
+    position:relative;
+  }
+  .mile .mno{
+    display:inline-block;font-size:12px;font-weight:700;color:var(--risk);
+    border:1px solid var(--risk);border-radius:20px;padding:1px 10px;margin-bottom:8px;
+  }
+  .mile h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+  .mile p{font-size:13.5px;color:var(--ink-3);margin:0;}
+  .mile-note{
+    margin-top:14px;background:#fef2f2;border:1px solid #fecaca;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--risk);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.miles,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,.mile,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-08 · MVP四步流程＋循环加速四策略</span><a class="card-nav-prev" href="卡3-07-设计思维五阶段.html">← 卡 3-07</a><a class="card-nav-next" href="卡3-09-三阶段思维组合动态应用.html">卡 3-09 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-08</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>MVP 四步流程与循环加速</h1>
+  <div class="oneliner">用最小可行产品换最大学习量：四步流程搭循环，四条策略让"构建—测量—学习"越转越快。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>资源有限的创业者，最昂贵的浪费不是"做得慢"，而是<b>花几个月做出来一个没人要的东西</b>。精益创业把创业当作一场实验管理：与其憋大招，不如用最小的实验、最快的循环去逼近真相。</p>
+    <p>MVP（最小可行产品）是这场实验的核心工具，但"知道 MVP"和"会做 MVP"之间隔着操作流程。本卡给出教材的四步流程与四条加速策略，带来三层价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">用最小成本换最大学习</div>
+        <div class="vd">MVP 的产出不是产品，是认知——每一轮循环都在购买"哪条假设成立"的信息。</div>
+      </div>
+      <div class="value">
+        <div class="vt">验证变成可执行流程</div>
+        <div class="vd">识别假设→选策略→定标准→快构建，四步把"验证模式"落成动作清单。</div>
+      </div>
+      <div class="value">
+        <div class="vt">循环可以越转越快</div>
+        <div class="vd">批量缩小、并行实验、自动化测量、快速决策，四条策略持续压缩单轮周期。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 486" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="32" rx="16" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="29" text-anchor="middle" font-size="12" fill="#475569">MVP："学习的探针，而非产品的雏形"——任何功能的移除都会导致验证假设能力的丧失</text>
+
+        <!-- 中心循环圆盘 -->
+        <circle cx="235" cy="240" r="115" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="4,5"/>
+        <circle cx="235" cy="240" r="62" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+        <text x="235" y="226" text-anchor="middle" font-size="15" font-weight="700" fill="#3b82f6">MVP</text>
+        <text x="235" y="248" text-anchor="middle" font-size="12" fill="#1e293b">构建—测量</text>
+        <text x="235" y="266" text-anchor="middle" font-size="12" fill="#1e293b">—学习循环</text>
+
+        <!-- 循环箭头（顺时针） -->
+        <path d="M292.5,140.4 A115,115 0 0 1 334.5,182.5" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <path d="M334.5,297.5 A115,115 0 0 1 292.5,339.6" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <path d="M177.5,339.6 A115,115 0 0 1 135.5,297.5" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <path d="M135.5,182.5 A115,115 0 0 1 177.5,140.4" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+
+        <!-- 节点一 · 北 -->
+        <rect x="140" y="84" width="190" height="52" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="235" y="106" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">① 识别信念飞跃假设</text>
+        <text x="235" y="126" text-anchor="middle" font-size="11" fill="#475569">最影响成败的假设</text>
+
+        <!-- 节点二 · 东 -->
+        <rect x="300" y="214" width="155" height="52" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="377" y="236" text-anchor="middle" font-size="13" font-weight="700" fill="#d97706">② 选择验证策略</text>
+        <text x="377" y="256" text-anchor="middle" font-size="11" fill="#475569">假设类型定方式</text>
+
+        <!-- 节点三 · 南 -->
+        <rect x="140" y="344" width="190" height="52" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="235" y="366" text-anchor="middle" font-size="13" font-weight="700" fill="#059669">③ 设定成功标准</text>
+        <text x="235" y="386" text-anchor="middle" font-size="11" fill="#475569">事前写下量化阈值</text>
+
+        <!-- 节点四 · 西 -->
+        <rect x="15" y="214" width="155" height="52" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="92" y="236" text-anchor="middle" font-size="13" font-weight="700" fill="#3b82f6">④ 快速构建发布</text>
+        <text x="92" y="256" text-anchor="middle" font-size="11" fill="#475569">能验证即发布</text>
+
+        <!-- ===== 右栏：循环加速四策略 ===== -->
+        <text x="480" y="88" font-size="13" font-weight="700" fill="#1e293b">循环加速四策略</text>
+        <rect x="480" y="100" width="190" height="66.4" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="492" y="122" font-size="12" font-weight="700" fill="#3b82f6">批量缩小</text>
+        <text x="492" y="140" font-size="11" fill="#475569">缩小每批次规模，</text>
+        <text x="492" y="155" font-size="11" fill="#475569">缩短单次循环周期</text>
+
+        <rect x="480" y="170" width="190" height="66.4" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="492" y="192" font-size="12" font-weight="700" fill="#d97706">并行实验</text>
+        <text x="492" y="210" font-size="11" fill="#475569">同时验证多个互不</text>
+        <text x="492" y="225" font-size="11" fill="#475569">干扰的假设</text>
+
+        <rect x="480" y="240" width="190" height="66.4" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="492" y="262" font-size="12" font-weight="700" fill="#059669">自动化测量</text>
+        <text x="492" y="280" font-size="11" fill="#475569">用工具自动采集</text>
+        <text x="492" y="295" font-size="11" fill="#475569">关键指标数据</text>
+
+        <rect x="480" y="310" width="190" height="66.4" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="492" y="332" font-size="12" font-weight="700" fill="#475569">快速决策</text>
+        <text x="492" y="350" font-size="11" fill="#475569">数据一到立即决策，</text>
+        <text x="492" y="365" font-size="11" fill="#475569">不在等待中耗周期</text>
+
+        <!-- ===== 底栏：学习三结果 ===== -->
+        <text x="340" y="404" text-anchor="middle" font-size="11" fill="#94a3b8">每轮循环结束，按三种学习结果之一决策：</text>
+        <rect x="10" y="414" width="200" height="56" rx="10" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="110" y="436" text-anchor="middle" font-size="12" font-weight="700" fill="#059669">学习结果一 · 验证成立</text>
+        <text x="110" y="456" text-anchor="middle" font-size="11" fill="#475569">放大关键驱动因素</text>
+
+        <rect x="225" y="414" width="200" height="56" rx="10" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="325" y="436" text-anchor="middle" font-size="12" font-weight="700" fill="#d97706">学习结果二 · 转型</text>
+        <text x="325" y="456" text-anchor="middle" font-size="11" fill="#475569">改变引擎，而非目的地</text>
+
+        <rect x="440" y="414" width="200" height="56" rx="10" fill="#fef2f2" stroke="#fecaca"/>
+        <text x="540" y="436" text-anchor="middle" font-size="12" font-weight="700" fill="#dc2626">学习结果三 · 放弃</text>
+        <text x="540" y="456" text-anchor="middle" font-size="11" fill="#475569">及时止损，保存资源</text>
+      </svg>
+      <div class="caption">图 1　MVP 开发四步流程：四步绕"构建—测量—学习"循环运转 × 四条加速策略 × 三种学习结果</div>
+    </div>
+    <div class="quote">
+      MVP 是<b>"学习的探针，而非产品的雏形"</b>；<b>任何功能的移除都会导致验证假设能力的丧失</b>——这是"最小"的判据。转型的本质是<b>"改变引擎，而非改变目的地"</b>。
+    </div>
+  </section>
+
+  <!-- ============ 四步详解 ============ -->
+  <section>
+    <h2>四步流程详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第一步</span>
+        <h3>识别信念飞跃假设</h3>
+        <span class="role">回答的问题：<b>"哪条假设一旦不成立，整个模式就崩？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做什么</dt>
+        <dd>把商业模式拆成一张假设清单，找出其中<b>最危险、最未经检验的"信念飞跃"级假设</b>——它们成立与否决定全局成败。</dd>
+        <dt>为什么</dt>
+        <dd>验证资源永远有限，<b>优先验证最危险的假设</b>，而不是最容易验证的那个。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">第二步</span>
+        <h3>选择验证策略</h3>
+        <span class="role">回答的问题：<b>"用哪种方式能最快拿到证据？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做什么</dt>
+        <dd>针对假设的类型与所处阶段，<b>选择成本最低、出证据最快的验证方式</b>：访谈、落地页、人工服务、极简版本……先问"哪种方式最快给出证据"，再问"哪种方式最像真产品"。</dd>
+        <dt>为什么</dt>
+        <dd>能用便宜方式回答的问题，不用昂贵方式回答——验证的目的是学习，不是交付。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">第三步</span>
+        <h3>设定成功标准</h3>
+        <span class="role">回答的问题：<b>"看到什么数字才算验证通过？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做什么</dt>
+        <dd>在动手构建<b>之前</b>，写下量化的成功阈值：留存要达到多少、付费转化要达到多少、多长时间内达到。</dd>
+        <dt>为什么</dt>
+        <dd>事后改标准等于没有标准。测量时的姿态是<b>首先假设"我是错的"</b>，让数据有机会推翻自己。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">第四步</span>
+        <h3>快速构建发布</h3>
+        <span class="role">回答的问题：<b>"还能再删掉什么？"</b></span>
+      </div>
+      <dl class="kv">
+        <dt>做什么</dt>
+        <dd>以"能验证即发布"的标准快速构建 MVP 并推向真实用户——<b>能删的功能全部删掉</b>，直到再删一个就会丧失验证假设的能力。</dd>
+        <dt>为什么</dt>
+        <dd>MVP 是<b>"学习的探针，而非产品的雏形"</b>。它是用来买信息的，不是用来给用户交付完成度的。</dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ============ 测量与学习 ============ -->
+  <section>
+    <h2>测量与学习：循环的另半圈</h2>
+    <div class="miles">
+      <div class="mile">
+        <span class="mno">测量</span>
+        <h4>虚荣指标 vs 可执行指标</h4>
+        <p>累计下载量、总访问量这类只涨不跌的"虚荣指标"会制造错觉；要看的是<b>可执行指标</b>：留存率、付费转化率、获客成本（CAC）、客户生命周期价值（LTV）、K-factor。</p>
+      </div>
+      <div class="mile">
+        <span class="mno">学习</span>
+        <h4>三种结果，三条出路</h4>
+        <p><b>验证成立</b>→放大关键驱动因素；<b>验证失败</b>→转型（教材列举了 8 类转型方向）；<b>放弃</b>→及时止损。每轮循环必须落在其中一条出路上，不许"再看看"。</p>
+      </div>
+    </div>
+    <div class="mile-note">
+      <b>警惕"精益地走向失败"。</b>教材专门列出四类常见误用，其中最隐蔽的一种是：流程跑得很精益——指标在看、循环在转——但方向本身从头到尾没人质疑，精益成了执行效率，而不是学习效率。另有适用边界：B2B、强监管、重资产、品牌情感类业务验证周期长或单次实验成本高，需按行业特性调整用法。
+    </div>
+  </section>
+
+  <!-- ============ 怎么用 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列假设清单。</b>把商业模式写成一页假设清单，逐条问"这条不成立会怎样"，标出最危险的信念飞跃假设。</li>
+      <li><b>选验证策略。</b>为每条要验证的假设匹配成本最低、出证据最快的验证方式，能不写代码就不写代码。</li>
+      <li><b>先写成功标准。</b>在构建之前写下量化阈值（留存、转化、时限），并承诺不在数据出来之后修改标准。</li>
+      <li><b>删到不能再删再发布。</b>用"再删一个功能就丧失验证能力"检验最小性，尽快把 MVP 推到真实用户面前。</li>
+      <li><b>看可执行指标。</b>用留存率、付费转化率、CAC、LTV 等指标测量，首先假设"我是错的"，主动寻找推翻自己的证据。</li>
+      <li><b>决策并加速下一轮。</b>按放大 / 转型 / 放弃三条出路落子；同时用批量缩小、并行实验、自动化测量、快速决策压缩下一轮循环的周期。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>互联网、软件等<b>可快速迭代的数字产品</b></li>
+          <li>进入高度不确定的新市场，需求假设未经检验</li>
+          <li>资源有限、需要用小实验换大信息的创业团队</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>B2B 长决策链、强监管、重资产、品牌情感类业务，验证周期长或单次实验成本高，需调整用法</li>
+          <li>MVP 不是半成品——勿把"删功能"变成对用户的偷工减料</li>
+          <li>警惕<b>"精益地走向失败"</b>：循环转得快不等于方向对，转型与放弃同样是合法出路</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-07</div>
+        <h4>设计思维五阶段</h4>
+        <p>设计思维产出的问题陈述，正是 MVP 第一步"识别信念飞跃假设"的主要来源——先找对问题，再验对方案。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱思维两维度</h4>
+        <p>"可承受损失"为每轮 MVP 实验设定投入上限——精益的探针要够便宜，亏了也不伤根本。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 8-13</div>
+        <h4>MVS三闭环</h4>
+        <p>模式验证通过、进入规模化之后，由 MVS 三闭环承接持续验证的体系。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 77—82 页</span>
+    <span>方法论卡 3-08 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

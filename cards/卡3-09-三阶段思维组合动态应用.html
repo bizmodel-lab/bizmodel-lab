@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡3-09 · 三阶段思维组合动态应用</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 阶段详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+  .traps{border-top:1px dashed var(--line);padding-top:12px;}
+  .traps .tt{font-size:13px;font-weight:700;color:var(--risk);margin-bottom:8px;}
+  .trap{display:grid;grid-template-columns:110px 1fr;gap:10px;margin-bottom:8px;}
+  .trap .tn{
+    font-size:13px;font-weight:700;color:var(--risk);text-align:right;padding-top:1px;
+  }
+  .trap .td{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+  .note-gray{
+    border-top:1px dashed var(--line);padding-top:12px;
+    font-size:13.5px;color:var(--ink-3);
+  }
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv,.trap{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=3">第 3 章 · 创业思维</a><span class="card-nav-meta">卡 3-09 · 三阶段×思维组合动态应用模型</span><a class="card-nav-prev" href="卡3-08-MVP四步流程与循环加速.html">← 卡 3-08</a><a class="card-nav-next" href="卡3-10-情境二维矩阵.html">卡 3-10 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 3-09</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>三阶段思维组合动态应用</h1>
+  <div class="oneliner">先定阶段，再配思维：每个阶段都有该主导、该辅助、该警惕的思维。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>很多创业者的困惑不是"没学过思维工具"，而是<b>"学了一堆，不知道什么时候该用哪一个"</b>：设计思维、第一性原理、系统思维……个个都听过，个个都用不顺。</p>
+    <p>教材把创业思维放进创业过程三阶段中，给出一张"阶段 × 思维"的配置表：每个阶段谁当主线、谁做支撑、什么用法要避免，一目了然。它带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">从工具箱到处方单</div>
+        <div class="vd">不再"什么思维都练一点"，而是按当前阶段补最缺的那一块。</div>
+      </div>
+      <div class="value">
+        <div class="vt">防止思维误用</div>
+        <div class="vd">系统思维、第一性原理都是好工具，但用错阶段就会拖慢验证、放大风险。</div>
+      </div>
+      <div class="value">
+        <div class="vt">换挡同步换脑</div>
+        <div class="vd">阶段切换时思维组合也要切换，避免用上一阶段的打法打下一阶段的仗。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 592" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">先定阶段，再配思维组合——三阶段是逻辑递进，不是严格时间序列</text>
+
+        <!-- ===== 表头 ===== -->
+        <rect x="10" y="54" width="96" height="30" rx="6" fill="#1e293b"/>
+        <text x="58" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">创业阶段</text>
+        <rect x="114" y="54" width="172" height="30" rx="6" fill="#1e293b"/>
+        <text x="200" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">主导思维（主线）</text>
+        <rect x="292" y="54" width="168" height="30" rx="6" fill="#1e293b"/>
+        <text x="376" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">辅助思维（支撑）</text>
+        <rect x="468" y="54" width="202" height="30" rx="6" fill="#dc2626"/>
+        <text x="569" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">常见误用（警惕）</text>
+
+        <!-- ===== 行一：机会开发 ===== -->
+        <rect x="10" y="92" width="96" height="132" rx="8" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="58" y="148" text-anchor="middle" font-size="11" font-weight="700" fill="#3b82f6">阶段一</text>
+        <text x="58" y="172" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">机会开发</text>
+
+        <rect x="114" y="92" width="172" height="132" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="126" y="120" font-size="13" font-weight="700" fill="#3b82f6">效果逻辑（主线）</text>
+        <text x="126" y="144" font-size="12" fill="#334155">以既有资源为起点，</text>
+        <text x="126" y="164" font-size="12" fill="#334155">设定可承受损失，</text>
+        <text x="126" y="184" font-size="12" fill="#334155">小步快跑验证假设</text>
+
+        <rect x="292" y="92" width="168" height="132" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <circle cx="300" cy="116" r="3.5" fill="#3b82f6"/>
+        <text x="310" y="120" font-size="12" font-weight="700" fill="#1e293b">设计思维</text>
+        <text x="310" y="138" font-size="11" fill="#64748b">用户洞察工具</text>
+        <circle cx="300" cy="156" r="3.5" fill="#3b82f6"/>
+        <text x="310" y="160" font-size="12" font-weight="700" fill="#1e293b">成长型思维</text>
+        <text x="310" y="178" font-size="11" fill="#64748b">思维组合的能量来源</text>
+
+        <rect x="468" y="92" width="202" height="132" rx="8" fill="#ffffff" stroke="#fecaca"/>
+        <text x="482" y="126" font-size="12" fill="#b91c1c">过早使用系统思维做</text>
+        <text x="482" y="146" font-size="12" fill="#b91c1c">宏大规划；或试图用</text>
+        <text x="482" y="166" font-size="12" fill="#b91c1c">第一性原理颠覆尚未</text>
+        <text x="482" y="186" font-size="12" fill="#b91c1c">充分理解的行业</text>
+
+        <!-- 行间箭头 -->
+        <polygon points="58,225 65,233 51,233" fill="#94a3b8"/>
+
+        <!-- ===== 行二：模式验证 ===== -->
+        <rect x="10" y="236" width="96" height="132" rx="8" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="58" y="292" text-anchor="middle" font-size="11" font-weight="700" fill="#d97706">阶段二</text>
+        <text x="58" y="316" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">模式验证</text>
+
+        <rect x="114" y="236" width="172" height="132" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="126" y="264" font-size="13" font-weight="700" fill="#d97706">精益创业（核心）</text>
+        <text x="126" y="288" font-size="12" fill="#334155">以"构建—测量—学习"</text>
+        <text x="126" y="308" font-size="12" fill="#334155">循环快速验证与迭代</text>
+
+        <rect x="292" y="236" width="168" height="132" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <circle cx="300" cy="260" r="3.5" fill="#d97706"/>
+        <text x="310" y="264" font-size="12" font-weight="700" fill="#1e293b">反脆弱思维</text>
+        <text x="310" y="282" font-size="11" fill="#64748b">明确可承受损失底线</text>
+        <text x="310" y="304" font-size="11" fill="#64748b">下行风险可控，</text>
+        <text x="310" y="320" font-size="11" fill="#64748b">才敢放手快速试错</text>
+
+        <rect x="468" y="236" width="202" height="132" rx="8" fill="#ffffff" stroke="#fecaca"/>
+        <text x="482" y="276" font-size="12" fill="#b91c1c">模式未被验证时，</text>
+        <text x="482" y="296" font-size="12" fill="#b91c1c">过早引入因果逻辑：</text>
+        <text x="482" y="316" font-size="12" fill="#b91c1c">按"目标—计划—资源"</text>
+        <text x="482" y="336" font-size="12" fill="#b91c1c">的因果方式铺开投入</text>
+
+        <!-- 行间箭头 -->
+        <polygon points="58,369 65,377 51,377" fill="#94a3b8"/>
+
+        <!-- ===== 行三：规模化 ===== -->
+        <rect x="10" y="380" width="96" height="132" rx="8" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="58" y="436" text-anchor="middle" font-size="11" font-weight="700" fill="#059669">阶段三</text>
+        <text x="58" y="460" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">规模化</text>
+
+        <rect x="114" y="380" width="172" height="132" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="126" y="408" font-size="13" font-weight="700" fill="#059669">系统思维（主导）</text>
+        <text x="126" y="432" font-size="12" fill="#334155">反馈回路：增长引擎</text>
+        <text x="126" y="452" font-size="12" fill="#334155">与增长边界；杠杆点：</text>
+        <text x="126" y="472" font-size="12" fill="#334155">找撬动系统的支点</text>
+
+        <rect x="292" y="380" width="168" height="132" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <circle cx="300" cy="404" r="3.5" fill="#059669"/>
+        <text x="310" y="408" font-size="12" font-weight="700" fill="#1e293b">逆向思维</text>
+        <text x="310" y="426" font-size="11" fill="#64748b">失败预演 ＋ 第二曲线</text>
+        <circle cx="300" cy="444" r="3.5" fill="#059669"/>
+        <text x="310" y="448" font-size="12" font-weight="700" fill="#1e293b">因果逻辑（渐增）</text>
+        <text x="310" y="466" font-size="11" fill="#64748b">市场明朗后比重上升</text>
+
+        <rect x="468" y="380" width="202" height="132" rx="8" fill="#ffffff" stroke="#fecaca"/>
+        <text x="482" y="420" font-size="12" fill="#64748b">教材此处未单列典型</text>
+        <text x="482" y="440" font-size="12" fill="#64748b">误用；可借"失败预演"</text>
+        <text x="482" y="460" font-size="12" fill="#64748b">持续自查规模化盲区</text>
+
+        <!-- ===== 底部金句 ===== -->
+        <rect x="10" y="524" width="660" height="56" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="548" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">"不存在绝对'最好'的思维，只有最适合当前情境的思维组合"</text>
+        <text x="340" y="568" text-anchor="middle" font-size="12" fill="#475569">协同的关键在于情境敏感性与快速切换能力</text>
+      </svg>
+      <div class="caption">图 1　创业三阶段 × 思维组合动态应用矩阵：主导 / 辅助 / 误用三列对照</div>
+    </div>
+    <div class="quote">
+      <b>协同的关键在于情境敏感性与快速切换能力。不存在绝对"最好"的思维，只有最适合当前情境的思维组合。</b>阶段变了，思维的主次位置就要跟着变——这正是本卡要练的"切换能力"。
+    </div>
+  </section>
+
+  <!-- ============ 逐阶段详解 ============ -->
+  <section>
+    <h2>逐阶段详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">阶段一</span>
+        <h3>机会开发</h3>
+        <span class="role">思维基调：<b>从手头资源出发去创造</b></span>
+      </div>
+      <div class="q">本阶段的思维组合回答：<b>"手头有什么，从哪里开始？"</b></div>
+      <dl class="kv">
+        <dt>主导思维</dt>
+        <dd><b>效果逻辑</b>——手段驱动而非目标驱动：以"我是谁、我知道什么、我认识谁"盘点既有资源，只投入可承受的损失，小步快跑、快速迭代。</dd>
+        <dt>辅助思维</dt>
+        <dd><b>设计思维</b>充当用户洞察工具，确保瞄准的是真问题；<b>成长型思维</b>提供整个思维组合的能量来源，扛住早期的高不确定性。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见误用</div>
+        <div class="trap"><span class="tn">过早宏大规划</span><span class="td">过早使用系统思维做宏大规划——机会尚未看清就画全景图，图纸越大，验证越慢。</span></div>
+        <div class="trap"><span class="tn">颠覆幻觉</span><span class="td">试图用第一性原理颠覆尚未充分理解的行业——还没弄懂规则就谈改写规则。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">阶段二</span>
+        <h3>模式验证</h3>
+        <span class="role">思维基调：<b>用实验换答案</b></span>
+      </div>
+      <div class="q">本阶段的思维组合回答：<b>"这套模式到底成不成立？"</b></div>
+      <dl class="kv">
+        <dt>主导思维</dt>
+        <dd><b>精益创业</b>——以"构建—测量—学习"循环为核心：把模式拆成可检验的假设，用最小成本跑通"验证—调整"的节奏。</dd>
+        <dt>辅助思维</dt>
+        <dd><b>反脆弱思维</b>——明确可承受损失的底线：知道最多输多少，才敢在底线之内放手快速试错，把失败转化为信息收益。</dd>
+      </dl>
+      <div class="traps">
+        <div class="tt">常见误用</div>
+        <div class="trap"><span class="tn">过早引入因果逻辑</span><span class="td">模式尚未被验证，就按"目标—计划—资源"的因果方式铺开投入——把"希望成立的"当成了"已经验证的"。</span></div>
+      </div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">阶段三</span>
+        <h3>规模化</h3>
+        <span class="role">思维基调：<b>看系统、找支点、防失败</b></span>
+      </div>
+      <div class="q">本阶段的思维组合回答：<b>"系统变复杂了，哪里会被拖垮、还能往哪里撬？"</b></div>
+      <dl class="kv">
+        <dt>主导思维</dt>
+        <dd><b>系统思维</b>——用反馈回路看清增长引擎与增长边界，用杠杆点找到撬动系统的支点，把资源用在结构性位置上。</dd>
+        <dt>辅助思维</dt>
+        <dd><b>逆向思维</b>——以失败预演提前暴露规模化盲区，以第二曲线探索为下一轮增长做储备；随着市场明朗化，<b>因果逻辑的比重逐渐增加</b>。</dd>
+      </dl>
+      <div class="note-gray">
+        说明：教材本章未单列本阶段的典型误用；实践中可借"失败预演"持续自查——假设规模化已经失败，倒推最可能的原因。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>定位阶段。</b>先对照创业过程三阶段模型（卡 1-02）的任务与产出判据，确认项目当前处于机会开发、模式验证还是规模化——阶段定错，后面的处方全错。</li>
+      <li><b>核对主导思维。</b>问自己：最近一个月的工作，是不是主要由本阶段的"主线思维"在驱动？机会开发期却天天在做系统规划，就是主线错位。</li>
+      <li><b>检查辅助思维是否缺席。</b>验证期只有精益循环、没有可承受损失底线，就容易越试越深；用组合，不用单打。</li>
+      <li><b>对照误用清单自查。</b>命中任何一条立即纠偏：该收的宏大规划收起来，该撤的因果式投入撤回来。</li>
+      <li><b>换挡时同步换脑。</b>阶段切换（推进或退回）的那一刻，同步切换思维组合——记住：<b>不存在绝对"最好"的思维，只有最适合当前情境的思维组合</b>。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>机会驱动型创业项目的<b>"思维体检"</b>：先判断阶段，再开出思维处方</li>
+          <li>培训与咨询中的"阶段诊断 → 思维组合配置"教学主线</li>
+          <li>创业者的个人学习规划：先练本阶段主导思维，再补辅助思维</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>三阶段是逻辑递进而非严格时间序列，常有交织与回退，<b>切换思维组合前先确认阶段判据</b></li>
+          <li>同一阶段在不同情境下组合还会变化，需与情境二维矩阵（不确定性 × 资源约束）叠加使用</li>
+          <li>知道"该用什么"不等于"用得出来"——切换能力需要刻意练习，本卡是地图不是腿</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>阶段定位的判据来自这张卡——先定"我在哪"，再用本卡开"思维处方"，两卡构成"阶段—思维"双轨。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-10</div>
+        <h4>情境二维矩阵</h4>
+        <p>与本卡叠加，构成"阶段 + 情境"双维导航：同一阶段落在不同象限，思维组合还会再调整。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-01</div>
+        <h4>思维三层次框架</h4>
+        <p>本卡涉及的各种思维在"心理—认知—行动"三层中的位置与训练方法，按层补课。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 3 章，第 83—84 页</span>
+    <span>方法论卡 3-09 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

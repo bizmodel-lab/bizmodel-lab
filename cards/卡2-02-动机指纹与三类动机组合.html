@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卡2-02 · 动机指纹与三类动机组合</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --s1:#3b82f6; --s1-bg:#eff6ff; --s1-line:#bfdbfe;
+    --s2:#d97706; --s2-bg:#fffbeb; --s2-line:#fde68a;
+    --s3:#059669; --s3-bg:#ecfdf5; --s3-line:#a7f3d0;
+    --risk:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  /* ===== 卡头 ===== */
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--s1);padding-left:14px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--s1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--s1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 三层价值 ===== */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .value{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .value .vt{font-weight:700;font-size:15px;margin-bottom:6px;}
+  .value .vd{font-size:13.5px;color:var(--ink-3);line-height:1.7;}
+
+  /* ===== 模型图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 组合详解 ===== */
+  .stage{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 26px;margin-bottom:18px;border-top:4px solid var(--ink-3);
+  }
+  .stage.s1{border-top-color:var(--s1);}
+  .stage.s2{border-top-color:var(--s2);}
+  .stage.s3{border-top-color:var(--s3);}
+  .stage-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px;}
+  .stage-head .sn{
+    font-size:13px;font-weight:700;color:#fff;border-radius:6px;padding:2px 10px;letter-spacing:1px;
+  }
+  .s1 .sn{background:var(--s1);} .s2 .sn{background:var(--s2);} .s3 .sn{background:var(--s3);}
+  .stage-head h3{font-size:20px;font-weight:700;}
+  .stage-head .role{font-size:13px;color:var(--ink-3);margin-left:auto;}
+  .stage-head .role b{color:var(--ink-2);}
+  .stage .q{margin:8px 0 14px;font-size:15px;color:var(--ink-2);}
+  .kv{display:grid;grid-template-columns:88px 1fr;gap:6px 12px;margin-bottom:14px;}
+  .kv dt{
+    font-size:13px;font-weight:700;color:var(--ink-3);text-align:right;padding-top:2px;
+  }
+  .kv dd{font-size:14.5px;color:var(--ink-2);}
+  .kv dd b{color:var(--ink);}
+
+  /* ===== 提示框 ===== */
+  .mile-note{
+    margin-top:14px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;
+    padding:14px 18px;font-size:14px;color:var(--ink-2);
+  }
+  .mile-note b{color:var(--s1);}
+
+  /* ===== 步骤 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--s1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 适用与边界 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .yes{background:var(--s3-bg);border-color:var(--s3-line);}
+  .fit .care{background:var(--s2-bg);border-color:var(--s2-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .yes h4{color:var(--s3);} .fit .care h4{color:var(--s2);}
+  .fit ul{list-style:none;}
+  .fit li{
+    font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;
+  }
+  .fit .yes li::before{content:"✓";position:absolute;left:0;color:var(--s3);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--s2);font-weight:700;}
+
+  /* ===== 配套卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 出处 ===== */
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .values,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+    .kv{grid-template-columns:76px 1fr;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .stage,.value,ol.steps li,.rel{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/cards.html">← 方法论库</a><a href="/chapter.html?id=2">第 2 章 · 创业者</a><span class="card-nav-meta">卡 2-02 · 动机指纹与三类动机组合</span><a class="card-nav-prev" href="卡2-01-创业者四大心理特质框架.html">← 卡 2-01</a><a class="card-nav-next" href="卡2-03-动机触发四要素.html">卡 2-03 →</a><a href="/">首页</a></div></header>
+<style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">方法论卡 2-02</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>动机指纹与三类动机组合</h1>
+  <div class="oneliner">动机极少单一——权重与组合构成你的"动机指纹"，混合动机比单一动机更能支撑坚持。</div>
+
+  <!-- ============ 为什么 ============ -->
+  <section>
+    <h2>为什么需要这张卡</h2>
+    <p>"你为什么创业？"这一问，多数人答不利索——因为真实动机不是一条，是<b>一束</b>：既想自由，又想赚钱，还想证明自己。只承认其中一条的创业者，往往在它受挫时整机断电。</p>
+    <p>教材用"动机指纹"来刻画这种结构：<b>"这些动机的权重和组合构成独特的'动机指纹'"</b>。把指纹拍清楚，带来三层实践价值：</p>
+    <div class="values">
+      <div class="value">
+        <div class="vt">看清动力结构</div>
+        <div class="vd">知道自己靠什么发动，而不是笼统地说"想创业"。</div>
+      </div>
+      <div class="value">
+        <div class="vt">预判坚持程度</div>
+        <div class="vd">混合动机比单一动机更能预测坚持度与初期成功。</div>
+      </div>
+      <div class="value">
+        <div class="vt">受挫时有备用引擎</div>
+        <div class="vd">一条动机熄火，其他动机接续供能，不至于整机停摆。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 模型图 ============ -->
+  <section>
+    <h2>模型图</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 418" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <defs>
+          <marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 Z" fill="#475569"/>
+          </marker>
+        </defs>
+
+        <!-- 顶部总纲横幅 -->
+        <rect x="10" y="8" width="660" height="34" rx="17" fill="#f1f5f9" stroke="#cbd5e1"/>
+        <text x="340" y="30" text-anchor="middle" font-size="13" fill="#475569">动机极少单一：多种动机的权重和组合，构成独特的"动机指纹"</text>
+
+        <!-- 六个动机要素 -->
+        <rect x="10" y="56" width="103" height="34" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="61" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">理想</text>
+        <rect x="121" y="56" width="103" height="34" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="172" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">现实</text>
+        <rect x="232" y="56" width="103" height="34" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="283" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">自主</text>
+        <rect x="343" y="56" width="103" height="34" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="394" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">成就</text>
+        <rect x="454" y="56" width="103" height="34" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="505" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">生存</text>
+        <rect x="565" y="56" width="103" height="34" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="616" y="78" text-anchor="middle" font-size="12.5" font-weight="700" fill="#475569">发展</text>
+
+        <!-- 汇聚箭头 -->
+        <line x1="340" y1="94" x2="340" y2="108" stroke="#475569" stroke-width="2" marker-end="url(#ah)"/>
+        <text x="356" y="106" font-size="11.5" fill="#64748b">权重分配（因人而异）</text>
+
+        <!-- 权重条形（示意） -->
+        <rect x="90" y="114" width="150" height="30" fill="#3b82f6"/>
+        <text x="165" y="133" text-anchor="middle" font-size="11" fill="#ffffff">理想 30%</text>
+        <rect x="240" y="114" width="125" height="30" fill="#d97706"/>
+        <text x="302" y="133" text-anchor="middle" font-size="11" fill="#ffffff">自主 25%</text>
+        <rect x="365" y="114" width="100" height="30" fill="#059669"/>
+        <text x="415" y="133" text-anchor="middle" font-size="11" fill="#ffffff">成就 20%</text>
+        <rect x="465" y="114" width="75" height="30" fill="#334155"/>
+        <text x="502" y="133" text-anchor="middle" font-size="11" fill="#ffffff">生存 15%</text>
+        <rect x="540" y="114" width="50" height="30" fill="#94a3b8"/>
+        <text x="565" y="133" text-anchor="middle" font-size="11" fill="#ffffff">发展 10%</text>
+        <text x="340" y="163" text-anchor="middle" font-size="11.5" fill="#64748b">示意：同一组动机，权重组合因人而异 → 独特的"动机指纹"</text>
+
+        <!-- ===== 三类典型组合 ===== -->
+        <rect x="10" y="176" width="212" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M10,186 a10,10 0 0 1 10,-10 h192 a10,10 0 0 1 10,10 v16 h-212 z" fill="#3b82f6"/>
+        <text x="116" y="193.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">组合一 · 理想—现实型</text>
+        <rect x="22" y="214" width="88" height="29.7" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="66" y="232.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#3b82f6">理想追求</text>
+        <text x="120" y="232" text-anchor="middle" font-size="14" font-weight="700" fill="#64748b">＋</text>
+        <rect x="132" y="214" width="88" height="29.7" rx="13" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="176" y="232.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#3b82f6">现实回报</text>
+        <text x="24" y="264" font-size="11.5" fill="#475569">长远理想与现实回报并重</text>
+        <text x="24" y="281" font-size="11.5" fill="#475569">既要仰望，也要落地</text>
+        <text x="24" y="302" font-size="11" fill="#64748b">受挫时互相托底</text>
+
+        <rect x="234" y="176" width="212" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M234,186 a10,10 0 0 1 10,-10 h192 a10,10 0 0 1 10,10 v16 h-212 z" fill="#d97706"/>
+        <text x="340" y="193.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">组合二 · 自主—成就型</text>
+        <rect x="246" y="214" width="88" height="29.7" rx="13" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="290" y="232.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#d97706">独立自主</text>
+        <text x="344" y="232" text-anchor="middle" font-size="14" font-weight="700" fill="#64748b">＋</text>
+        <rect x="356" y="214" width="88" height="29.7" rx="13" fill="#fffbeb" stroke="#fde68a"/>
+        <text x="400" y="232.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#d97706">成就认可</text>
+        <text x="248" y="264" font-size="11.5" fill="#475569">独立自主与成就认可并重</text>
+        <text x="248" y="281" font-size="11.5" fill="#475569">要自由，也要被认可</text>
+        <text x="248" y="302" font-size="11" fill="#64748b">两种满足互相强化</text>
+
+        <rect x="458" y="176" width="212" height="150" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+        <path d="M458,186 a10,10 0 0 1 10,-10 h192 a10,10 0 0 1 10,10 v16 h-212 z" fill="#059669"/>
+        <text x="564" y="193.4" text-anchor="middle" font-size="12.5" font-weight="700" fill="#ffffff">组合三 · 生存—发展型</text>
+        <rect x="470" y="214" width="88" height="29.7" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="514" y="232.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#059669">生存保障</text>
+        <text x="568" y="232" text-anchor="middle" font-size="14" font-weight="700" fill="#64748b">＋</text>
+        <rect x="580" y="214" width="88" height="29.7" rx="13" fill="#ecfdf5" stroke="#a7f3d0"/>
+        <text x="624" y="232.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="#059669">发展空间</text>
+        <text x="472" y="264" font-size="11.5" fill="#475569">先解决生计，再谋发展</text>
+        <text x="472" y="281" font-size="11.5" fill="#475569">立足当下，着眼成长</text>
+        <text x="472" y="302" font-size="11" fill="#64748b">生计稳了，发展接棒</text>
+
+        <!-- ===== 受挫互济机制 ===== -->
+        <rect x="10" y="340" width="660" height="69.5" rx="10" fill="#eff6ff" stroke="#bfdbfe"/>
+        <text x="340" y="362" text-anchor="middle" font-size="12.5" font-weight="700" fill="#3b82f6">受挫互济：混合动机为何更持久</text>
+        <text x="340" y="382" text-anchor="middle" font-size="12" fill="#475569">当一方面受挫时，另一方面的满足可以维持创业者的动力</text>
+        <text x="340" y="398" text-anchor="middle" font-size="11.5" fill="#64748b">——混合动机往往比单一动机更能预测创业的坚持度与初期成功</text>
+      </svg>
+      <div class="caption">图 1　动机指纹：要素 → 权重组合 → 三类典型组合 → 受挫互济机制</div>
+    </div>
+    <div class="quote">
+      指纹的意义不在"独特"本身，而在<b>结构</b>：哪条动机是主引擎、哪些是辅机、受挫时谁能顶上——把这张结构图看清，坚持与放弃都不再是糊涂账。
+    </div>
+  </section>
+
+  <!-- ============ 逐部分详解 ============ -->
+  <section>
+    <h2>逐部分详解</h2>
+
+    <div class="stage s1">
+      <div class="stage-head">
+        <span class="sn">要点一</span>
+        <h3>动机极少单一</h3>
+        <span class="role">起点事实：<b>混合是常态，单一是例外</b></span>
+      </div>
+      <div class="q">这一要点回答：<b>"我的动力是一条线，还是一束线？"</b></div>
+      <dl class="kv">
+        <dt>基本事实</dt>
+        <dd>现实中的创业动机几乎总是混合的：理想与现实、自主与成就、生存与发展常常同场出现，只是权重不同。</dd>
+        <dt>实践含义</dt>
+        <dd>只用一条动机（如"赚大钱"）解释自己的创业者，等于把全部动力押在一根支柱上——它一断，人就垮。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-head">
+        <span class="sn">要点二</span>
+        <h3>动机指纹</h3>
+        <span class="role">教材术语：<b>权重＋组合＝独特画像</b></span>
+      </div>
+      <div class="q">这一要点回答：<b>"我的动机结构长什么样？"</b></div>
+      <dl class="kv">
+        <dt>是什么</dt>
+        <dd>教材提出：<b>"这些动机的权重和组合构成独特的'动机指纹'"</b>——如同指纹人人不同，动机的配比结构也是个人的独特标识。</dd>
+        <dt>怎么读</dt>
+        <dd>画一条权重条：哪条动机占大头（主引擎）、哪几条占小头（辅机）。主引擎决定你被什么点燃，辅机决定你能撑多久。</dd>
+      </dl>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-head">
+        <span class="sn">要点三</span>
+        <h3>三类典型组合</h3>
+        <span class="role">识别参照：<b>对号入座，也可自成一型</b></span>
+      </div>
+      <div class="q">这一要点回答：<b>"我的指纹最接近哪一类组合？"</b></div>
+      <dl class="kv">
+        <dt>理想—现实型</dt>
+        <dd>长远理想与现实回报并重：理想给方向感，现实回报给踏实感，一个管仰望、一个管落地。</dd>
+        <dt>自主—成就型</dt>
+        <dd>独立自主与成就认可并重：为自由而做，也期待被证明——两种满足互相强化。</dd>
+        <dt>生存—发展型</dt>
+        <dd>先解决生计，再谋发展：生存动机保底线，发展动机开上限，生计稳了发展接棒。</dd>
+        <dt>用法提醒</dt>
+        <dd>三类是参照系不是名录：多数人的指纹是混合变体，落在两型之间很正常，说清自己的配比即可。</dd>
+      </dl>
+    </div>
+
+    <div class="mile-note">
+      <b>受挫互济是混合动机的核心优势。</b>教材指出：<b>"当一方面受挫时，另一方面的满足可以维持创业者的动力"</b>，因此<b>混合动机"往往比单一动机更能预测创业的坚持度与初期成功"</b>。自查方法很简单：假设你的主动机彻底受挫（如财务回报迟迟不来），剩下的动机构不构成继续下去的理由？
+    </div>
+  </section>
+
+  <!-- ============ 使用步骤 ============ -->
+  <section>
+    <h2>怎么用这张卡</h2>
+    <ol class="steps">
+      <li><b>列动机清单。</b>写下所有推动你创业的动机，越全越好——包括那些不好意思承认的（赚钱、证明自己都算数）。</li>
+      <li><b>排权重。</b>给每条动机估一个比例，画成自己的动机条，主引擎一眼可见。</li>
+      <li><b>对照三组合。</b>看最接近"理想—现实 / 自主—成就 / 生存—发展"中的哪一类，还是自成一型。</li>
+      <li><b>做压力测试。</b>问自己：主动机受挫时，其他动机能否接续供能？若不能，考虑主动补一条动机支柱。</li>
+      <li><b>定期重拍指纹。</b>动机随创业阶段演化，用卡 2-04 的觉察三路径定期校对，别拿三年前的指纹指导今天。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 适用与边界 ============ -->
+  <section>
+    <h2>适用场景与边界</h2>
+    <div class="fit">
+      <div class="fbox yes">
+        <h4>适用</h4>
+        <ul>
+          <li>创业启动前的<b>动机自我剖析与访谈</b></li>
+          <li>受挫期复盘：动力掉线时，检查哪台引擎熄了火</li>
+          <li>合伙人与早期团队的对齐：各自的指纹是否兼容</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>慎用与注意</h4>
+        <ul>
+          <li>动机会随阶段演化（启动—成长—成熟各期不同），<b>指纹是快照，需定期重拍</b></li>
+          <li>勿做价值评判：生存型与理想型动机没有高下之分</li>
+          <li>动机结构解释"为何坚持"，<b>不能替代"怎么做对"的战略判断</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 配套卡片 ============ -->
+  <section>
+    <h2>配套卡片</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-03</div>
+        <h4>动机触发四要素</h4>
+        <p>本卡回答"为什么出发"，卡 2-03 回答"为什么是现在出发"——触发的时刻由四要素共同作用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-04</div>
+        <h4>动机觉察三路径＋引导三技术</h4>
+        <p>指纹会变：用排序—调适—转化持续觉察与管理自己的动机结构。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-01</div>
+        <h4>创业类型五维分类</h4>
+        <p>动机维度（生存型 / 机会型）即源于此：先定类型，再深挖动机指纹。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自科学出版社《创业学》（尹开国，2026）第 2 章，第 41 页</span>
+    <span>方法论卡 2-02 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>
