@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡7-01 · SWOT分析</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 7 章 · 创业战略</a><span class="card-nav-meta">概念卡 7-01 · SWOT 分析</span><a class="card-nav-prev" href="概念卡6-01-资源编排理论.html">← 概念卡 6-01</a><a class="card-nav-next" href="概念卡7-02-蓝海战略四步动作框架.html">概念卡 7-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 7-01</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>SWOT 分析</h1>
+  <div class="oneliner">把"能够做的"与"可能做的"放上同一张矩阵——内外匹配，直接导出四种战略选项。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">内部因素</span>
+        <h3>优势 S / 劣势 W</h3>
+        <div class="d1">回答"我们能够做什么"——盘点团队独特资源、能力短板，以及与对手的真正差异。</div>
+        <ul>
+          <li>视角向内：资源、能力、组织禀赋</li>
+          <li>识别出的优势是需保护和强化的核心资产</li>
+          <li>识别出的劣势是资源获取与整合的重点方向</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">外部因素</span>
+        <h3>机会 O / 威胁 T</h3>
+        <div class="d1">回答"环境允许我们做什么"——承接宏观环境分析的机会窗口与行业分析的竞争结构。</div>
+        <ul>
+          <li>视角向外：市场趋势、政策、竞争格局</li>
+          <li>机会窗口会开启也会关闭，须持续跟踪</li>
+          <li>威胁提示防御、转型乃至退出的边界条件</li>
+        </ul>
+      </div>
+    </div>
+    <p>SWOT 的本质不是罗列四张清单，而是<b>匹配</b>：把内部"能够做的"与外部"可能做的"交叉比对，矩阵的每个格子对应一种战略组合，使分析从定性描述走向结构化决策。</p>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>矩阵与四种战略组合</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 列标题：内部 -->
+        <text x="262" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">优势 S · 内部</text>
+        <text x="537" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">劣势 W · 内部</text>
+        <!-- 行标题：外部 -->
+        <text x="112" y="110" text-anchor="end" font-size="13" font-weight="700" fill="#475569">机会 O</text>
+        <text x="112" y="130" text-anchor="end" font-size="11" fill="#94a3b8">外部</text>
+        <text x="112" y="234" text-anchor="end" font-size="13" font-weight="700" fill="#475569">威胁 T</text>
+        <text x="112" y="254" text-anchor="end" font-size="11" fill="#94a3b8">外部</text>
+        <!-- SO -->
+        <rect x="130" y="58" width="265" height="112" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="262" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">SO 战略</text>
+        <text x="262" y="118" text-anchor="middle" font-size="11" fill="#64748b">利用优势抓住机会</text>
+        <text x="262" y="140" text-anchor="middle" font-size="11" fill="#94a3b8">最理想方向，优先配置资源</text>
+        <!-- WO -->
+        <rect x="405" y="58" width="265" height="112" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="537" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">WO 战略</text>
+        <text x="537" y="118" text-anchor="middle" font-size="11" fill="#64748b">利用机会弥补劣势</text>
+        <text x="537" y="140" text-anchor="middle" font-size="11" fill="#94a3b8">补能力路径，或合作获取</text>
+        <!-- ST -->
+        <rect x="130" y="182" width="265" height="112" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="262" y="216" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">ST 战略</text>
+        <text x="262" y="242" text-anchor="middle" font-size="11" fill="#64748b">利用优势规避威胁</text>
+        <text x="262" y="264" text-anchor="middle" font-size="11" fill="#94a3b8">构建防御壁垒（专利、品牌）</text>
+        <!-- WT -->
+        <rect x="405" y="182" width="265" height="112" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="537" y="216" text-anchor="middle" font-size="15" font-weight="700" fill="#475569">WT 战略</text>
+        <text x="537" y="242" text-anchor="middle" font-size="11" fill="#64748b">最小化劣势与威胁</text>
+        <text x="537" y="264" text-anchor="middle" font-size="11" fill="#94a3b8">最困难处境，考虑转型或退出</text>
+        <!-- 底部注 -->
+        <text x="400" y="326" text-anchor="middle" font-size="12" fill="#94a3b8">战略 ＝ 将"能够做的"（S/W）与"可能做的"（O/T）进行匹配</text>
+      </svg>
+      <div class="caption">SWOT（TOWS）矩阵：内部因素 × 外部因素 → 四种战略组合</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      在斯坦福研究所的企业战略规划研究中提出 <b>SOFT 框架</b>——满意（satisfactory）、机会（opportunity）、失误（fault）、威胁（threat）。实证发现：管理者制定战略时更关注"满意与失误"的对比，而非抽象的优劣势。
+      <span class="who">—— 艾伯特·汉弗莱（Albert S. Humphrey），1963</span>
+    </div>
+    <div class="quote">
+      战略的本质是将公司<b>"能够做的"</b>（内部优势与劣势）与<b>"可能做的"</b>（外部机会与威胁）进行匹配。
+      <span class="who">—— 肯尼斯·安德鲁斯（Kenneth R. Andrews），哈佛商学院</span>
+    </div>
+    <div class="quote">
+      设计 <b>SWOT 矩阵（TOWS 矩阵）</b>，系统提出 SO、WO、ST、WT 四种战略组合，使 SWOT 从定性描述走向结构化决策。
+      <span class="who">—— 海因茨·韦里克（Heinz Weihrich），1982</span>
+    </div>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点：创业情境下的独特价值</h2>
+    <ol class="steps">
+      <li><b>强制内外兼顾，避免偏执一端：</b>创业者容易陷入两种极端——只盯外部机会而忽视能力短板（机会主义），或被内部资源束缚而错失窗口（资源决定论）。SWOT 强制同时审视内外，在机会与能力之间寻求动态匹配。</li>
+      <li><b>识别战略杠杆点：</b>创业企业资源有限，不可能平均用力。优势与机会高度重合的领域正是杠杆点，应集中投入；劣势与威胁叠加时，则须考虑转型或退出。</li>
+      <li><b>动态更新，适应迭代：</b>优势可能被模仿，劣势可能被弥补，机会窗口可能关闭。SWOT 不是一次性工作，而应伴随创业进程持续更新，充当团队的"战略导航仪表盘"。</li>
+    </ol>
+    <div class="trend">
+      <b>承上启下的枢纽：</b>SWOT 把宏观环境分析的机会窗口、行业环境分析的竞争结构、内部环境分析的优势劣势三者有机整合，形成从机会识别到战略选择的完整认知闭环，为后续竞争战略与市场进入决策奠定基础。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>商业计划书的环境分析章节，用矩阵导出并论证战略选择</li>
+          <li>团队定期战略复盘：更新四象限，检查杠杆点是否漂移</li>
+          <li>评估新机会时自查：这是机会主义，还是真正的 SO 重合？</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>内部评估须如实：勿高估优势、回避劣势，否则匹配失真</li>
+          <li>不要做完一次就归档——矩阵过时，决策依据随之失效</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-06</div>
+        <h4>战略匹配度—资源缺口矩阵</h4>
+        <p>同属"匹配"逻辑：SWOT 定战略方向，这张卡把识别出的劣势转译为资源建设的优先级清单。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-03</div>
+        <h4>三种基本竞争战略情境化</h4>
+        <p>SWOT 矩阵给出的是战略方向，落到竞争层面还需在成本、差异化、聚焦中作出选择。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 7 章，第 187 页 · 教材知识链接 7-1</span>
+    <span>概念卡 7-01 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

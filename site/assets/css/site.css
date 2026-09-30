@@ -202,6 +202,8 @@ img { max-width: 100%; }
   font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 18px;
 }
 .loop-card.s-bg .glyph { background: linear-gradient(135deg, #542EA7, #8B5CF6); }
+.loop-card.k-bg .glyph { background: linear-gradient(135deg, #0D9488, #2DD4BF); }
+.loop-card.c-bg .glyph { background: linear-gradient(135deg, #C2410C, #F97316); }
 .loop-card.p-bg .glyph { background: linear-gradient(135deg, #F59E0B, #FBBF24); }
 .loop-card.e-bg .glyph { background: linear-gradient(135deg, #94A3B8, #CBD5E1); }
 .loop-card h3 { font-size: 22px; margin-bottom: 10px; }
@@ -210,6 +212,7 @@ img { max-width: 100%; }
 .loop-card .badge.soon { background: #F1F5F9; color: var(--text-3); }
 .loop-card .badge.live { background: var(--accent-light); color: #92400E; }
 .loop-card .badge.core { background: var(--primary-light); color: var(--primary); }
+.loop-card .badge.new { background: #F0FDFA; color: #0F766E; }
 
 /* ---------- 章节徽章网格 ---------- */
 .ch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }

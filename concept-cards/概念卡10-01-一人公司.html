@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡10-01 · 一人公司</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 10 章 · 创业组织</a><span class="card-nav-meta">概念卡 10-01 · 一人公司</span><a class="card-nav-prev" href="概念卡7-02-蓝海战略四步动作框架.html">← 概念卡 7-02</a><a class="card-nav-next" href="概念卡10-02-创始人模式.html">概念卡 10-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 10-01</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>一人公司</h1>
+  <div class="oneliner">一个人就是一家公司——AI 时代，"创业即组织"的铁律正在被原子化的个体创业者改写。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">传统形态</span>
+        <h3>无雇员公司：一人出资、一人经营</h3>
+        <div class="d1">创业者既是创始人，也是唯一的全职员工；既是决策者，也是执行者。</div>
+        <ul>
+          <li>法律形式：个人独资企业或一人有限责任公司</li>
+          <li>优势：决策快、成本低、转型灵活</li>
+          <li>局限：能力边界有限、抗风险能力较弱</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">新型形态</span>
+        <h3>AI 赋能的一人公司：一人核心、智能体协作</h3>
+        <div class="d1">以创始人"一人"为核心经营者，借助 AI 工具与外部协作网络，由个人独立或不超过 10 人的小微团队完成价值创造、交付与获取。</div>
+        <ul>
+          <li>并非法律意义上的"一人有限责任公司"，而是轻量化创业形态</li>
+          <li>依托大模型、云服务等技术，快速验证创意、对接市场</li>
+          <li>高度集中于现代服务业：数字经济、内容创作、跨境电商等新兴领域</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>一人公司如何运转</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 235" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- AI 工具节点 -->
+        <rect x="40" y="40" width="170" height="64" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="125" y="69" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">AI 工具与智能体</text>
+        <text x="125" y="92" text-anchor="middle" font-size="12" fill="#64748b">突破专业与资金门槛</text>
+        <!-- 创始人节点 -->
+        <rect x="255" y="28" width="170" height="86" rx="12" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+        <text x="340" y="62" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">创 始 人</text>
+        <text x="340" y="85" text-anchor="middle" font-size="12" fill="#64748b">核心经营者</text>
+        <text x="340" y="106" text-anchor="middle" font-size="12" fill="#64748b">决策者 + 执行者</text>
+        <!-- 外部协作网络节点 -->
+        <rect x="470" y="40" width="170" height="64" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="555" y="69" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">外部协作网络</text>
+        <text x="555" y="92" text-anchor="middle" font-size="12" fill="#64748b">轻资产对接市场</text>
+        <!-- 汇入箭头 -->
+        <path d="M214 72 L244 72" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M241 65 L252 72 L241 79" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M466 72 L436 72" fill="none" stroke="#0f766e" stroke-width="2"/>
+        <path d="M439 65 L428 72 L439 79" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 价值链 -->
+        <rect x="55" y="163" width="160" height="54" rx="12" fill="#f5f3ff" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="135" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">价值创造</text>
+        <text x="135" y="209" text-anchor="middle" font-size="12" fill="#64748b">创意与产品</text>
+        <rect x="260" y="163" width="160" height="54" rx="12" fill="#f5f3ff" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="340" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">市场交付</text>
+        <text x="340" y="209" text-anchor="middle" font-size="12" fill="#64748b">产品与服务</text>
+        <rect x="465" y="163" width="160" height="54" rx="12" fill="#f5f3ff" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="545" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">价值获取</text>
+        <text x="545" y="209" text-anchor="middle" font-size="12" fill="#64748b">收入与回报</text>
+        <!-- 链条箭头 -->
+        <path d="M217 190 L250 190" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M247 183 L258 190 L247 197" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M422 190 L455 190" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M452 183 L463 190 L452 197" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 创始人驱动价值链 -->
+        <path d="M340 116 C310 155, 190 150, 142 160" fill="none" stroke="#1e293b" stroke-width="2"/>
+        <path d="M134 154 L141 163 L150 155" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="caption">一人公司的运转结构：一人决策，智能体与外部网络协作执行</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      智能体的发展，正在从根本上降低创业门槛——创业者借助 AI 突破专业边界，绕开资金和人力的门槛，<b>带着一个好想法就能出发</b>。
+      <span class="who">—— 教材知识链接 10-1</span>
+    </div>
+    <div class="quote">
+      一人公司的核心价值在于打破工业时代以来<b>"创业即组织"的铁律</b>，实现生产力的原子化重构——从"碳基+碳基"（人与人）转向"碳基×硅基"（人机融合）。
+      <span class="who">—— 教材知识链接 10-1</span>
+    </div>
+    <p>由此，创业形态正走向多元化：<b>一人创业与团队创业并非对立关系</b>，而是创业生命周期中的不同阶段，也是不同创业者的个性化选择。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>一人公司 ≠ 一人有限责任公司：</b>前者说的是"一人经营"的组织形态，后者是"单一股东"的法律概念；教材讨论的新型一人公司，甚至可以是不超过 10 人的小微团队。</li>
+      <li><b>不是对团队创业的否定：</b>一人公司的兴起不意味着团队创业重要性下降，它揭示的是创业形态的多元化趋势，以及 AI 对创业门槛的系统性降低。</li>
+      <li><b>蜕变有触发条件：</b>当业务复杂度超出个人承载极限、增长要求能力多元整合、外部竞争需要组织化应对时，创业者需完成必要蜕变——学会信任他人、授权并搭建团队。</li>
+    </ol>
+    <div class="trend">
+      <b>能力观察：</b>一人公司对创业者的综合能力提出更高要求——产品、技术、运营、商务需一肩挑；同时还要具备整合 AI 工具与外部协作网络的"指挥"能力。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>判断项目属性：数字经济、内容创作、跨境电商等轻资产服务型业务，适合一人公司起步</li>
+          <li>把 AI 工具与智能体当作"虚拟团队"来设计工作流，明确哪些环节交给机器</li>
+          <li>预设"组织化触发器"：提前想清楚出现什么信号时该招第一个人</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>一人公司仍需合规：注册形态、财税安排不能因"只有一个人"而省略</li>
+          <li>不高估个人能力边界：决策快不等于决策对，警惕单点失误风险</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-01</div>
+        <h4>创业团队组建五原则</h4>
+        <p>当一人公司走到"必须搭团队"的蜕变节点，这套原则就是从个体走向组织的操作手册。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>创业团队结构三型模型</h4>
+        <p>帮助蜕变中的一人公司判断：该切换成哪种团队结构、优先补上哪些角色。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 10 章，第 256 页 · 教材知识链接 10-1</span>
+    <span>概念卡 10-01 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

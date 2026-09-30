@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡11-03 · 谷子经济</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 11 章 · 前沿专题</a><span class="card-nav-meta">概念卡 11-03 · 谷子经济</span><a class="card-nav-prev" href="概念卡11-02-AI智能体.html">← 概念卡 11-02</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 11-03</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>谷子经济</h1>
+  <div class="oneliner">"谷子"＝Goods（商品）的音译，指二次元 IP 周边商品——围绕它的情绪消费，正从小众圈层长成千亿级新赛道。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">谷 子</span>
+        <h3>IP 周边商品本身</h3>
+        <div class="d1">以动漫、漫画、游戏、小说、虚拟偶像等 IP 为核心的周边商品。</div>
+        <ul>
+          <li>品类：徽章（"吧唧"）、亚克力立牌、卡牌、挂件、手办等</li>
+          <li>圈层用语："吃谷"＝购买，"谷店"＝售卖场所</li>
+          <li>特征：单价较低、购买高频，属仪式性微消费</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">谷子经济</span>
+        <h3>围绕谷子的消费生态</h3>
+        <div class="d1">围绕二次元 IP 周边商品形成的消费经济形态，本质是情绪经济与符号消费的深度融合。</div>
+        <ul>
+          <li>产业链完整：上游 IP 开发运营、中游设计生产、下游市场销售</li>
+          <li>消费群体以女性为主，一线城市消费者占半数以上</li>
+          <li>国产 IP（《原神》《第五人格》等头部游戏 IP）加速占据市场核心</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>年轻人为什么吃谷</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 265" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 三重动因 -->
+        <text x="340" y="26" text-anchor="middle" font-size="12" fill="#94a3b8">三重递进的内在动因</text>
+        <rect x="55" y="40" width="170" height="58" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="140" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">情感联结</text>
+        <text x="140" y="88" text-anchor="middle" font-size="12" fill="#64748b">情感记忆的纪念品</text>
+        <rect x="255" y="40" width="170" height="58" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="340" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">身份认同</text>
+        <text x="340" y="88" text-anchor="middle" font-size="12" fill="#64748b">痛包外化 · 圈层识别</text>
+        <rect x="455" y="40" width="170" height="58" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="530" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">社交互动</text>
+        <text x="530" y="88" text-anchor="middle" font-size="12" fill="#64748b">晒谷 · 社交展示</text>
+        <!-- 递进箭头 -->
+        <path d="M229 69 L246 69" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M240 62 L251 69 L240 76" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M429 69 L446 69" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M440 62 L451 69 L440 76" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 汇聚箭头 -->
+        <path d="M140 102 L292 146" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M292 139 L303 149 L291 152" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M340 102 L340 144" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M333 136 L340 147 L347 136" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M530 102 L388 146" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M388 139 L377 149 L389 152" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 本质节点 -->
+        <rect x="215" y="152" width="250" height="62" rx="12" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+        <text x="340" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">情绪经济 × 符号消费</text>
+        <text x="340" y="202" text-anchor="middle" font-size="12" fill="#64748b">谷子消费的本质</text>
+        <!-- 循环链路注释 -->
+        <text x="340" y="246" text-anchor="middle" font-size="12" fill="#94a3b8">形成「消费 — 展示 — 互动 — 再消费」的循环链路</text>
+      </svg>
+      <div class="caption">谷子消费的三重动因与循环链路</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      谷子消费的本质，是<b>情绪经济与符号消费的深度融合</b>。
+      <span class="who">—— 教材知识链接 11-3</span>
+    </div>
+    <p><b>三重递进的内在动因：</b>其一，情感联结——Z 世代伴随二次元文化成长，与 IP 虚拟角色形成长期情感投射，谷子成为承载情感记忆的纪念品；其二，身份认同——把徽章等周边装饰在"痛包"（itabag）上随身携带，实现喜好外化、自我表达与圈层识别；其三，社交互动——在社交媒体"晒谷"，形成"消费—展示—互动—再消费"的循环链路。消费行为因此被概括为"花小钱、表态度、重展示、融圈子"。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>卖的不是商品，是情绪与符号：</b>谷子的溢价来自 IP 情感与圈层认同，而非使用价值——用普通消费品逻辑定价会失焦。</li>
+      <li><b>圈层逻辑优先于大众逻辑：</b>产品设计、话术与渠道都要进入圈层话语体系（吧唧、痛包、晒谷），否则难以获得认同。</li>
+      <li><b>产业链站位决定打法：</b>上游拼 IP 开发运营能力，中游拼设计与生产效率，下游拼渠道与社群运营。</li>
+      <li><b>IP 来源正在结构性变化：</b>国产 IP 加速占据市场核心，头部游戏 IP 带动周边热销——选品需盯住 IP 生命周期。</li>
+    </ol>
+    <div class="trend">
+      <b>资本观察：</b>资本正加速涌入数字文化领域，数字科技与文化产业深度融合的赛道备受青睐；IP 衍生品、潮玩、短剧等领域的头部企业纷纷通过上市或融资加速发展——谷子经济正是 IP 经济持续升温的缩影。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>先定产业链站位：做 IP 开发、设计生产还是渠道销售，能力模型完全不同</li>
+          <li>用"消费—展示—互动—再消费"的循环设计社群运营与产品迭代节奏</li>
+          <li>围绕国产头部 IP 与长青 IP 布局选品，兼顾热度与生命周期</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>IP 授权合规是底线：无授权周边的法律与平台风险极高</li>
+          <li>情绪消费有热度周期：IP 过气即库存，需控制囤货与 SKU 风险</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-09</div>
+        <h4>数字文化四维机会框架</h4>
+        <p>谷子经济属于数字文化消费维度的典型赛道，四维框架可帮它定位更大版图中的机会。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-10</div>
+        <h4>注意力情感变现价值闭环</h4>
+        <p>"情感联结—展示互动—再消费"正与该闭环逻辑同构，可借其设计变现路径。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 11 章，第 311 页 · 教材知识链接 11-3</span>
+    <span>概念卡 11-03 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

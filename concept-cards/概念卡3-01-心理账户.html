@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡3-01 · 心理账户</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">概念卡 3-01 · 心理账户</span><a class="card-nav-prev" href="概念卡1-02-小而美持续盈利的经营法则.html">← 概念卡 1-02</a><a class="card-nav-next" href="概念卡3-02-亚马逊逆向工作法.html">概念卡 3-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 3-01</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>心理账户</h1>
+  <div class="oneliner">钱在账本上是等价的，在人心里却分属不同的"账户"——塞勒揭示的心理核算偏差，正在悄悄扭曲创业者的资源配置。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">财务账户</span>
+        <h3>经济学假设：货币可替代</h3>
+        <div class="d1">传统经济学视角下，一元钱就是一元钱——无论它来自哪里、准备花到哪里，彼此可以无差别替换。</div>
+        <ul>
+          <li>核心假设：资金完全可替代</li>
+          <li>决策依据：统一的成本—收益核算</li>
+          <li>隐含前提：决策者是理性经济人</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">心理账户</span>
+        <h3>行为现实：分门别类核算</h3>
+        <div class="d1">人们在实际财务账户之外，会在心理上建立若干"账户"，按来源、用途、时间分别记账，不同账户之间的资金并不完全可替代。</div>
+        <ul>
+          <li>核心发现：心理核算违背可替代性原则</li>
+          <li>同一笔钱被贴上不同的"心理标签"</li>
+          <li>由行为经济学家塞勒于 1985 年系统提出</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>三大效应如何扭曲决策</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 来源账户 -->
+        <rect x="20" y="30" width="200" height="76" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="120" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">来源账户</text>
+        <text x="120" y="88" text-anchor="middle" font-size="11.5" fill="#64748b">自有资金"贵" · 外部融资"便宜"</text>
+        <!-- 用途账户 -->
+        <rect x="240" y="30" width="200" height="76" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="340" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">用途账户</text>
+        <text x="340" y="88" text-anchor="middle" font-size="11.5" fill="#64748b">A 项目超投 · B 项目缺钱</text>
+        <!-- 时间账户 -->
+        <rect x="460" y="30" width="200" height="76" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="560" y="62" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">时间账户</text>
+        <text x="560" y="88" text-anchor="middle" font-size="11.5" fill="#64748b">重眼前现金流 · 轻长期价值</text>
+        <!-- 汇入箭头 -->
+        <path d="M120 106 L120 130" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M115 128 L120 138 L125 128" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M340 106 L340 130" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M335 128 L340 138 L345 128" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M560 106 L560 130" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M555 128 L560 138 L565 128" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 结果色带 -->
+        <rect x="120" y="140" width="440" height="46" rx="10" fill="#7c3aed"/>
+        <text x="340" y="167" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">账户之间不可替代 · 违背货币可替代性</text>
+        <!-- 后果 -->
+        <path d="M340 186 L340 212" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M335 210 L340 220 L345 210" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="340" y="238" text-anchor="middle" font-size="12.5" fill="#475569">结果：创业资源配置被系统性扭曲</text>
+      </svg>
+      <div class="caption">心理账户的三大效应及其决策后果</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      人们对不同来源、不同用途的资金进行<b>分门别类的核算</b>，且不同账户之间的资金<b>并不完全可替代</b>。
+      <span class="who">—— 塞勒（Richard H. Thaler）《心理账户与消费者选择》（1985）</span>
+    </div>
+    <div class="quote">
+      心理账户的核算方式往往违背经济学的<b>"货币可替代性"</b>原则——这是行为经济学挑战传统理性人假设的经典证据。
+      <span class="who">—— 塞勒《心理账户很重要》（Mental Accounting Matters，1999）</span>
+    </div>
+    <p>塞勒是芝加哥大学行为科学教授，因对行为经济学的贡献于 <b>2017 年获诺贝尔经济学奖</b>。心理账户理论自 1985 年提出后，成为解释消费决策、投资行为与资源分配偏差的基础工具之一。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>来源账户：</b>自有资金、亲友借款、天使投资、风险投资、政府补贴被赋予不同的心理权重——自有资金被视为"昂贵"，使用格外谨慎；外部融资却可能被当作"便宜钱"，支出相对随意。</li>
+      <li><b>用途账户：</b>人们为不同项目或业务线建立独立心理账户。A 项目前景不佳，却因"已经花了这么多"继续追加投入；B 项目虽有潜力，却因"预算已用完"被放弃。</li>
+      <li><b>时间账户：</b>对即时收益与远期收益的心理估值存在差异——眼前的小额现金流被赋予较高权重，长期价值的积累则容易被忽视。</li>
+    </ol>
+    <div class="trend">
+      <b>对创业者的提醒：</b>把外部融资当"便宜钱"滥用、因沉没成本给失败项目续命、为短期现金流牺牲长期价值——这三类偏差都源于心理账户。跨账户审视资源、按实际机会成本而非"心理标签"做决策，是创业财务纪律的第一课。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>融资决策时自查：不同来源的资金是否被贴了不同的"贵贱标签"</li>
+          <li>项目复盘时检验：追加投入的依据是前景，还是"已经花了这么多"</li>
+          <li>评估长期投入时，把远期收益显性化，对冲"重眼前轻长远"的偏差</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>心理账户是描述偏差的理论，不是鼓励多建账户的理由</li>
+          <li>不要用资金来源的心理标签替代统一的财务纪律与成本核算</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-11</div>
+        <h4>认知偏误三层护栏</h4>
+        <p>心理账户正是需要设栏拦截的认知偏误之一，护栏机制可阻止"便宜钱"式支出直接变成决策。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-03</div>
+        <h4>效果逻辑五原则</h4>
+        <p>"可承受损失"原则要求按实际损失而非资金的心理标签评估投入，正好对冲来源账户偏差。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 62 页 · 教材知识链接 3-1</span>
+    <span>概念卡 3-01 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

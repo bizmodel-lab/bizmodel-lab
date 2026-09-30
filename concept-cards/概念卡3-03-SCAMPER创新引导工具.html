@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡3-03 · SCAMPER创新引导工具</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">概念卡 3-03 · SCAMPER 创新引导工具</span><a class="card-nav-prev" href="概念卡3-02-亚马逊逆向工作法.html">← 概念卡 3-02</a><a class="card-nav-next" href="概念卡3-04-48小时法则.html">概念卡 3-04 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 3-03</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>SCAMPER 创新引导工具</h1>
+  <div class="oneliner">七个维度的检核提问，把抽象的"创新"变成一张可以逐项打勾的清单。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="def a">
+      <span class="tag">定 义</span>
+      <h3>检核表式的创意思维工具</h3>
+      <div class="d1">SCAMPER 是一种检核表式创意思维工具：通过 Substitute、Combine、Adapt、Modify、Put to other uses、Eliminate、Rearrange 七个维度的针对性提问，引导发散思维以催生创新构想。</div>
+      <ul>
+        <li>形式：检核表——不等待灵感，而是逐一提问、系统扫描</li>
+        <li>源流：源于奥斯本（Alex Osborn）20 世纪 50 年代的检核表法，1971 年由美国心理学家艾伯尔（Robert F. Eberle）调整重组为易记缩写</li>
+        <li>适用：产品改良、流程优化及商业模式改进</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>七个检核维度</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 262" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 上排：S C A M -->
+        <rect x="10" y="30" width="150" height="84" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="85" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#7c3aed">S<tspan font-size="11" font-weight="400" fill="#64748b" dx="6">Substitute</tspan></text>
+        <text x="85" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">替代</text>
+        <text x="85" y="101" text-anchor="middle" font-size="11.5" fill="#64748b">换材料 · 换模式</text>
+
+        <rect x="180" y="30" width="150" height="84" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="255" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#7c3aed">C<tspan font-size="11" font-weight="400" fill="#64748b" dx="6">Combine</tspan></text>
+        <text x="255" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">组合</text>
+        <text x="255" y="101" text-anchor="middle" font-size="11.5" fill="#64748b">功能与产品整合</text>
+
+        <rect x="350" y="30" width="150" height="84" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="425" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#7c3aed">A<tspan font-size="11" font-weight="400" fill="#64748b" dx="6">Adapt</tspan></text>
+        <text x="425" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">适应</text>
+        <text x="425" y="101" text-anchor="middle" font-size="11.5" fill="#64748b">跨领域借鉴方案</text>
+
+        <rect x="520" y="30" width="150" height="84" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="595" y="58" text-anchor="middle" font-size="20" font-weight="700" fill="#7c3aed">M<tspan font-size="11" font-weight="400" fill="#64748b" dx="6">Modify</tspan></text>
+        <text x="595" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">修改</text>
+        <text x="595" y="101" text-anchor="middle" font-size="11.5" fill="#64748b">放大 · 缩小 · 变形</text>
+
+        <!-- 下排：P E R -->
+        <rect x="95" y="134" width="150" height="84" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="170" y="162" text-anchor="middle" font-size="20" font-weight="700" fill="#0f766e">P<tspan font-size="11" font-weight="400" fill="#64748b" dx="6">Put to other uses</tspan></text>
+        <text x="170" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">他用</text>
+        <text x="170" y="205" text-anchor="middle" font-size="11.5" fill="#64748b">新场景 · 新人群</text>
+
+        <rect x="265" y="134" width="150" height="84" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="340" y="162" text-anchor="middle" font-size="20" font-weight="700" fill="#0f766e">E<tspan font-size="11" font-weight="400" fill="#64748b" dx="6">Eliminate</tspan></text>
+        <text x="340" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">去除</text>
+        <text x="340" y="205" text-anchor="middle" font-size="11.5" fill="#64748b">删减冗余 · 聚焦</text>
+
+        <rect x="435" y="134" width="150" height="84" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="510" y="162" text-anchor="middle" font-size="20" font-weight="700" fill="#0f766e">R<tspan font-size="11" font-weight="400" fill="#64748b" dx="6">Rearrange</tspan></text>
+        <text x="510" y="186" text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">重组</text>
+        <text x="510" y="205" text-anchor="middle" font-size="11.5" fill="#64748b">颠倒顺序 · 换角色</text>
+
+        <!-- 底部结论 -->
+        <text x="340" y="246" text-anchor="middle" font-size="12.5" fill="#475569">七个维度逐一检核 → 把"创新"变成可操作的提问清单，产出尽可能多的构想</text>
+      </svg>
+      <div class="caption">SCAMPER 七维度检核清单</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      通过七个维度提出针对性问题，<b>引导发散思维以催生创新构想</b>。
+      <span class="who">—— 艾伯尔（Robert F. Eberle），1971 年系统提出</span>
+    </div>
+    <div class="quote">
+      检核表法的主张：<b>创意不靠灵光一闪，而是对既有元素进行系统化的替代、组合与重排。</b>
+      <span class="who">—— 奥斯本（Alex Osborn），头脑风暴规则发明者</span>
+    </div>
+    <p>SCAMPER 源于奥斯本于 20 世纪 50 年代提出的检核表法，艾伯尔将其调整、重组并赋予这一便于记忆的缩写，后经 Eberle（1996）等著作与 MindTools 等工具化传播，成为创新引导领域的通用入门工具。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>它是发散器，不是过滤器：</b>SCAMPER 的任务是"产生尽可能多的创意"，负责打开可能性空间；构想的好坏筛选，要交给后续的用户需求检验与市场验证。</li>
+      <li><b>检核要逐项过一遍：</b>跳过某个字母，往往意味着错过一整类被忽视的创新可能——每个维度都是一把不同的"搜索手电筒"。</li>
+      <li><b>提问对象可大可小：</b>既可以指向产品的部件与材料，也可以指向流程环节、定价方式乃至整个商业模式要素。</li>
+    </ol>
+    <div class="trend">
+      <b>典型应用示例：</b>订阅制替代一次性销售（S）、手机与音乐播放器合并为智能手机（C）、游戏化机制引入教育产品（A）、取消中间商实现工厂直达消费者（E）、从"先生产后销售"转向"先预订后生产"（R）。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>产品迭代会前，列出七维清单逐项讨论，避免思路盲区</li>
+          <li>商业模式重构时，对价值主张、渠道、收入方式逐一提问</li>
+          <li>头脑风暴冷场时，用随机字母重启讨论</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>它不替你判断好坏——产出的构想仍需回到用户需求与市场验证</li>
+          <li>避免机械"过清单"：每次提问都要落到具体对象，否则只是形式化打卡</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-05</div>
+        <h4>系统思维创业情境重组</h4>
+        <p>SCAMPER 的"组合、他用、重组"本质上是对系统要素的重新配置，与情境重组思维同源同法。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-07</div>
+        <h4>设计思维五阶段</h4>
+        <p>在设计思维的"构思"阶段，SCAMPER 是把发散讨论结构化的实用提问工具。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 76 页 · 教材知识链接 3-3</span>
+    <span>概念卡 3-03 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

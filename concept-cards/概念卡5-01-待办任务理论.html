@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡5-01 · 待办任务理论</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 5 章 · 创业机会</a><span class="card-nav-meta">概念卡 5-01 · 待办任务理论</span><a class="card-nav-prev" href="概念卡3-05-最简讨喜产品.html">← 概念卡 3-05</a><a class="card-nav-next" href="概念卡5-02-PESTEL分析框架.html">概念卡 5-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 5-01</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>待办任务理论</h1>
+  <div class="oneliner">用户不是在"买产品"，而是在特定情境下"雇用"产品完成任务——看懂任务，才看得懂需求与机会。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">传统视角</span>
+        <h3>用户画像：人口统计学特征</h3>
+        <div class="d1">传统市场研究聚焦年龄、性别、收入、职业等特征，默认"特征相同，需求就相同"。</div>
+        <ul>
+          <li>回答的是"用户是谁"</li>
+          <li>这些特征并不能真正解释用户的购买行为</li>
+          <li>画像相同的两个人，选择可能截然不同</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">任务视角</span>
+        <h3>任务：情境中渴望取得的进展</h3>
+        <div class="d1">驱动用户决策的，是他们在特定情境下试图完成的"任务"——购买即"雇用"。</div>
+        <ul>
+          <li>回答的是"用户在什么情境下要完成什么"</li>
+          <li>一项完整任务包含功能性、社会性、情感性三个维度</li>
+          <li>用户期待三个维度被同时满足</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>任务三维度与雇用决策</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 272" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 三个任务维度 -->
+        <rect x="40" y="40" width="190" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="135" y="63" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">功能性任务</text>
+        <text x="135" y="80" text-anchor="middle" font-size="11" fill="#64748b">解决具体问题、达成目标</text>
+
+        <rect x="40" y="106" width="190" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="135" y="129" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">社会性任务</text>
+        <text x="135" y="146" text-anchor="middle" font-size="11" fill="#64748b">呈现形象、获得他人认同</text>
+
+        <rect x="40" y="172" width="190" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="135" y="195" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">情感性任务</text>
+        <text x="135" y="212" text-anchor="middle" font-size="11" fill="#64748b">获得情绪体验与心理状态</text>
+
+        <!-- 雇用节点 -->
+        <rect x="380" y="88" width="260" height="104" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="510" y="130" text-anchor="middle" font-size="16" font-weight="700" fill="#115e59">用户"雇用"产品</text>
+        <text x="510" y="158" text-anchor="middle" font-size="11" fill="#64748b">在特定情境中完成任务</text>
+        <text x="510" y="176" text-anchor="middle" font-size="11" fill="#64748b">期待三个维度被同时满足</text>
+
+        <!-- 汇聚箭头 -->
+        <path d="M232 66 C 285 66 330 105 374 128" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M363 122 L376 128 L362 134" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M232 132 C 285 132 320 136 372 140" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M360 134 L374 140 L360 146" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M232 198 C 285 198 330 172 374 152" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M362 146 L376 152 L363 158" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- 底部注释 -->
+        <text x="340" y="256" text-anchor="middle" font-size="12" fill="#94a3b8">只解决功能性问题而忽视社会性、情感性需求，用户仍可能不满——未被满足之处即机会线索</text>
+      </svg>
+      <div class="caption">待办任务理论的"雇用"逻辑</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      企业应围绕<b>用户特定场景下的需求</b>设计创新方案，而非单纯开发产品或服务。
+      <span class="who">—— 克里斯坦森（Christensen）等《与运气竞争：关于创新与用户选择》（2016）</span>
+    </div>
+    <p>待办任务（jobs-to-be-done，JTBD）理论由克里斯坦森等人在 2016 年系统提出。它直指传统市场研究的盲区：年龄、性别、收入、职业等人口统计学特征解释不了用户的购买行为——真正驱动决策的，是<b>特定情境下要完成的"任务"</b>。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>画像解释不了选择：</b>人口学特征相同的用户，购买行为可能截然不同。用户"雇用"什么产品，取决于情境中的任务，而不是画像标签。</li>
+      <li><b>三个维度是一个整体：</b>用户期望的是功能性、社会性、情感性任务的综合满足——产品只解决了功能性问题、却忽视另外两个维度，用户仍会感到不满。</li>
+      <li><b>从"卖产品"切换到"帮用户完成任务"：</b>创新方案的出发点，应从"我们要开发什么产品"转换为"用户在什么情境下想取得什么进展"。</li>
+    </ol>
+    <div class="trend">
+      <b>典型情境——修剪草坪：</b>功能性任务是"天黑前把草坪修剪完"；社会性任务是"希望邻居觉得我家草坪打理得很用心"；情感性任务是"希望过程让我感到放松并有成就感"。同一件事，三重任务并存。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>设计用户访谈：追问"当时发生了什么""你实际怎么做"，从情境与行为中还原任务</li>
+          <li>重新划分目标市场：不按人群特征、而按"要完成的任务"界定用户</li>
+          <li>审视自家产品与竞品：各自被"雇用"来完成什么任务？哪个维度没被满足？</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>别把任务等同于产品功能——具体功能会过时，任务往往长期存在</li>
+          <li>别指望用户直接说出任务——他们表达的常常是解决方案，任务需要创业者自行还原</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-06</div>
+        <h4>用户—功能—场景三角交叉验证</h4>
+        <p>从任务视角得出的用户洞察，需经用户、功能、场景三角交叉确认，才能落实为机会。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-07</div>
+        <h4>三层痛点模型</h4>
+        <p>用户完成任务过程中的障碍，可按表层功能、中层情感、深层身份三层进一步剖析。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 5 章，第 131 页 · 教材知识链接 5-1</span>
+    <span>概念卡 5-01 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

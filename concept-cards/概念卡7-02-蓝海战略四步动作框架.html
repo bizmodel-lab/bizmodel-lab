@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡7-02 · 蓝海战略四步动作框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 7 章 · 创业战略</a><span class="card-nav-meta">概念卡 7-02 · 蓝海战略四步动作框架</span><a class="card-nav-prev" href="概念卡7-01-SWOT分析.html">← 概念卡 7-01</a><a class="card-nav-next" href="概念卡10-01-一人公司.html">概念卡 10-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 7-02</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>蓝海战略四步动作框架</h1>
+  <div class="oneliner">对产业价值曲线逐项过四道关——剔除、减少、增加、创造，同时实现差异化与低成本。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">做减法</span>
+        <h3>剔除 eliminate / 减少 reduce</h3>
+        <div class="d1">向产业"理所当然"的元素开刀——被默认提供的要素直接舍弃，超标的含量降到产业标准以下。</div>
+        <ul>
+          <li>剔除：产业认定为理所当然的元素</li>
+          <li>减少：元素含量降到产业标准以下</li>
+          <li>直接效果：成本结构随之下降</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">做加法</span>
+        <h3>增加 raise / 创造 create</h3>
+        <div class="d1">在客户真正在意的地方加码——关键元素提到产业标准以上，并提供产业从未有过的新元素。</div>
+        <ul>
+          <li>增加：元素含量提到产业标准以上</li>
+          <li>创造：产业从未提供过的全新元素</li>
+          <li>直接效果：买方价值显著跃升</li>
+        </ul>
+      </div>
+    </div>
+    <p>四步动作框架（ERRC）是蓝海战略的操作核心。蓝海战略的核心理念是<b>"价值创新"——同时追求差异化和低成本</b>：减法释放成本，加法抬升价值，四问合起来才能重构整条价值曲线，突破"要么差异化、要么低成本"的传统取舍。</p>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>框架的结构</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 组标题 -->
+        <text x="195" y="32" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">四步动作（ERRC）</text>
+        <!-- 剔除 -->
+        <rect x="30" y="44" width="160" height="82" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="110" y="74" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">剔 除</text>
+        <text x="110" y="96" text-anchor="middle" font-size="11" fill="#64748b">被产业视为理所当然</text>
+        <text x="110" y="114" text-anchor="middle" font-size="11" fill="#64748b">的元素，直接舍弃</text>
+        <!-- 减少 -->
+        <rect x="205" y="44" width="160" height="82" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="285" y="74" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">减 少</text>
+        <text x="285" y="96" text-anchor="middle" font-size="11" fill="#64748b">元素含量降到产业</text>
+        <text x="285" y="114" text-anchor="middle" font-size="11" fill="#64748b">标准以下</text>
+        <!-- 增加 -->
+        <rect x="30" y="140" width="160" height="82" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="110" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">增 加</text>
+        <text x="110" y="192" text-anchor="middle" font-size="11" fill="#64748b">元素含量提到产业</text>
+        <text x="110" y="210" text-anchor="middle" font-size="11" fill="#64748b">标准以上</text>
+        <!-- 创造 -->
+        <rect x="205" y="140" width="160" height="82" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="285" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">创 造</text>
+        <text x="285" y="192" text-anchor="middle" font-size="11" fill="#64748b">产业从未提供过的</text>
+        <text x="285" y="210" text-anchor="middle" font-size="11" fill="#64748b">全新元素</text>
+        <!-- 汇聚箭头 -->
+        <path d="M372 133 L424 133" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M413 126 L427 133 L413 140" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 价值创新节点 -->
+        <rect x="430" y="44" width="225" height="178" rx="14" fill="#7c3aed"/>
+        <text x="542" y="66" text-anchor="middle" font-size="18" font-weight="700" fill="#ffffff">价值创新</text>
+        <text x="542" y="92" text-anchor="middle" font-size="11" fill="#ddd6fe">价值曲线被整体重构</text>
+        <text x="542" y="130" text-anchor="middle" font-size="11" fill="#ede9fe">同时实现</text>
+        <text x="542" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">差异化 ＋ 低成本</text>
+        <!-- 底部注 -->
+        <text x="195" y="240" text-anchor="middle" font-size="11.5" fill="#94a3b8">增减的判断基准：产业现行标准，而非企业自身现状</text>
+      </svg>
+      <div class="caption">ERRC 四步动作 → 价值创新（差异化与低成本兼得）</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      蓝海战略的核心是<b>"价值创新"</b>——同时追求差异化和低成本。
+      <span class="who">—— W. 钱·金、勒妮·莫博涅《蓝海战略》（扩展版），商务印书馆，2016</span>
+    </div>
+    <p>在教材体系中，ERRC 框架被定位为<b>差异化竞争战略的系统性重构工具</b>：它把"提供独特价值"这一战略意图，转化为对产业每一个价值元素的逐项拷问，使差异化从理念落为可执行的动作清单。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>四问必须覆盖全部元素：</b>对产业既有价值要素逐项拷问"剔不剔、减不减、增不增、创不创"，而不是只在新想法上用力——重构的是整条价值曲线。</li>
+      <li><b>减法与加法缺一不可：</b>只做加法会推高成本、丢掉低价空间；只做减法会削弱价值、失去差异化。两者合起来才是价值创新。</li>
+      <li><b>参照系是产业标准：</b>判断"增减"的基准是产业现行标准，不是企业自身现状——这决定了框架天然用于对标整个行业，而非内部改良。</li>
+      <li><b>剔除最考验勇气：</b>行业惯例不等于客户价值，敢于舍弃"人人都在做"的元素，往往是成本与差异同步改善的起点。</li>
+    </ol>
+    <div class="trend">
+      <b>与差异化战略的关系：</b>波特框架下的差异化通常意味着溢价与高成本；ERRC 则主张通过重构价值曲线，让差异化与低成本同时成立——这是蓝海战略对经典取舍关系的突破。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>绘制本产业现行价值曲线，与竞品对照后逐元素过四问</li>
+          <li>设计新产品或新服务时，寻找"创造"格里的空白元素</li>
+          <li>商业计划书中论证"为何能同时更便宜且更不同"</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>增减取舍必须基于客户真正在意的价值，而非企业自我感觉</li>
+          <li>剔除行业惯例会冲击内部流程与习惯，须评估组织承受力</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-03</div>
+        <h4>三种基本竞争战略情境化</h4>
+        <p>ERRC 是差异化战略的落地工具：把"独特价值主张"拆解到元素级，回答差异化具体差在哪里。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-05</div>
+        <h4>市场进入三维选择模型</h4>
+        <p>识别出蓝海只是第一步，何时进入、以何方式进入、进入哪个细分，仍需三维模型作答。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 7 章，第 190 页 · 教材知识链接 7-2</span>
+    <span>概念卡 7-02 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

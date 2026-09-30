@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡1-01 · 创业与创新</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 1 章 · 导论</a><span class="card-nav-meta">概念卡 1-01 · 创业与创新</span><a class="card-nav-next" href="概念卡1-02-小而美持续盈利的经营法则.html">概念卡 1-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 1-01</span>
+    <span class="domain">教材体系 · <b>第 1 章 导论</b></span>
+  </div>
+  <h1>创业与创新</h1>
+  <div class="oneliner">一对相互成就的共生概念——创新造出"新"，创业把"新"变成"价值"。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">创 新</span>
+        <h3>强调新颖性与改进</h3>
+        <div class="d1">回答"做出了什么新东西"——可以是新技术、新产品、新工艺、新方法。</div>
+        <ul>
+          <li>核心词：新颖、改进、突破</li>
+          <li>主体：创新者不一定是创业者</li>
+          <li>可以是实验室里的成果，也可以是流程上的改良</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">创 业</span>
+        <h3>强调价值创造与组织生成</h3>
+        <div class="d1">回答"新东西如何变成被市场认可的价值"——通常伴随新组织的建立。</div>
+        <ul>
+          <li>核心词：价值、组织、市场</li>
+          <li>主体：创业者也不一定是创新者</li>
+          <li>可以是"从 0 到 1"，也可以在既有组织内开创新事业</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>二者是什么关系</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 创新节点 -->
+        <rect x="40" y="46" width="220" height="96" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="150" y="86" text-anchor="middle" font-size="16" font-weight="700" fill="#5b21b6">创 新</text>
+        <text x="150" y="112" text-anchor="middle" font-size="12" fill="#64748b">新颖性与改进</text>
+        <!-- 创业节点 -->
+        <rect x="420" y="46" width="220" height="96" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="530" y="86" text-anchor="middle" font-size="16" font-weight="700" fill="#115e59">创 业</text>
+        <text x="530" y="112" text-anchor="middle" font-size="12" fill="#64748b">价值创造与组织生成</text>
+        <!-- 上箭头：创新驱动创业 -->
+        <path d="M270 72 C320 58 370 58 410 66" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M402 60 L414 67 L401 72" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="340" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#7c3aed">核心驱动力 · 主要手段</text>
+        <!-- 下箭头：创业承载创新 -->
+        <path d="M410 118 C360 132 310 132 270 124" fill="none" stroke="#0f766e" stroke-width="2"/>
+        <path d="M278 118 L266 125 L279 130" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="340" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#0f766e">价值实现的载体与途径</text>
+        <!-- 底部注释 -->
+        <text x="340" y="192" text-anchor="middle" font-size="12" fill="#94a3b8">创新并不总是创业的必然结果，但成功的创业往往伴随着创新</text>
+      </svg>
+      <div class="caption">创新与创业的双向关系</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      创新是<b>"建立一种新的生产函数"</b>，而创业者正是这一过程的执行者。
+      <span class="who">—— 熊彼特（Schumpeter）</span>
+    </div>
+    <div class="quote">
+      提出<b>"创业型社会"</b>概念：创新是创业的基础，而创业是创新的组织化实施。
+      <span class="who">—— 德鲁克（Drucker）</span>
+    </div>
+    <p>综合而言：创业是<b>机会识别、构建与利用的过程</b>，创新是这一过程的结果之一。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>主体可以分离：</b>创新者不一定是创业者（科学家做了创新但未商业化），创业者也不一定是创新者（模仿型创业同样创造价值）。</li>
+      <li><b>方向可以相反：</b>有人先有创新成果再找商业化路径，也有人先识别市场机会再回头寻找技术方案。</li>
+      <li><b>融合是趋势：</b>在知识经济时代，技术创新周期缩短、成本降低，使更多创业者能基于新技术开展创业；同时创业成为技术创新的主要组织形式——大数据、人工智能、生物医药等前沿领域，初创企业的创新活力往往超越大企业。</li>
+    </ol>
+    <div class="trend">
+      <b>典型案例——硅谷模式：</b>高校和研究机构的基础创新、风险投资的支持、创业者的机会开发、大企业的并购整合，共同形成完整的创新生态系统，是创业与创新深度融合的典范。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>撰写商业计划书时，厘清项目的"创新点"与"创业行为"各是什么</li>
+          <li>评估创业项目时，追问：创新落在哪一环？价值如何实现组织化？</li>
+          <li>课堂讨论"抄袭 vs 借鉴""模仿型创业是否成立"等争议话题</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>不要把"有创新"等同于"能创业"——商业化路径是另一道门槛</li>
+          <li>不要把"无技术创新"等同于"低价值创业"——商业模式创新同样是创新</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 1-01</div>
+        <h4>创业类型五维分类</h4>
+        <p>其中"创新程度"维度，正是用本卡的创新概念给创业项目分型定档。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>创新往往在"机会开发"阶段被识别、在"模式验证"阶段被检验。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 1 章，第 10 页 · 教材知识链接 1-1</span>
+    <span>概念卡 1-01 · 第 1 章 导论</span>
+  </div>
+
+</div>
+</body>
+</html>

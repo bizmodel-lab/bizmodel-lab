@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡10-02 · 创始人模式</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 10 章 · 创业组织</a><span class="card-nav-meta">概念卡 10-02 · 创始人模式</span><a class="card-nav-prev" href="概念卡10-01-一人公司.html">← 概念卡 10-01</a><a class="card-nav-next" href="概念卡11-01-ESG投资.html">概念卡 11-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 10-02</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>创始人模式</h1>
+  <div class="oneliner">保罗·格雷厄姆 2024 年提出的管理命题：创始人可以跨过层级直连组织细节，而非只通过直接下属管理公司。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">经理人模式</span>
+        <h3>模块化系统 · 层级授权</h3>
+        <div class="d1">将公司视为模块化系统：CEO 只告诉直接下属"做什么"，"如何做"由下属自行解决——经典管理学的"授权"原则。</div>
+        <ul>
+          <li>不介入各部门细节，将其视为"黑箱"</li>
+          <li>适合稳定环境下的效率优化</li>
+          <li>风险：授权失当时，被格雷厄姆讽为"雇佣职业骗子，让他们搞垮公司"</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">创始人模式</span>
+        <h3>跨层级直连 · 深度介入</h3>
+        <div class="d1">打破"CEO 只能通过直接下属与公司互动"的原则，创始人保持与组织各层级的密切接触，"跨层级会议"成为常态而非例外。</div>
+        <ul>
+          <li>创始人亲自参与产品、运营等关键细节</li>
+          <li>底层逻辑：创始人如父母之于孩子，有经理人无法复制的激情与热爱</li>
+          <li>拥有"特许权"：可做出经理人不敢做的重大决策，如品牌重塑、战略转型</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>两种模式的组织互动路径</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 262" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 中分割线 -->
+        <line x1="340" y1="22" x2="340" y2="246" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <!-- 左：经理人模式 -->
+        <text x="170" y="34" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">经理人模式 · 层级授权</text>
+        <rect x="100" y="52" width="140" height="40" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+        <text x="170" y="78" text-anchor="middle" font-size="15" font-weight="700" fill="#334155">CEO</text>
+        <rect x="100" y="126" width="140" height="40" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+        <text x="170" y="152" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">直接下属</text>
+        <rect x="100" y="200" width="140" height="40" rx="10" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+        <text x="170" y="226" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">一线团队</text>
+        <path d="M170 96 L170 120" fill="none" stroke="#64748b" stroke-width="2"/>
+        <path d="M163 113 L170 124 L177 113" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M170 170 L170 194" fill="none" stroke="#64748b" stroke-width="2"/>
+        <path d="M163 187 L170 198 L177 187" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="186" y="113" font-size="12" fill="#94a3b8">只说「做什么」</text>
+        <text x="186" y="187" font-size="12" fill="#94a3b8">细节成为黑箱</text>
+        <!-- 右：创始人模式 -->
+        <text x="510" y="34" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">创始人模式 · 跨层级直连</text>
+        <rect x="440" y="52" width="140" height="40" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="510" y="78" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">创始人</text>
+        <rect x="385" y="200" width="120" height="40" rx="10" fill="#f5f3ff" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="445" y="226" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">直接下属</text>
+        <rect x="545" y="200" width="120" height="40" rx="10" fill="#f5f3ff" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="605" y="226" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">一线员工</text>
+        <!-- 常规管理线 -->
+        <path d="M480 94 C465 140, 455 168, 448 194" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M440 186 L448 197 L456 187" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="378" y="152" font-size="12" fill="#64748b">常规管理</text>
+        <!-- 跨层级直连线 -->
+        <path d="M540 94 C572 145, 592 168, 601 194" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6 5"/>
+        <path d="M594 186 L602 197 L610 187" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="613" y="150" font-size="12" font-weight="700" fill="#7c3aed">跨层级直连</text>
+      </svg>
+      <div class="caption">经理人模式与创始人模式的组织互动路径对比</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      管理公司存在两种截然不同的方式——创始人模式与经理人模式，而<b>创始人模式更适用于创始人领导的组织</b>。
+      <span class="who">—— 保罗·格雷厄姆（Paul Graham）《创始人模式》（2024）</span>
+    </div>
+    <div class="quote">
+      他们（创始人）是公司的亲生父母。<b>它源自你，它就是你</b>。其中蕴含着深沉的激情与爱。
+      <span class="who">—— 布莱恩·切斯基（Brian Chesky，爱彼迎联合创始人）</span>
+    </div>
+    <p>这篇文章的缘起，是切斯基在 Y Combinator 活动上的一场演讲：随着爱彼迎规模扩张，他听从"雇佣优秀人才、放手让他们发挥"的传统建议，结果"非常灾难"；转而<b>重新深度参与公司每一个细节</b>、并研究乔布斯管理苹果的方式后，爱彼迎的自由现金流利润率跃居硅谷前列。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>警惕幸存者偏差：</b>案例里只看到成功的乔布斯与马斯克，看不到因"过度微观管理"而失败的无名创业者——不能只挑赢家来证明模式有效。</li>
+      <li><b>组织能力空心化风险：</b>过度依赖创始人个人，创始人会成为唯一的决策瓶颈；一旦判断失误，整个组织将随之一同崩塌。</li>
+      <li><b>模式可能被滥用：</b>格雷厄姆本人已预警：有的创始人会以"创始人模式"为借口拒绝任何授权，有的经理人则模仿创始人风格，结果往往"混乱不堪"。</li>
+    </ol>
+    <div class="trend">
+      <b>数据与实践：</b>《财富》2024 年对 22 家仍由创始人任 CEO 的 500 强公司的分析显示：创始人任期内累计总回报率中位数为 1129%，其余 500 强公司仅为 57%。实践样本：马斯克在 Model 3 量产危机期间亲赴工厂坐镇、睡在地板上；黄仁勋在英伟达保持 60 余名直接下属的扁平化架构；贝索斯亲自阅读客户投诉邮件并以"？"转发给高管。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>创业早期、组织文化未成型阶段，创始人深度介入产品与关键细节利大于弊</li>
+          <li>把介入机制化：用"跨层级会议"等制度化方式直连一线，而非随机插手</li>
+          <li>评估企业属性：创始人领导的组织，可主动运用"特许权"做品牌重塑、战略转型等重大决策</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>区分"介入关键细节"与"事事插手的微观管理"——前者抓方向与标准，后者耗散组织</li>
+          <li>随组织成熟逐步建立授权与流程，防止创始人成为唯一决策瓶颈</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-03</div>
+        <h4>决策机制四方式与分级决策</h4>
+        <p>创始人模式挑战的正是"分级决策"的边界——两卡对读，理清哪些决策该上收、哪些该下放。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>创业团队结构三型模型</h4>
+        <p>黄仁勋式的扁平化与直接下属规模设计，正是团队结构模型要回答的落地问题。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 10 章，第 260 页 · 教材知识链接 10-2</span>
+    <span>概念卡 10-02 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

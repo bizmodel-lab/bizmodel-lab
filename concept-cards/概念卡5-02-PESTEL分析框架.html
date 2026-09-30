@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡5-02 · PESTEL分析框架</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 5 章 · 创业机会</a><span class="card-nav-meta">概念卡 5-02 · PESTEL分析框架</span><a class="card-nav-prev" href="概念卡5-01-待办任务理论.html">← 概念卡 5-01</a><a class="card-nav-next" href="概念卡5-03-微笑曲线.html">概念卡 5-03 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 5-02</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>PESTEL分析框架</h1>
+  <div class="oneliner">把纷繁的宏观环境拆成六个可扫描的维度——外部环境不再"看不清"，机会与威胁逐项现形。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">定 义</span>
+        <h3>六维度的宏观环境扫描</h3>
+        <div class="d1">一种战略规划工具：系统性评估影响组织运营的关键外部宏观环境因素。</div>
+        <ul>
+          <li>政治（P）· 经济（E）· 社会（S）</li>
+          <li>技术（T）· 环境（E）· 法律（L）</li>
+          <li>产出：外部环境带来的机遇与潜在威胁清单</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">步 骤</span>
+        <h3>五步操作流程</h3>
+        <div class="d1">从"框定范围"到"定期更新"，分析是一个持续循环，而非一次性作业。</div>
+        <ul>
+          <li>① 定义分析的目标和范围</li>
+          <li>② 从政府报告、行业研究、学术论文、新闻资讯等渠道收集数据</li>
+          <li>③ 逐项定性或定量评估影响的方向、程度和紧迫性</li>
+          <li>④ 筛选出机遇与威胁，⑤ 定期动态更新</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>六维框架与扫描流程</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 318" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 政治 -->
+        <rect x="55" y="22" width="150" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="130" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">政治（P）</text>
+        <text x="130" y="60" text-anchor="middle" font-size="11" fill="#64748b">政策 · 政局 · 产业导向</text>
+        <!-- 经济 -->
+        <rect x="475" y="22" width="150" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="550" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">经济（E）</text>
+        <text x="550" y="60" text-anchor="middle" font-size="11" fill="#64748b">增长 · 利率 · 消费</text>
+        <!-- 社会 -->
+        <rect x="22" y="124" width="150" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="97" y="146" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">社会（S）</text>
+        <text x="97" y="162" text-anchor="middle" font-size="11" fill="#64748b">人口 · 文化 · 价值观</text>
+        <!-- 技术 -->
+        <rect x="508" y="124" width="150" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="583" y="146" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">技术（T）</text>
+        <text x="583" y="162" text-anchor="middle" font-size="11" fill="#64748b">研发 · 迭代 · 替代</text>
+        <!-- 环境 -->
+        <rect x="55" y="226" width="150" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="130" y="248" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">环境（E）</text>
+        <text x="130" y="264" text-anchor="middle" font-size="11" fill="#64748b">生态 · 绿色 · 气候</text>
+        <!-- 法律 -->
+        <rect x="475" y="226" width="150" height="52" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="550" y="248" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">法律（L）</text>
+        <text x="550" y="264" text-anchor="middle" font-size="11" fill="#64748b">法规 · 监管 · 合规</text>
+
+        <!-- 中心：扫描 -->
+        <rect x="265" y="124" width="150" height="72" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="340" y="152" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">PESTEL 分析</text>
+        <text x="340" y="172" text-anchor="middle" font-size="11" fill="#64748b">系统扫描宏观环境</text>
+
+        <!-- 汇聚箭头 -->
+        <path d="M207 56 C 232 76 248 100 260 121" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M253 110 L261 122 L248 118" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M473 56 C 448 76 432 100 420 121" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M427 110 L419 122 L432 118" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M174 150 L258 150" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M246 144 L260 150 L246 156" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M506 150 L422 150" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M434 144 L420 150 L434 156" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M207 244 C 232 224 248 200 260 179" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M253 190 L261 178 L248 182" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M473 244 C 448 224 432 200 420 179" fill="none" stroke="#7c3aed" stroke-width="2"/>
+        <path d="M427 190 L419 178 L432 182" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- 底部注释 -->
+        <text x="340" y="307" text-anchor="middle" font-size="12" fill="#94a3b8">逐项评估影响的方向、程度与紧迫性，筛出机遇与威胁，并定期动态更新</text>
+      </svg>
+      <div class="caption">PESTEL 六维扫描框架</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      最初将外部环境因素分为四类——经济、技术、政治、社会，缩写为 <b>ETPS</b>；后为便于发音调整为 <b>PEST</b>；随商业环境日益复杂，再扩展出<b>环境（E）与法律（L）</b>两个维度，形成完整的 PESTEL 框架。
+      <span class="who">—— 演化脉络：阿吉拉尔（Francis Aguilar，哈佛商学院，1967）→ PEST → PESTEL</span>
+    </div>
+    <p>PESTEL 的方法论基础由阿吉拉尔于 1967 年奠定。框架自身的演化史就是一个注脚：<b>分析工具必须随环境变化而扩展</b>——这也是它把"定期更新"写进操作步骤的原因。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>先定范围，再谈扫描：</b>分析目标和范围决定收集什么数据、盯哪些信号；范围不清，六维扫描就退化成资料罗列。</li>
+      <li><b>每个因素都要"三问"：</b>影响方向（利好或不利）、影响程度（大或小）、紧迫性（迫近或遥远）——定性或定量结合给出判断。</li>
+      <li><b>分析是动态作业：</b>外部环境瞬息万变，框架也需随之动态调整；它不是写进商业计划书就束之高阁的一次性章节。</li>
+    </ol>
+    <div class="trend">
+      <b>与机会识别的接口：</b>宏观变化往往是新市场涌现、旧市场瓦解的先导信号——PESTEL 扫描捕捉到的趋势信号，可以进一步推演为具体的机会假设。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>撰写商业计划书的行业与宏观环境分析章节</li>
+          <li>团队环境扫描会：避免遗漏关键宏观变量，形成共同分析底稿</li>
+          <li>判断进入时机：哪些宏观趋势正在制造"新需求与旧供给的错位"</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>罗列不等于分析——每一个因素都要落到"对本项目的具体影响"</li>
+          <li>宏观扫描不能替代用户与竞争层面的微观洞察</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-03</div>
+        <h4>PESTEL 与机会转化提问表</h4>
+        <p>把六维扫描的结果翻译成机会假设的操作表，与本卡配套使用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-04</div>
+        <h4>三阶推演法</h4>
+        <p>将 PESTEL 捕捉到的趋势推演为具体机会点：识别变化→推演连锁反应→对比供需差距。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 5 章，第 136 页 · 教材知识链接 5-2</span>
+    <span>概念卡 5-02 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

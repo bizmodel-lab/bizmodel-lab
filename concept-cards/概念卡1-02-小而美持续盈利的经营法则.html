@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡1-02 · 小而美：持续盈利的经营法则</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+    --warn:#d97706; --warn-bg:#fffbeb; --warn-line:#fde68a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+
+  /* ===== 背景故事 ===== */
+  .story{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .story b{color:var(--ink);}
+
+  /* ===== 两种模式对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);}
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--warn);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:17px;font-weight:700;margin-bottom:8px;}
+  .def ul{list-style:none;}
+  .def li{font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;}
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--warn);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 三条主张 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:var(--warn-bg);border-color:var(--warn-line);}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:var(--warn);}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:var(--warn);font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 1 章 · 导论</a><span class="card-nav-meta">概念卡 1-02 · 小而美：持续盈利的经营法则</span><a class="card-nav-prev" href="概念卡1-01-创业与创新.html">← 概念卡 1-01</a><a class="card-nav-next" href="概念卡3-01-心理账户.html">概念卡 3-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 1-02</span>
+    <span class="domain">教材体系 · <b>第 1 章 导论</b></span>
+  </div>
+  <h1>小而美：持续盈利的经营法则</h1>
+  <div class="oneliner">盈利能力比规模更重要——"极简创业经营"与可持续盈利的"慢公司"。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <p>"小而美"出自 Gumroad 创始人萨希尔·拉文吉亚（Sahil Lavingia）2023 年出版的同名著作。其核心主张是：</p>
+    <div class="quote">
+      创业不应以追求高估值和快速扩张为唯一目标，<b>盈利能力比规模更重要</b>。"小而美"企业可以通过服务<b>几百至几千名核心用户</b>实现长期盈利——这种模式被概括为<b>"极简创业经营"</b>和可持续盈利的<b>"慢公司"</b>。
+    </div>
+    <div class="story">
+      <b>作者背景：</b>拉文吉亚曾是 Pinterest 的二号员工，后放弃期权创办 Gumroad——一个帮助创作者销售虚拟产品的电商平台。Gumroad 经历了从快速扩张到裁员收缩的起伏，最终以 <b>5 人团队实现持续盈利</b>。这本书正是他对这段创业经历的反思与总结。
+    </div>
+  </section>
+
+  <!-- ============ 与独角兽模式对比 ============ -->
+  <section>
+    <h2>与"独角兽"模式的对比</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">风投驱动</span>
+        <h3>独角兽模式</h3>
+        <ul>
+          <li>目标：高估值、快速扩张</li>
+          <li>拉文吉亚指出其失败率高达 95%</li>
+          <li>逻辑：先烧钱换规模，再谈盈利</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">小而美</span>
+        <h3>极简创业模式</h3>
+        <ul>
+          <li>目标：服务几百至几千名核心用户</li>
+          <li>以可持续盈利为第一准则</li>
+          <li>逻辑：先收费再增长，控制成本与节奏</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 路径对比图 ============ -->
+  <section>
+    <h2>两种路径的走向</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 起点 -->
+        <rect x="30" y="92" width="130" height="56" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="95" y="115" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">创业起点</text>
+        <text x="95" y="136" text-anchor="middle" font-size="11" fill="#64748b">小团队 · 有限资源</text>
+        <!-- 上分支：风投驱动 -->
+        <rect x="250" y="24" width="200" height="70" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="350" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">风投驱动</text>
+        <text x="350" y="76" text-anchor="middle" font-size="12" fill="#64748b">烧钱换规模，先扩张再谈盈利</text>
+        <!-- 下分支：小而美 -->
+        <rect x="250" y="146" width="200" height="70" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="350" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#115e59">小而美</text>
+        <text x="350" y="198" text-anchor="middle" font-size="12" fill="#64748b">首日即收费，盈利优先再增长</text>
+        <!-- 上结果 -->
+        <rect x="510" y="24" width="140" height="70" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1.5"/>
+        <text x="580" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">少数成为独角兽</text>
+        <text x="580" y="76" text-anchor="middle" font-size="11" fill="#94a3b8">书中提示失败率约 95%</text>
+        <!-- 下结果 -->
+        <rect x="510" y="146" width="140" height="70" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1.5"/>
+        <text x="580" y="174" text-anchor="middle" font-size="12" font-weight="700" fill="#475569">几百至几千核心用户</text>
+        <text x="580" y="198" text-anchor="middle" font-size="11" fill="#94a3b8">长期持续盈利的"慢公司"</text>
+        <!-- 箭头：起点→上分支 -->
+        <path d="M160 104 C200 104 205 59 248 59" fill="none" stroke="#d97706" stroke-width="2"/>
+        <path d="M240 53 L250 59 L240 65" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 箭头：起点→下分支 -->
+        <path d="M160 136 C200 136 205 181 248 181" fill="none" stroke="#0f766e" stroke-width="2"/>
+        <path d="M240 175 L250 181 L240 187" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 箭头：上分支→上结果 -->
+        <path d="M450 59 L506 59" fill="none" stroke="#d97706" stroke-width="2"/>
+        <path d="M498 53 L510 59 L498 65" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 箭头：下分支→下结果 -->
+        <path d="M450 181 L506 181" fill="none" stroke="#0f766e" stroke-width="2"/>
+        <path d="M498 175 L510 181 L498 187" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 底部注释 -->
+        <text x="340" y="232" text-anchor="middle" font-size="11" fill="#94a3b8">两条路径无绝对优劣，关键在于创业目标与资源约束的匹配</text>
+      </svg>
+      <div class="caption">风投驱动与小而美两种模式的路径对比</div>
+    </div>
+  </section>
+
+  <!-- ============ 三条核心主张 ============ -->
+  <section>
+    <h2>三条核心主张</h2>
+    <ol class="steps">
+      <li><b>从社区入手，而非商业点子。</b>深度参与兴趣社群，通过持续贡献内容建立信任关系，从中发现真实需求，而非凭空构思产品。策略上"先教学再销售"——动手开发前，先通过分享知识积累潜在客户。</li>
+      <li><b>制造"手动有价值流程"验证需求。</b>用最简单的方案测试市场，而非一开始就投入重资产。例如：用线下沙龙替代开发 App，来测试用户付费意愿。</li>
+      <li><b>极简增长策略。</b>冷启动分三阶段：亲友内测 → 社区推广 → 定向冷邮件触达。营销上强调"本色营销"——用教育型内容、真实故事而非付费广告获取用户；定价上主张<b>首日即收费</b>，而非"免费引流 + 后期变现"。</li>
+    </ol>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>个体创业者、自由职业者设计低成本验证方案时</li>
+          <li>讨论"要不要融资、要不要扩张"的战略决策课时</li>
+          <li>与三阶段模型对读：思考"规模化是否是必选项"</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>"小而美"不等于不成长，而是拒绝以牺牲盈利为代价的盲目扩张</li>
+          <li>硬科技等需要重投入的赛道，该模式未必适用</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>三阶段以规模化收尾，本概念提供另一端答案：并非所有创业都必须走到规模化。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-01</div>
+        <h4>创业类型五维分类</h4>
+        <p>从方向与资源依赖维度看，"小而美"多属生活方式型创业的一支。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 1 章，第 21 页 · 教材知识链接 1-2</span>
+    <span>概念卡 1-02 · 第 1 章 导论</span>
+  </div>
+
+</div>
+</body>
+</html>

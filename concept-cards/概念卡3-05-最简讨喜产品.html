@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡3-05 · 最简讨喜产品</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">概念卡 3-05 · 最简讨喜产品（MLP）</span><a class="card-nav-prev" href="概念卡3-04-48小时法则.html">← 概念卡 3-04</a><a class="card-nav-next" href="概念卡5-01-待办任务理论.html">概念卡 5-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 3-05</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>最简讨喜产品（MLP）</h1>
+  <div class="oneliner">MVP 问"能不能解决问题"，MLP 追问"用户爱不爱用"——把"讨喜"作为设计目标，而不是事后优化。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">MVP</span>
+        <h3>最小可行：验证假设</h3>
+        <div class="d1">以最低成本验证核心假设，产物往往是功能简化的产品原型——先把"问题是否真实存在"问清楚。</div>
+        <ul>
+          <li>核心问题：能否解决问题</li>
+          <li>典型产物：功能简化的产品原型</li>
+          <li>局限：体验粗糙，用户承认"有用"却缺乏持续使用的动力</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">MLP</span>
+        <h3>最简讨喜：注入喜爱</h3>
+        <div class="d1">在验证核心假设的同时，把"令人喜爱"作为设计目标之一——精致的设计、流畅的交互、超出预期的细节，或产品传递的情感共鸣。</div>
+        <ul>
+          <li>核心问题：用户是否真正喜爱这个解决方案</li>
+          <li>强调情感联结在产品成功中的关键作用</li>
+          <li>由 Aha! 联合创始人布莱恩·德·哈夫于 2013 年提出</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>MVP 与 MLP 是什么关系</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 235" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 阶段切换标注 -->
+        <text x="340" y="24" text-anchor="middle" font-size="11.5" font-weight="700" fill="#7c3aed">核心假设得到初步验证</text>
+        <!-- MVP 节点 -->
+        <rect x="40" y="36" width="260" height="110" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="170" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">MVP · 最小可行产品</text>
+        <text x="170" y="90" text-anchor="middle" font-size="11.5" fill="#64748b">机会验证初期 · 快速验证需求</text>
+        <text x="170" y="112" text-anchor="middle" font-size="11.5" fill="#64748b">核心问题：能否解决问题</text>
+        <!-- MLP 节点 -->
+        <rect x="380" y="36" width="260" height="110" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="510" y="64" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">MLP · 最简讨喜产品</text>
+        <text x="510" y="90" text-anchor="middle" font-size="11.5" fill="#64748b">假设初步验证后 · 从可用到可增长</text>
+        <text x="510" y="112" text-anchor="middle" font-size="11.5" fill="#64748b">核心问题：是否真正喜爱</text>
+        <!-- 切换箭头 -->
+        <path d="M306 91 L372 91" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M370 86 L380 91 L370 96" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 汇入箭头 -->
+        <path d="M170 146 C170 162, 210 168, 246 170" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M244 163 L254 171 L242 174" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M510 146 C510 162, 470 168, 434 170" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M436 163 L426 171 L438 174" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 结论色带 -->
+        <rect x="130" y="170" width="420" height="42" rx="10" fill="#7c3aed"/>
+        <text x="340" y="197" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">并非对立 · 而是阶段重心的切换</text>
+      </svg>
+      <div class="caption">MVP 与 MLP 的阶段接力关系</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      一个产品如果仅仅是可用，用户可能尝试一次便离开；但如果它<b>令人喜爱</b>，用户更有可能主动推荐、持续使用，并<b>容忍初期的功能不完善</b>。
+      <span class="who">—— 布莱恩·德·哈夫（Brian de Haaff），Aha! 联合创始人（2013）</span>
+    </div>
+    <p>最简讨喜产品（Minimum Lovable Product，MLP）由美国产品管理软件公司 Aha! 联合创始人德·哈夫于 2013 年提出。它针对 MVP 的局限——功能上的"最小"有时导致体验粗糙——主张在产品早期就注入令人喜爱的元素，<b>强调情感联结在产品成功中的关键作用</b>。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>讨喜是设计目标，不是事后优化：</b>MLP 的核心思路是在验证核心假设的同时，把"讨喜"列为设计目标之一，而不是等产品成熟后再补做体验。</li>
+      <li><b>不等于提前打磨完美产品：</b>MLP 并不要求创业者在验证阶段投入大量资源做完美产品——它仍受验证逻辑约束，只是拒绝把"体验粗糙"当作理所当然。</li>
+      <li><b>情感联结是增长引擎：</b>喜爱的用户会主动推荐、持续使用、容忍不完善——这种自传播能力，正是产品从"可用"走向"可增长"的关键。</li>
+    </ol>
+    <div class="trend">
+      <b>典型观察：</b>许多成功的消费级产品，其早期版本往往在核心功能之外，包含让用户眼前一亮的细节设计——这正是 MLP 思维的体现。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>核心假设初步验证后，用 MLP 理念推动产品从"可用"走向"可增长"</li>
+          <li>设计评审时，把"令人喜爱"与"功能可用"并列为验收项</li>
+          <li>观察推荐率、留存率等情感信号，而非仅看任务完成率</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>验证初期别急着讨喜——需求未被证实前，精致外壳救不了伪需求</li>
+          <li>B2B 与工具型产品的"讨喜"内涵不同，不宜照搬消费级审美</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP四步流程与循环加速</h4>
+        <p>MLP 是对 MVP 局限（体验粗糙、留存乏力）的补全，二者接力覆盖"验证"与"增长"两段重心。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-07</div>
+        <h4>设计思维五阶段</h4>
+        <p>设计思维的共情与体验打磨理念，正是 MLP"讨喜"目标的方法来源。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 82 页 · 教材知识链接 3-5</span>
+    <span>概念卡 3-05 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

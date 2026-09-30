@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡6-01 · 资源编排理论</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 6 章 · 创业资源</a><span class="card-nav-meta">概念卡 6-01 · 资源编排理论</span><a class="card-nav-prev" href="概念卡5-05-领先用户.html">← 概念卡 5-05</a><a class="card-nav-next" href="概念卡7-01-SWOT分析.html">概念卡 7-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 6-01</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>资源编排理论</h1>
+  <div class="oneliner">资源本身不等于优势——竞争优势来自管理者"构建—捆绑—利用"三步编排行动。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">资源基础观</span>
+        <h3>资源决定优势</h3>
+        <div class="d1">回答"企业拥有什么"——认为有价值的、稀缺的、难以模仿的资源本身构成竞争优势。</div>
+        <ul>
+          <li>分析对象：资源的属性与存量</li>
+          <li>视角偏静态，默认资源"摆在那里"</li>
+          <li>局限：难以解释动态环境下的优势变化，忽视管理者的能动作用</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">资源编排理论</span>
+        <h3>行动决定资源价值</h3>
+        <div class="d1">回答"资源如何被用起来"——把管理者随时间调动、重构资源的行动纳入分析框架。</div>
+        <ul>
+          <li>分析对象：围绕资源展开的管理行动</li>
+          <li>视角动态：同一资源在不同编排下价值迥异</li>
+          <li>贡献：打开了资源转化为能力的"黑箱"</li>
+        </ul>
+      </div>
+    </div>
+    <p>资源编排理论（resource orchestration theory, ROT）是对资源基础观的重要发展与补充：它不否认资源的重要性，而是指出<b>从"有资源"到"有优势"之间隔着一段必须靠管理行动来跨越的距离</b>。</p>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>理论的结构</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 阶段一：构建 -->
+        <rect x="20" y="40" width="145" height="96" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="92" y="76" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">构 建</text>
+        <text x="92" y="98" text-anchor="middle" font-size="11" fill="#64748b">获取 · 积累 · 剥离</text>
+        <text x="92" y="118" text-anchor="middle" font-size="11" font-style="italic" fill="#94a3b8">structuring</text>
+        <!-- 阶段二：捆绑 -->
+        <rect x="185" y="40" width="145" height="96" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="257" y="76" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">捆 绑</text>
+        <text x="257" y="98" text-anchor="middle" font-size="11" fill="#64748b">整合资源形成能力</text>
+        <text x="257" y="118" text-anchor="middle" font-size="11" font-style="italic" fill="#94a3b8">binding</text>
+        <!-- 阶段三：利用 -->
+        <rect x="350" y="40" width="145" height="96" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="422" y="76" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">利 用</text>
+        <text x="422" y="98" text-anchor="middle" font-size="11" fill="#64748b">动员 · 协调 · 部署</text>
+        <text x="422" y="118" text-anchor="middle" font-size="11" font-style="italic" fill="#94a3b8">leveraging</text>
+        <!-- 结果：竞争优势 -->
+        <rect x="515" y="40" width="145" height="96" rx="12" fill="#1e293b"/>
+        <text x="587" y="76" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">竞争优势</text>
+        <text x="587" y="98" text-anchor="middle" font-size="11" fill="#cbd5e1">把握市场机会</text>
+        <text x="587" y="118" text-anchor="middle" font-size="11" fill="#cbd5e1">实现价值创造</text>
+        <!-- 阶段间箭头 -->
+        <path d="M167 88 L181 88" stroke="#7c3aed" stroke-width="2" stroke-linecap="round"/>
+        <path d="M172 83 L182 88 L172 93" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M332 88 L346 88" stroke="#0f766e" stroke-width="2" stroke-linecap="round"/>
+        <path d="M337 83 L347 88 L337 93" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M497 88 L511 88" stroke="#b45309" stroke-width="2" stroke-linecap="round"/>
+        <path d="M502 83 L512 88 L502 93" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 循环回路 -->
+        <path d="M587 140 C587 190 95 190 92 142" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <path d="M87 150 L92 140 L97 150" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="340" y="222" text-anchor="middle" font-size="11.5" fill="#94a3b8">三个阶段相互关联、随时间循环迭代，而非一次性清单</text>
+      </svg>
+      <div class="caption">资源编排的三个核心管理行动阶段</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      把管理者在动态环境中创造价值所需的行动纳入分析框架，<b>"打开"资源转化为能力的黑箱</b>。
+      <span class="who">—— Sirmon, Hitt &amp; Ireland，《管理评论》（AMR），2007</span>
+    </div>
+    <div class="quote">
+      进一步提出资源编排创造竞争优势的<b>广度、深度与生命周期效应</b>，将框架推向成熟。
+      <span class="who">—— Sirmon, Hitt, Ireland 等，《管理学报》（JOM），2011</span>
+    </div>
+    <p>综合而言：资源编排理论把研究焦点从<b>"什么是好资源"</b>转移到<b>"好资源如何被管理行动一步步变成能力与优势"</b>，为动态环境下的资源管理提供了过程视角。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>分析单位是"行动"，不是"资源"：</b>两家企业持有相同资源却结果迥异，差别往往在于获取、整合与部署资源的编排方式，而非资源清单本身。</li>
+      <li><b>三阶段是一个循环，不是流水线：</b>构建、捆绑、利用相互关联、随时间迭代；环境一变，资源组合就要重新调整，编排没有"完成态"。</li>
+      <li><b>剥离也是编排：</b>放弃不再创造价值的冗余资源，与获取新资源同样重要——做减法本身就是一种资源管理行动。</li>
+      <li><b>捆绑方式有梯度：</b>整合可以是稳定型（维持现有能力）、丰富型（深化能力），也可以是开拓型（构建新能力），选择取决于战略与环境。</li>
+    </ol>
+    <div class="trend">
+      <b>对创业情境的启示：</b>初创企业普遍资源匮乏，恰恰说明竞争优势的来源不在"拥有多少"，而在"如何随时间编排手头的资源"——把有限资源捆绑成独特能力，再在最有把握的机会上集中部署。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>梳理创业资源规划时，按"构建—捆绑—利用"三阶段逐项自查行动是否明确</li>
+          <li>诊断项目瓶颈：资源问题出在获取、整合还是部署环节，对症下药</li>
+          <li>复盘同类企业资源禀赋相近而绩效悬殊的原因</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>不要把三阶段当成一次走完的线性流程，环境变化时须回炉重排</li>
+          <li>不要只盯"获取"，忽视整合质量与部署时机——后半程同样决定成败</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>对应"构建"阶段中资源获取环节的操作打法：资源匮乏时如何另辟蹊径拿到关键资源。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>与"捆绑"阶段同构：把分散资源整合为支撑战略的组织能力，落到可执行的分步框架。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 6 章，第 156 页 · 教材知识链接 6-1</span>
+    <span>概念卡 6-01 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡3-04 · 48小时法则</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">概念卡 3-04 · 48 小时法则</span><a class="card-nav-prev" href="概念卡3-03-SCAMPER创新引导工具.html">← 概念卡 3-03</a><a class="card-nav-next" href="概念卡3-05-最简讨喜产品.html">概念卡 3-05 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 3-04</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>48 小时法则</h1>
+  <div class="oneliner">"48 小时开不了一门小生意，给你 4800 小时也开不了"——用极限时间压缩，把创业从追求完备降维到验证可能。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">恐惧一</span>
+        <h3>害怕开始 → 改变游戏规则</h3>
+        <div class="d1">把目标从"我一定要成功"改为"一年让自己失败 12 次"——每次失败都是在完成任务，心态完全不同。</div>
+        <ul>
+          <li>为失败预设"可承受"的边界与次数额度</li>
+          <li>失败从需要规避的负面事件，转化为学习信号</li>
+          <li>与效果逻辑的"可承受损失原则"高度一致</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">恐惧二</span>
+        <h3>害怕被拒绝 → Now not How</h3>
+        <div class="d1">想做一件事时，不问"怎么做"，而问"我现在能做什么"——放弃对完美路径的规划焦虑，先迈出一步。</div>
+        <ul>
+          <li>这是"手中鸟"原则的行动版：从既有手段出发</li>
+          <li>直接向朋友圈或社交媒体发布付费产品</li>
+          <li>验证标准极简：3 人付费即验证成功</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>机制图解</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 275" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 恐惧一 -->
+        <rect x="50" y="24" width="250" height="64" rx="10" fill="#fff7ed" stroke="#d97706" stroke-width="1.5"/>
+        <text x="175" y="52" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a3412">恐惧一 · 害怕开始</text>
+        <text x="175" y="74" text-anchor="middle" font-size="11.5" fill="#64748b">越准备越不敢迈出第一步</text>
+        <!-- 恐惧二 -->
+        <rect x="380" y="24" width="250" height="64" rx="10" fill="#fff7ed" stroke="#d97706" stroke-width="1.5"/>
+        <text x="505" y="52" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a3412">恐惧二 · 害怕被拒绝</text>
+        <text x="505" y="74" text-anchor="middle" font-size="11.5" fill="#64748b">怕没人买 · 怕丢面子</text>
+        <!-- 恐惧→策略箭头 -->
+        <path d="M175 88 L175 122" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M170 120 L175 130 L180 120" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M505 88 L505 122" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M500 120 L505 130 L510 120" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 策略一 -->
+        <rect x="50" y="128" width="250" height="64" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="175" y="156" text-anchor="middle" font-size="13.5" font-weight="700" fill="#115e59">策略一 · 改变游戏规则</text>
+        <text x="175" y="178" text-anchor="middle" font-size="11.5" fill="#64748b">目标改为"一年失败 12 次"</text>
+        <!-- 策略二 -->
+        <rect x="380" y="128" width="250" height="64" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="505" y="156" text-anchor="middle" font-size="13.5" font-weight="700" fill="#115e59">策略二 · Now not How</text>
+        <text x="505" y="178" text-anchor="middle" font-size="11.5" fill="#64748b">问"现在能做什么"而非"怎么做"</text>
+        <!-- 策略→结果箭头 -->
+        <path d="M175 192 C175 208, 210 214, 236 218" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M234 211 L244 219 L232 222" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M505 192 C505 208, 470 214, 444 218" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M446 211 L436 219 L448 222" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 结果色带 -->
+        <rect x="140" y="222" width="400" height="40" rx="10" fill="#0f766e"/>
+        <text x="340" y="244" text-anchor="middle" font-size="13" font-weight="700" fill="#ffffff">48 小时 + 3 个付费客户 → 完成可能性验证</text>
+      </svg>
+      <div class="caption">两大恐惧、两套策略与极简验证标准</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      如果你无法在 <b>48 小时内</b>开启一门小生意，那么给你 <b>4800 小时</b>，你也无法做到。
+      <span class="who">—— 诺亚·卡根（Noah Kagan），AppSumo 创始人、Facebook 第 30 号员工</span>
+    </div>
+    <div class="quote">
+      你不是需要更多准备，<b>你需要的是开始</b>。
+      <span class="who">—— 诺亚·卡根</span>
+    </div>
+    <p>卡根在十多年创业实践中接触了成千上万想创业的人，发现真正区分成功者与失败者的，<b>不是知道多少，而是能否在恐惧中行动</b>。这一方法与本章效果逻辑的"可承受损失""手中鸟"原则高度一致，可视为 MVP 理念在时间维度上的极致延伸。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>改变的是对失败的定义：</b>"一年失败 12 次"让失败从"证明我不行"变成"完成了任务"，为失败预设可承受边界，是反脆弱式的心态重构。</li>
+      <li><b>压缩的是启动，不是质量：</b>48 小时法则的核心是克服拖延——用具体的时间压缩对抗大脑对不确定性的本能回避，把启动成本从"完备性追求"降到"可能性验证"。</li>
+      <li><b>验证标准小到无法逃避：</b>卡根仅用 60 美元启动 AppSumo，还曾在 24 小时内卖出 4000 美元的牛肉干订阅——当时连牛肉干都还没备好；先有付费，再补交付。</li>
+    </ol>
+    <div class="trend">
+      <b>实操建议：</b>直接向朋友圈或社交媒体发布一个付费产品（如"AI PPT 速成课 199 元"），以 3 人付费为验证成功线——先测试"有人愿意掏钱"，再谈产品打磨。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>有了新想法，48 小时内完成一次最小付费验证</li>
+          <li>用"失败配额"化解完美主义式的准备拖延</li>
+          <li>冷启动阶段借助社交关系直接发售，测试真实需求</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>48 小时验证的是"需求存在"，不是"生意成立"——验证后仍需完整经营</li>
+          <li>重资产与强监管领域无法套用，需遵循 MVP 的适用边界</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-03</div>
+        <h4>效果逻辑五原则</h4>
+        <p>"可承受损失"与"手中鸟"正是 48 小时法则的理论底座：按损失边界行动，从既有手段出发。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP四步流程与循环加速</h4>
+        <p>48 小时法则是 MVP 在时间维度上的极致压缩——把"构建"缩到最小，让"测量—学习"尽快启动。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 81 页 · 教材知识链接 3-4</span>
+    <span>概念卡 3-04 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

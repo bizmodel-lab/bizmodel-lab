@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡2-01 · 褚橙传奇</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 2-01</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>褚橙传奇</h1>
+  <div class="oneliner">从"亚洲烟王"到"励志橙"——74 岁开始的二次创业，诠释跌入谷底后的反弹力。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">褚时健</div>
+        <div class="fs">71 岁跌入人生谷底，74 岁二次创业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">农业 · 冰糖橙</div>
+        <div class="fs">生长周期长、技术难度高的种植业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">哀牢山 2400 亩荒山</div>
+        <div class="fs">2002 年与老伴承包，身无分文起步</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">褚氏农业</div>
+        <div class="fs">褚橙、云冠橙等多品牌的现代农业企业</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2001</div><div class="dot"></div>
+        <div class="tt">谷底中的选择</div>
+        <div class="td">身无分文，却拒绝了国内外烟草企业的高薪聘请——他要的不是养老的岗位，而是重新创造价值的机会。</div>
+      </li>
+      <li>
+        <div class="yr">2002</div><div class="dot"></div>
+        <div class="tt">74 岁承包荒山</div>
+        <div class="td">与老伴承包哀牢山 2400 亩荒山，开始二次创业。选择冰糖橙这一生长周期长、技术难度高的品类，迎难而上。</div>
+      </li>
+      <li>
+        <div class="yr">种植期</div><div class="dot"></div>
+        <div class="tt">精研品质</div>
+        <div class="td">凭借早年酿酒和烟叶种植积累的农业管理经验，买来柑橘种植书籍潜心钻研，聘请农业专家指导，从剪梢、施肥到灌溉每个环节亲自把控，最终让冰糖橙的<b>甜酸比稳定在 18:1</b>。</div>
+      </li>
+      <li>
+        <div class="yr">同期</div><div class="dot"></div>
+        <div class="tt">破解水源难题</div>
+        <div class="td">水源是哀牢山种橙的最大难题。投资架设引水管，建起微喷灌系统——<b>2009 年云南大旱，周边农田颗粒无收，褚橙果园安然无恙</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2012</div><div class="dot"></div>
+        <div class="tt">褚橙进京</div>
+        <div class="td">85 岁的褚时健与本来生活网合作，褚橙首次进京销售。宣传文案<b>"人生总有起落，精神终可传承"</b>击中无数人的心，褚橙被消费者亲切地称为"励志橙"。</div>
+      </li>
+      <li>
+        <div class="yr">至今</div><div class="dot"></div>
+        <div class="tt">品牌化成长</div>
+        <div class="td">褚橙发展为褚氏农业，旗下拥有褚橙、云冠橙等多个品牌，从"一个人的橙"成长为品牌化的现代农业企业。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么拒绝高薪聘请？</h3>
+        <p>2001 年的褚时健身无分文，国内外烟草企业的高薪聘请是"最安全"的选择。他拒绝的不是收入，而是<b>放弃再次创造的可能</b>——驱动他的是成就需求，而非生计压力。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么选择"难而慢"的冰糖橙？</h3>
+        <p>生长周期长、技术难度高，意味着前期多年无收。但褚时健凭借早年酿酒和烟叶种植的<b>农业管理经验迁移</b>，加上潜心钻研与专家指导，把"难"变成了别人难以复制的品质壁垒（18:1 甜酸比）。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么投资水源工程？</h3>
+        <p>在资金极度紧张时仍投资引水管与微喷灌系统，是典型的<b>在资源约束下向关键瓶颈配置资源</b>——2009 年大旱验证了这一决策的正确性，也构成褚橙的供应链护城河。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>创业潜力不设年龄上限</h4>
+        <p>王兴 24 岁创办校内网，褚时健 74 岁种褚橙——年龄跨度印证创业潜力在生命周期各阶段的多样可能。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>谷底反弹力是创业精神的真谛</h4>
+        <p>从"亚洲烟王"到阶下囚再到"橙王"，人生轨迹的核心不是顺境扩张，而是跌入谷底后的反弹能力。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>经验迁移 + 亲力亲为 = 品质壁垒</h4>
+        <p>把早年农业管理经验迁移到新赛道，每个环节亲自把控，把"慢功夫"熬成别人追不上的品质标准。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-01</div>
+        <h4>创业者四大心理特质框架</h4>
+        <p>本案例是特质的活标本：强烈的成就需求、高韧性、把结果归于自身的内控点。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-02</div>
+        <h4>动机指纹与三类动机组合</h4>
+        <p>谷底拒绝高薪、选择"难而慢"的赛道——动机结构清晰指向成就驱动而非生存驱动。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 1-02</div>
+        <h4>创业过程三阶段模型</h4>
+        <p>二次创业完整走过机会开发（选品类）→ 模式验证（品质+水源）→ 规模化（品牌化）。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自本来生活网官方资料及《中国企业家》、澎湃新闻、《经济参考报》等公开报道；叙事与分析表述整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 2 章，第 30 页 · 教材相关事例 2-1</span>
+    <span>案例卡 2-01 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

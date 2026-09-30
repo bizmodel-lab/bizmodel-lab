@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡11-01 · ESG投资</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 11 章 · 前沿专题</a><span class="card-nav-meta">概念卡 11-01 · ESG 投资</span><a class="card-nav-prev" href="概念卡10-02-创始人模式.html">← 概念卡 10-02</a><a class="card-nav-next" href="概念卡11-02-AI智能体.html">概念卡 11-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 11-01</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>ESG 投资</h1>
+  <div class="oneliner">把环境（E）、社会（S）、治理（G）三类非财务因素纳入投资决策——用可持续发展能力重新定义"好公司"。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">传统投资</span>
+        <h3>只看财务指标</h3>
+        <div class="d1">聚焦营收、利润、估值等财务表现，回答"这家公司现在赚不赚钱"。</div>
+        <ul>
+          <li>视角偏短期，重视当期业绩</li>
+          <li>环境代价、社会责任、治理缺陷等外部性被忽略</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">ESG 投资</span>
+        <h3>财务 + 非财务双轨评价</h3>
+        <div class="d1">将 E、S、G 三大非财务因素纳入投资决策过程与企业评价标准，更全面地评估企业的可持续发展能力与社会影响，从而获得长期稳定的回报。</div>
+        <ul>
+          <li><b>E 环境：</b>资源消耗、污染物排放、碳排放与气候变化应对，以政府监管政策为标尺</li>
+          <li><b>S 社会：</b>员工权益、供应链管理、产品质量安全、社区关系、数据隐私</li>
+          <li><b>G 治理：</b>董事会独立性、高管薪酬、股东权利、反腐败与商业道德</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>三大支柱如何进入投资决策</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 235" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 三大支柱 -->
+        <rect x="60" y="42" width="170" height="64" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="145" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">环境 E</text>
+        <text x="145" y="94" text-anchor="middle" font-size="12" fill="#64748b">资源 · 排放 · 气候</text>
+        <rect x="255" y="42" width="170" height="64" rx="12" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="340" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#5b21b6">社会 S</text>
+        <text x="340" y="94" text-anchor="middle" font-size="12" fill="#64748b">员工 · 供应链 · 隐私</text>
+        <rect x="450" y="42" width="170" height="64" rx="12" fill="#fffbeb" stroke="#d97706" stroke-width="1.5"/>
+        <text x="535" y="70" text-anchor="middle" font-size="15" font-weight="700" fill="#b45309">治理 G</text>
+        <text x="535" y="94" text-anchor="middle" font-size="12" fill="#64748b">董事会 · 薪酬 · 廉洁</text>
+        <!-- 汇聚箭头 -->
+        <path d="M150 110 L288 146" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M288 139 L299 149 L287 152" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M340 110 L340 144" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M333 136 L340 147 L347 136" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M530 110 L392 146" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M392 139 L381 149 L393 152" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 决策节点 -->
+        <rect x="215" y="152" width="250" height="62" rx="12" fill="#ffffff" stroke="#1e293b" stroke-width="1.8"/>
+        <text x="340" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b">ESG 投资决策</text>
+        <text x="340" y="202" text-anchor="middle" font-size="12" fill="#64748b">非财务因素系统纳入</text>
+        <!-- 回报节点 -->
+        <rect x="478" y="152" width="172" height="62" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="564" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#115e59">长期稳定回报</text>
+        <text x="564" y="202" text-anchor="middle" font-size="12" fill="#64748b">可持续发展能力</text>
+        <!-- 决策指向回报 -->
+        <path d="M465 183 L472 183" fill="none" stroke="#0f766e" stroke-width="2"/>
+        <path d="M468 177 L479 183 L468 189" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="caption">E · S · G 三支柱汇聚为投资决策，指向长期回报</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      2006 年，联合国负责任投资原则（UN PRI）正式发布，标志着 <b>ESG 理念在全球资本市场的系统性确立</b>。
+      <span class="who">—— 教材知识链接 11-1</span>
+    </div>
+    <p>ESG 投资并非新生事物，其理念可追溯至 <b>18 世纪的伦理投资</b>——投资者出于宗教或道德考量，主动将烟草、赌博、军火等与伦理相悖的行业排除在投资范围之外；20 世纪 60 年代，社会责任投资向女权运动、反种族歧视等更广泛的社会议题扩展；90 年代后，环境保护逐渐成为主流价值导向。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>ESG 投资不是做慈善：</b>出发点仍是回报——通过更全面的评估捕捉长期风险与机会，追求长期稳定的收益。</li>
+      <li><b>非财务因素终会"财务化"：</b>政策监管、声誉诉讼、供应链中断等 ESG 风险，最终都会体现在财务报表上。</li>
+      <li><b>三大支柱各有标尺：</b>E 看生态影响与合规、S 看利益相关者关系、G 看公司治理质量——三者不可互相替代。</li>
+    </ol>
+    <div class="trend">
+      <b>五类常用策略：</b>负面筛选（排除烟草、赌博、军火等特定行业）；正面筛选（集中投资 ESG 表现优于同行的公司）；ESG 整合（在投资分析与决策中系统纳入 ESG 因素）；可持续主题投资（聚焦清洁能源、可持续农业等主题）；践行积极股东主义（行使表决权、投票权，推动被投企业改善 ESG 表现）。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>撰写商业计划书时，用 E / S / G 三支柱自查项目的长期风险与价值亮点</li>
+          <li>对接 ESG 导向的投资机构时，主动、量化地披露环境、社会与治理表现</li>
+          <li>以政策监管为标尺扫描机会：合规要求往往催生新的产品与服务需求</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>警惕"漂绿"：ESG 表述需有数据与制度支撑，经得起尽调检验</li>
+          <li>不同评级机构口径不一，引用 ESG 评价时注明标准来源</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-02</div>
+        <h4>可持续创业三维度机会框架</h4>
+        <p>ESG 的环境（E）与社会（S）支柱，正是该框架识别环境、社会维度创业机会的出发点。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-03</div>
+        <h4>可持续商业模式四路径</h4>
+        <p>ESG 理念要变成生意，需落到商业模式设计——四路径提供了具体的构造方法。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 11 章，第 292 页 · 教材知识链接 11-1</span>
+    <span>概念卡 11-01 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

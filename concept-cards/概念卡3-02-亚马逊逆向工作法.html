@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡3-02 · 亚马逊逆向工作法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">概念卡 3-02 · 亚马逊的&quot;逆向工作法&quot;</span><a class="card-nav-prev" href="概念卡3-01-心理账户.html">← 概念卡 3-01</a><a class="card-nav-next" href="概念卡3-03-SCAMPER创新引导工具.html">概念卡 3-03 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 3-02</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>亚马逊的"逆向工作法"</h1>
+  <div class="oneliner">先写好"产品发布当天的新闻通稿"，再倒推开发——用一页半的假想通稿，把客户价值逼到纸面上。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">顺向工作法</span>
+        <h3>从想法与能力出发</h3>
+        <div class="d1">常见的启动方式：先写商业计划书或可行性报告，论证"我们能做什么"，产品做出来之后再考虑怎么向客户宣传。</div>
+        <ul>
+          <li>起点：内部想法、技术能力</li>
+          <li>读者：投资人、内部管理层</li>
+          <li>风险：产品完成时才发现说不清客户价值</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">逆向工作法</span>
+        <h3>从发布时刻的客户体验出发</h3>
+        <div class="d1">亚马逊产品经理启动新产品或新服务时，先撰写模拟新闻通稿（press release）并附常见问题解答（FAQ），把"发布时的对外宣传"前置为立项文件。</div>
+        <ul>
+          <li>起点：客户能得到什么好处</li>
+          <li>读者：客户，而非内部团队</li>
+          <li>通稿一页半以内，写不清即产品有问题</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>工作流程</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 205" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 节点1 -->
+        <rect x="15" y="36" width="140" height="96" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="85" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">模拟新闻通稿</text>
+        <text x="85" y="94" text-anchor="middle" font-size="11.5" fill="#64748b">一页半 · 写给客户</text>
+        <!-- 节点2 -->
+        <rect x="185" y="36" width="140" height="96" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+        <text x="255" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#5b21b6">多轮评审迭代</text>
+        <text x="255" y="94" text-anchor="middle" font-size="11.5" fill="#64748b">经历 20—30 个版本</text>
+        <!-- 节点3 -->
+        <rect x="355" y="36" width="140" height="96" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="425" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#115e59">价值清晰才立项</text>
+        <text x="425" y="94" text-anchor="middle" font-size="11.5" fill="#64748b">写不出＝产品有问题</text>
+        <!-- 节点4 -->
+        <rect x="525" y="36" width="140" height="96" rx="10" fill="#f0fdfa" stroke="#0f766e" stroke-width="1.5"/>
+        <text x="595" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="#115e59">开发期"指南针"</text>
+        <text x="595" y="94" text-anchor="middle" font-size="11.5" fill="#64748b">功能须在通稿中有体现</text>
+        <!-- 箭头 -->
+        <path d="M157 84 L181 84" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M179 79 L189 84 L179 89" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M327 84 L351 84" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M349 79 L359 84 L349 89" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M497 84 L521 84" fill="none" stroke="#94a3b8" stroke-width="2"/>
+        <path d="M519 79 L529 84 L519 89" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- 底部注释 -->
+        <text x="340" y="164" text-anchor="middle" font-size="12" fill="#94a3b8">配套 FAQ 分两类：外部回答价格、获取方式与使用方法，内部回答市场规模、技术可行性与竞争优势</text>
+        <text x="340" y="188" text-anchor="middle" font-size="12" fill="#94a3b8">语言要求"奥普拉语"而非"极客语"——想象坐在奥普拉的沙发上向普通观众介绍产品</text>
+      </svg>
+      <div class="caption">逆向工作法：从新闻通稿到开发指南针</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      如果新闻通稿很难写——<b>无法清晰描述客户会获得哪些好处、无法让团队感到兴奋</b>，那么很可能意味着产品本身存在问题。
+      <span class="who">—— 亚马逊逆向工作法实践</span>
+    </div>
+    <div class="quote">
+      我们现在构建的功能，<b>在新闻通稿中有体现吗？</b>
+      <span class="who">—— 开发期团队的自检提问</span>
+    </div>
+    <p>这一机制由亚马逊创始人<b>杰夫·贝索斯</b>在公司创立之初倡导，后经柯林·布里亚与比尔·卡尔《亚马逊逆向工作法》（2022）等整理传播，成为"从客户需求倒推工作"的代表性创新机制。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>通稿写给客户，不是写给老板：</b>它模拟的是产品发布时的对外宣传，必须用通俗易懂的客户语言，回答"客户是谁、痛点是什么、得到什么好处"。</li>
+      <li><b>迭代就是验证：</b>一份通稿往往要经历 20—30 个版本。在纸面上反复打磨客户价值，是成本最低的立项前验证——写不出来，就是最早的失败信号。</li>
+      <li><b>通稿是持续约束，不是一次性文档：</b>立项后它充当"指南针"，团队随时对照检查；大量精力花在通稿未提及的功能上，就要反思是否"过度构建"。</li>
+    </ol>
+    <div class="trend">
+      <b>通稿七要素模板：</b>标题（产品叫什么、客户能否一眼看懂）、副标题（目标客户与好处）、摘要段落（是什么、为谁、为何重要）、问题段落（痛点与现有方案的失败）、解决方案段落（如何优雅解决）、客户引言（假想客户的评价）、行动号召（如何开始使用）。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>新产品立项前，先写一页半新闻通稿再谈开发</li>
+          <li>开发周会以通稿对照检查功能清单，识别"过度构建"</li>
+          <li>用客户语言统一团队认知，避免内部黑话遮蔽价值主张</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>它不是写作练习——通稿写不出价值，应正视产品问题而非润色文案</li>
+          <li>警惕把通稿做成公关稿：检验标准是"客户好处清晰 + 团队真正兴奋"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-06</div>
+        <h4>逆向思维两维度与闭环</h4>
+        <p>逆向工作法是逆向思维在产品流程中的落地：从终局（发布时刻的客户体验）倒推当下的工作顺序。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-04</div>
+        <h4>第一性原理三阶段法</h4>
+        <p>二者都拒绝"从现有能力出发"——第一性原理追问需求本质，逆向工作法把本质价值写成可检验的通稿文本。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 74 页 · 教材知识链接 3-2</span>
+    <span>概念卡 3-02 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

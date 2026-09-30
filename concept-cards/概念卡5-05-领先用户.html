@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>概念卡5-05 · 领先用户</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --c1:#7c3aed; --c1-bg:#f5f3ff; --c1-line:#ddd6fe;
+    --c2:#0f766e; --c2-bg:#f0fdfa; --c2-line:#99f6e4;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--ink);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--c1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--c1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 概念界定：双栏对比 ===== */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .def{
+    border-radius:12px;padding:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .def .tag{
+    display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;
+    color:#fff;border-radius:6px;padding:2px 12px;margin-bottom:10px;
+  }
+  .def.a .tag{background:var(--c1);} .def.b .tag{background:var(--c2);}
+  .def h3{font-size:18px;font-weight:700;margin-bottom:8px;}
+  .def .d1{font-size:14.5px;color:var(--ink-2);margin-bottom:10px;}
+  .def ul{list-style:none;}
+  .def li{
+    font-size:13.5px;color:var(--ink-3);padding-left:16px;position:relative;margin-bottom:6px;
+  }
+  .def.a li::before{content:"·";position:absolute;left:4px;color:var(--c1);font-weight:700;}
+  .def.b li::before{content:"·";position:absolute;left:4px;color:var(--c2);font-weight:700;}
+
+  /* ===== 关系图 ===== */
+  .figure{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 12px 8px;overflow-x:auto;
+  }
+  .figure svg{display:block;margin:0 auto;min-width:640px;width:100%;height:auto;}
+  .figure .caption{
+    text-align:center;font-size:13px;color:var(--ink-3);padding:10px 0 8px;
+  }
+
+  /* ===== 理论源流 ===== */
+  .quote{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--c1);
+    border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0;color:var(--ink-2);
+  }
+  .quote b{color:var(--ink);}
+  .quote .who{display:block;text-align:right;font-size:13px;color:var(--ink-3);margin-top:6px;}
+
+  /* ===== 辨析要点 ===== */
+  ol.steps{counter-reset:step;list-style:none;}
+  ol.steps li{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 18px 14px 62px;margin-bottom:10px;position:relative;color:var(--ink-2);
+    font-size:14.5px;
+  }
+  ol.steps li::before{
+    counter-increment:step;content:counter(step);
+    position:absolute;left:16px;top:50%;transform:translateY(-50%);
+    width:30px;height:30px;border-radius:50%;background:var(--c1);color:#fff;
+    font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
+  }
+  ol.steps li b{color:var(--ink);}
+
+  /* ===== 时代观察 ===== */
+  .trend{
+    background:var(--c1-bg);border:1px solid var(--c1-line);border-radius:12px;
+    padding:18px 22px;font-size:14px;color:var(--ink-2);
+  }
+  .trend b{color:var(--ink);}
+
+  /* ===== 使用建议 ===== */
+  .fit{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .fit .fbox{border-radius:12px;padding:18px;border:1px solid var(--line);}
+  .fit .use{background:var(--c2-bg);border-color:var(--c2-line);}
+  .fit .care{background:#fffbeb;border-color:#fde68a;}
+  .fit h4{font-size:15px;font-weight:700;margin-bottom:10px;}
+  .fit .use h4{color:var(--c2);} .fit .care h4{color:#d97706;}
+  .fit ul{list-style:none;}
+  .fit li{font-size:13.5px;color:var(--ink-2);padding-left:18px;position:relative;margin-bottom:8px;}
+  .fit .use li::before{content:"✓";position:absolute;left:0;color:var(--c2);font-weight:700;}
+  .fit .care li::before{content:"!";position:absolute;left:0;color:#d97706;font-weight:700;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .rel{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;
+  }
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .duo,.fit,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .def,.rel,ol.steps li{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/concept-cards.html">← 知识链接</a><a href="/concept-cards.html">第 5 章 · 创业机会</a><span class="card-nav-meta">概念卡 5-05 · 领先用户</span><a class="card-nav-prev" href="概念卡5-04-用户体验地图.html">← 概念卡 5-04</a><a class="card-nav-next" href="概念卡6-01-资源编排理论.html">概念卡 6-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">概念卡 5-05</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>领先用户</h1>
+  <div class="oneliner">走在市场前面的那批用户，提前替全市场暴露了需求——他们"自制"的方案就是机会的路标。</div>
+
+  <!-- ============ 概念界定 ============ -->
+  <section>
+    <h2>概念界定</h2>
+    <div class="duo">
+      <div class="def a">
+        <span class="tag">领先用户</span>
+        <h3>显著领先于市场主流</h3>
+        <div class="d1">因率先满足自身强烈需求而自主开发解决方案的用户。</div>
+        <ul>
+          <li>需求前瞻性：比大多数用户更早意识到某种需求，且该需求将在未来数月或数年扩散到整个市场</li>
+          <li>方案主动性：现有产品无法满足时，自行改装、拼凑或开发解决方案，而非被动等待</li>
+        </ul>
+      </div>
+      <div class="def b">
+        <span class="tag">普通用户</span>
+        <h3>滞后且被动的多数</h3>
+        <div class="d1">需求随市场主流显现，习惯在现有产品中做选择。</div>
+        <ul>
+          <li>只能表达"存量"意见，难以给出超前的需求信息</li>
+          <li>面向他们做常规调研，往往只能验证已知</li>
+          <li>而领先用户的"自制"行为，指向尚未被满足的需求</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关系图 ============ -->
+  <section>
+    <h2>需求扩散的时间差</h2>
+    <div class="figure">
+      <svg viewBox="0 0 680 262" xmlns="http://www.w3.org/2000/svg" font-family="PingFang SC, Microsoft YaHei, Noto Sans SC, sans-serif">
+        <!-- 需求扩散曲线 -->
+        <path d="M70 195 C 150 190 210 150 280 105 C 350 60 480 40 620 34" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
+        <text x="80" y="165" text-anchor="start" font-size="12" fill="#94a3b8">需求扩散</text>
+
+        <!-- 领先用户需求点 -->
+        <circle cx="147" cy="177" r="5" fill="#7c3aed"/>
+        <text x="147" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6">领先用户需求显现</text>
+        <path d="M147 126 L147 168" fill="none" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+        <!-- 主流市场需求点 -->
+        <circle cx="557" cy="38" r="5" fill="#0f766e"/>
+        <text x="557" y="74" text-anchor="middle" font-size="12" font-weight="700" fill="#115e59">主流市场需求显现</text>
+        <path d="M557 45 L557 60" fill="none" stroke="#0f766e" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+        <!-- 现在分界线 -->
+        <path d="M330 32 L330 200" fill="none" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <text x="330" y="22" text-anchor="middle" font-size="12" fill="#64748b">现在</text>
+
+        <!-- 时间轴 -->
+        <path d="M60 205 L630 205" fill="none" stroke="#cbd5e1" stroke-width="2"/>
+        <path d="M618 199 L632 205 L618 211" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="600" y="228" text-anchor="middle" font-size="12" fill="#64748b">时间 →</text>
+
+        <!-- 底部注释 -->
+        <text x="340" y="252" text-anchor="middle" font-size="12" fill="#94a3b8">领先用户今天"自制"的方案，往往预示着明天主流市场的需求</text>
+      </svg>
+      <div class="caption">领先用户需求与主流市场的时间差</div>
+    </div>
+  </section>
+
+  <!-- ============ 理论源流 ============ -->
+  <section>
+    <h2>理论源流</h2>
+    <div class="quote">
+      许多重大创新的创意来源并非企业内部研发，而是<b>领先用户</b>。
+      <span class="who">—— 冯·希普尔（Eric von Hippel）《创新的源泉》</span>
+    </div>
+    <p>"领先用户"是创新管理领域的核心概念，由冯·希普尔提出。它揭示了一条常被忽视的创新路径：当现有产品无法满足强烈需求时，<b>领先用户会自己动手解决</b>——这些"民间方案"往往走在商业化产品之前，为创业者标注出需求的走向。</p>
+  </section>
+
+  <!-- ============ 辨析要点 ============ -->
+  <section>
+    <h2>辨析要点</h2>
+    <ol class="steps">
+      <li><b>前瞻性即时间差：</b>领先用户今天的需求，就是大众市场明天的需求——这个数月至数年的时间差，正是创业者的机会窗口。</li>
+      <li><b>"自制"行为是路标：</b>用户自行改装、拼凑解决方案，说明现有产品没有把任务做好——被忍受的不便，指向真实而未被满足的需求。</li>
+      <li><b>三条识别路径：</b>一是寻找极端场景，到需求最强烈的"极端用户"中去找；二是观察"自制"行为；三是深入技术论坛、发烧友社群、专业协会等领先用户聚集地，从热点话题与高频痛点中发现机会。</li>
+    </ol>
+    <div class="trend">
+      <b>典型案例——从极限运动到大众市场：</b>滑雪爱好者率先使用 GoPro 相机记录运动过程，专业运动员对装备的需求也总是先于普通消费者——这些"极端"场景中的使用行为，后来普及为大众旅游市场的标配功能。
+    </div>
+  </section>
+
+  <!-- ============ 使用建议 ============ -->
+  <section>
+    <h2>使用建议</h2>
+    <div class="fit">
+      <div class="fbox use">
+        <h4>适用场景</h4>
+        <ul>
+          <li>创意来源枯竭时，到极端用户与发烧友社群中寻找需求线索</li>
+          <li>深入社群观察热点话题与高频抱怨，识别潜在的创新机会</li>
+          <li>把领先用户的自制方案当作低成本的需求验证信号</li>
+        </ul>
+      </div>
+      <div class="fbox care">
+        <h4>注意边界</h4>
+        <ul>
+          <li>领先用户的需求未必都会扩散——需判断需求的普适性与扩散条件</li>
+          <li>极端声音易被放大——领先用户需求的强度不代表市场规模</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联卡片 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-06</div>
+        <h4>用户—功能—场景三角交叉验证</h4>
+        <p>领先用户暴露的需求线索，需经用户、功能、场景三角交叉确认才能确立为机会。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-10</div>
+        <h4>机会验证三步与转型四类型</h4>
+        <p>领先用户的早期反馈，适合作为机会假设验证的第一站。</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 5 章，第 144 页 · 教材知识链接 5-5</span>
+    <span>概念卡 5-05 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>
