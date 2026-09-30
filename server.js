@@ -659,6 +659,8 @@ cleanSessionStore();
 // 迁移:为旧模板课程补上阶段 1（机会评估矩阵）与阶段 4（假设清单）的结构化交付物
 (function migrateDeliverables() {
   let changed = false;
+  const tpl = defaultCourse();
+  const tplStage1 = tpl.stages.find(s => s.id === 1);
   for (const c of db.courses) {
     for (const st of c.stages) {
       if (st.id === 1 && (!st.deliverable || st.deliverable === "none")) { st.deliverable = "matrix"; changed = true; }
@@ -667,6 +669,18 @@ cleanSessionStore();
       if (st.id === 1 && typeof st.tools === "string" && st.tools.includes("对候选机会按 5 个维度")) {
         st.tools = st.tools.replace("对候选机会按 5 个维度", "对 3 个候选机会按 5 个维度");
         changed = true;
+      }
+      // 阶段 1 教学内容升级（PEST→PESTEL + 机会假设命题句式，源自方法论卡 5-03 / 5-08）：
+      // 旧课程是创建时快照，检测旧版 PEST 文案后，用新模板同步 knowledge/tools/tasks/quiz/brief，
+      // 仅同步教学内容字段，学员提交与成绩数据不受影响。
+      if (st.id === 1 && Array.isArray(st.knowledge) && st.knowledge.some(k => typeof k === "string" && k.includes("PEST 趋势扫描：从 Political"))) {
+        st.brief = tplStage1.brief;
+        st.knowledge = tplStage1.knowledge;
+        st.tools = tplStage1.tools;
+        st.tasks = tplStage1.tasks;
+        st.quiz = tplStage1.quiz;
+        changed = true;
+        console.log(`[迁移] 课程 ${c.id} 阶段 1 教学内容已升级为 PESTEL + 机会假设命题句式版本`);
       }
     }
   }
