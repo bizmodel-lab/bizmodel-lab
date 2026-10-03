@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-01 · 唐健：欠债 4600 万，卖烤肠还债</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-01 · 唐健：欠债 4600 万，卖烤肠还债</span><a class="card-nav-prev" href="案例卡2-06-马斯克从财富自由到使命驱动.html">← 案例卡 2-06</a><a class="card-nav-next" href="案例卡3-02-Slack从游戏废墟中生长.html">案例卡 3-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-01</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>唐健：欠债 4600 万，卖烤肠还债</h1>
+  <div class="oneliner">从年入 3000 万的餐饮老板到负债 4600 万、70 多个债权人追债，他没有跑路，而是在 4 平方米的档口里，一根一根烤肠把人生重新烤了回来。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">唐健</div>
+        <div class="fs">曾是青岛餐饮老板，年毛收入超 3000 万元</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">餐饮 · 烤肠小吃</div>
+        <div class="fs">从大酒楼退回到 4 平方米档口</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">负债 4600 万元</div>
+        <div class="fs">卖房卖车、转让股份仍不够，70 多个债权人</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">2024 年直播成交额超 4000 万元</div>
+        <div class="fs">回青岛发展产业链、启动代工厂建设</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">早年</div><div class="dot"></div>
+        <div class="tt">餐饮起家</div>
+        <div class="td">在青岛创办唐家老院子、朗园酒吧等餐饮企业，<b>年毛收入超过 3000 万元</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2005</div><div class="dot"></div>
+        <div class="tt">跨界受挫，债务滚成雪球</div>
+        <div class="td">跨界投资绿化树工程失败，完全陌生的领域让他不断背上债务，不得已借高利贷周转，<b>最终欠下 4600 万元</b>。转让酒楼全部股份、卖房卖车也不够还债，70 多个债权人几乎把他的电话打爆，孩子也离开学校、隐姓埋名去了外地。</div>
+      </li>
+      <li>
+        <div class="yr">此后</div><div class="dot"></div>
+        <div class="tt">屡战屡败</div>
+        <div class="td">去新疆经营饭店，到青岛啤酒节卖烤羊肉串，<b>每次都以失败告终</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2017</div><div class="dot"></div>
+        <div class="tt">4 平方米档口</div>
+        <div class="td">在妹妹资助下，于青岛一处步行街租下 <b>4 平方米档口</b>销售烤肠。他从产品本身入手，反复调整配方、研究火候，逐步积累起稳定的顾客群体。</div>
+      </li>
+      <li>
+        <div class="yr">2022</div><div class="dot"></div>
+        <div class="tt">出圈，也摔了一跤</div>
+        <div class="td">赴杭州学习直播和运营，说服投资人在龙翔里小吃街开店。<b>不到两个月，因当地媒体报道迅速全网出圈</b>。但第二年门店销售开始断崖式下降，4—8 月甚至赔钱经营，"在杭州一年，赔了 20 多万元"。9 月底他关闭杭州门店，回到青岛。</div>
+      </li>
+      <li>
+        <div class="yr">回青后</div><div class="dot"></div>
+        <div class="tt">从流量回到产业链</div>
+        <div class="td">回青岛创业的举动再次让他上了热搜。他开始发展产业链、启动代工厂建设，<b>2024 年全年直播成交额超过 4000 万元</b>。他说，是苦难让他真正找到失败的原因，流量只是水到渠成的副产品。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么债务压顶时不"消失"，反而卖房卖车、直面 70 个债权人？</h3>
+        <p>这正是<b>反脆弱思维要求的心理账户隔离</b>：把"策略失败"与"自我价值"分开。生意失败是策略账上的亏损，不是人格的破产。唐健后来说"是苦难成就了我，让我真正找到失败的原因"——只有把失败归因于可修正的策略，而非不可改变的人格，创业者才能从谷底重新站起来。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么重启时选"4 平方米档口"，而不是再开一家大酒楼？</h3>
+        <p>这是典型的<b>效果逻辑</b>：从手头切实拥有的手段出发——一身餐饮手艺、妹妹的资助、一处步行街档口——而不是从"还清 4600 万"这个宏大目标倒推。目标模糊、资源极紧时，靠手段的创造性组合边做边定义方向，比精细规划更可靠。档口小，试错成本也小。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么杭州出圈后反而收缩关店、回青岛做产业链？</h3>
+        <p>他把流量与产品放进了不同的心理账户：<b>"流量只是水到渠成的事，是我愿意分享经历去帮助别人时转化的副产品"</b>。他反复强调产品质量"不容一点点马虎"、"有多大能力做多大事"。与其把资源押在易逝的流量上，不如投向能沉淀的产业链与代工厂——这正是反脆弱的结构。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>失败是一笔可复盘的策略账</h4>
+        <p>把"我失败了"改写成"我的某个策略失效了"，才能在不自我否定的前提下完成策略废弃与新策略生成。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>从手上有的资源出发，而非从目标倒推</h4>
+        <p>一身手艺 + 妹妹的资助 + 一个档口，就是效果逻辑的起点。先活下来，再谈还债与翻身。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>流量是副产品，产品与产业链才是根</h4>
+        <p>出圈靠的是"负债 4600 万仍未倒下"的底色，而非流量本身；能沉淀的，终究是产品与产业链。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>卖房卖车不跑路、失败后仍能重整旗鼓——把策略库与自我价值感分离的活样本。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-03</div>
+        <h4>效果逻辑五原则</h4>
+        <p>从 4 平方米档口这一既有手段起步，边做边定义目标，是效果逻辑的典型应用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-01</div>
+        <h4>创业思维三层次框架</h4>
+        <p>案例同时呈现心理层（不跑路的韧性）与认知层（重选赛道的判断）的转变。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      张稳. 欠债 4600 万卖烤肠还债的唐健. https://www.hubpd.com/hubpd/rss/zaker/index.html?contentId=2594073385369374475, 2025-09-11.
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 58 页 · 教材相关事例 3-1</span>
+    <span>案例卡 3-01 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

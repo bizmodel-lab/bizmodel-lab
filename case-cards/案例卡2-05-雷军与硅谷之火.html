@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡2-05 · 雷军与硅谷之火</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 2 章 · 创业者</a><span class="card-nav-meta">案例卡 2-05 · 雷军与《硅谷之火》：一本书点燃的梦想</span><a class="card-nav-prev" href="案例卡2-04-乔布斯创造世界的那些人.html">← 案例卡 2-04</a><a class="card-nav-next" href="案例卡2-06-马斯克从财富自由到使命驱动.html">案例卡 2-06 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 2-05</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>雷军与《硅谷之火》：一本书点燃的梦想</h1>
+  <div class="oneliner">大一在操场上立下的志向，用 30 多年来兑现——一本榜样之书如何在心里种下一团不熄的火。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">雷军</div>
+        <div class="fs">1987 年考入武汉大学计算机系</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">软件 → 智能手机</div>
+        <div class="fs">从金山软件 16 年到小米科技</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">武大图书馆偶遇《硅谷之火》</div>
+        <div class="fs">大一读到，立志"创办一家伟大的公司"</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">小米公司</div>
+        <div class="fs">2019 年成为全球最年轻的世界 500 强企业</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">1987</div><div class="dot"></div>
+        <div class="tt">操场上一圈又一圈</div>
+        <div class="td">大一那年，雷军在图书馆读到《硅谷之火》——一部追踪 20 世纪 60 年代 Altair 8800 到 Apple Macintosh 技术演进与商业博弈的个人计算机革命口述史。合上书，他在武大操场上走了一圈又一圈，心中燃起一团火焰：<b>"我要创办一家伟大的公司。"</b></div>
+      </li>
+      <li>
+        <div class="yr">大学</div><div class="dot"></div>
+        <div class="tt">不停留在空想</div>
+        <div class="td">这个从县城走出来的大一新生没有让志向停在纸面：<b>两年修完四年所有学分</b>，蹭有限的机房，熬过无数通宵，成为同学眼中的技术高手。</div>
+      </li>
+      <li>
+        <div class="yr">1991</div><div class="dot"></div>
+        <div class="tt">金山 16 年</div>
+        <div class="td">毕业后加入金山软件，一干就是 16 年——在兑现梦想的路上，先打磨本领、积累行业经验。</div>
+      </li>
+      <li>
+        <div class="yr">2007</div><div class="dot"></div>
+        <div class="tt">功成身退，落寞依旧</div>
+        <div class="td">金山上市后，他选择离开，此后三年做天使投资，虽收获颇丰，内心却始终落寞——<b>那团火从未熄灭</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2010</div><div class="dot"></div>
+        <div class="tt">41 岁再次出发</div>
+        <div class="td">创办小米公司。"我当时的梦想很简单，做一款自己喜欢、够酷的国产智能手机。"短短两年半，小米做到<b>中国第一、世界第三</b>。</div>
+      </li>
+      <li>
+        <div class="yr">至今</div><div class="dot"></div>
+        <div class="tt">30 多年的承诺</div>
+        <div class="td">2019 年，小米成为全球最年轻的世界 500 强企业。从 18 岁操场立志到今天，他曾对学弟学妹说：<b>"人因梦想而伟大，又因坚持梦想而成长。"</b></div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么一本书能点燃 30 年的梦想？</h3>
+        <p>《硅谷之火》提供的是<b>榜样效应</b>：具体可感的创业故事让"他能做到，我也可以"的心理暗示变得真实，比抽象的成功学更具说服力。图书馆的那个下午构成一次<b>关键事件</b>——它重塑了雷军的价值排序，把沉睡的志向转化为清晰的行动指向。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么金山上市成功后反而离开？</h3>
+        <p>金山上市完成了阶段性证明，但"创办一家伟大的公司"的梦想并未实现。三年天使投资"收获颇丰、内心落寞"，正是<b>"自主-成就"型动机</b>未获满足的信号——财富驱动可以解释他的富足，解释不了他的不甘。落寞感提示他：真正的主导动机从来不是钱。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么 41 岁才创办小米？</h3>
+        <p>梦想虽早，行动却需要条件的累积：金山 16 年的管理与行业经验、天使投资的眼光与人脉、财务上的从容。当"想做"与"能做"在 41 岁交汇，梦想才从志向变为可行的创业行动——<b>资源杠杆确认了可启动性</b>。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>榜样是活的教材</h4>
+        <p>一本好书、一个具体的榜样人物，能把模糊的向往变成清晰的自我期待——创业教育的价值正在于提供可参照的路径。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>梦想需要"落寞感"来检验</h4>
+        <p>功成名就仍内心落寞，说明外在回报满足不了主导动机——敢于正视这种落差，才能找到真正驱动自己的那团火。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>梦想与坚持之间隔着修炼</h4>
+        <p>两年修完学分、金山 16 年沉淀——从立志到出发，中间是长期的能力与资源储备，梦想靠积累兑现。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-03</div>
+        <h4>动机触发四要素</h4>
+        <p>《硅谷之火》是典型的关键事件触发：把沉睡的志向转化为明确的创业指向。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-02</div>
+        <h4>动机指纹与三类动机组合</h4>
+        <p>理想（伟大公司）与自主（离开金山）交织的混合动机，支撑 30 余年的坚持度。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-02</div>
+        <h4>愿景金字塔</h4>
+        <p>"创办一家伟大的公司"是典型的远大愿景，为长期行动提供超越功利的目标牵引。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自武汉大学新闻网、澎湃新闻等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 2 章，第 40 页 · 教材相关事例 2-5</span>
+    <span>案例卡 2-05 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

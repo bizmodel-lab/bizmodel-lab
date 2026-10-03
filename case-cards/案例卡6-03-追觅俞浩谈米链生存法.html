@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡6-03 · 追觅俞浩谈米链生存法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 6 章 · 创业资源</a><span class="card-nav-meta">案例卡 6-03 · 追觅俞浩谈米链生存法</span><a class="card-nav-prev" href="案例卡6-02-蒙牛乳业的早期创业.html">← 案例卡 6-02</a><a class="card-nav-next" href="案例卡7-01-美国西南航空反问为什么一定要.html">案例卡 7-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 6-03</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>追觅俞浩谈米链生存法</h1>
+  <div class="oneliner">为了不让 1 亿元估值变成融资路上的不确定性，他主动把估值降到 7000 万元，只为第一时间拿到那笔"生死钱"。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">俞浩</div>
+        <div class="fs">追觅创始人，硬件技术出身</div>
+      </div>
+      <div class="fact">
+        <div class="fl">技术起点</div>
+        <div class="fv">高速数字马达</div>
+        <div class="fs">在小米投资之前就已做出来</div>
+      </div>
+      <div class="fact">
+        <div class="fl">关键取舍</div>
+        <div class="fv">估值从 1 亿元降到 7000 万元</div>
+        <div class="fs">主动放弃账面估值，换交易确定性</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">小米、顺为各投 100 万美元</div>
+        <div class="fs">合计占 20% 股份，接入生态链</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">融资前</div><div class="dot"></div>
+        <div class="tt">技术跑通了，钱没有跑通</div>
+        <div class="td">在小米决定投资以前，追觅的<b>高速数字马达已经做出来</b>。技术这一环不缺，缺的是把产品卖出去和量产出来的资金——硬件创业的原始启动需要很大一笔钱，而这正是当时融不到的。</div>
+      </li>
+      <li>
+        <div class="yr">谈估值</div><div class="dot"></div>
+        <div class="tt">"我说我要一亿元"</div>
+        <div class="td">小米问估值，俞浩开价 1 亿元。小米、顺为准备一起投，其中一位投资人高雪认为他确实值这个钱，但小米内部有规定：<b>100 万美元以下的投资可以由投资人自己决定</b>。1 亿元估值对应的投资额超过 100 万美元，就要通过小米高管委员会，还要见到雷军。</div>
+      </li>
+      <li>
+        <div class="yr">取舍</div><div class="dot"></div>
+        <div class="tt">"我说不要，那估值就 7000 万元吧"</div>
+        <div class="td">俞浩选择放弃 1 亿元估值，主动降到 <b>7000 万元</b>，小米、顺为就各投 100 万美元、占 20% 的股份。为什么不见雷总？他说：<b>不是不想见，因为这是我的生死钱，我不想为此增加不确定性。</b></div>
+      </li>
+      <li>
+        <div class="yr">签约前</div><div class="dot"></div>
+        <div class="tt">最难熬的半年</div>
+        <div class="td">从小米说要投，到真正签订合同的一刻，又过了半年时间。这半年是他最难熬的一段日子——<b>不是账上没钱，而是公司没有发展</b>。一个每年 1000 万元收入的公司，与他的理想差了十万八千里，"只能养活团队，再这么做下去团队会散掉，大家来到这里不是为了那点工资"。</div>
+      </li>
+      <li>
+        <div class="yr">签约</div><div class="dot"></div>
+        <div class="tt">外环兜圈的夜晚，和一秒同意的电话</div>
+        <div class="td">那段时间，他晚上一个人开着车在上海的外环兜圈，找不到方向，也找不到出入口。而签约的那一刻，他记得很清楚："接起那个电话的时候，我在上海，外面在下雨。投资人怕我不接受，但我<b>一秒就同意了，没带一丝犹豫</b>。"</div>
+      </li>
+      <li>
+        <div class="yr">加入后</div><div class="dot"></div>
+        <div class="tt">"做好产品太简单，可我不知道怎么卖"</div>
+        <div class="td">接入小米生态链后，俞浩反而很羡慕那些生态公司——"他们只要做出好的产品就不愁卖了。对我来说，做好产品太简单了，可我不知道怎么卖，也没有钱生产出来。所以，小米为我提供了这样的机会，我内心无比感谢。"他甚至说，自己其实一共只见过雷总一次，却无数次说过感谢。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么主动把估值从 1 亿元降到 7000 万元？</h3>
+        <p>在"必要性—掌控度"的判断里，这笔钱对追觅是<b>生死钱</b>：拿不到，团队就会散。3000 万元的估值差只是一个账面数字，而多一道审批环节意味着交付的不确定性。用可让渡的估值换取可掌控的交割，是在资源极度稀缺时对优先级的一次冷静排序。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么"做好产品太简单"，却仍要加入小米生态链？</h3>
+        <p>追觅的短板不在研发，而在渠道与量产资金——这正是它的关键资源缺口。加入生态链，是把小米的订单确定性、供应链能力与品牌背书补进自己的资源拼图，从而把全部精力压在自己最擅长的一环上。<b>资源的价值取决于组合方式，而不是独自拥有多少</b>。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么硬件创业必须借力外部资金？</h3>
+        <p>硬件产品的原始启动需要大额资金，而这个体量在当时不可能靠自己融到。这意味着必须借助生态分工，把"重资产、长周期"的风险分摊出去——这是一种典型的<b>资源杠杆</b>，而不是依赖自我积累慢慢滚雪球的路径。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>确定性有时比估值更贵</h4>
+        <p>用自己的账面估值去换交割的确定性，是对生存权的一次理性定价，尤其是在现金撑不到下一轮的时候。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>承认短板，才能接入杠杆</h4>
+        <p>"不知道怎么卖"的坦白不是示弱，而是找准互补关系的起点——只有知道自己缺什么，才谈得上借力。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>借力生态不是依附</h4>
+        <p>用自己的长板去换对方的资源，双方各取所需，这种互补关系才可能长期成立、彼此成就。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-06</div>
+        <h4>战略匹配度资源缺口矩阵</h4>
+        <p>渠道与量产资金是追觅最大的资源缺口，而小米生态链恰好落在高匹配、可借力的位置。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-02</div>
+        <h4>必要性掌控度矩阵</h4>
+        <p>"生死钱"意味着必要性极高，为此让渡估值、缩短交割链条，正是在提升资源的掌控度。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>以股权与生态协同换取订单、供应链与品牌，是资源杠杆与战略性合作的现实样本。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自李艳艳《独家对话追觅俞浩：我是 i 人，被迫高调》（《中国企业家》2026 年第 6 期，第 28—47 页）；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 6 章，第 177 页 · 教材相关事例 6-3</span>
+    <span>案例卡 6-03 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-07 · 字节跳动早期的APP工厂</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-07 · 字节跳动早期的APP工厂</span><a class="card-nav-prev" href="案例卡3-06-Dropbox演示视频的市场验证.html">← 案例卡 3-06</a><a class="card-nav-next" href="案例卡3-08-ofo戴威的孤注一掷.html">案例卡 3-08 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-07</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>字节跳动早期的APP工厂</h1>
+  <div class="oneliner">不押注单一爆款，而是同时孵化十几款 APP，让数据决定谁生谁死——今日头条只是其中一个被数据选中的项目。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">张一鸣</div>
+        <div class="fs">2012 年在北京创立字节跳动</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">移动互联网 · 内容推荐</div>
+        <div class="fs">以算法推荐为核心技术方向</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">十余款产品并行孵化</div>
+        <div class="fs">覆盖资讯、图片、电商、生活服务等多个垂直领域</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">今日头条成为核心产品</div>
+        <div class="fs">算法中台后续复用到抖音、西瓜视频、TikTok</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2012</div><div class="dot"></div>
+        <div class="tt">确立技术方向</div>
+        <div class="td">张一鸣在北京创立字节跳动，公司成立之初便确立了"以算法推荐为核心技术"的发展方向。</div>
+      </li>
+      <li>
+        <div class="yr">并行期</div><div class="dot"></div>
+        <div class="tt">十余款产品同时孵化</div>
+        <div class="td">在推出今日头条之前，公司采取多产品并行的开发策略，同时推进搞笑囧图、内涵段子、今日特卖、东方美食等十余款产品，覆盖资讯、图片、电商、生活服务等多个垂直领域。</div>
+      </li>
+      <li>
+        <div class="yr">组织</div><div class="dot"></div>
+        <div class="tt">小团队 + 统一中台</div>
+        <div class="td">这些产品由多个小型开发团队独立运作，每个团队规模通常在 <b>3—5 人</b>。公司建立统一的技术中台，将推荐算法、数据分析、用户增长等核心能力模块化，供各产品团队调用。</div>
+      </li>
+      <li>
+        <div class="yr">筛选</div><div class="dot"></div>
+        <div class="tt">数据决定资源倾斜</div>
+        <div class="td">产品上线后，根据用户数据表现决定资源倾斜方向：数据表现不佳的项目被快速放弃，表现突出的项目则获得更多研发和推广资源。</div>
+      </li>
+      <li>
+        <div class="yr">2012.8</div><div class="dot"></div>
+        <div class="tt">今日头条上线</div>
+        <div class="td">今日头条正式上线。该产品最初只是公司同期孵化的项目之一，上线后用户数据和留存率持续领先于其他产品。</div>
+      </li>
+      <li>
+        <div class="yr">此后</div><div class="dot"></div>
+        <div class="tt">能力沉淀与复用</div>
+        <div class="td">公司将资源逐步向今日头条集中，使其成为核心产品。今日头条的成功也推动了算法中台的持续迭代，这一算法能力随后被应用于抖音、西瓜视频、TikTok 等后续产品中。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么同时孵十几款 APP，而不是押注单一爆款？</h3>
+        <p>在移动互联网早期，哪个方向会跑出来根本无法预测。字节跳动没有把宝押在一次预测上，而是用<b>组合下注 + 低成本试错</b>换取整体胜率——这在效果逻辑里叫"控制而非预测"：既然未来不可测，就增加自己可选的牌，让市场来淘汰。项目多半会失败，但每一款的失败成本都被压得很低。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么先建统一技术中台，而不是各团队各造一套？</h3>
+        <p>如果每款产品都自建推荐算法、数据分析和增长工具，试错成本会随项目数线性膨胀。把核心能力<b>模块化沉淀到中台</b>，让每个 3—5 人小组都能低成本调用，等于把"一次投入"变成"N 次复用"——这是系统思维在组织层面的杠杆点：改变结构，而不是靠堆人力提升效率。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么用数据表现，而不是创始人直觉来分配资源？</h3>
+        <p>多产品并行时，最危险的是把资源持续喂给"创始人偏爱但用户不买账"的项目——这正是确认偏误的温床。以<b>用户数据和留存率为可执行指标</b>来决定加注或止损，把去留交给可证伪的证据：表现不佳就快速放弃，表现突出才集中资源。决策权交给数据，而非交给信念。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>在不确定中，组合下注优于孤注一掷</h4>
+        <p>无法预测哪个会成，就同时养几条命。用低成本试错换整体胜率，比赌一次的赢面大得多。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>中台把一次投入变成多次复用</h4>
+        <p>算法、数据、增长能力沉淀下来供所有团队调用，试错边际成本被压到极低，创新才跑得起来。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>让数据决定加注，而不是让信念</h4>
+        <p>去留判断交给可执行指标，就能绕开"我舍不得放弃"的自我证明，把资源持续投向真正被用户选择的方向。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-03</div>
+        <h4>效果逻辑五原则</h4>
+        <p>不做预测式规划，而是用手里的团队与算法能力持续组合、试错、演化，"APP 工厂"是其典型形态。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-05</div>
+        <h4>系统思维创业情境重组</h4>
+        <p>统一中台是结构性杠杆点：改变能力供给方式，比在各团队里重复投入更省力。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP 四步流程与循环加速</h4>
+        <p>每款 APP 都是一次低成本 MVP 测试，以数据决定是否进入下一轮加注。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      综合整理自晚点 LatePost、36 氪等公开报道。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 85 页 · 教材相关事例 3-7</span>
+    <span>案例卡 3-07 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

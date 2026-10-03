@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡2-04 · 乔布斯创造世界的那些人</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 2 章 · 创业者</a><span class="card-nav-meta">案例卡 2-04 · 乔布斯：创造世界的那些人，并不比你聪明</span><a class="card-nav-prev" href="案例卡2-03-张一鸣从九九房到今日头条.html">← 案例卡 2-03</a><a class="card-nav-next" href="案例卡2-05-雷军与硅谷之火.html">案例卡 2-05 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 2-04</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>乔布斯：创造世界的那些人，并不比你聪明</h1>
+  <div class="oneliner">一句"你能改变它"，戳破的是对"聪明"的迷信，点燃的是普通人对世界说"不"的底气。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">史蒂夫·乔布斯</div>
+        <div class="fs">苹果公司联合创始人</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">个人计算机 · 消费电子</div>
+        <div class="fs">把技术变成人人可用的产品</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">车库里的苹果</div>
+        <div class="fs">20 世纪 70 年代中与沃兹尼亚克共同创办</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">改变世界的公司</div>
+        <div class="fs">其人生感悟在苹果 50 周年之际被重新传播</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">早年</div><div class="dot"></div>
+        <div class="tt">那段被反复引用的话</div>
+        <div class="td">"当你长大以后，人们总会告诉你，世界就是眼前这副模样……其实生命本可以辽阔得多，只要你领悟一个简单的事实：<b>你身边一切所谓的生活，都是并不比你更聪明的人创造的。而你能改变它</b>，你能影响它，你能亲手打造供他人使用的事物。"</div>
+      </li>
+      <li>
+        <div class="yr">1976</div><div class="dot"></div>
+        <div class="tt">用行动印证信念</div>
+        <div class="td">与伙伴在车库里创办苹果公司，把个人计算机从机构的庞然大物变成普通人可以拥有的工具——"世界是普通人创造的"这句信念，从第一天起就在被实践。</div>
+      </li>
+      <li>
+        <div class="yr">1985</div><div class="dot"></div>
+        <div class="tt">被迫离开自己创办的公司</div>
+        <div class="td">乔布斯离开苹果，转而创办 NeXT，并将皮克斯收入麾下——被放逐的岁月没有终结他的创造，反而孕育了新的作品。</div>
+      </li>
+      <li>
+        <div class="yr">1997</div><div class="dot"></div>
+        <div class="tt">回归与再造</div>
+        <div class="td">乔布斯重返深陷困境的苹果，此后带领公司推出一系列重新定义产品的设备，把"亲手打造供他人使用的事物"推向新的高度。</div>
+      </li>
+      <li>
+        <div class="yr">2026</div><div class="dot"></div>
+        <div class="tt">苹果 50 周年的重访</div>
+        <div class="td">在苹果成立 50 周年之际，媒体重新回顾这段"人生将从此不同"的感悟——它早已超越一家公司，成为无数创业者的心智起点。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么说"创造世界的人并不比你聪明"？</h3>
+        <p>这句话的核心是<b>打破"聪明人神话"</b>：世界的规则、产品与制度并非天定，而是与普通人一样的人类设计与建构的结果。一旦把结果归于"人的作为"而非"天赋差异"，行动的门槛就骤然降低——这正是创业心理特质中<b>内控点</b>的通俗表达：相信结果掌握在自己手中。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么"别撞南墙"式的人生观是创业的反面？</h3>
+        <p>"经营美满的家庭，寻些乐子，存点小钱"并非错，但它把人生限定为"在既存世界里安然度过"。创业者之所以成为创业者，在于拒绝这种<b>被动接受给定世界</b>的预设——教材强调，驱动他们的是改变现状的<b>成就需求</b>与对自我价值的证明。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么被放逐的岁月没有终结创造？</h3>
+        <p>离开苹果后创办 NeXT、经营皮克斯的经历说明：把"改变世界"作为身份认同的创业者，其动力不依附于某家公司的头衔。<b>挫折并不能剥夺这种内在动机</b>，反而提供了重新验证信念的场域——你能影响它，无论身在何处。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>创业始于一个认知转向</h4>
+        <p>从"世界是给定的"到"世界是被创造的"——认知的翻转先于行动，它是创业者心理结构的底座。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>内控点降低行动门槛</h4>
+        <p>相信结果由自己的作为决定，而非天赋或运气，才能在"别人看起来不可能"的地方动手改变。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>身份认同比职位更持久</h4>
+        <p>"创造者"的身份认同在离开公司、遭遇挫折时依然成立——动机的根扎在自我认知里，而不是外部头衔上。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-01</div>
+        <h4>创业者四大心理特质框架</h4>
+        <p>"你能改变它"是内控点与成就需求的浓缩表达，也是创业心理特质的经典注脚。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>被逐出苹果的岁月反而孕育 NeXT 与皮克斯——挫折转化为创造力的反脆弱样本。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-02</div>
+        <h4>愿景金字塔</h4>
+        <p>"亲手打造供他人使用的事物"指向超越产品的远大图景，是愿景驱动型创业的写照。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自 Ortolani P. Revisiting Steve Jobs's most important lesson on Apple's 50th anniversary（9to5Mac，2026-04-01）等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 2 章，第 39 页 · 教材相关事例 2-4</span>
+    <span>案例卡 2-04 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡10-03 · Block的AI驱动组织重构</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 10 章 · 创业组织</a><span class="card-nav-meta">案例卡 10-03 · Block 的 AI 驱动组织重构</span><a class="card-nav-prev" href="案例卡10-02-宇树科技IPO前的股权结构.html">← 案例卡 10-02</a><a class="card-nav-next" href="案例卡10-04-阿里巴巴从独孤九剑到新六脉神剑.html">案例卡 10-04 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 10-03</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>Block 的 AI 驱动组织重构</h1>
+  <div class="oneliner">当 AI 能比层级更高效地处理信息，管理者存在的理由就被动摇了——Block 试图把公司本身建构成一个智能体。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">企业</div>
+        <div class="fv">Block</div>
+        <div class="fs">远程优先公司，由杰克·多西（Jack Dorsey）推动重构</div>
+      </div>
+      <div class="fact">
+        <div class="fl">核心命题</div>
+        <div class="fv">组织不必以层级方式构建</div>
+        <div class="fs">目标是把公司构建为一个智能体 / 微型 AGI</div>
+      </div>
+      <div class="fact">
+        <div class="fl">两大前提</div>
+        <div class="fv">世界模型 + 客户信号</div>
+        <div class="fs">Cash App 买家端与 Square 卖家端每天数百万笔交易</div>
+      </div>
+      <div class="fact">
+        <div class="fl">新角色</div>
+        <div class="fv">IC · DRI · 教练型管理者</div>
+        <div class="fs">智能内嵌系统，人处于"边缘"</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">溯 源</div><div class="dot"></div>
+        <div class="tt">层级从何而来，又为何难破</div>
+        <div class="td">组织层级结构源于军事：罗马军团以管理幅度约束构建嵌套层级，普鲁士总参谋部创立中层管理职能，美国铁路公司将军事层级引入商业，泰勒的科学管理优化职能金字塔，麦肯锡推动矩阵组织。核心约束始终是：<b>收窄管理幅度意味着增加指挥层级，而更多层级意味着信息流动更慢。</b>Spotify、Zappos、Valve 等科技公司的激进实验均未能从根本上解决这一问题——因为没有任何替代性的信息路由机制强大到足以取代层级。</div>
+      </li>
+      <li>
+        <div class="yr">重新提问</div><div class="dot"></div>
+        <div class="tt">从"副驾驶"到"微型 AGI"</div>
+        <div class="td">大多数公司使用 AI 的方式是给每个人配备一个"副驾驶"，这使现有结构得到小幅度优化，但并未改变其本质。Block 追求的是截然不同的路径：<b>将公司构建为一个智能体或微型通用人工智能（AGI）</b>，即质疑"组织必须以人类作为协调机制的层级方式来构建"这一根本假设。</div>
+      </li>
+      <li>
+        <div class="yr">前 提</div><div class="dot"></div>
+        <div class="tt">世界模型与"最诚实的信号"</div>
+        <div class="td">实现这一目标需要两样东西：公司运营的"世界模型"，以及足够丰富的客户信号。Block 是远程优先公司，一切工作都会产生可记录的数字痕迹；客户信号方面，<b>"金钱是世界上最诚实的信号"</b>——人们在调查中可能说谎、忽略广告、放弃购物车，但当他们消费、储蓄、发送、借贷或偿还时，那便是事实。</div>
+      </li>
+      <li>
+        <div class="yr">架 构</div><div class="dot"></div>
+        <div class="tt">四大核心体系</div>
+        <div class="td">一是<b>能力</b>：支付、借贷、发卡、银行业务、先买后付、工资单等原子化金融基础模块；二是<b>世界模型</b>：公司世界模型取代原本需要通过管理层流动的信息；三是<b>智能层</b>：把能力组合成针对特定客户、特定时刻的解决方案，客户直接生成产品路线图；四是<b>接口</b>：Square、Cash App、Afterpay 等交付界面。真正的价值源于模型与智能层，而非接口本身。</div>
+      </li>
+      <li>
+        <div class="yr">倒 置</div><div class="dot"></div>
+        <div class="tt">智能内嵌于系统，人退到"边缘"</div>
+        <div class="td">传统公司中智能分布于个体身上，信息通过层级路由传递；在新模型中，智能内嵌于系统，人则处于边缘位置。边缘是智能与现实接触的界面——人会感知模型尚不能感知的东西，包括直觉、果断的方向感、文化语境、信任的微妙流动。边缘不需要层级协调，因为世界模型为每个人提供了行动所需的全景上下文。</div>
+      </li>
+      <li>
+        <div class="yr">落 地</div><div class="dot"></div>
+        <div class="tt">三种角色取代层层管理</div>
+        <div class="td">一是<b>独立贡献者（IC）</b>：构建和运营能力、模型、智能层及接口，无需等待指令即可自主决策；二是<b>直接责任人（DRI）</b>：负责特定跨领域问题，例如拥有某细分市场商家流失问题 90 天的处置权，并可调动模型、能力与接口团队资源；三是<b>教练型管理者</b>：仍写代码、建模型或设计界面，同时投资于周围人的成长。世界模型负责对齐，DRI 负责战略与优先级，教练型管理者负责技能与人员发展。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么"给每人配副驾驶"不够？</h3>
+        <p>copilot 只是让现有层级结构获得小幅度优化，本质并未改变。Block 从第一性原理出发：公司本质是创造价值的信息处理系统，<b>当 AI 能更高效地处理信息时，基于人类中介的层级制便失去了存在的合理性</b>。区别在于——一个是外挂式提效，一个是内嵌式重构。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么说"金钱是最诚实的信号"？</h3>
+        <p>要让世界模型真的有用，客户信号必须可信。调查会失真、广告会被忽略、购物车会被放弃，而消费、储蓄、借贷与偿还是无法伪装的<b>真实行为</b>。Block 通过 Cash App 看到买家端、通过 Square 看到卖家端，用双边交易数据构建客户世界模型，形成"信号越丰富→模型越好→交易越多→信号越丰富"的正循环。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么管理者要变成"教练型管理者"？</h3>
+        <p>当世界模型承担对齐、DRI 承担战略与优先级，传统管理者最核心的职能——<b>信息路由</b>——已被系统取代。其剩余价值随之转移：从"传递信息、分派任务"转为"提升技能、发展人员"。管理角色不是被取消，而是被重新定义为构建工作与人才发展的叠加态。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>组织形态随信息路由方式而变</h4>
+        <p>层级是解决信息传递的手段，而非目的本身。当出现更强的替代机制，层级结构就有了被重新设计的空间——这一逻辑与反脆弱性对精简、灵活、去中心化组织的判断相互印证。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>去中心化的前提是共识基础设施</h4>
+        <p>边缘之所以无需协调，是因为世界模型为每个人提供了行动所需的全景上下文。扁平化不是弱化协调，而是把协调从"人的中介"迁移到"共享的上下文层"。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>AI 不只是效率工具</h4>
+        <p>把 AI 当作提效插件，只能优化旧结构；把它当作组织设计的变量，才可能成为组织形态演变的催化剂。对创业企业而言，后者是更彻底的敏捷性来源。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-02</div>
+        <h4>创业团队结构三型模型</h4>
+        <p>IC、DRI 与教练型管理者三种角色，正是团队结构在 AI 语境下的一种极端形态：结构更薄，但分工更清晰。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-03</div>
+        <h4>决策机制四方式与分级决策</h4>
+        <p>世界模型负责对齐、DRI 拥有带期限的处置权，是"谁来决策、决策边界在哪"的一次系统重置。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-07</div>
+        <h4>AI 创业三层机会图谱</h4>
+        <p>Block 把 AI 用在组织自身而非产品表层，提示 AI 创业的机会不止于应用层，也存在于组织与流程的重构层。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自 Block 官方博客〈From hierarchy to intelligence〉（Dorsey J, Botha R. Block Official Blog, 2026-03-31）；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 10 章，第 278 页 · 教材相关事例 10-3</span>
+    <span>案例卡 10-03 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

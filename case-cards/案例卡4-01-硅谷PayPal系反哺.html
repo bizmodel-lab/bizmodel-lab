@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡4-01 · 硅谷的“PayPal 系”反哺</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 4 章 · 创业生态系统</a><span class="card-nav-meta">案例卡 4-01 · 硅谷的“PayPal 系”反哺</span><a class="card-nav-prev" href="案例卡3-08-ofo戴威的孤注一掷.html">← 案例卡 3-08</a><a class="card-nav-next" href="案例卡4-02-义乌速度.html">案例卡 4-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 4-01</span>
+    <span class="domain">教材体系 · <b>第 4 章 创业生态系统</b></span>
+  </div>
+  <h1>硅谷的“PayPal 系”反哺</h1>
+  <div class="oneliner">一次被收购，散出了一批新巨头——在硅谷，“退出”不是终点，而是生态再生产的起点。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">主体</div>
+        <div class="fv">PayPal 系创业者</div>
+        <div class="fs">蒂尔、马斯克、霍夫曼、陈士骏等</div>
+      </div>
+      <div class="fact">
+        <div class="fl">生态要素</div>
+        <div class="fv">人才 · 资本 · 经验</div>
+        <div class="fs">在流动中重组、在重组中增值</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2002 年 eBay 收购 PayPal</div>
+        <div class="fs">早期员工与创始人获得退出回报</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">巨头 + 天使网络</div>
+        <div class="fs">“成功—退出—再投资—再创业”循环</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2002</div><div class="dot"></div>
+        <div class="tt">一次退出，一群人离场</div>
+        <div class="td">eBay 收购 PayPal 后，PayPal 的早期员工与创始人纷纷开启新的创业征程——他们带走的不是安稳，而是<b>可复用的经验、资本与彼此之间的信任</b>。</div>
+      </li>
+      <li>
+        <div class="yr">此后</div><div class="dot"></div>
+        <div class="tt">新巨头从同一批人手中长出</div>
+        <div class="td">彼得·蒂尔创立风险投资机构 Founders Fund，埃隆·马斯克创办特斯拉、SpaceX——同一组织输出的成员，在不同赛道上各自成为领军者。</div>
+      </li>
+      <li>
+        <div class="yr">同期</div><div class="dot"></div>
+        <div class="tt">网络继续延伸</div>
+        <div class="td">里德·霍夫曼创立领英（LinkedIn），陈士骏与查德·赫利等创立 YouTube，杰里米·斯托普尔曼与罗素·西蒙斯创立 Yelp——一张以 PayPal 为共同起点的社会网络不断扩张。</div>
+      </li>
+      <li>
+        <div class="yr">反哺</div><div class="dot"></div>
+        <div class="tt">从创业者到天使与导师</div>
+        <div class="td">这些 PayPal 系创业者不仅缔造出新的商业巨头，更以<b>天使投资人、创业导师</b>身份持续反哺硅谷生态，把资本与经验重新注入下一批新人。</div>
+      </li>
+      <li>
+        <div class="yr">至今</div><div class="dot"></div>
+        <div class="tt">循环成为机制</div>
+        <div class="td">“成功—退出—再投资—再创业”的良性循环稳定运转。这种代际传承的网络依存，正是硅谷持续孕育创新的深层机制。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么一次退出能催生一批巨头？</h3>
+        <p>在创业生态中，退出不是资金离场，而是<b>要素流动的枢纽</b>。成功的退出让资本带着增值回报回流投资端，形成“募集—投资—退出—再募集”的可持续金融闭环；同时人才带着隐性知识、实战经验与行业网络进入下一轮组合，在流动中实现价值增值。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么成功者愿意反复反哺？</h3>
+        <p>这背后是区域文化的代际传递：硅谷把人才视为<b>区域共同财富</b>而非企业私有资产，鼓励冒险、宽容失败、乐于分享的文化一旦沉淀，便具有韧性，使成功者甘愿以天使与导师身份回投系统，成为驱动生态长期演化的深层基因。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么“PayPal 系”能成网络而非各自为战？</h3>
+        <p>PayPal 事实上扮演了<b>锚定企业</b>的角色——它不仅输出技术与市场份额，更持续输出具有创业经验的管理人才与技术骨干。同一组织淬炼出的高密度社会网络大幅降低了信任成本与信息不对称，使陌生人协作变成熟人协作，网络依存由此形成。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>退出是生态的再生产装置</h4>
+        <p>并购与上市不是创业故事的句号，而是人才与资本重新配置的分号。观察一个生态的活力，先看它的退出通道是否畅通。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>要素流动比资源存量更重要</h4>
+        <p>同一批人被“打散”反而孕育出更多巨头——健康的生态不靠囤积资源，而靠让人才、资本、知识高效循环与重组。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>锚定企业的价值在于“输出人”</h4>
+        <p>锚定企业最珍贵的产出不只是产品，而是带着经验出走的人才与转型为天使投资人的创始人——他们构成了生态的下一层供给。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>PayPal 系成员把经验、资本、人脉视为可识别、可获取、可配置的资源，完成了一轮跨组织的资源重组。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-05</div>
+        <h4>资源组合优势框架</h4>
+        <p>单看任一成员都平常，组合起来才形成难以复制的网络优势——这正是生态层面的资源组合效应。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-01</div>
+        <h4>机会来源分类学</h4>
+        <p>PayPal 系创业者的机会多来自同一网络内的信息差与经验迁移，印证了社会网络是重要的机会来源。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例整理自教材“相关事例 4-1”栏目。资料来源：综合整理自《硅谷百年史：伟大的科技创新与创业历程》（2014）及 TechCrunch、Wired 等公开报道。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 4 章，第 96 页 · 教材相关事例 4-1</span>
+    <span>案例卡 4-01 · 第 4 章 创业生态系统</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡6-01 · 摩拜单车：从攒局到百亿出行生态</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 6 章 · 创业资源</a><span class="card-nav-meta">案例卡 6-01 · 摩拜单车：从一次&quot;攒局&quot;到百亿出行生态</span><a class="card-nav-prev" href="案例卡5-06-亚马逊Kindle从功能过剩中发现专注价值.html">← 案例卡 5-06</a><a class="card-nav-next" href="案例卡6-02-蒙牛乳业的早期创业.html">案例卡 6-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 6-01</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>摩拜单车：从一次"攒局"到百亿出行生态</h1>
+  <div class="oneliner">一次聚会上随口的一问，把月薪 3000 元的北漂记者，推到了共享出行的风口中央。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">胡玮炜</div>
+        <div class="fs">1982 年生，从汽车记者转型创业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">极客汽车</div>
+        <div class="fs">2014 年辞职创办的科技媒体</div>
+      </div>
+      <div class="fact">
+        <div class="fl">关键资源</div>
+        <div class="fv">146 万元天使投资</div>
+        <div class="fs">来自李斌，附产品标准与行业背书</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">摩拜单车</div>
+        <div class="fs">被美团收购前完成 12 轮密集融资</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2005</div><div class="dot"></div>
+        <div class="tt">月薪 3000 元的北漂记者</div>
+        <div class="td">胡玮炜毕业于浙江一所三本院校，2005 年底带着对新闻业的热爱只身来到北京，成为《新京报》的一名汽车记者。此后近十年，她辗转《商业价值》《极客公园》等媒体，从普通记者做到资深记者，月薪涨到一万元左右，却始终觉得自己只是这场科技浪潮的<b>旁观者</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2013</div><div class="dot"></div>
+        <div class="tt">CES 上埋下一颗种子</div>
+        <div class="td">31 岁的她赴美国拉斯维加斯参加国际消费类电子产品展览会（CES）。展会上，汽车与科技的深度融合让她深受触动，未来出行的想象力在她心里埋下一颗种子。回国后，她向公司提议开辟一个汽车与科技的新板块，但未被采纳——这次经历激发了她"<b>没机会就自己创造机会</b>"的念头。</div>
+      </li>
+      <li>
+        <div class="yr">2014</div><div class="dot"></div>
+        <div class="tt">辞职创办"极客汽车"</div>
+        <div class="td">她辞去稳定的工作，创立科技媒体"极客汽车"，专注汽车智能化和新能源领域的报道。这家公司成为她人生的关键转折点——它本身不一定赚钱，却给了她一个持续接触行业最前沿的位置。</div>
+      </li>
+      <li>
+        <div class="yr">攒局</div><div class="dot"></div>
+        <div class="tt">把人聚起来，资源就来了</div>
+        <div class="td">通过运营"极客汽车"，她得以频繁组织沙龙和聚会，把汽车界的投资者、工程师、设计师等"先锋人物"聚在一起，探讨未来出行的各种可能。正是在这样的聚会上，她结识了易车网创始人、后来的蔚来汽车创始人李斌。</div>
+      </li>
+      <li>
+        <div class="yr">转折</div><div class="dot"></div>
+        <div class="tt">"你有没有兴趣做共享自行车？"</div>
+        <div class="td">有一次，她介绍一位设计师与李斌见面，本意是讨论一款造型设计出众且定价较高的自行车，谁知李斌突然转头问她这句话。这个问题击中了她作为"北漂"的切身痛点——地铁站到公司的"<b>最后一公里</b>"，走路太慢，打车太贵，自己买车又要面对停放和防盗的麻烦。她一直梦想能像机器猫一样，随时从口袋里掏出一辆自行车骑走，于是毫不犹豫地回答："我想做！"</div>
+      </li>
+      <li>
+        <div class="yr">此后</div><div class="dot"></div>
+        <div class="tt">146 万元撬开的第一道门</div>
+        <div class="td">李斌不仅认可这个方向，还提供了 <b>146 万元天使投资</b>，更提出产品核心要求：必须制造一辆为共享而生、四年免维护（不掉链子、轮胎无需充气、不会生锈）的智能自行车。他的背书为胡玮炜后续撬动更多资源打开了第一道门。第三方平台数据显示，被美团收购前，摩拜经历了远超 20 亿美元、从天使轮到 F 轮共 <b>12 轮</b>的密集融资，成为当时最耀眼的"独角兽"之一。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么先做媒体，再做单车？</h3>
+        <p>媒体不是绕路，而是她当时的"手中鸟"。以极客汽车为平台攒局，她用人力和内容这些低成本手段，积累起人脉、行业认知与信任，把大量弱关系转化为日后可调动的资源。<b>资源拼凑的起点，是盘点自己已经拥有什么，而不是还缺什么</b>。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么接受 146 万元，也接受"四年免维护"的硬要求？</h3>
+        <p>创业初期最稀缺的是<b>背书与方向确定性</b>。天使资金解决"能不能开始"，而四年免维护这条产品标准，把共享单车最大的成本黑洞——维修——提前锁死。借力生态从来不只是拿钱，更是把强者的标准内化为自己的产品定义，换取更短的学习曲线。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么她能从一个旁观者变成局中人？</h3>
+        <p>记者身份让她长期处在信息与人脉的枢纽位置，机会出现时她具备"接得住"的能力。资源的价值很少独立产生，而取决于组合方式：<b>媒体能力 × 行业网络 × 未被满足的出行痛点</b>，三者互补，才构成了摩拜真正的起点。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>先攒局，再创业</h4>
+        <p>信任、网络与行业认知这类无形资源的积累，往往早于资金到位——攒局就是把它们攒出来的方式。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>把投资人的要求当成免费的产品咨询</h4>
+        <p>"四年免维护"听起来苛刻，却替团队提前定义了硬件标准，省下了最昂贵的试错成本。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>资源靠撬动，而不是备齐</h4>
+        <p>从 146 万元起步到 12 轮密集融资，摩拜的资源是一轮轮组合出来的，而不是一开始就拥有的。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>攒局、天使背书、借李斌的行业信用入场，是资源杠杆与社会网络策略的组合运用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>从"最后一公里"这个机会倒推，最关键的是资本信用与供应链能力，而非创始人的技术背景。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-05</div>
+        <h4>资源组合优势框架</h4>
+        <p>媒体能力、人脉网络与硬件标准的互补，构成了摩拜早期难以被快速模仿的组合型优势。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自《中国企业家》、36 氪、一席、创业邦、吴晓波频道等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 6 章，第 158 页 · 教材相关事例 6-1</span>
+    <span>案例卡 6-01 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡5-01 · 曾毓群的创业哲学</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 5 章 · 创业机会</a><span class="card-nav-meta">案例卡 5-01 · 曾毓群的“10% 创业哲学”</span><a class="card-nav-prev" href="案例卡4-08-晋江从品牌之都到科创生态高地.html">← 案例卡 4-08</a><a class="card-nav-next" href="案例卡5-02-江南春与分众传媒.html">案例卡 5-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 5-01</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>曾毓群的“10% 创业哲学”</h1>
+  <div class="oneliner">只要有一成成功的希望就先行动，剩下的九成在过程中创造条件补齐——“赌”由此成为一种被刻意训练的脑力活。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">曾毓群</div>
+        <div class="fs">宁德时代创始人</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">动力电池</div>
+        <div class="fs">从聚合物锂电池转向动力电池研发</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">1999 年创办 ATL</div>
+        <div class="fs">31 岁放弃高薪，买专利走差异化路线</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">2021 年全球第一</div>
+        <div class="fs">装机量 96.7GWh，市值突破万亿元</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">1999</div><div class="dot"></div>
+        <div class="tt">创办 ATL</div>
+        <div class="td">31 岁的曾毓群放弃高薪职位，参与创办新能源科技有限公司（ATL），主攻聚合物锂电池。当时索尼、松下等在传统电池领域领先，ATL 选择差异化路线，购买美国贝尔实验室的聚合物锂电池专利授权。</div>
+      </li>
+      <li>
+        <div class="yr">攻坚</div><div class="dot"></div>
+        <div class="tt">把别人的难题变成自己的壁垒</div>
+        <div class="td">该专利存在反复充放电后电池鼓气的缺陷。<b>数十家购买授权的企业中，仅 ATL 通过反复实验去除了配方中的低沸点物质</b>，成为唯一成功实现产业化的公司，先后进入苹果、华为、OPPO 等厂商供应链。</div>
+      </li>
+      <li>
+        <div class="yr">2011</div><div class="dot"></div>
+        <div class="tt">创立宁德时代</div>
+        <div class="td">受政策限制影响，曾毓群将动力电池事业部分拆，在家乡宁德创立宁德时代（CATL），专注于动力电池研发。</div>
+      </li>
+      <li>
+        <div class="yr">关键机遇</div><div class="dot"></div>
+        <div class="tt">押上全部资源接住“之诺 1E”</div>
+        <div class="td">华晨宝马打造首款电动车“之诺 1E”，原供应商告吹，宁德时代获得机会。宝马提供 <b>800 多页德文版电池生产标准文档</b>并派工程师驻扎共同开发；曾毓群投入几乎全部人力与资源，建立全亚洲最大的动力电池测试中心，专攻宝马项目，由此成为宝马大中华区唯一的电池供应商。</div>
+      </li>
+      <li>
+        <div class="yr">2014</div><div class="dot"></div>
+        <div class="tt">逆势出海与危机意识</div>
+        <div class="td">在德国成立首家海外子公司。当时出海并非电池行业的主流选择，国内增长迅猛。2017 年他写下内部信《台风来了，猪真的会飞吗？》，告诫团队“风总会有停下的一天”。</div>
+      </li>
+      <li>
+        <div class="yr">2020–2021</div><div class="dot"></div>
+        <div class="tt">押注扩张，登顶全球</div>
+        <div class="td">2020 年大笔定向增发 <b>200 亿元</b>用于产能扩张，赌动力电池市场将高速增长。2021 年装机量同比增长 <b>167.13%</b>，以 96.7GWh 位居全球第一，市值突破万亿元。办公室的字画也从“赌性坚强”换成了“溥博渊泉”。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么只有一成把握就敢下注？</h3>
+        <p>因为机会具有<b>时效性</b>——窗口一旦关闭，价值便大幅衰减。曾毓群的“10% 哲学”是先行动、再创造条件，用执行把低概率的机会逐步变成现实，为抓住时间窗口付出了先行代价。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么数十家企业中只有 ATL 做成了？</h3>
+        <p>专利授权本身并不稀缺，<b>稀缺的是把技术转化为产业化结果的能力</b>。同样的鼓气缺陷摆在所有买家面前，唯有 ATL 通过反复实验攻克它——机会的价值最终由把握机会的能力决定。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么要在高歌猛进时坚持出海？</h3>
+        <p>这是对机会<b>时间维度</b>的清醒认知。“风总会有停下的一天”——在需求窗口仍在敞开时提前布局下一轮竞争，用危机意识延长机会红利，而非被动等待周期反转。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>机会窗口有限，行动先于完全确定</h4>
+        <p>等到把握十足时，窗口往往已经关闭。低确定性下先行、在过程中创造条件，是对机会时效性的主动回应。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>把别人的难题做成自己的壁垒</h4>
+        <p>同样的专利、同样的缺陷摆在数十家买家面前，谁解决了工艺难题，谁就把公开的机会变成了独占的壁垒。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>居安思危，主动延长机会红利</h4>
+        <p>在增长最迅猛时布局海外、警示风险，是用危机意识对冲周期波动，让机会的价值不被一次反转吞没。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-01</div>
+        <h4>机会来源分类学</h4>
+        <p>动力电池的机会来自技术替代与需求演进——它是被“建构”出来的，而非静待发现。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-04</div>
+        <h4>三阶推演法</h4>
+        <p>“10% 就动手、剩下靠过程补齐”，本质是对未来路径做阶梯式推演，再以行动逐段逼近目标。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-09</div>
+        <h4>四维度两阶段机会评估框架</h4>
+        <p>接住宝马项目前，曾毓群评估的是市场规模、可行性与自身资源匹配度，而非单纯的确定性高低。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自钛媒体、36 氪、中国经济网、《南方周末》、华商韬略、和牛财经等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 5 章，第 125 页 · 教材相关事例 5-1</span>
+    <span>案例卡 5-01 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

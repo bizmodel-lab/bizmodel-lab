@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡6-02 · 蒙牛乳业的早期创业</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 6 章 · 创业资源</a><span class="card-nav-meta">案例卡 6-02 · 蒙牛乳业的早期创业</span><a class="card-nav-prev" href="案例卡6-01-摩拜单车从攒局到百亿出行生态.html">← 案例卡 6-01</a><a class="card-nav-next" href="案例卡6-03-追觅俞浩谈米链生存法.html">案例卡 6-03 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 6-02</span>
+    <span class="domain">教材体系 · <b>第 6 章 创业资源</b></span>
+  </div>
+  <h1>蒙牛乳业的早期创业</h1>
+  <div class="oneliner">没有牧场、没有厂房、没有渠道——"三无"起步的蒙牛，用"虚拟联合"把别人的闲置产能变成了自己的速度。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">牛根生</div>
+        <div class="fs">1999 年从伊利集团离职后创办蒙牛</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">53 平方米出租屋</div>
+        <div class="fs">以约 100 万元资金起步</div>
+      </div>
+      <div class="fact">
+        <div class="fl">模式</div>
+        <div class="fv">虚拟联合</div>
+        <div class="fs">收编全国 8 家乳品企业，盘活 7.8 亿元资产</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">"蒙牛速度"</div>
+        <div class="fs">年均递增 450%，3 年跻身中国乳业四强</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">1999</div><div class="dot"></div>
+        <div class="tt">"三无"起点</div>
+        <div class="td">牛根生从伊利集团离职后，与妻子抛售伊利股票筹集约 <b>100 万元</b>资金，在内蒙古呼和浩特租下一间 <b>53 平方米</b>的出租屋作为办公室，创办蒙牛乳业。创业之初，蒙牛没有自有的奶牛牧场和奶源基地，没有自建的生产厂房和设备，也没有成熟的销售渠道和品牌知名度。</div>
+      </li>
+      <li>
+        <div class="yr">当时</div><div class="dot"></div>
+        <div class="tt">900 万元撑不起一座工厂</div>
+        <div class="td">1999 年的中国乳业市场已初具格局，蒙牛不仅面临与同城对手伊利的直接竞争，更受制于极端匮乏的初始资源。<b>900 万元的启动资金（含后续追加）</b>不足以支撑大规模建厂投产——若按传统路径先行建设工厂，资金将迅速耗尽，而产品能否推向市场仍是未知数。</div>
+      </li>
+      <li>
+        <div class="yr">洞察</div><div class="dot"></div>
+        <div class="tt">大量产能正在别人手里闲置</div>
+        <div class="td">牛根生敏锐地观察到，当时许多乳品企业虽拥有厂房设备，却因管理不善陷入困境，大量产能处于闲置状态——这些正是蒙牛最缺、又最不必自己掏钱去建的东西。</div>
+      </li>
+      <li>
+        <div class="yr">模式</div><div class="dot"></div>
+        <div class="tt">提出"虚拟联合"</div>
+        <div class="td">他不与这些企业进行资产交易，仅输出<b>品牌、管理、技术和配方</b>，将对方的厂房、设备、人员纳入蒙牛的运营体系。通过这种方式，蒙牛在数月内收编了全国 <b>8 家</b>乳品企业，盘活了 <b>7.8 亿元</b>资产，实现了"无米之炊"式的生产扩张。1999 年，蒙牛当年的销售收入即达 <b>4365 万元</b>，而这全部由合作工厂完成。</div>
+      </li>
+      <li>
+        <div class="yr">延伸</div><div class="dot"></div>
+        <div class="tt">"只求所用，不求所有"</div>
+        <div class="td">在奶源建设和物流环节，蒙牛进一步践行这一理念：建一个奶站通常需要 40 万元，而蒙牛借助社会资金，连 <b>4 万元</b>也没花；打着蒙牛标志的运奶车有 <b>500 多辆</b>，没有一辆是蒙牛自己掏钱购买的，全部由民间资本提供。蒙牛只管"用奶"，维修、保险等均由车主自理，从而节省了大量管理成本。</div>
+      </li>
+      <li>
+        <div class="yr">结果</div><div class="dot"></div>
+        <div class="tt">把"企业办社会"变成"社会办企业"</div>
+        <div class="td">从奶站到运奶车，蒙牛用经济杠杆撬动社会资金，没出一分钱，最终由社会力量投资完成的配套设施总价值合计约 <b>20 亿元</b>。就在这样的起点上，蒙牛创造了"年均递增速度 450%、3 年跻身中国乳业四强"的"蒙牛速度"。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么不先建厂？</h3>
+        <p>在资源极度约束下，把有限资金投到建厂房，等于把弹药耗在不能立即产生现金流的环节上。蒙牛反问的是：<b>产能一定要自己拥有吗？</b>把自身的需求（品牌、技术、管理能力）与他人闲置的产能对接起来，本质是一次资源杠杆——用最少的自有资本撬动最大的可用资产。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么只输出品牌与管理，而不做资产交易？</h3>
+        <p>这是一种典型的轻资产整合：以无形资源撬动有形资源，用运营体系而非产权来实现控制。它既避免了大额资金沉淀，又让蒙牛在数月内获得了远超自身资本规模的产能，<b>用整合速度换掉了建厂时间</b>。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么连奶站和运奶车也不出钱？</h3>
+        <p>"只求所用，不求所有"把固定投入转化为社会投资，用经济杠杆驱动配套设施建设。代价是管理复杂度上升，收益是资本效率极高——这正是<b>"社会办企业"取代"企业办社会"</b>的资源编排思路，也是资源拼凑在传统制造业里的一次极致演绎。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>资源约束会逼出模式创新</h4>
+        <p>"无米之炊"的窘境反过来催生了虚拟联合——当传统路径走不通，模式的空间才被打开。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>无形资源可以撬动有形资源</h4>
+        <p>品牌、管理与技术是乘数，而不是可有可无的附属品；它们让蒙牛在没有厂房时就有了产能。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>所有权不等于控制力</h4>
+        <p>靠运营体系去组织资源，比靠资本去买下资源更快、更轻，也更容易在早期跑出速度。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>虚拟联合、社会资金建奶站与运奶车，是资源杠杆与战略性合作在传统行业里的教科书式运用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>从结构化（签约合作厂）到能力化（输出管理与技术）再到常规化（品牌化运营），路径清晰可循。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-05</div>
+        <h4>资源组合优势框架</h4>
+        <p>品牌、管理、合作产能与社会资本的组合，形成了竞争对手短期内难以复制的效率型协同。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自《21 世纪商业评论》、人民网、中国营销传播网等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 6 章，第 167 页 · 教材相关事例 6-2</span>
+    <span>案例卡 6-02 · 第 6 章 创业资源</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-02 · Slack：从游戏废墟中生长</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-02 · Slack：从游戏废墟中生长</span><a class="card-nav-prev" href="案例卡3-01-唐健欠债4600万卖烤肠还债.html">← 案例卡 3-01</a><a class="card-nav-next" href="案例卡3-03-亚马逊主动塑造未来.html">案例卡 3-03 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-02</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>Slack：从游戏废墟中生长</h1>
+  <div class="oneliner">一款游戏失败关停，团队盘点资产时却发现：那个为了自己人沟通而造的内部工具，比游戏本身更值钱。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">斯图尔特·巴特菲尔德</div>
+        <div class="fs">Flickr 联合创始人，Tiny Speck 创办者</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">企业协作 · SaaS</div>
+        <div class="fs">从多人在线游戏转向团队沟通工具</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">游戏 Glitch 关停</div>
+        <div class="fs">未获足够付费用户，公司账户尚余约 500 万美元</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">被 Salesforce 以 270 亿美元收购</div>
+        <div class="fs">2019 年纽交所直接上市，市值一度破 230 亿美元</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2009</div><div class="dot"></div>
+        <div class="tt">为做游戏而组队</div>
+        <div class="td">斯图尔特·巴特菲尔德创办 Tiny Speck，开发一款名为 Glitch 的大型多人在线角色扮演游戏。团队分散在纽约、旧金山、温哥华三地，靠互联网中继聊天（IRC）沟通。</div>
+      </li>
+      <li>
+        <div class="yr">开发期</div><div class="dot"></div>
+        <div class="tt">聊不动了，就自己造</div>
+        <div class="td">随着团队扩张，IRC 已无法满足需求，他们开始自行搭建内部沟通工具——支持创建独立讨论频道、离线登录后接收历史消息、可搜索存档记录。这个工具日后成了主角。</div>
+      </li>
+      <li>
+        <div class="yr">2012</div><div class="dot"></div>
+        <div class="tt">果断关掉游戏</div>
+        <div class="td">11 月，因未能获得足够付费用户，Tiny Speck 宣布关闭 Glitch。<b>关闭时公司账户尚余约 500 万美元</b>，巴特菲尔德决定不再继续消耗投资，随即架设"聘雇天才"页面，帮助被裁员工寻找新工作。</div>
+      </li>
+      <li>
+        <div class="yr">盘点</div><div class="dot"></div>
+        <div class="tt">发现真正的资产</div>
+        <div class="td">团队在盘点资产时发现，<b>内部使用的沟通工具比游戏本身更具价值</b>。方向就此转向。</div>
+      </li>
+      <li>
+        <div class="yr">2013—2014</div><div class="dot"></div>
+        <div class="tt">从预览版到正式上线</div>
+        <div class="td">2013 年 5 月，Tiny Speck 以邀请模式发布 Slack 预览版；2014 年 2 月正式上线。<b>发布 10 周后日活用户达 6 万、付费用户 1.5 万</b>，完成 4280 万美元 C 轮融资。早期未投入传统广告，依靠用户口碑传播。</div>
+      </li>
+      <li>
+        <div class="yr">2015—2021</div><div class="dot"></div>
+        <div class="tt">持续放大</div>
+        <div class="td">2015 年成立一周年时日活用户突破 50 万；2019 年 6 月在纽约证券交易所直接上市，市值一度突破 230 亿美元；<b>2021 年 Salesforce 以 270 亿美元完成对 Slack 的收购</b>。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么账户还剩约 500 万美元，却不再"再赌一把"？</h3>
+        <p>这是<b>反脆弱的心理账户隔离</b>：他没有把剩余资金视为"必须挽回游戏"的沉没成本，而是视为可重新配置的资源。关闭策略并不否定制定策略的人——失效的是策略本身。正因为能快速完成"策略废弃—新策略生成"的循环，团队才没有因自我怀疑而瘫痪。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把"内部工具"而非"再做一款游戏"当作新方向？</h3>
+        <p>这是教科书式的<b>效果逻辑</b>：不先设定"我们要做一款更好的游戏"这个目标，再从市场找手段；而是从已经发生的事实出发——工具已建成、需求已在自用中被验证——用既有手段的组合逐步生成新目标。目标模糊、环境不确定时，这正是最优的决策方式。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么早期不投传统广告，只靠口碑？</h3>
+        <p>这是一种<b>最简讨喜产品（MVP）</b>的路径：先用邀请制预览版做最小可用形态，把产品交给真实用户验证，再用"发布 10 周 6 万日活、1.5 万付费"的数据证明价值，然后才规模化。口碑不是省钱的权宜之计，而是最廉价也最诚实的验证信号。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>失败的项目可能孕育最有价值的副产品</h4>
+        <p>关停时做的不应只是盘点损失，更要盘点资产——Slack 就藏在一款游戏的"废墟"里。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>从"手上已有什么"出发，而非从"该做什么"倒推</h4>
+        <p>已建成的工具与已验证的自用需求，就是最坚实的手段；方向是走出来的，不是规划出来的。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>把策略失败与自我价值分离，才能快速转向</h4>
+        <p>否定一个策略，不等于否定做决策的人。留有余量、及时止损，反而保留了下一局的入场券。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-03</div>
+        <h4>效果逻辑五原则</h4>
+        <p>从既有手段出发生成新目标——"手上的工具"变成了新公司，是效果逻辑的经典案例。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>果断关闭 Glitch 而不追加投入，正是把策略库与自我价值感分离、及时关闭策略心理账户。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP四步流程与循环加速</h4>
+        <p>邀请制预览版 → 口碑传播 → 10 周验证数据 → 正式放量，是一条完整的最小可行产品循环。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      综合整理自 Wired、The Verge 等公开报道及 Slack 公司资料。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 62 页 · 教材相关事例 3-2</span>
+    <span>案例卡 3-02 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

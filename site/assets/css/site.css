@@ -204,6 +204,7 @@ img { max-width: 100%; }
 .loop-card.s-bg .glyph { background: linear-gradient(135deg, #542EA7, #8B5CF6); }
 .loop-card.k-bg .glyph { background: linear-gradient(135deg, #0D9488, #2DD4BF); }
 .loop-card.c-bg .glyph { background: linear-gradient(135deg, #C2410C, #F97316); }
+.loop-card.r-bg .glyph { background: linear-gradient(135deg, #1D4ED8, #60A5FA); }
 .loop-card.p-bg .glyph { background: linear-gradient(135deg, #F59E0B, #FBBF24); }
 .loop-card.e-bg .glyph { background: linear-gradient(135deg, #94A3B8, #CBD5E1); }
 .loop-card h3 { font-size: 22px; margin-bottom: 10px; }
@@ -286,9 +287,13 @@ img { max-width: 100%; }
 }
 .site-footer .ft-grid {
   max-width: 1160px; margin: 0 auto; padding: 0 24px;
-  display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px;
+  display: grid; grid-template-columns: 1.4fr 1fr 1.3fr auto; gap: 48px;
 }
 @media (max-width: 720px) { .site-footer .ft-grid { grid-template-columns: 1fr; } }
+.site-footer .ft-qr {
+  width: 112px; height: 112px; display: block;
+  background: #fff; border-radius: 8px; padding: 6px;
+}
 .site-footer h4 { color: #fff; font-size: 14px; margin-bottom: 14px; letter-spacing: 1px; }
 .site-footer p, .site-footer a { color: #CBD5E1; font-size: 13px; line-height: 1.9; display: block; }
 .site-footer a:hover { color: #fff; }

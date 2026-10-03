@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡2-03 · 张一鸣从九九房到今日头条</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 2 章 · 创业者</a><span class="card-nav-meta">案例卡 2-03 · 张一鸣：从&quot;九九房&quot;到&quot;今日头条&quot;</span><a class="card-nav-prev" href="案例卡2-02-涛涛车业老头乐第一股.html">← 案例卡 2-02</a><a class="card-nav-next" href="案例卡2-04-乔布斯创造世界的那些人.html">案例卡 2-04 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 2-03</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>张一鸣：从"九九房"到"今日头条"</h1>
+  <div class="oneliner">一次失败、两进两出、三次创业——在最熟悉的赛道上，把"成功"也敢推倒重来的连续创业者。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">张一鸣</div>
+        <div class="fs">2005 年南开大学软件工程专业毕业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">移动互联网 · 信息分发</div>
+        <div class="fs">从垂直房产搜索到个性化推荐阅读</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">北京知春路一间民宅</div>
+        <div class="fs">2012 年 3 月在此创立字节跳动</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">字节跳动 · 今日头条</div>
+        <div class="fs">个性化推荐引擎，开创国内个性化推荐阅读</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2005</div><div class="dot"></div>
+        <div class="tt">首尝败绩</div>
+        <div class="td">与学长组成 3 人团队开发面向企业的协同办公系统，几个月后宣告失败。这次经历让他意识到：<b>在互联网行业创业需要找到正确的方向</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2006</div><div class="dot"></div>
+        <div class="tt">酷讯练兵</div>
+        <div class="td">加入酷讯网成为第一个工程师，从事旅游垂直内容搜索。次年升任技术高级经理，又因技术突破被提拔为<b>技术委员会主席</b>；同事有困难他都帮着解决。</div>
+      </li>
+      <li>
+        <div class="yr">2008</div><div class="dot"></div>
+        <div class="tt">婉拒与再相聚</div>
+        <div class="td">酷讯联合创始人离开后他也离开。老乡王兴第一次拉他创业被婉拒；入职微软后因工作过于清闲，<b>半年即辞职</b>。王兴再次相邀，这次他以技术合伙人身份加入，负责饭否网与海内网的搜索、消息分发、热词挖掘等后台系统。</div>
+      </li>
+      <li>
+        <div class="yr">2009</div><div class="dot"></div>
+        <div class="tt">九九房：第一次当 CEO</div>
+        <div class="td">与梁汝波将酷讯房产频道独立拆分创立九九房。6 个月推出掌上租房、掌上买房等 5 款移动应用，用户量达 <b>150 万</b>，成为<b>房产类应用第一名</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2011</div><div class="dot"></div>
+        <div class="tt">在成功处转身</div>
+        <div class="td">九九房成功了，但他看清了房产垂直搜索<b>变现难、低频次</b>的天花板，预感移动互联网时代正汹涌而来，毅然辞去 CEO 职位筹备再次创业。</div>
+      </li>
+      <li>
+        <div class="yr">2012</div><div class="dot"></div>
+        <div class="tt">字节跳动 · 今日头条上线</div>
+        <div class="td">3 月，在北京知春路一间民宅创立字节跳动，定位仍是他最熟悉的信息搜集与分发。8 月，旗舰产品<b>今日头条 1.0</b> 上线，基于个性化推荐引擎向用户推荐个性化信息。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么拒绝王兴又进微软，却半年就离开？</h3>
+        <p>两次选择其实是同一种判断：婉拒王兴，是因为还没找到自己认定的方向；离开微软，是因为"清闲"意味着无法创造价值。这背后是<b>自主驱动</b>的动机结构——他要的不是平台的安稳，而是方向正确前提下的自我掌控。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么在九九房"第一名"的高点离开？</h3>
+        <p>房产垂直搜索变现难、低频次，天花板清晰可见；而移动互联网的机会窗口正在打开。教材指出动机触发有<b>"拉力"机制</b>——当外部机会足够清晰时，风险变得可以计算，主动放弃既有成功去把握时机，就成了理性选择。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么第三次创业仍做信息分发？</h3>
+        <p>从酷讯的垂直搜索、饭否的社交分发到九九房的内容运营，他积累了信息分发、用户行为分析的<b>隐性知识</b>。张一鸣自己总结："九九房让我真正理解了移动互联网，也让我看到信息分发的本质问题。"经验不是包袱，而是批判性再造后的资源。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>失败是筛选方向的学费</h4>
+        <p>第一次创业的失败没有让他止步，而是沉淀出"方向比努力更优先"的认知，为后续每一次选择提供了校准依据。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>经验的价值在于再造，而非照搬</h4>
+        <p>把垂直领域积累的行业知识与网络资源，结合新情境做适应性整合，从房产平台走向通用信息平台——从经验应用跨越到经验再造。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>机会窗口来临时，敢于离开成功</h4>
+        <p>九九房明明已是行业第一，他仍能看到变现难、低频的结构性局限——判断机会的标尺是未来空间，而非当下成绩。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-05</div>
+        <h4>创业者四大核心能力框架</h4>
+        <p>连续创业、多职能历练塑造了技术、产品与管理的复合能力，构成创业的"元经验"。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-02</div>
+        <h4>机会识别三类信号总纲</h4>
+        <p>"用户获取有效信息成本极高"的痛点观察与移动互联网浪潮，共同指向机会窗口。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>隐性知识与行业洞察成为今日头条早期产品迭代与人才招募的关键资源。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自 36 氪、界面新闻、人民网等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 2 章，第 34 页 · 教材相关事例 2-3</span>
+    <span>案例卡 2-03 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡4-02 · 义乌速度</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 4 章 · 创业生态系统</a><span class="card-nav-meta">案例卡 4-02 · 义乌速度：从全球热点到上架商品仅需数小时</span><a class="card-nav-prev" href="案例卡4-01-硅谷PayPal系反哺.html">← 案例卡 4-01</a><a class="card-nav-next" href="案例卡4-03-硅谷的多次重生.html">案例卡 4-03 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 4-02</span>
+    <span class="domain">教材体系 · <b>第 4 章 创业生态系统</b></span>
+  </div>
+  <h1>义乌速度：从全球热点到上架商品仅需数小时</h1>
+  <div class="oneliner">从海外网红的一条短视频，到数千顶帽子摆上档口，不到一天——义乌把“全球热点”实时变成“可售商品”。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">区域</div>
+        <div class="fv">浙江义乌</div>
+        <div class="fs">国际商贸城为核心的小商品集散地</div>
+      </div>
+      <div class="fact">
+        <div class="fl">关键主体</div>
+        <div class="fv">商户 + 专业供应商集群</div>
+        <div class="fs">模具、原料、辅料、印染、装配各环节齐备</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">“鸡毛换糖”马路市场</div>
+        <div class="fs">40 余年前的传统交易雏形</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">“世界超市”</div>
+        <div class="fs">联结全球 210 多个国家和地区</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">起点</div><div class="dot"></div>
+        <div class="tt">从“鸡毛换糖”到马路市场</div>
+        <div class="td">经过 40 余年的发展，义乌从“鸡毛换糖”的马路市场起步，逐步成长为联结全球 210 多个国家和地区的“世界超市”。</div>
+      </li>
+      <li>
+        <div class="yr">集群</div><div class="dot"></div>
+        <div class="tt">极致专业化分工</div>
+        <div class="td">模具、原料、辅料、印染、装配……每一个环节都有高度专业化的供应商，彼此相距不超过几公里。商户在商贸城接单，步行到隔壁街区的加工厂打样，<b>一小时后就能拿到实物</b>。</div>
+      </li>
+      <li>
+        <div class="yr">快反</div><div class="dot"></div>
+        <div class="tt">“网速跟不上义乌速度”</div>
+        <div class="td">在义乌，一款新品从设计图到成品出样，通常 <b>2—4 小时</b>即可完成。这种极致的产业集群效应，使义乌得以将全球消费热点实时转化为可售商品。</div>
+      </li>
+      <li>
+        <div class="yr">数字</div><div class="dot"></div>
+        <div class="tt">平台打通数据链</div>
+        <div class="td">近年来义乌大力推动数字化转型，上线“中国小商品城”（Chinagoods.com）等平台，打通设计、生产、物流数据链，让需求信号更快抵达供给端。</div>
+      </li>
+      <li>
+        <div class="yr">2025</div><div class="dot"></div>
+        <div class="tt">一次热点，24 小时落地</div>
+        <div class="td">一位美国网红在 TikTok 上发布戴着“巴掌帽”的视频，迅速获得数百万次观看。商户通过国际站捕捉到趋势后连夜联系工厂打样、备料；次日清晨，首批数千顶“巴掌帽”已出现在义乌国际商贸城的档口，并通过跨境物流发往欧美客户手中。</div>
+      </li>
+      <li>
+        <div class="yr">规模</div><div class="dot"></div>
+        <div class="tt">生态的整体产出</div>
+        <div class="td">2025 年，义乌市进出口总值突破 <b>8000 亿元</b>，同比增长 25.1%。义乌速度的背后，是一个由极速供应链、数字贸易平台与全球物流网络共同构成的创业生态系统。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么“快”能成为一种竞争力？</h3>
+        <p>义乌的“快”不是某一家企业的效率，而是<b>生态的整体涌现性</b>——数百家高度专业化供应商的高频互动、供应链的柔性响应、数字平台与全球物流网络共同造就了一种集体能力，任何单一主体都无法独立具备，也无法从孤立要素中还原。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么 40 年积累的集群难以被模仿？</h3>
+        <p>每一环节都有专业供应商、且彼此相距不超过几公里，这种空间集聚与分工结构形成了<b>路径锁定与“生态护城河”</b>。一旦集体能力成型，它就沉淀为区域独特竞争优势，其他地区难以通过简单模仿获得。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么数字化转型是决定性一跃？</h3>
+        <p>产业集群解决的是“能不能快速造”，数字平台解决的是“能不能快速知道要造什么”。上线的跨境电商平台打通设计、生产、物流数据链，本质是提升<b>要素匹配效率</b>——减缓信息不对称、加速供需对接，让全球热点在数小时内变成订单。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>速度是一种生态能力</h4>
+        <p>“义乌速度”不是单点努力的结果，而是产业集群、数字平台与物流网络共同涌现的集体能力，评估生态要看整体而非个体。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>小微创业者可以“借用”生态</h4>
+        <p>个体商户不必自建全链路，接单、打样、备料、发货都可在几公里内完成——善于嵌入生态，比自己重建一切更有效率。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>数字平台放大集群效率</h4>
+        <p>平台的价值不止于交易，更在于把全球需求信号快速、低损耗地传导给供给侧，让集群的响应能力真正被释放。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-02</div>
+        <h4>机会识别三类信号总纲</h4>
+        <p>一条爆款短视频就是典型的市场信号，义乌商户凭对信号的敏感与快速消化能力抢先转化。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>从识别热点、获取供应商，到配置产能、输出商品，义乌完成了一次几乎“当天闭环”的资源整合。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>不拥有工厂也能造货：商户以协作、借用的方式调用集群资源，是资源创造性获取的集中体现。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例整理自教材“相关事例 4-2”栏目。资料来源：综合整理自义乌市商务局公开数据及新华网、《浙江日报》、澎湃新闻、义乌购等公开报道。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 4 章，第 101 页 · 教材相关事例 4-2</span>
+    <span>案例卡 4-02 · 第 4 章 创业生态系统</span>
+  </div>
+
+</div>
+</body>
+</html>

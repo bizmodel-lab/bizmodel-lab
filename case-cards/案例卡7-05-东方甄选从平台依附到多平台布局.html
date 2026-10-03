@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡7-05 · 东方甄选的平台布局</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 7 章 · 创业战略</a><span class="card-nav-meta">案例卡 7-05 · 东方甄选从平台依附到多平台布局</span><a class="card-nav-prev" href="案例卡7-04-特赞嵌入企业营销价值链.html">← 案例卡 7-04</a><a class="card-nav-next" href="案例卡9-01-张雪机车主动限制销售.html">案例卡 9-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 7-05</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>东方甄选从平台依附到多平台布局</h1>
+  <div class="oneliner">借抖音一夜出圈，却在流量最旺的时候把自己的用户、货盘和会员体系一点点搬出抖音——依附平台，然后摆脱对平台的依附。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">公司</div>
+        <div class="fv">东方甄选</div>
+        <div class="fs">新东方推出的直播带货平台</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">直播电商 · 自营产品</div>
+        <div class="fs">从平台带货走向自营供应链</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2021.12.28 抖音首播</div>
+        <div class="fs">2022 年 6 月董宇辉双语直播出圈</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">自营占比首超一半</div>
+        <div class="fs">2026 财年上半年净溢利 2.39 亿元，同比扭亏为盈</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2021.12</div><div class="dot"></div>
+        <div class="tt">依附平台起步</div>
+        <div class="td">2021 年 12 月 28 日，新东方推出直播带货平台"东方甄选"，在抖音开启首场直播。</div>
+      </li>
+      <li>
+        <div class="yr">2022.6</div><div class="dot"></div>
+        <div class="tt">双语直播出圈</div>
+        <div class="td">主播董宇辉在直播间以中英双语介绍商品，东方甄选迅速出圈，粉丝量暴增——平台生态给了它爆发式增长的起点。</div>
+      </li>
+      <li>
+        <div class="yr">2022—2023</div><div class="dot"></div>
+        <div class="tt">多平台、多账号、会员制</div>
+        <div class="td">在抖音快速成长的同时，东方甄选启动多平台与多账号矩阵布局：在淘宝、京东、快手、微信、微博、小红书等平台开设账号，在微信上线小程序、运营视频号；抖音端除主账号外还布局"美丽生活""自营产品""生鲜""之图书""店铺""看世界"等垂类账号。<b>2022 年 8 月</b>独立 APP 上线，<b>2023 年 7 月</b>首次在自有 APP 启动同步直播，<b>2023 年 8 月</b>入驻淘宝直播、首秀销售额过亿元，<b>同年 10 月</b>推出年费 199 元的付费会员制度。</div>
+      </li>
+      <li>
+        <div class="yr">FY2024</div><div class="dot"></div>
+        <div class="tt">全平台 GMV 143 亿元</div>
+        <div class="td">2024 财年（2023 年 6 月至 2024 年 5 月），全平台商品交易总额达 <b>143 亿元</b>，其中自营产品 GMV 约 57 亿元、同比增长 <b>91%</b>；垂类账号超 10 个，同时在货架电商平台开设网店，自有 APP 全年 GMV 超 12 亿元、占比 8.4%。</div>
+      </li>
+      <li>
+        <div class="yr">2024 下半年</div><div class="dot"></div>
+        <div class="tt">剥离超级 IP 之后</div>
+        <div class="td">剥离超级 IP 后，东方甄选持续深化自营产品和供应链能力，实施多平台与多矩阵策略。截至 2025 年 5 月，已累计推出自营产品超 <b>800 款</b>。2025 财年，自营产品 GMV 占总 GMV 约 43.8%，APP GMV 贡献占比达 15.7%、同比提升 7.3 个百分点。</div>
+      </li>
+      <li>
+        <div class="yr">FY2026 上半年</div><div class="dot"></div>
+        <div class="tt">自营产品占比首次过半</div>
+        <div class="td">2026 财年上半年（2025 年 6 月至 11 月），自营产品总 GMV 占比达 <b>52.8%</b>、首次超过一半，公司净溢利达 <b>2.39 亿元</b>，同比扭亏为盈。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么在抖音增长最快的时候，还要做多平台和自有 APP？</h3>
+        <p>生态依附型企业的根本风险，是把生死交给平台的规则。依附能让创业企业用更低成本、更快速度触达用户，但用户资产、流量分配与规则解释权都在平台手里。东方甄选的做法是<b>一边借平台放大，一边把用户和交易搬到自己能掌控的地方</b>——独立 APP、微信小程序、货架电商网店，构成一张降低单一平台依赖的渠道网。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么坚持从"带货"转向自营产品与供应链？</h3>
+        <p>带货赚的是流量差价，自营产品赚的是产品与供应链的钱。自营 GMV 从 FY2024 的约 57 亿元增长至 FY2026 上半年的占比 52.8%，意味着收入结构从"平台流量的寄生"转为<b>可沉淀、可复购的品牌资产</b>。这条路更重、更慢，但毛利与抗风险能力都掌握在自己手里——这是战略上从"借势"到"筑墙"的转变。</p>
+      </div>
+      <div class="dec">
+        <h3>剥离超级 IP 后，公司靠什么继续增长？</h3>
+        <p>个人 IP 是单点资产，也是最高的集中度风险。东方甄选的应对是把增长动力从个人转向组织：垂类账号矩阵承接流量，自营产品承接复购，自有 APP 与会员制承接用户关系。结果是 FY2026 上半年净溢利 2.39 亿元、同比扭亏为盈——<b>当组织能力替代了个人光环，企业的脆弱性才真正下降</b>。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>借平台成长，但不能被平台锁定</h4>
+        <p>依附生态是低成本的加速器，但也必须同步铺设自有渠道，把用户关系握在自己手中。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>从流量红利转向供应链资产</h4>
+        <p>流量会退潮，产品与供应链不会。自营占比过半，才是收入结构真正稳固的标志。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>用矩阵对冲单点依赖</h4>
+        <p>多平台、多账号、多渠道的组合，本质上是把"押注一个平台或一个人"的风险摊薄。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-04</div>
+        <h4>市场进入四策略矩阵</h4>
+        <p>抖音起量对应"生态依附型"，多平台与自有 APP 则是对这一路径固有依赖性的主动修正。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-05</div>
+        <h4>市场进入三维选择模型</h4>
+        <p>同一品牌在不同渠道上采取不同进入方式，体现了渠道选择随能力与风险承受度动态调整。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-06</div>
+        <h4>安索夫情境化与增长四原则</h4>
+        <p>从带货到自营产品、从抖音到多平台，是产品与市场组合同步扩展的增长路径。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自《证券时报》、界面新闻、《21 世纪经济报道》、经济参考网等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 7 章，第 197 页 · 教材相关事例 7-5</span>
+    <span>案例卡 7-05 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

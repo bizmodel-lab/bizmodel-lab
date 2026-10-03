@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-03 · 亚马逊：主动塑造未来</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-03 · 亚马逊：主动塑造未来</span><a class="card-nav-prev" href="案例卡3-02-Slack从游戏废墟中生长.html">← 案例卡 3-02</a><a class="card-nav-next" href="案例卡3-04-SpaceX的火箭成本重构.html">案例卡 3-04 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-03</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>亚马逊：主动塑造未来</h1>
+  <div class="oneliner">"我不做预测，我创造未来"——股价暴跌九成时选择牺牲短期回报，把"专注于长期、沉迷于顾客"从信念变成了可执行的决策框架。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">杰夫·贝索斯</div>
+        <div class="fs">放弃华尔街高薪，创立亚马逊</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">电商 · 云计算</div>
+        <div class="fs">从在线书店扩展为多元业务平台</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">1994 年西雅图车库</div>
+        <div class="fs">最初定位为在线书店</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">全球电商与云计算巨头</div>
+        <div class="fs">飞轮效应驱动的自强化增长系统</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">1994</div><div class="dot"></div>
+        <div class="tt">车库起步</div>
+        <div class="td">杰夫·贝索斯放弃华尔街的高薪职位，在西雅图一间车库中创立亚马逊，最初被定位为在线书店。他曾想把公司命名为 <b>"Relentless"（意为"永不停步"）</b>，至今访问 relentless.com 仍会跳转至亚马逊。</div>
+      </li>
+      <li>
+        <div class="yr">1997</div><div class="dot"></div>
+        <div class="tt">两大信念</div>
+        <div class="td">创业初期，他确立了<b>"专注于长期、沉迷于顾客"</b>的两大信念。在 1997 年上市后的第一封致股东的信中，他首次宣示这一理念，此后每年都将这封信附在年报之后——这不是口号，而是一份年被复述的经营承诺。</div>
+      </li>
+      <li>
+        <div class="yr">2000</div><div class="dot"></div>
+        <div class="tt">泡沫中的取舍</div>
+        <div class="td">互联网泡沫破裂时，亚马逊股价从每股超 100 美元跌至不足 6 美元，被媒体称为"亚马逊炸弹"。在华尔街分析师普遍看衰的背景下，贝索斯选择<b>以牺牲短期回报为代价优先扩大规模</b>。</div>
+      </li>
+      <li>
+        <div class="yr">持续</div><div class="dot"></div>
+        <div class="tt">用创新主动定规则</div>
+        <div class="td">贝索斯通过持续创新主动塑造行业规则，推出<b>一键下单、个性化推荐、Prime 会员、内文检索与试读、AWS 云计算、第三方卖家平台</b>等功能与业务。</div>
+      </li>
+      <li>
+        <div class="yr">战略</div><div class="dot"></div>
+        <div class="tt">飞轮效应</div>
+        <div class="td">他把核心策略概括为"飞轮效应"：降低成本吸引更多顾客 → 更多顾客带来更多第三方卖家 → 更多卖家增加商品选择 → 更多选择提升顾客体验 → 推动销售增长、形成规模效应 → 进一步降低成本。</div>
+      </li>
+      <li>
+        <div class="yr">至今</div><div class="dot"></div>
+        <div class="tt">第一天</div>
+        <div class="td">在决策方式上，他坚持<b>"遗憾最小化框架"</b>：做重大选择时，想象自己 80 岁回望今天，会为做了而后悔，还是为没做而后悔——这促使他放弃稳定收入、说服投资者支持长期亏损运营、提前 10 年布局物流基础设施。他要求员工"从顾客需求出发，逆向工作"，并把这种状态称为"第一天"（Day 1）。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么泡沫破裂、股价暴跌九成时，反而选择牺牲短期回报？</h3>
+        <p>这是典型的<b>心理账户中的"时间账户"</b>：人们对即时收益与远期收益的心理估值并不一致，眼前的小额现金流容易被赋予过高权重，而长期价值的积累常被忽视。贝索斯有意识地把即时股价与远期价值放进不同账户核算，才没有为保住眼前的数字而砍掉未来的规模。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么"我不做预测，我创造未来"？</h3>
+        <p>这是<b>第一性原理与逆向思维</b>的合体：不从现有能力出发预测"什么是可行的"，而是从顾客需求出发逆向工作，直接推导出应当提供什么。当行业规则尚未定型时，与其预测未来，不如用产品把未来造出来——从需求这一最基本的事实出发，而不是从类比与经验出发。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么愿意长期亏损，提前 10 年布局物流？</h3>
+        <p>因为决策标尺不是季度报表，而是<b>"遗憾最小化框架"</b>——以 80 岁回望的视角衡量，错过结构性机会的后悔远大于短期亏损的代价。把"没做而后悔"作为标尺，才可能在市场都看衰时，做出违反短期理性的长期投入。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>长期主义可以是一种可执行的决策框架</h4>
+        <p>"遗憾最小化框架"把抽象的长远眼光，转化为每次重大选择都可调用的具体提问。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>从顾客需求逆向工作，而非从能力正向预测</h4>
+        <p>不做预测而去创造未来：从需求这一最基本事实出发推导该做什么，才能真正主动塑造规则。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>飞轮把单点优势变成自我强化的系统</h4>
+        <p>降成本、引顾客、招卖家、增选择、提体验——各环节首尾相扣，增长于是成为系统的必然结果。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-04</div>
+        <h4>第一性原理三阶段法</h4>
+        <p>从顾客需求这一最基本事实出发重构业务，而非依据行业惯例与类比经验做推演。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-06</div>
+        <h4>逆向思维两维度与闭环</h4>
+        <p>"从顾客需求出发，逆向工作"正是逆向思维的直接应用，与遗憾最小化框架相互印证。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-05</div>
+        <h4>系统思维创业情境重组</h4>
+        <p>"飞轮效应"是一个自我强化的系统回路，理解亚马逊增长需从要素间的耦合关系入手。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      综合整理自《财富》《工商时报》等公开报道。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 64 页 · 教材相关事例 3-3</span>
+    <span>案例卡 3-03 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

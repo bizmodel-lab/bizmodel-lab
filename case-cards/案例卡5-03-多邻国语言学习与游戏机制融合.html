@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡5-03 · 多邻国语言学习与游戏机制融合</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 5 章 · 创业机会</a><span class="card-nav-meta">案例卡 5-03 · 多邻国：语言学习与游戏机制的跨界融合</span><a class="card-nav-prev" href="案例卡5-02-江南春与分众传媒.html">← 案例卡 5-02</a><a class="card-nav-next" href="案例卡5-04-企查查把公开数据做成生意.html">案例卡 5-04 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 5-03</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>多邻国：语言学习与游戏机制的跨界融合</h1>
+  <div class="oneliner">把“学习”装进“游戏”的壳里，既是降低门槛，也是重新划定一个传统语言培训机构从未触及的市场。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">路易斯·冯·安</div>
+        <div class="fs">多邻国创始人，验证码（captcha）发明者</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">在线语言学习</div>
+        <div class="fs">免费应用 + 游戏化设计</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2011 年·匹兹堡</div>
+        <div class="fs">卡内基梅隆大学教授跨界创业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">2021 年纳斯达克上市</div>
+        <div class="fs">全球用户超 5 亿，月活超 8000 万</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2011</div><div class="dot"></div>
+        <div class="tt">科学家跨界创业</div>
+        <div class="td">危地马拉裔美国计算机科学家路易斯·冯·安在美国匹兹堡创立多邻国。他是卡内基梅隆大学计算机科学教授，此前曾发明验证码（captcha）并将其商业化。</div>
+      </li>
+      <li>
+        <div class="yr">洞察</div><div class="dot"></div>
+        <div class="tt">看到两个顽固问题</div>
+        <div class="td">冯·安观察到，传统语言学习工具普遍存在两个问题：一是<b>付费门槛高</b>，把大量用户拒之门外；二是<b>学习过程枯燥</b>，用户难以坚持。</div>
+      </li>
+      <li>
+        <div class="yr">设想</div><div class="dot"></div>
+        <div class="tt">教育与娱乐的跨界组合</div>
+        <div class="td">他设想将语言学习与游戏机制结合，为用户提供一种像玩游戏一样学语言的新体验——把成熟领域的机制移植到另一个领域。</div>
+      </li>
+      <li>
+        <div class="yr">产品</div><div class="dot"></div>
+        <div class="tt">把课程拆成游戏化练习</div>
+        <div class="td">核心产品是一款免费语言学习应用：课程内容被拆解为短小的互动练习，融入<b>积分、连续学习天数记录、排行榜、成就徽章</b>等游戏化设计；用户完成练习获得经验值，连续学习可获得虚拟货币，用于在应用内兑换额外功能。</div>
+      </li>
+      <li>
+        <div class="yr">2021</div><div class="dot"></div>
+        <div class="tt">上市成为全球最大平台</div>
+        <div class="td">多邻国在纳斯达克上市，成为全球最大的在线语言学习平台。</div>
+      </li>
+      <li>
+        <div class="yr">2024</div><div class="dot"></div>
+        <div class="tt">在新市场里长成规模</div>
+        <div class="td">提供超过 <b>40 种语言</b>的课程，全球用户超过 <b>5 亿人</b>，月活跃用户超过 <b>8000 万人</b>。其成功印证了教育与娱乐边界的融合可能，创造了一个传统语言培训机构未曾触及的新市场。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么选择“免费 + 游戏化”？</h3>
+        <p>这正是抓住了<b>市场结构的不连续性</b>。既有语言培训以“付费 + 枯燥”为规则，而新规则尚未建立；免费降低门槛、游戏化提升黏性，等于在旧规则的裂隙里写下新规则。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把教育内容拆成游戏化练习？</h3>
+        <p>这是典型的<b>跨界融合</b>：把游戏领域已经成熟的机制（积分、连续天数、排行榜、徽章）搬到教育场景，用“坚持不下去”这一核心痛点的解法，重新定义了学习体验。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么说它创造了新市场，而不是抢存量？</h3>
+        <p>因为它服务的是被<b>付费门槛和枯燥双重挡在门外</b>的增量人群。机会位于需求演进与技术变革的交汇处，本质上是重新定义市场疆域，而非在旧市场里分蛋糕。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>不连续性中藏着重新定义市场的窗口</h4>
+        <p>当旧规则失效、新规则待建，创业者获得的是划定市场疆域的机会，而不只是在既有格局中争夺份额。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>跨界融合的关键是移植成熟机制</h4>
+        <p>不必从零发明玩法。把另一个领域已被验证的机制搬到本领域，往往就是一次有效的机会建构。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>降低门槛本身就是最大的增长</h4>
+        <p>把高付费门槛降为零，把枯燥过程变得有黏性，被释放出的用户量本身就构成了一个全新的市场。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-01</div>
+        <h4>机会来源分类学</h4>
+        <p>多邻国的机会同时来自“未被满足的需求”与“技术与需求交汇处的市场不连续性”，是多来源叠加的典型。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-05</div>
+        <h4>结构分析法三子工具</h4>
+        <p>把“教育”与“游戏”两个产业边界拆开重组，正需要结构分析法去识别边界变动处的空白地带。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-06</div>
+        <h4>用户功能场景三角交叉验证</h4>
+        <p>多邻国同时命中了用户（被门槛挡住的潜在学习者）、功能（碎片化练习）与场景（随时随地的游戏化学习）。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自多邻国官方网站、招股说明书及网络公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 5 章，第 133 页 · 教材相关事例 5-3</span>
+    <span>案例卡 5-03 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

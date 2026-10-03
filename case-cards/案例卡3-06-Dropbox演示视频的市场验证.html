@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-06 · Dropbox演示视频的市场验证</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-06 · Dropbox演示视频的市场验证</span><a class="card-nav-prev" href="案例卡3-05-唐吉诃德日本第一烂店.html">← 案例卡 3-05</a><a class="card-nav-next" href="案例卡3-07-字节跳动早期的APP工厂.html">案例卡 3-07 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-06</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>Dropbox演示视频的市场验证</h1>
+  <div class="oneliner">产品还没做完，他没继续写代码，而是花几天做了一段两分多钟的视频——24 小时内，等待列表从 5000 人涨到 7.5 万人。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">安德鲁·豪斯顿</div>
+        <div class="fs">Dropbox 创始人（Andrew W. Houston）</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">云存储 · 文件自动同步</div>
+        <div class="fs">当时"云存储"概念尚未普及</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">大巴上忘带 U 盘</div>
+        <div class="fs">2007 年，痛点触发他开始写代码</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">等待列表 5000 → 7.5 万人</div>
+        <div class="fs">24 小时内完成；正式发布后用户破 100 万</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2007</div><div class="dot"></div>
+        <div class="tt">大巴上的痛点</div>
+        <div class="td">豪斯顿在从波士顿到纽约的大巴上，发现自己把存有重要文件的 U 盘落在了家中。这一痛点促使他开始编写代码，试图解决文件在不同设备间同步的问题。</div>
+      </li>
+      <li>
+        <div class="yr">困境</div><div class="dot"></div>
+        <div class="tt">产品没做完，先撞上"解释难题"</div>
+        <div class="td">如何向潜在用户解释"云存储"和"文件自动同步"这类当时尚未普及的概念？文字介绍难以传达核心价值；而通过谷歌广告获客，<b>单用户成本高达 300 美元，远超产品 99 美元的售价</b>。</div>
+      </li>
+      <li>
+        <div class="yr">决策</div><div class="dot"></div>
+        <div class="tt">用一段视频代替广告</div>
+        <div class="td">他决定采用一种低成本、高效率的验证方式：花几天时间，用屏幕录制和精心构建的模拟界面，制作了一段两分多钟的演示视频，展示 Dropbox 如何消除文件不同步的痛点。视频中还穿插了只有技术极客才能理解的"彩蛋"。</div>
+      </li>
+      <li>
+        <div class="yr">2008 初</div><div class="dot"></div>
+        <div class="tt">投放到科技爱好者聚集地</div>
+        <div class="td">视频被发布到 Hacker News 和 Digg 等平台。此时，Dropbox 的测试版等待列表中仅有约 5000 名用户，团队原本期望视频能把这一数字推高至 1.5 万人。</div>
+      </li>
+      <li>
+        <div class="yr">24 小时</div><div class="dot"></div>
+        <div class="tt">登上 Digg 首页，数据失控般上扬</div>
+        <div class="td">视频迅速走红，在登上 Digg 首页后的 24 小时内，等待列表用户从 5000 人飙升至 <b>7.5 万人</b>，远超预期。它用事实证明了：在投入大量资源开发完整产品之前，市场需求已经存在。</div>
+      </li>
+      <li>
+        <div class="yr">7 个月后</div><div class="dot"></div>
+        <div class="tt">控制节奏，正式发布</div>
+        <div class="td">团队并未让全部 7.5 万名用户同时参与测试，而是仔细甄选、控制测试节奏。7 个月后，Dropbox 正式向公众发布，用户数迅速突破 100 万人。豪斯顿后来回忆，这是 Dropbox 最重要的里程碑之一。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么用一段视频，而不是先把产品做完？</h3>
+        <p>Dropbox 面对的核心假设是"用户是否真的需要跨设备同步"。豪斯顿没有用完成度去赌答案，而是用一个能让假设<b>被证伪的最小载体</b>去测试——这正是 MVP 四步流程的实践：把最贵的开发动作推迟，用最低成本先换取"需求是否存在"的证据。如果等待列表不动，团队可以几乎零损失地转向。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么视频里要埋只有极客看得懂的"彩蛋"？</h3>
+        <p>这些梗不是炫技，而是选人。它们让科技圈层一眼认出"这是自己人做的产品"，从而在早期采用者中快速建立认同。这是<b>设计思维</b>中的用户共情：先想清楚"谁是最可能在概念未普及时就愿意尝试的人"，再决定用什么语言去沟通，而非对着大众喊口号。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么 7.5 万人涌来，却不让他们全部进来？</h3>
+        <p>爆发的流量若直接冲进早期系统，可能把服务压垮、把口碑摔碎。团队甄选用户、控制节奏，是把一场意外的成功转化为<b>可控的实验</b>——这体现了反脆弱的思路：不要只用一次成功的冲量去承受不可控的失败风险，而是让增长在自己能接住的边界内发生。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>验证需求不必先造出完整产品</h4>
+        <p>要的不是"我全做完了"，而是"我能拿到证明假设成立或推翻的证据"。可证伪的数据，胜过自我感觉良好。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>面向谁传播，决定怎么传播</h4>
+        <p>埋彩蛋不是趣味，是精准定位。概念尚未普及时，先说服最可能理解它的人，比试图说服所有人更有效。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>增长本身也需要被管理</h4>
+        <p>7.5 万人是礼物也是压力。懂得控制节奏，才能把一次爆红变成可持续的用户基础，而不是一次透支。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-08</div>
+        <h4>MVP 四步流程与循环加速</h4>
+        <p>一段视频就是最典型的"最简讨喜产品"：用最低成本把最关键的假设推到真实用户面前。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-07</div>
+        <h4>设计思维五阶段</h4>
+        <p>从痛点共情出发、面向极客圈层沟通，是设计思维在早期传播中的直接应用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-03</div>
+        <h4>效果逻辑五原则</h4>
+        <p>不依赖预测式规划，而是用手中已有的素材（一段视频）撬动机会，逐步迭代演化。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      综合整理自腾讯科技、爱范儿、猎云网、界面新闻等公开报道。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 78 页 · 教材相关事例 3-6</span>
+    <span>案例卡 3-06 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

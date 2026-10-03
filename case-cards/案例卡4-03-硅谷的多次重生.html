@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡4-03 · 硅谷的多次重生</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 4 章 · 创业生态系统</a><span class="card-nav-meta">案例卡 4-03 · 硅谷的多次重生：从半导体到互联网，再到人工智能</span><a class="card-nav-prev" href="案例卡4-02-义乌速度.html">← 案例卡 4-02</a><a class="card-nav-next" href="案例卡4-04-阿里巴巴与杭州电商生态.html">案例卡 4-04 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 4-03</span>
+    <span class="domain">教材体系 · <b>第 4 章 创业生态系统</b></span>
+  </div>
+  <h1>硅谷的多次重生：从半导体到互联网，再到人工智能</h1>
+  <div class="oneliner">旧巨头一次次衰落，新领军者一次次崛起——硅谷真正的资产不是某家公司，而是一种自我革新的能力。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">区域</div>
+        <div class="fv">美国硅谷</div>
+        <div class="fs">全球创业生态系统的标杆</div>
+      </div>
+      <div class="fact">
+        <div class="fl">生态要素</div>
+        <div class="fv">技术 · 资本 · 人才 · 文化</div>
+        <div class="fs">随范式跃迁而整体重构</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">20 世纪 50—60 年代</div>
+        <div class="fs">以半导体产业奠定技术根基</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">跨越多次技术周期</div>
+        <div class="fs">半导体→PC→互联网→移动→AI</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">半导体</div><div class="dot"></div>
+        <div class="tt">50—60 年代：奠定技术根基</div>
+        <div class="td">硅谷以半导体产业起家，仙童（Fairchild）、英特尔（Intel）等企业奠定了区域的技术根基。</div>
+      </li>
+      <li>
+        <div class="yr">电脑</div><div class="dot"></div>
+        <div class="tt">70—80 年代：个人电脑浪潮</div>
+        <div class="td">个人电脑浪潮兴起，苹果、惠普等企业将硅谷推向全球科技中心。</div>
+      </li>
+      <li>
+        <div class="yr">互联网</div><div class="dot"></div>
+        <div class="tt">90 年代：互联网革命爆发</div>
+        <div class="td">网景（Netscape）、雅虎（Yahoo）、谷歌（Google）等企业在浏览器、搜索引擎、电子商务领域开疆拓土。</div>
+      </li>
+      <li>
+        <div class="yr">移动互联</div><div class="dot"></div>
+        <div class="tt">21 世纪 10 年代：社交与移动新引擎</div>
+        <div class="td">脸书（Facebook）、推特（Twitter）、优步（Uber）等企业重新定义了人际连接与商业服务。</div>
+      </li>
+      <li>
+        <div class="yr">人工智能</div><div class="dot"></div>
+        <div class="tt">21 世纪 20 年代：生成式 AI 引领</div>
+        <div class="td">人工智能成为主导力量，OpenAI、Anthropic、谷歌等企业在生成式 AI 领域引领全球。</div>
+      </li>
+      <li>
+        <div class="yr">每次</div><div class="dot"></div>
+        <div class="tt">范式跃迁 = 生态重构</div>
+        <div class="td">每一次技术范式的跃迁，都伴随着生态系统的深刻重构：旧巨头可能衰落（如太阳计算机系统公司、雅虎），新领军者崛起；<b>资本从成熟赛道流向新兴领域，人才从传统技术栈转向新范式，政府关注焦点与产业政策随之调整</b>。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么旧巨头的衰落没有拖垮硅谷？</h3>
+        <p>技术范式变革具有<b>“创造性破坏”的双重效应</b>：一方面它打破既有企业的竞争优势，使传统技能贬值、原有网络失效；另一方面它为新兴创业者打开机会窗口、降低进入门槛，催生全新的价值创造逻辑。旧主体的退出，恰恰是资源被释放的过程。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么硅谷能一次次换赛道？</h3>
+        <p>答案在其深层结构——<b>宽容失败、鼓励冒险的文化基因，以及开放流动、快速迭代的社会网络</b>。这些结构使系统具备持续学习、主动适应的演化能力，能在变革中快速调整资源结构、重构网络联结、更新文化认知。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么资本与人才会自动流向新范式？</h3>
+        <p>这是生态<b>要素流动机制</b>的直接体现：资本遵循“风险—收益”的阶梯式配置逻辑，从成熟赛道流向新兴领域；人才通过开放的人才市场从传统技术栈转向新范式。要素的重组速度，决定了系统能否率先拥抱新技术。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>生态的竞争力是“换挡能力”</h4>
+        <p>衡量一个创业生态，不只看它当下有多少巨头，更要看它在技术范式更替时能否重新配置资源、重构网络。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>创造性破坏是创业者的机会窗口</h4>
+        <p>对在位者是危机，对创业者是入口——每一次技术跃迁都会降低进入门槛，重开一轮价值创造逻辑。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>文化与网络是跨周期的深层结构</h4>
+        <p>技术、企业、资本都会更替，唯有宽容失败的文化与开放流动的网络，能让系统穿越一个又一个周期。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>硅谷在每一次冲击中变得更强，是区域层面反脆弱性的经典样本——波动成为演化的燃料。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-05</div>
+        <h4>系统思维创业情境重组</h4>
+        <p>把技术、资本、人才、政策看作相互作用的系统，才能理解范式跃迁时生态为何能整体重构。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-03</div>
+        <h4>PESTEL与机会转化提问表</h4>
+        <p>技术范式变革属于环境变量中的“T”，用提问表把宏观变化转译为可行动的创业机会。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例整理自教材“相关事例 4-3”栏目。资料来源：综合整理自《硅谷百年史：伟大的科技创新与创业历程》（2014）及网络公开资料。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 4 章，第 105 页 · 教材相关事例 4-3</span>
+    <span>案例卡 4-03 · 第 4 章 创业生态系统</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡4-05 · 硅谷与128公路的文化差异</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 4 章 · 创业生态系统</a><span class="card-nav-meta">案例卡 4-05 · 硅谷与 128 公路地区的创业文化差异</span><a class="card-nav-prev" href="案例卡4-04-阿里巴巴与杭州电商生态.html">← 案例卡 4-04</a><a class="card-nav-next" href="案例卡4-06-合肥模式.html">案例卡 4-06 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 4-05</span>
+    <span class="domain">教材体系 · <b>第 4 章 创业生态系统</b></span>
+  </div>
+  <h1>硅谷与 128 公路地区的创业文化差异</h1>
+  <div class="oneliner">同样的顶尖大学、同样深厚的科研基础，两个区域却走向不同命运——决定胜负的不是资源，而是文化与社会网络。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">对比区域</div>
+        <div class="fv">硅谷 vs. 128 公路</div>
+        <div class="fs">一西一东，几乎同时崛起</div>
+      </div>
+      <div class="fact">
+        <div class="fl">关键变量</div>
+        <div class="fv">创业文化 · 社会网络</div>
+        <div class="fs">而非自然资源或宏观政策</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">20 世纪后半叶</div>
+        <div class="fs">两地同为电子工业两大中心</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">硅谷全面超越</div>
+        <div class="fs">80 年代末拉开分野</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">并起</div><div class="dot"></div>
+        <div class="tt">两个几乎同时崛起的产业中心</div>
+        <div class="td">20 世纪后半叶，美国东海岸的 128 公路地区和西海岸的硅谷几乎同时崛起，成为全球电子工业与计算机产业的两大中心。</div>
+      </li>
+      <li>
+        <div class="yr">分野</div><div class="dot"></div>
+        <div class="tt">80 年代末，天平倾斜</div>
+        <div class="td">至 20 世纪 80 年代末，硅谷在创新活力和产业持续发展方面逐渐超越 128 公路地区，成为全球创业生态系统的标杆。</div>
+      </li>
+      <li>
+        <div class="yr">归因</div><div class="dot"></div>
+        <div class="tt">关键不是资源，而是文化</div>
+        <div class="td">安娜·李·萨克森尼安（Anna Lee Saxenian）的研究表明，造成这一差异的关键因素并非自然资源或宏观政策，而是<b>两地截然不同的创业文化与社会网络</b>。128 公路地区以垂直一体化的大企业为主（如 DEC、王安电脑），强调技术独立与组织自足，形成“大而全”的组织形态；硅谷企业则高度专业化分工，通过项目合作、人才流动、技术共享形成紧密网络。</div>
+      </li>
+      <li>
+        <div class="yr">三维</div><div class="dot"></div>
+        <div class="tt">文化差异的三个维度</div>
+        <div class="td">萨克森尼安从三个维度系统对比：<b>人才流动观念</b>——128 公路视人才为企业私有资产、流动受限，硅谷视人才为区域共同财富；<b>风险与失败认知</b>——128 公路缺乏包容、失败者难获第二次机会，硅谷宽容失败、视其为学习资源；<b>信息与知识传播</b>——128 公路信息流动受阻、知识在企业内封闭循环，硅谷靠行业会议、技术社群、风投网络构成密集扩散通道。</div>
+      </li>
+      <li>
+        <div class="yr">结局</div><div class="dot"></div>
+        <div class="tt">文化如何塑造生态竞争力</div>
+        <div class="td">硅谷开放、协作、宽容失败的文化催生了持续不断的创业浪潮，形成“成功—退出—再投资—再创业”的良性循环；而 128 公路地区尽管拥有不亚于硅谷的科研资源和人才储备，却因文化环境的限制，未能形成同等规模的创业生态，在 20 世纪 90 年代后逐渐衰落。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么“资源相当”的两个区域命运不同？</h3>
+        <p>因为创业文化是生态的<b>底层操作系统</b>。技术范式变革、政策调整、锚定企业效应都是相对显性、可识别的驱动力，而文化是隐性的、弥漫性的、渗透于日常行为之中——它决定了系统如何响应外部冲击：是僵化应对还是灵活适应，是封闭自保还是开放协作。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么“人才流动观念”如此关键？</h3>
+        <p>这直指生态的<b>要素流动机制</b>。128 公路把人才视为企业私有资产，流动受制度与文化双重限制；硅谷把人才视为区域共同财富，人员流动成为技术扩散和知识更新的重要途径。观念差异直接决定了创业人才的供给密度，也决定了隐性知识能否在区域内高效扩散。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么“宽容失败”会带来更强的创新？</h3>
+        <p>失败认知决定了创业者的行为半径。在 128 公路，失败者难以在区域内获得第二次机会，理性选择是保守；在硅谷，失败被视为宝贵的学习资源，创业者能迅速获得再创业的资源支持。宽容失败由此从文化态度转化为<b>制度性创新基础设施</b>，让“再创业”成为常态而非例外。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>文化是生态的底层操作系统</h4>
+        <p>当技术、政策、企业等显性条件相近时，真正拉开差距的往往是隐性的文化——它决定系统面对冲击时的应变方式。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>人才与知识的“流动”比“存量”更重要</h4>
+        <p>两地人才储备相当，差距出在人才能否自由流动、知识能否跨企业扩散。封闭循环的存量，不如开放流动的增量。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>宽容失败是可持续创新的前提</h4>
+        <p>给失败者第二次机会，等于把一次尝试变成多次尝试。生态的韧性，正来自这种对失败的制度化包容。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-05</div>
+        <h4>系统思维创业情境重组</h4>
+        <p>两地的差距不是单点差异，而是“文化—网络—资源流动”整个系统的差异，需要系统视角才能看清。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>人才与知识能否被识别、获取、配置、利用，正是两地文化差异在资源整合层面的直接投影。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>宽容失败使一次创业变成可重复的实验序列，让区域在波动中持续迭代而非一次出局。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例整理自教材“相关事例 4-5”栏目。资料来源：Saxenian A., Regional Advantage: Culture and Competition in Silicon Valley and Route 128. Cambridge: Harvard University Press, 1996.
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 4 章，第 108 页 · 教材相关事例 4-5</span>
+    <span>案例卡 4-05 · 第 4 章 创业生态系统</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡7-04 · 特赞的内容中台之路</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 7 章 · 创业战略</a><span class="card-nav-meta">案例卡 7-04 · 特赞嵌入企业营销价值链</span><a class="card-nav-prev" href="案例卡7-03-张雪机车自主研发冲击高端市场.html">← 案例卡 7-03</a><a class="card-nav-next" href="案例卡7-05-东方甄选从平台依附到多平台布局.html">案例卡 7-05 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 7-04</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>特赞嵌入企业营销价值链</h1>
+  <div class="oneliner">它不抢终端用户，只争一个"嵌入资格"——成为大企业营销体系里那段离不开的内容基础设施。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">公司</div>
+        <div class="fv">特赞（Tezign）</div>
+        <div class="fs">2015 年成立，从创意设计平台起步</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">营销创意内容</div>
+        <div class="fs">为大型企业提供创意内容生产与管理能力</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">连接品牌方与设计师</div>
+        <div class="fs">最初定位于创意供需两端的连接平台</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">企业内容中台</div>
+        <div class="fs">服务联合利华、阿里巴巴、星巴克、麦当劳、耐克等</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2015</div><div class="dot"></div>
+        <div class="tt">从"连接"起手</div>
+        <div class="td">特赞成立，最初定位于连接品牌方与创意设计师的平台——一端是需求，一端是供给，公司站在中间做撮合。</div>
+      </li>
+      <li>
+        <div class="yr">早期</div><div class="dot"></div>
+        <div class="tt">嵌入大客户的营销链条</div>
+        <div class="td">特赞将自身能力嵌入大型企业的营销价值链，成为联合利华、阿里巴巴、星巴克等公司的创意内容供应商：为联合利华旗下多个品牌<b>规模化制作、统一管理营销素材</b>；为阿里巴巴双十一等大促活动提供页面设计、视频制作等创意内容支持；为星巴克提供社交媒体内容创意设计与分发服务。</div>
+      </li>
+      <li>
+        <div class="yr">转型</div><div class="dot"></div>
+        <div class="tt">从服务交付转向产品化</div>
+        <div class="td">特赞推出"特赞内容中台"，使企业客户能够自主完成创意内容的<b>资产化管理、智能分发和效果分析</b>。该产品可协助客户统一管理各渠道分散的创意素材，提升内容复用效率——交付物从"一条条内容"变成"一套能反复生产内容的系统"。</div>
+      </li>
+      <li>
+        <div class="yr">至今</div><div class="dot"></div>
+        <div class="tt">成为客户的内容基础设施</div>
+        <div class="td">客户扩展至麦当劳、保时捷、耐克等品牌。其商业模式是作为大型企业营销体系的<b>内容基础设施</b>，嵌入客户内容生产、分发的全流程。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么不直接面向终端消费者，而选择服务大企业？</h3>
+        <p>这是价值链角色的一次明确取舍。面向终端意味着与大客户争夺同一块注意力，而价值嵌入型企业争夺的是"<b>嵌入资格</b>"——成为价值链关键环节的权利。合作不是回避竞争的结果，而是竞争胜利后的结果：特赞必须先在技术、成本、质量与交付能力上赢过众多同行，才配得上站在联合利华、阿里巴巴的流程里。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么先做服务交付，再做成产品？</h3>
+        <p>服务是获取行业知识的通道。只有亲手为大客户做过大促页面、社群内容、多品牌素材管理，才能真正看清大型企业内容生产中的重复动作与低效环节，进而把这些动作沉淀为可复用的产品。这个顺序不可颠倒：<b>先嵌入客户的真实工作流，再把它抽象成中台</b>——产品化是服务的沉淀，不是凭空的设想。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么"中台"是一个好生态位？</h3>
+        <p>中台不替代客户的创意判断，只承接客户最难靠自己解决的部分：多渠道素材的统一管理、智能分发与效果分析。一旦企业的内容生产、分发全流程都跑在这套系统上，替换成本急剧上升，客户关系从"供应商"变为"基础设施"。这个位置的价值不来自规模，而来自<b>嵌入深度与切换成本</b>。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>先嵌入，再产品化</h4>
+        <p>把服务过程中反复出现的动作沉淀成系统，产品化才有真实的需求底座。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>争夺"嵌入资格"，而非终端份额</h4>
+        <p>不与客户抢终端，而是做客户离不开的关键环节，是一种更容易被低估的战略选择。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>专业能力要极深，且有学习曲线</h4>
+        <p>进入大企业供应链的门票，是一门短期内难以被追平的硬功夫。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-04</div>
+        <h4>市场进入四策略矩阵</h4>
+        <p>特赞是"价值嵌入型"的教科书样本：嵌入下游大企业的营销价值链，做不可或缺的环节。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-03</div>
+        <h4>三种基本竞争战略情境化</h4>
+        <p>不做全链，只在一个环节做到极致，是聚焦战略在 B 端服务场景中的落地。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-05</div>
+        <h4>市场进入三维选择模型</h4>
+        <p>从平台撮合到内容中台，进入方式随客户关系与自身能力成熟度而升级。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自特赞官方网站、36 氪、界面新闻等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 7 章，第 196 页 · 教材相关事例 7-4</span>
+    <span>案例卡 7-04 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

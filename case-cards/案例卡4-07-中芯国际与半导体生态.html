@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡4-07 · 中芯国际与半导体生态</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 4 章 · 创业生态系统</a><span class="card-nav-meta">案例卡 4-07 · 中芯国际与半导体生态的“举国体制+市场机制”</span><a class="card-nav-prev" href="案例卡4-06-合肥模式.html">← 案例卡 4-06</a><a class="card-nav-next" href="案例卡4-08-晋江从品牌之都到科创生态高地.html">案例卡 4-08 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 4-07</span>
+    <span class="domain">教材体系 · <b>第 4 章 创业生态系统</b></span>
+  </div>
+  <h1>中芯国际与半导体生态的“举国体制+市场机制”</h1>
+  <div class="oneliner">国家战略之手与全球市场逻辑，如何在同一家硬科技企业身上相互嵌套、彼此成就。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">主体</div>
+        <div class="fv">中芯国际（SMIC）</div>
+        <div class="fs">中国大陆晶圆代工领军企业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">生态要素</div>
+        <div class="fv">战略投资 + 制度保障 + 市场机制</div>
+        <div class="fs">“有为政府”与“有效市场”的耦合</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2000 年·上海张江</div>
+        <div class="fs">张汝京创办，开启大陆半导体制造征程</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">全球第三大晶圆代工厂</div>
+        <div class="fs">带动张江、亦庄、龙岗集群集聚</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2000</div><div class="dot"></div>
+        <div class="tt">张江起步</div>
+        <div class="td">张汝京在上海创办中芯国际，开启了中国大陆半导体制造的创业征程。</div>
+      </li>
+      <li>
+        <div class="yr">20 余年</div><div class="dot"></div>
+        <div class="tt">穿越多重考验</div>
+        <div class="td">经历<b>技术封锁、专利诉讼、管理层动荡</b>等多重挑战，中芯国际仍逐步成长，其发展轨迹典型地体现了硬科技转型的特征。</div>
+      </li>
+      <li>
+        <div class="yr">2014</div><div class="dot"></div>
+        <div class="tt">国家基金入场</div>
+        <div class="td">国家集成电路产业投资基金成立，为中芯国际提供了关键的资金支持。政府的角色也从<b>直接干预转向“战略投资+制度保障”</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2020</div><div class="dot"></div>
+        <div class="tt">科创板上市</div>
+        <div class="td">科创板上市使其获得更便捷的融资渠道，资本市场多层次化与工具创新为企业输血。</div>
+      </li>
+      <li>
+        <div class="yr">市场逻辑</div><div class="dot"></div>
+        <div class="tt">在全球市场中竞争</div>
+        <div class="td">技术路线选择、产能扩张节奏、客户结构优化均需遵循市场逻辑；即便在技术封锁的极端情境下，企业仍要通过市场化方式寻求设备采购渠道的多元化。</div>
+      </li>
+      <li>
+        <div class="yr">生态集聚</div><div class="dot"></div>
+        <div class="tt">从一家企业到一片集群</div>
+        <div class="td">上海张江、北京亦庄、深圳龙岗等地形成了半导体设备、材料、设计企业的集群。中芯国际作为区域<b>龙头锚定企业</b>，依托订单牵引、技术溢出与人才流动，激活了本地产业生态。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么政府要从“直接干预”转向“战略投资+制度保障”？</h3>
+        <p>这体现了生态系统中<b>规则塑造者角色的演变</b>：政府不再替企业做经营决策，而是提供资金与规则框架，把资源配置交还给市场。有为政府与有效市场并非此消彼长，而是相互嵌套、动态调适的耦合机制。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么一家企业能带动一片产业生态？</h3>
+        <p>这是<b>锚定企业的牵引效应</b>。中芯国际以订单牵引、技术溢出与人才流动，把单点能力向上下游扩散，催生设备、材料、设计企业的集群——这正是生态要素流动机制在发挥作用。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么“举国体制”与“市场机制”不是替代关系？</h3>
+        <p>硬科技攻坚长周期、高投入，需要制度性容错；而效率、客户与人才只能在市场竞争中赢得。二者的<b>深度耦合</b>，既提供了穿透周期的制度保障，又保留了优胜劣汰的市场约束。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>制度与市场是嵌套而非替代</h4>
+        <p>政策提供资金与规则框架，市场负责配置效率。硬科技创业往往需要两者的耦合，而非在其中二选一。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>锚定企业是生态的引力中心</h4>
+        <p>中芯国际的价值不止于自身产能，更在于它吸引、组织了上下游企业，把一次创业放大为一片集群。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>长周期事业需要制度性容错</h4>
+        <p>技术封锁与专利诉讼都是长周期的必修课，耐心资本与容错空间本身就是生态竞争力的一部分。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>中芯国际的关键资源是长期资金、设备渠道与人才，而非单一产能——识别出真正的瓶颈资源才能对症下药。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-02</div>
+        <h4>必要性掌控度矩阵</h4>
+        <p>国家基金以战略投资方式介入关键资源，既保持一定掌控、降低断供风险，又为全球市场的多方协同留出空间。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-05</div>
+        <h4>资源组合优势框架</h4>
+        <p>制度保障 + 市场机制 + 锚定企业，单个要素都平常，组合起来才形成难以复制的产业生态优势。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自中芯国际年报、招股说明书及半导体行业观察等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 4 章，第 116 页 · 教材相关事例 4-7</span>
+    <span>案例卡 4-07 · 第 4 章 创业生态系统</span>
+  </div>
+
+</div>
+</body>
+</html>

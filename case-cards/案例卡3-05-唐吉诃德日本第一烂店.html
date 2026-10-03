@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-05 · 唐吉诃德：日本第一"烂店"</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-05 · 唐吉诃德：日本第一&quot;烂店&quot;</span><a class="card-nav-prev" href="案例卡3-04-SpaceX的火箭成本重构.html">← 案例卡 3-04</a><a class="card-nav-next" href="案例卡3-06-Dropbox演示视频的市场验证.html">案例卡 3-06 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-05</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>唐吉诃德：日本第一"烂店"</h1>
+  <div class="oneliner">当同行都在追求宽敞明亮时，它把过道压到只容一人通过——一家"乱"到极致的小店，却连续 34 年增长，成为日本第四大零售集团。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">安田隆夫</div>
+        <div class="fs">庆应义塾大学法学部毕业后，经历四年"无业游民"生活</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">折扣零售 · 综合杂货</div>
+        <div class="fs">以低价尾货与"寻宝式"体验立足</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">东京西荻窪"小偷市场"</div>
+        <div class="fs">1978 年，18 坪（约 65 ㎡）小店，800 万日元起步</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">日本第四大零售集团</div>
+        <div class="fs">2024 财年销售额 2.2 万亿日元，全球门店超 770 家</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">1978</div><div class="dot"></div>
+        <div class="tt">从"小偷市场"起步</div>
+        <div class="td">安田隆夫用从麻将馆赢来的 800 万日元，在东京西荻窪开设了一家面积仅 18 坪的小型杂货店，取名"小偷市场"，意在表达"商品便宜得就像偷来的一样"。</div>
+      </li>
+      <li>
+        <div class="yr">起步期</div><div class="dot"></div>
+        <div class="tt">从仓库后门收货</div>
+        <div class="td">他从大型制造厂商和批发商的仓库后门收购停产产品、瑕疵品、样品和退货品，以极低价格进货、再以白菜价卖出，迅速吸引了价格敏感型消费者。</div>
+      </li>
+      <li>
+        <div class="yr">1989</div><div class="dot"></div>
+        <div class="tt">第一家唐吉诃德门店</div>
+        <div class="td">在批发领域积累资本后，于东京府中开设首家唐吉诃德门店。店名取自塞万提斯的经典巨著，借主人公不屈从常识、敢于挑战权威的精神自勉。这一年正值日本泡沫经济破灭的开端。</div>
+      </li>
+      <li>
+        <div class="yr">运营期</div><div class="dot"></div>
+        <div class="tt">CV+D+A 的反常识经营</div>
+        <div class="td">便利（convenience）、折扣（discount）、乐趣（amusement）三者融合：过道压至仅容一人通过，货架塞满 <b>4 万—6 万个 SKU</b>，手写 POP 海报贴满全场；率先开设 24 小时营业，锁定夜间客群，多数店铺晚间 8 点后销售占比达 <b>30%—40%</b>。</div>
+      </li>
+      <li>
+        <div class="yr">授权</div><div class="dot"></div>
+        <div class="tt">把权力下放到一线</div>
+        <div class="td">赋予分店独立采购权，约 <b>40% 的销售额来自分店自主采购</b>；建立个人店长制度，把进货、采购、营销到库存管理的全流程下放给一线店员，坚信拥有现场经验的人最了解当地顾客。</div>
+      </li>
+      <li>
+        <div class="yr">2009 起</div><div class="dot"></div>
+        <div class="tt">升级自有品牌</div>
+        <div class="td">以尾货起家存在货源不稳定的风险，遂推出自有品牌"情热价格"（Jounetsu Price）并持续迭代。截至 2024 财年，尾货销售占比已从 40% 降至 30%，自有品牌占比提升至 19%，贡献超过 16% 的毛利率。</div>
+      </li>
+      <li>
+        <div class="yr">至今</div><div class="dot"></div>
+        <div class="tt">唯一连续增长超 30 年的企业</div>
+        <div class="td">唐吉诃德逆势实现连续 34 年的销售和营业利润增长，成为日本 3900 家上市公司中唯一一家连续增长超过 30 年的企业，净利率约 6%，远超同行平均。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么在"宽敞明亮"成为主流时反向做"压缩陈列"？</h3>
+        <p>同行都在追求清晰动线、一站式购齐，唐吉诃德却把过道压到只容一人通过、货架堆到天花板。这不是为反而反，而是典型的<b>逆向思维与反向定位</b>——它不顺着"更好的购物环境"这条正向延长线竞争，而在别人忽略的拐角处制造"寻宝式"体验，把购物从效率行为变成探索行为，从而抬高非计划性购买比例。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把采购权下放给一线店员？</h3>
+        <p>总部指挥能保证统一，却会抹平各地口味差异。唐吉诃德把进货、采购、营销到库存全流程交给现场，用<b>效果逻辑</b>的"手中鸟"原则——从一线手中已经掌握的地方客群信息出发，而非从预测出发。这也是系统思维下的关键杠杆点：离顾客最近的人做决策，组织的响应速度与准确度同时提升。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么以尾货起家，却要费力学做自有品牌？</h3>
+        <p>尾货货源不稳定，是模式里埋着的结构性风险。推出"情热价格"并持续迭代，是把"靠天吃饭"的脆弱部分替换成可掌控的确定性，属于<b>反脆弱与杠铃策略</b>的应用：一端保留低价尾货的流量吸引力，一端用自有品牌稳定毛利，让整体模式在货源波动下依然成立。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>反常识的前提是抓住真实价值</h4>
+        <p>"烂店"只是表象，低价、便利、有趣才是它真正兜售的东西。逆向不是叛逆，而是换个角度满足被主流忽略的需求。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>把不确定性做成体验壁垒</h4>
+        <p>货源不稳定本是劣势，却被转译为"每次来都不一样"的寻宝感——同一件事，视角不同，结果从成本变成卖点。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>听得见炮声的人做决策</h4>
+        <p>40% 的销售额来自分店自主采购。把权力给到一线，是用组织设计换市场敏感度，而非靠总部拍脑袋。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-06</div>
+        <h4>逆向思维两维度与闭环</h4>
+        <p>"烂店"是反向定位的典型：真正的机会不在正向思维的延长线上，而藏在逆向思维的拐角处。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-03</div>
+        <h4>效果逻辑五原则</h4>
+        <p>从"手中鸟"出发、把采购权交给现场，正是效果逻辑在组织与运营层面的落地。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>尾货+自有品牌的双轨结构，是对货源不稳定这一结构性风险的对冲设计。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      综合整理自安田隆夫自传《服务的细节 104：廉价王：我的"唐吉诃德"人生》（2016）及钛媒体、澎湃新闻、Foodaily 每日食品网、搜狐财经等公开报道。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 72 页 · 教材相关事例 3-5</span>
+    <span>案例卡 3-05 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

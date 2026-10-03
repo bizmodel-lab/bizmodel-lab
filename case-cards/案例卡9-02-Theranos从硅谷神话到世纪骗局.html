@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡9-02 · Theranos的世纪骗局</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 9 章 · 创业伦理</a><span class="card-nav-meta">案例卡 9-02 · Theranos从硅谷神话到世纪骗局</span><a class="card-nav-prev" href="案例卡9-01-张雪机车主动限制销售.html">← 案例卡 9-01</a><a class="card-nav-next" href="案例卡10-01-网飞的自由与责任工作法.html">案例卡 10-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 9-02</span>
+    <span class="domain">教材体系 · <b>第 9 章 创业伦理</b></span>
+  </div>
+  <h1>Theranos从硅谷神话到世纪骗局</h1>
+  <div class="oneliner">19 岁辍学创业，90 亿美元估值，全明星董事会——而支撑这一切的核心技术，实际只完成了约 10% 的检测。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">创始人</div>
+        <div class="fv">伊丽莎白·霍尔姆斯</div>
+        <div class="fs">19 岁从斯坦福辍学创立 Theranos</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">血液检测</div>
+        <div class="fs">宣称几滴指尖血完成 200 多项疾病检测</div>
+      </div>
+      <div class="fact">
+        <div class="fl">顶点</div>
+        <div class="fv">估值 90 亿美元</div>
+        <div class="fs">2014 年，被称为"女版乔布斯"</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结局</div>
+        <div class="fv">公司解散，创始人入狱</div>
+        <div class="fs">2022 年判 11 年零 3 个月监禁，2023 年须赔偿 4.52 亿美元</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2003</div><div class="dot"></div>
+        <div class="tt">辍学创业</div>
+        <div class="td">19 岁的斯坦福大学化工专业二年级学生伊丽莎白·霍尔姆斯决定辍学创业，成立血液检测公司 Theranos。公司名称取自英文"治疗"（therapy）和"诊断"（diagnosis）的头尾部分。</div>
+      </li>
+      <li>
+        <div class="yr">技术宣称</div><div class="dot"></div>
+        <div class="tt">"爱迪生"的承诺</div>
+        <div class="td">Theranos 宣称其核心技术只需从患者指尖采集几滴血液，即可在半小时内完成 <b>200 多项疾病检测</b>，检测价格仅为 2.99 美元/次。</div>
+      </li>
+      <li>
+        <div class="yr">2013—2015</div><div class="dot"></div>
+        <div class="tt">神话登顶</div>
+        <div class="td">2013 年与美国最大连锁药店沃尔格林达成合作，后者投资约 5000 万美元。2014 年估值达 <b>90 亿美元</b>、员工约 800 名；默多克、拉里·埃里森、基辛格等成为其投资者。持有公司 50% 股权的霍尔姆斯以 45 亿美元身家，被《福布斯》评为"美国最年轻且自力致富的女性百万富翁"，人称"女版乔布斯"；2015 年入选《时代》全球最具影响力 100 人名单。</div>
+      </li>
+      <li>
+        <div class="yr">2015.10</div><div class="dot"></div>
+        <div class="tt">调查报道掀开盖子</div>
+        <div class="td">《华尔街日报》记者约翰·卡雷鲁发表调查报道，揭露旗舰检测设备"爱迪生"存在严重问题：Theranos 上报给监管机构的数据中，<b>仅约 10% 的检测使用"爱迪生"完成，其余 90% 使用从西门子等公司购买的商用传统设备</b>。前员工举证，"爱迪生"在维生素 D、甲状腺激素等项目上的检测结果与传统方法存在显著偏差。美国医保与医疗补助服务中心随即调查，2016 年吊销了其加州实验室执照，FDA 也相继介入。</div>
+      </li>
+      <li>
+        <div class="yr">2018.3</div><div class="dot"></div>
+        <div class="tt">SEC 指控与公司解散</div>
+        <div class="td">SEC 指控 Theranos、霍尔姆斯及公司前总裁巴尔瓦尼通过"精心策划、长达数年的欺诈案"，夸大或虚假陈述公司的技术、业务和财务业绩，从投资者处筹集超过 <b>7 亿美元</b>。2014 年公司宣称至少能产生收入 1 亿美元，而当年实际收入仅为 <b>10 万美元</b>。霍尔姆斯与 SEC 和解，缴纳 50 万美元罚款、放弃主要投票控制权，并在 10 年内禁止在上市公司担任高管职务；同年公司解散。</div>
+      </li>
+      <li>
+        <div class="yr">2018—2023</div><div class="dot"></div>
+        <div class="tt">从民事到刑事的后果</div>
+        <div class="td">2018 年 6 月霍尔姆斯与巴尔瓦尼被捕，被控电汇欺诈和串谋电汇欺诈。2022 年 1 月，加州圣何塞法院陪审团裁定霍尔姆斯 3 项电信欺诈和 1 项串谋电信欺诈罪名成立；同年 11 月，联邦地区法院判处其 <b>11 年零 3 个月</b>监禁。2023 年 5 月，法院裁定霍尔姆斯须向受害者支付 <b>4.52 亿美元</b>赔偿金，与巴尔瓦尼共同承担。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么"拯救生命"的使命，反而成了欺诈的掩体？</h3>
+        <p>伦理失守的第一步，往往不是贪欲，而是<b>用目的的崇高为手段的失当背书</b>。当企业把"让检测更便宜、更快"作为叙事核心，投资者、员工与媒体就更容易降低对技术证据的追问标准——使命越动人，越像一张免检通行证。Theranos 的教训是：使命不能替代证据，尤其在直接关系人身安全的医疗领域，"先讲愿景、后补技术"的次序本身就是危险的。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么全明星董事会与知名投资人没能拦住骗局？</h3>
+        <p>这暴露的是<b>治理机制的失效</b>：名人董事带来了信誉背书，却缺少血液检测领域的专业审验能力；公司以保密文化压制内部质疑，把提出异议的员工隔离在信息之外。与此同时，最直接的利益相关者——患者——完全被排除在决策信息之外，承担了误诊风险却毫不知情。声誉光环不等于有效监督，缺少专业质疑通道的董事会，只是治理的装饰。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么技术夸大最终变成了刑事犯罪？</h3>
+        <p>因为错误被放在了错误的领域。在医疗场景中，虚假的检测结果直接指向误诊与生命风险，模糊表述与善意包装都无法再适用，行为性质从"能力不足"升级为<b>对投资者与患者的双重欺诈</b>。后果也相称：估值 90 亿美元归零，公司解散，创始人入狱并承担 4.52 亿美元赔偿。诚信底线一旦突破，估值、声誉与自由会一并清零——这正是 9-02 作为警示案例最核心的一课。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>使命不能替代证据</h4>
+        <p>越关乎人身安全的行业，越要坚持"先验证、再宣称"，愿景不能成为免除技术审验的理由。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>治理与问责不是装饰</h4>
+        <p>名人董事会不构成有效监督；必须有专业质疑通道，让说真话的人不会被隔离。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>诚信是创业的底线资产</h4>
+        <p>短期投机的账面收益看似诱人，但一旦突破诚信底线，代价是全盘清零。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 9-02</div>
+        <h4>伦理困境三类型诊断</h4>
+        <p>Theranos 是"以使命正当化手段"的标本，用类型诊断可清晰定位失守的起点。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 9-01</div>
+        <h4>创业伦理决策四步法</h4>
+        <p>若在关键节点真正做过利益相关者与伤害评估，患者风险就不会被完全隐形。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 9-03</div>
+        <h4>创业实务九大类伦理议题图谱</h4>
+        <p>虚假技术宣称与误导投资者，属于产品真实性与信息披露议题的严重越界。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自美国 SEC 公开指控文件、美国司法部刑事起诉书、《华尔街日报》、《福布斯》、《时代周刊》等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 9 章，第 242 页 · 教材相关事例 9-2</span>
+    <span>案例卡 9-02 · 第 9 章 创业伦理</span>
+  </div>
+
+</div>
+</body>
+</html>

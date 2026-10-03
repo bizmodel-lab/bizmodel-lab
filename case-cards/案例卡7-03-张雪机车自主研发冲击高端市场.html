@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡7-03 · 张雪机车的自主研发之路</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 7 章 · 创业战略</a><span class="card-nav-meta">案例卡 7-03 · 张雪机车自主研发冲击高端市场</span><a class="card-nav-prev" href="案例卡7-02-麦格米特从电视电源到英伟达供应链.html">← 案例卡 7-02</a><a class="card-nav-next" href="案例卡7-04-特赞嵌入企业营销价值链.html">案例卡 7-04 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 7-03</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>张雪机车自主研发冲击高端市场</h1>
+  <div class="oneliner">在凯越巅峰期，他因坚持自主研发高性能发动机而净身出户——放弃了亲手创立的品牌，只为赌一条别人没走过的技术路线。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">张雪</div>
+        <div class="fs">凯越机车联合创始人，2024 年离职后以自己名字创立新品牌</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">高端摩托车</div>
+        <div class="fs">正面冲击由国际品牌主导的高端市场</div>
+      </div>
+      <div class="fact">
+        <div class="fl">技术支点</div>
+        <div class="fv">819cc 直列三缸发动机</div>
+        <div class="fs">自主研发，基础版国产化率 97%</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">WSBK 葡萄牙站夺冠</div>
+        <div class="fs">2026 年 A 轮投后估值 10.9 亿元</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2017</div><div class="dot"></div>
+        <div class="tt">凯越时期的性能路线</div>
+        <div class="td">张雪与合伙人创办凯越机车。凭借对性能的极致追求，他将凯越从年销 <b>800 台</b>做到年销 <b>3 万台</b>，凯越 450RR 等车型成为国产仿赛的标杆。</div>
+      </li>
+      <li>
+        <div class="yr">2024.3</div><div class="dot"></div>
+        <div class="tt">为自主研发净身出户</div>
+        <div class="td">在凯越巅峰期，他因是否自主研发高性能发动机与投资人产生分歧，选择净身出户，放弃了自己一手创立的品牌。离职后，他以自己的名字创立张雪机车，专注自主研发发动机、深耕自主技术。</div>
+      </li>
+      <li>
+        <div class="yr">技术路线</div><div class="dot"></div>
+        <div class="tt">绕开专利高地的正向选择</div>
+        <div class="td">日系品牌在直列四缸领域拥有数十年的核心专利积累，欧系品牌深耕 L 型双缸路线，留给后来者的技术空间极为有限。张雪团队没有走逆向仿制的老路，而是正向选定 <b>120° 等间隔点火直列三缸加双对旋平衡轴架构</b>，从根源上绕开海外专利壁垒，获得 <b>17 项核心发明专利</b>；该车基础版国产化率达 97%，发动机、电控、车架三大核心部件实现 100% 自主化。</div>
+      </li>
+      <li>
+        <div class="yr">赛道验证</div><div class="dot"></div>
+        <div class="tt">参数与赛场上的答案</div>
+        <div class="td">这款三缸发动机最大马力超过 <b>130 匹</b>、赛道版最大功率超过 150 马力，零百加速仅 2.6 秒，整车干重仅 168 公斤。在 WSBK 葡萄牙站比赛中，搭载该发动机的 820RR-RS 赛车以领先第二名 <b>3.685 秒</b>的绝对优势夺冠，连续 30 分钟 12 000rpm 以上高转、峰值触及 16 000rpm 红线，未出现任何机械故障。</div>
+      </li>
+      <li>
+        <div class="yr">2025</div><div class="dot"></div>
+        <div class="tt">高研发投入与当期亏损</div>
+        <div class="td">公司全年研发投入 <b>6958 万元</b>，占营收的 9.33%，远超行业平均 2.1% 的水平；同期亏损 2278 万元。价格端则形成对国际品牌的显著优势：820RR 售价 4.38 万元，而同级别杜卡迪、雅马哈等国际品牌车型售价普遍超过 10 万元。</div>
+      </li>
+      <li>
+        <div class="yr">2026</div><div class="dot"></div>
+        <div class="tt">资本与订单的回应</div>
+        <div class="td">1 月，浙江省创业投资集团有限公司完成 9000 万元 A 轮领投，投后估值 <b>10.9 亿元</b>。夺冠后品牌估值突破 10 亿元，2026 款 500RR 和 820RR 开启预定，<b>12 天锁单量突破 10 066 台</b>。张雪为自己设定的目标是："五年之内，我们要吃掉国际大牌 50% 以上的市场份额。"</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么宁可净身出户，也要坚持自主研发发动机？</h3>
+        <p>分歧的实质是两种战略的时间尺度之争：继续做整车集成与调校，当期利润好看，但动力总成这一决定性能上限的环节始终握在别人手里；自研发动机短期不赚钱，却能把企业的差异化建立在<b>别人买不到、也绕不开的能力</b>上。张雪选择了后者，用放弃既有品牌资产的代价，换回对自己技术路线的完整控制权——这正是战略取舍中最难的一种：在顺境里主动放弃眼前的确定性。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么选"直列三缸"这条此前少有人走的路？</h3>
+        <p>这是典型的生态位选择。日系在直列四缸、欧系在 L 型双缸上积累了数十年的专利与工艺，后来者若跟随，只能在对手设好的规则里追赶。三缸架构则同时具备双缸的低扭与四缸的高转，既绕开了专利高地，又形成了可感知的性能差异——<b>技术路线的选择本身就是战略定位</b>，走得难，但走通之后就是别人短期内难以复制的差异化标签。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么敢承受 9.33% 的研发投入与当期亏损？</h3>
+        <p>公司把 2025 年的亏损摆在了明处：研发投入占营收 9.33%，是行业平均水平的四倍多。这是<b>用当期利润购买长期技术资产</b>的战略选择，其前提是投入必须能转化为可兑现的市场价值——正是三缸发动机带来的性能与成本结构，支撑了 4.38 万元对 10 万元以上的价格优势，也支撑了夺冠后 12 天过万台的锁单。投入方向正确时，亏损是时间上的错配，而非经营上的失败。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>差异化不是口号，而是技术路线的选择</h4>
+        <p>真正的差异化藏在"走哪条技术路线"这个前置决策里，而不是营销文案里。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>用短期亏损换取长期技术资产</h4>
+        <p>研发强度远超行业均值意味着当期不赚钱，但换来的是别人短期内无法追平的性能与专利壁垒。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>产业配套是自主研发落地的地基</h4>
+        <p>依托重庆完善的摩托车产业体系，品牌创立到世界冠军只用了两年——好战略需要能承接它的生态。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-03</div>
+        <h4>三种基本竞争战略情境化</h4>
+        <p>以自主研发的性能与成本结构切入高端市场，是差异化战略在高门槛制造业中的典型运用。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-04</div>
+        <h4>市场进入四策略矩阵</h4>
+        <p>直接面向终端消费者、正面争夺高端市场份额，对应矩阵中的"正面突破型"进入路径。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-02</div>
+        <h4>愿景金字塔</h4>
+        <p>"五年吃掉国际大牌 50% 以上市场份额"是清晰的远期目标，为长期研发投入提供了方向锚。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自 36 氪、新华网、IT 之家、荆楚网等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 7 章，第 195 页 · 教材相关事例 7-3</span>
+    <span>案例卡 7-03 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡10-01 · 网飞的自由与责任工作法</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 10 章 · 创业组织</a><span class="card-nav-meta">案例卡 10-01 · 网飞的自由与责任工作法</span><a class="card-nav-prev" href="案例卡9-02-Theranos从硅谷神话到世纪骗局.html">← 案例卡 9-02</a><a class="card-nav-next" href="案例卡10-02-宇树科技IPO前的股权结构.html">案例卡 10-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 10-01</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>网飞的自由与责任工作法</h1>
+  <div class="oneliner">取消审批、取消年度考核，却要求团队成员相互当面批评——网飞用"高人才密度 + 坦诚反馈"替代管控，把自由建立在高标准之上。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">企业</div>
+        <div class="fv">网飞（Netflix）</div>
+        <div class="fs">从 DVD 租赁转型为全球流媒体企业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">核心理念</div>
+        <div class="fv">自由与责任</div>
+        <div class="fs">人才密度 · 坦诚反馈 · 取消管控</div>
+      </div>
+      <div class="fact">
+        <div class="fl">关键机制</div>
+        <div class="fv">4A 反馈准则 · 留任测试</div>
+        <div class="fs">以持续反馈替代年度绩效评估</div>
+      </div>
+      <div class="fact">
+        <div class="fl">规模</div>
+        <div class="fv">约 16000 名员工</div>
+        <div class="fs">截至 2025 年，业务覆盖全球</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2009</div><div class="dot"></div>
+        <div class="tt">一份 124 页的文化备忘录</div>
+        <div class="td">网飞联合创始人兼 CEO 里德·哈斯廷斯制作了 124 页的 PPT《网飞文化：自由与责任》，提出"人才密度""坦诚反馈""取消管控"三大核心理念。Facebook 首席运营官谢丽尔·桑德伯格称这份 PPT 为"硅谷有史以来最重要的文件之一"。</div>
+      </li>
+      <li>
+        <div class="yr">反馈机制</div><div class="dot"></div>
+        <div class="tt">4A 反馈准则</div>
+        <div class="td">提供反馈须遵守两条：<b>"目的在于帮助"</b>——不发泄情绪、不中伤他人、不为自己捞取资本；<b>"具有可行性"</b>——说明接收人可以做出什么改变。接收反馈同样两条：<b>"感激与赞赏"</b>——不辩护也不生气；<b>"接受或拒绝"</b>——不必照办每条反馈，但须真诚致谢。哈斯廷斯强调关键在于"不同于社会常规"：员工只可以对某人当面说的话，才可以在背后说。</div>
+      </li>
+      <li>
+        <div class="yr">绩效</div><div class="dot"></div>
+        <div class="tt">用持续反馈取代年度评估</div>
+        <div class="td">网飞取消了传统年度绩效评估，改用持续的非正式 360 度反馈。核心工具之一是"开始、停止、继续"练习——同事和经理分享某人应该开始做什么、停止做什么、继续做什么；员工还需参加"现场 360 度反馈会议"（Live 360s），在会上接受个人反馈与建设性批评。</div>
+      </li>
+      <li>
+        <div class="yr">用人</div><div class="dot"></div>
+        <div class="tt">留任测试</div>
+        <div class="td">每个经理必须定期问自己：如果某位员工要离职去同行公司，自己会不会极力挽留？若答案是否定的，就该给该员工慷慨的遣散费让其离开。哈斯廷斯的逻辑是"一个有一两个仅仅是合格表现的团队，会拖累团队中每个人的表现"，网飞内部口号是：<b>"合格的表现就值得一份慷慨的遣散费。"</b></div>
+      </li>
+      <li>
+        <div class="yr">学习</div><div class="dot"></div>
+        <div class="tt">阳光机制</div>
+        <div class="td">员工公开承认错误、解释犯错过程，让所有人都能从中吸取教训。通过公开暴露错误，公司将其转化为学习机会而非需要隐藏的失败。在网飞，有意见却不说出来会被认为对公司不负责。</div>
+      </li>
+      <li>
+        <div class="yr">2024</div><div class="dot"></div>
+        <div class="tt">新版备忘录加了一句话</div>
+        <div class="td">6 月发布最新版本，在原有基础上增加<b>"人先于流程"</b>的核心理念，留任测试也增加了鼓励定期沟通的免责声明。新备忘录经过 <b>8 个月审核</b>，其间收到 <b>1500 条员工评论</b>，最终篇幅缩减至 <b>5 页</b>。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么用"坦诚反馈"取代"礼貌和谐"？</h3>
+        <p>在生活中，尊重与礼貌是社会常规；网飞却要求在工作中打破常规、相互批评，并明确"坦诚"只限于工作层面。这背后是<b>价值观的制度化</b>：把反馈从个人情面问题改造为组织学习机制，用 4A 准则划清边界，让高人才密度团队之间的摩擦转化为成长。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么取消管控、取消年度绩效评估？</h3>
+        <p>传统层级靠审批和考核控制行为，代价是信息流动变慢、决策变迟钝。网飞选择<b>以信任替代控制</b>，用持续反馈获得更及时、更贴近现场的信息。这与组织设计中"管理幅度—指挥层级—信息速度"的经典权衡直接相关：团队足够小、人才密度足够高时，减少流程反而提升敏捷性。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么"合格表现"也要给遣散费？</h3>
+        <p>留任测试把管理中最难说出口的判断——"他值不值得留"——<b>显性化、定期化</b>，并把"仅仅合格"明确定义为低于标准。它本质上是一个团队激励与人才密度的守门机制：宁可用高成本主动置换，也不让少数平庸者拉低整体绩效水位。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>价值观必须写成可执行的规范</h4>
+        <p>"坦诚"停留在口号无法约束行为；4A 准则把抽象理念拆成提供方与接收方各两条的具体动作，才真正可落地、可检查。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>高信任的前提是高人才密度</h4>
+        <p>取消管控并不等于放任，它高度依赖严格的进入与退出机制。自由与责任是一体两面，缺了后者，自由就会退化为松散。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>用机制替代人治，用公开替代掩饰</h4>
+        <p>留任测试与阳光机制都是"把判断变成常规动作"，让用人标准可复现、让错误可被学习——组织由此获得不依赖个别管理者的稳定性。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-01</div>
+        <h4>创业团队组建五原则</h4>
+        <p>网飞以"人才密度"为核心，是"宁缺毋滥"式组队原则的极端实践：进入门槛越高，后续管控越可以简化。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-06</div>
+        <h4>价值观建设四步法</h4>
+        <p>从"自由与责任"理念到 4A 准则、留任测试与阳光机制，是价值观由抽象理念走向行为规范的完整样本。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-04</div>
+        <h4>冲突管理四步递进</h4>
+        <p>坦诚反馈把工作冲突前置为日常机制，为冲突管理提供了"低成本、常态化表达"的前端设计。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自《不拘一格：网飞的自由与责任工作法》及 HBS Working Knowledge、《洛杉矶时报》(Los Angeles Times)等公开报道和资料；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 10 章，第 262 页 · 教材相关事例 10-1</span>
+    <span>案例卡 10-01 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡9-01 · 张雪机车主动限制销售</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 9 章 · 创业伦理</a><span class="card-nav-meta">案例卡 9-01 · 张雪机车主动限制销售</span><a class="card-nav-prev" href="案例卡7-05-东方甄选从平台依附到多平台布局.html">← 案例卡 7-05</a><a class="card-nav-next" href="案例卡9-02-Theranos从硅谷神话到世纪骗局.html">案例卡 9-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 9-01</span>
+    <span class="domain">教材体系 · <b>第 9 章 创业伦理</b></span>
+  </div>
+  <h1>张雪机车主动限制销售</h1>
+  <div class="oneliner">一款动力过剩的跑车上市时，他给购买者加了一道门槛：驾龄不满一年不卖——"至少少卖 10%，不要这 10%，我也不在乎。"</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">公司</div>
+        <div class="fv">张雪机车</div>
+        <div class="fs">以自主研发发动机著称的摩托车企业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">决策</div>
+        <div class="fv">驾龄不满一年不得购买 820RR</div>
+        <div class="fs">2026 年 3 月推出该车型时同步执行</div>
+      </div>
+      <div class="fact">
+        <div class="fl">代价</div>
+        <div class="fv">预计少卖至少 10%</div>
+        <div class="fs">创始人明确表示"不要这 10%，我也不在乎"</div>
+      </div>
+      <div class="fact">
+        <div class="fl">机制</div>
+        <div class="fv">重罚经销商 + 内部举报</div>
+        <div class="fs">违规经销商将被重罚，内部设投诉渠道</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2026.3</div><div class="dot"></div>
+        <div class="tt">一款"动力过剩"的车</div>
+        <div class="td">张雪机车推出旗舰级高性能跑车 820RR，搭载自主研发的 819cc 直列三缸发动机，最大马力超过 <b>120 匹</b>，零百加速可进入"3 秒俱乐部"，属于公升级以下动力最强的车型之一。</div>
+      </li>
+      <li>
+        <div class="yr">决策</div><div class="dot"></div>
+        <div class="tt">在购买环节加一道门槛</div>
+        <div class="td">创始人张雪作出了一项业内罕见的决定：<b>驾龄不满一年的消费者不得购买该车型</b>。购车者需提供摩托车驾驶证及驾龄证明，驾龄不足一年者将被拒绝下单。</div>
+      </li>
+      <li>
+        <div class="yr">执行</div><div class="dot"></div>
+        <div class="tt">把限制变成可执行的规则</div>
+        <div class="td">限制不止停留在口头：违规销售的经销商将被重罚；公司内部设有投诉渠道，鼓励员工举报违规销售行为——把一条价值判断，变成了销售体系里会被真正执行的红线。</div>
+      </li>
+      <li>
+        <div class="yr">代价</div><div class="dot"></div>
+        <div class="tt">"少卖 10%，我也不在乎"</div>
+        <div class="td">张雪在内部会议上表示，这款车的动力输出对新手来说难以驾驭，贸然出售可能导致安全事故。"我希望少死几个人"，他承认这会影响业绩，"至少少卖 10%"，但随即补充："<b>不要这 10%，我也不在乎。</b>"</div>
+      </li>
+      <li>
+        <div class="yr">表述</div><div class="dot"></div>
+        <div class="tt">把安全排序放在收益之前</div>
+        <div class="td">在公开采访中他解释："卖一台车赚多少钱不重要，重要的是<b>车主能不能安全地把这台车骑回家</b>。"</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么愿意主动放弃 10% 的销量？</h3>
+        <p>这是一次典型的伦理决策：在"多卖车"与"少出事"之间，收益是确定的、可计入报表的，而事故风险是概率性的、滞后发生的。企业最容易犯的错，正是把不确定的伤害折算为零。张雪的选择是把<b>安全性排在当期收益之前</b>，拒绝把风险转嫁给缺乏驾驭能力的新手骑手，以及道路上其他无辜的交通参与者——这既是产品责任，也是对利益相关者的基本尊重。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么要有"重罚经销商 + 内部举报"这套机制？</h3>
+        <p>伦理若只停留在创始人的表态，会在渠道的业绩压力下被逐层稀释——经销商永远有把车卖出去的动机。因此这条限制必须落到<b>可执行的约束与可追溯的监督</b>上：重罚抬高了违规成本，内部投诉渠道让违规行为有被发现的可能。价值观只有嵌入流程、激励与问责，才不是一句空话。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么"反效率"的决策反而可能增强竞争力？</h3>
+        <p>限售看似牺牲销量，实则是在积累一种更稀缺的资产——<b>消费者对品牌"把人当人看"的信任</b>。当同行的竞争手段集中在参数与价格上时，一家愿意为安全主动放弃收入的企业，会获得难以被模仿的品牌溢价与口碑。这正是长期主义与短期投机的分野：短期看是损失，长期看是护城河。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>伦理决策要算长期账</h4>
+        <p>把滞后的安全风险折算进决策，才不会因为"暂时没出事"而默认它不存在。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>善意必须配可执行的机制</h4>
+        <p>价值观要通过重罚、举报渠道这类硬约束落地，否则一定会在渠道层面被稀释掉。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>产品责任是创业者的底线责任</h4>
+        <p>当产品可能危及使用者与他人安全时，卖不卖、卖给谁，本身就是伦理问题。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 9-01</div>
+        <h4>创业伦理决策四步法</h4>
+        <p>识别利益相关者、评估伤害、选择方案、建立执行机制——张雪的限售恰好走完这四步。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 9-02</div>
+        <h4>伦理困境三类型诊断</h4>
+        <p>销量与安全之争是典型的利益冲突型困境，本案例给出了一种把安全放在优先级的解法。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 9-03</div>
+        <h4>创业实务九大类伦理议题图谱</h4>
+        <p>限售涉及产品安全与营销责任两大议题，是产品责任类伦理的正向示范。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自张雪机车官方发布会、创始人公开采访资料及《每日经济新闻》、IT 之家等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 9 章，第 240 页 · 教材相关事例 9-1</span>
+    <span>案例卡 9-01 · 第 9 章 创业伦理</span>
+  </div>
+
+</div>
+</body>
+</html>

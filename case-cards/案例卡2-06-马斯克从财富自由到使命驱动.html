@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡2-06 · 马斯克从财富自由到使命驱动</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 2 章 · 创业者</a><span class="card-nav-meta">案例卡 2-06 · 马斯克：从财富自由到使命驱动</span><a class="card-nav-prev" href="案例卡2-05-雷军与硅谷之火.html">← 案例卡 2-05</a><a class="card-nav-next" href="案例卡3-01-唐健欠债4600万卖烤肠还债.html">案例卡 3-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 2-06</span>
+    <span class="domain">教材体系 · <b>第 2 章 创业者</b></span>
+  </div>
+  <h1>马斯克：从财富自由到使命驱动</h1>
+  <div class="oneliner">31 岁实现财富自由，却把最后 4000 万美元押进两家濒死的公司——动机从"盈利"升华为"使命"的完整样本。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">埃隆·马斯克</div>
+        <div class="fs">1995 年从斯坦福大学辍学创业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">互联网 → 太空 · 电动车</div>
+        <div class="fs">从在线支付到火箭与电动汽车</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">创办 Zip2</div>
+        <div class="fs">为新闻机构提供在线内容出版软件</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">SpaceX · 特斯拉</div>
+        <div class="fs">动机升华为让生命成为多行星物种</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">1995</div><div class="dot"></div>
+        <div class="tt">辍学创业 Zip2</div>
+        <div class="td">从斯坦福大学辍学，与弟弟创办为新闻机构提供在线内容出版软件的 Zip2。4 年后康柏以约 <b>3.41 亿美元</b>收购，27 岁的马斯克分得 2200 万美元（税后约 1800 万美元）。</div>
+      </li>
+      <li>
+        <div class="yr">1999-2002</div><div class="dot"></div>
+        <div class="tt">PayPal：财富的原始积累</div>
+        <div class="td">随即创立在线金融服务公司 X.com，2000 年与 Confinity 合并，次年更名 PayPal。2002 年 eBay 以 <b>15 亿美元</b>收购 PayPal，作为最大股东（约 11.7%）的他个人获利约 1.8 亿美元。</div>
+      </li>
+      <li>
+        <div class="yr">2002</div><div class="dot"></div>
+        <div class="tt">一个改变方向的问题</div>
+        <div class="td">31 岁便实现财富自由的马斯克，没有像常人那样享受海滩与阳光。他问自己：<b>"哪些事情对人类的未来影响最大？"</b>答案：互联网、可持续能源和太空移民。</div>
+      </li>
+      <li>
+        <div class="yr">2002-2004</div><div class="dot"></div>
+        <div class="tt">双线下注未来</div>
+        <div class="td">投入约 <b>1 亿美元</b>创办 SpaceX，立志降低太空发射成本、实现火星移民；又以 750 万美元领投特斯拉 A 轮并出任董事长，推动电动汽车革命。</div>
+      </li>
+      <li>
+        <div class="yr">2008</div><div class="dot"></div>
+        <div class="tt">谷底：三连败与金融危机</div>
+        <div class="td">SpaceX 前三次火箭发射全部失败，几乎耗尽资金；特斯拉濒临破产。金融危机中，他把个人最后的约 <b>4000 万美元</b>同时注入两家公司。身边人都劝他二选一，<b>他拒绝放弃任何一个</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2008-2010</div><div class="dot"></div>
+        <div class="tt">起死回生</div>
+        <div class="td">9 月 28 日，"猎鹰 1 号"第四次发射成功入轨；3 个月后 NASA 与 SpaceX 签订约 <b>16 亿美元</b>的商业补给合同。特斯拉艰难挺过危机，2010 年成功上市。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么财富自由后不"退休"，反而押上更大的赌注？</h3>
+        <p>"哪些事情对人类的未来影响最大？"这一自我追问，是动机结构演化的转折点：从 Zip2、PayPal 阶段的<b>经济回报驱动</b>，转向 SpaceX、特斯拉阶段的<b>使命驱动</b>。教材指出，创业动机随阶段与经历不断演化——财富自由恰恰解除了经济约束，让使命动机得以凸显。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么拒绝在 SpaceX 和特斯拉之间二选一？</h3>
+        <p>在"理性人"看来，同时保两家濒死公司是最差选择；但对马斯克而言，二者服务于同一组使命——可持续能源与太空移民，<b>放弃任何一个都等于放弃使命本身</b>。使命动机提供了超越功利计算的持久动力，这正是它区别于经济动机之处。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把最后的 4000 万同时注入两家公司？</h3>
+        <p>这是资源约束下的极端配置：一笔钱必须同时买回"第四次发射的机会"和"员工的工资"。它显示高风险创业者对<b>关键瓶颈的判断</b>——哪个环节崩溃全局皆崩，资源就压向哪里。2008 年 9 月的第四次发射成功验证了这一押注。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>动机是可以升级的</h4>
+        <p>从盈利到使命并非自我标榜，而是随阶段演化的真实轨迹——财富自由后"做什么"的问题，检验着一个创业者的动机层级。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>使命是危机中最后的燃料</h4>
+        <p>三连败、破产边缘仍拒绝二选一——混合动机中使命感占比越高，创业者在极端逆境中的坚持度越强。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>好问题比好答案更重要</h4>
+        <p>"哪些事对人类未来影响最大？"一个提问重排了人生优先级——创业者需要定期用大问题校准自己的方向。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 2-02</div>
+        <h4>动机指纹与三类动机组合</h4>
+        <p>从经济回报主导到使命主导，展示了动机指纹在创业阶段中的动态演化。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 2-03</div>
+        <h4>动机触发四要素</h4>
+        <p>"哪些事对人类未来影响最大"的自我追问，是关键事件式触发——使命动机被生命体验激活。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>前三次发射失败后完成第四次，把系统性挫折转化为验证与反弹的契机。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自钛媒体、36 氪、腾讯科技、封面新闻等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 2 章，第 42 页 · 教材相关事例 2-6</span>
+    <span>案例卡 2-06 · 第 2 章 创业者</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-08 · ofo戴威的孤注一掷</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-08 · ofo戴威的孤注一掷</span><a class="card-nav-prev" href="案例卡3-07-字节跳动早期的APP工厂.html">← 案例卡 3-07</a><a class="card-nav-next" href="案例卡4-01-硅谷PayPal系反哺.html">案例卡 4-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-08</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>ofo戴威的孤注一掷</h1>
+  <div class="oneliner">从北大校园到估值 20 亿美元，他把"规模就是壁垒"当作信仰——最终，超过 1000 万人在线上排队退押金。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">戴威</div>
+        <div class="fs">北京大学毕业生，与同学共同创立 ofo</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">共享单车</div>
+        <div class="fs">以大规模投放换取市场份额</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2014 年北大校园</div>
+        <div class="fs">最初以"共享单车"模式服务北大师生</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">资金链断裂，业务停摆</div>
+        <div class="fs">2018 年底线上退款排队人数一度超 1000 万</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2014</div><div class="dot"></div>
+        <div class="tt">从校园起步</div>
+        <div class="td">戴威与几位同学在北京大学校园内创立 ofo，最初以"共享单车"模式服务于北大师生。</div>
+      </li>
+      <li>
+        <div class="yr">2015—2016</div><div class="dot"></div>
+        <div class="tt">校园模式跑通，资本入场</div>
+        <div class="td">2015 年 6 月，ofo 在北大日订单量突破 3000 单，团队随即启动校园扩张计划。至 2016 年底，已覆盖全国 20 余座城市的 300 余所高校，累计用户超过 200 万人；同年 10 月完成 1.3 亿美元 C 轮融资，由滴滴出行领投。</div>
+      </li>
+      <li>
+        <div class="yr">2017</div><div class="dot"></div>
+        <div class="tt">"规模就是壁垒"下的狂飙</div>
+        <div class="td">3 月宣布日订单量突破 1000 万单，5 月估值超过 20 亿美元。面对摩拜的竞争，戴威坚信"规模就是壁垒"，拒绝了与摩拜合并的提议，并在内部表示"ofo 要做独立的平台"。单车投放量从年初的约 100 万辆激增至年底的超过 <b>1000 万辆</b>。</div>
+      </li>
+      <li>
+        <div class="yr">隐忧</div><div class="dot"></div>
+        <div class="tt">速度压过效率</div>
+        <div class="td">早期投放的单车多为机械锁、不具备 GPS 定位功能，车辆损毁、丢失、违规停放等问题频发。内部团队曾多次建议放缓投放节奏、优化运营模型，但戴威坚持认为"速度比效率更重要"。</div>
+      </li>
+      <li>
+        <div class="yr">2018</div><div class="dot"></div>
+        <div class="tt">拒绝退路</div>
+        <div class="td">资金压力全面显现：年初被曝拖欠部分供应商款项，3 月完成由阿里巴巴领投的 E 轮融资，但未能缓解持续扩大的亏损。下半年，戴威开始拒绝多份收购要约，包括滴滴提出的收购方案，而公司账上资金已所剩无几。</div>
+      </li>
+      <li>
+        <div class="yr">2018.12</div><div class="dot"></div>
+        <div class="tt">退押金长队</div>
+        <div class="td">ofo 北京总部前出现大量用户排队退押金的场景，线上退款排队人数一度超过 1000 万。此后 ofo 业务基本停摆，公司多次被法院列为失信被执行人，戴威本人也因债务问题被限制高消费。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么"规模就是壁垒"是一句致命的口号？</h3>
+        <p>共享单车的成本结构由单车折旧、运维和损毁决定——投放越多，这些成本同步放大。戴威把"规模即壁垒"当成不证自明的公理，却跳过了地基性的追问：<b>每多一辆车，究竟是多赚还是多亏？</b>缺乏第一性原理式的成本拆解，规模就只是把亏损按倍数放大。当"规模=壁垒"成为锚点，后续所有判断都围绕它校正，越走越偏。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么内部多次建议放缓，却一次都没被采纳？</h3>
+        <p>这是<b>确认偏误与沉没成本谬误的叠加</b>：投入越大，越只听得到支持"独立平台""速度优先"的声音，反对意见被当作噪音过滤；而已经砸下去的巨额资源又反过来放大了"不能认输"的执念。早期员工回忆创始人心态是"只要跑得够快，资金就会一直跟上来"——当一个假设只被用来证明，而不再被用来证伪，它就变成了信息闭环。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么拒绝被收购，反而加速了崩塌？</h3>
+        <p>拒绝收购本身未必错，错在它发生在一个<b>没有止损线</b>的系统里。真正反脆弱的策略需要明确的、可承受的损失边界；而 ofo 把"增长"当成了对冲，一路加杠杆冲规模，使自己在资本转冷时毫无缓冲。投资人的事后评价点破了根源：他低估了运营成本、高估了资本耐心——这正是过度乐观与规划谬误的典型组合。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>规模不是壁垒，单位经济模型才是地基</h4>
+        <p>在规模放大任何优势之前，它先放大成本与亏损。先回答"每单赚不赚钱"，再谈"做多大"。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>拒绝所有反对信息，等于关上校准的窗</h4>
+        <p>把反对意见当噪音，就落入了自我证明的闭环。真话往往最早来自内部，只是它们被过滤掉了。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>没有止损线的增长，是脆弱的放大器</h4>
+        <p>快速增长必须配一条自己能承受的边界。失去止损纪律，速度越快，摔得越重。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-11</div>
+        <h4>认知偏误三层护栏</h4>
+        <p>ofo 是过度乐观、确认偏误、沉没成本谬误共同作用的标本，也正是"认知护栏"要防住的情形。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-06</div>
+        <h4>逆向思维两维度与闭环</h4>
+        <p>若在扩张前做一次"失败预演"，最可能被写下的原因恰恰是"运营成本失控、资本失去耐心"。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-02</div>
+        <h4>反脆弱两维度与策略实验日志</h4>
+        <p>ofo 把增长当成对冲、却没有可承受损失的边界，与反脆弱所要求的护栏恰好相反。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      综合整理自 36 氪、界面新闻、晚点 LatePost 等公开报道。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 87 页 · 教材相关事例 3-8</span>
+    <span>案例卡 3-08 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

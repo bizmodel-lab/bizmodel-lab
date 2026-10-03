@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡4-08 · 晋江从品牌之都到科创生态高地</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 4 章 · 创业生态系统</a><span class="card-nav-meta">案例卡 4-08 · 晋江：从品牌之都到科创生态高地</span><a class="card-nav-prev" href="案例卡4-07-中芯国际与半导体生态.html">← 案例卡 4-07</a><a class="card-nav-next" href="案例卡5-01-曾毓群的创业哲学.html">案例卡 5-01 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 4-08</span>
+    <span class="domain">教材体系 · <b>第 4 章 创业生态系统</b></span>
+  </div>
+  <h1>晋江：从品牌之都到科创生态高地</h1>
+  <div class="oneliner">创业生态的活力，不在于资源禀赋的多寡，而在于能否打通科学家、企业家与投资家之间的“最后一公里”。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">区域</div>
+        <div class="fv">福建晋江</div>
+        <div class="fs">以“晋江经验”闻名的县级市</div>
+      </div>
+      <div class="fact">
+        <div class="fl">关键主体</div>
+        <div class="fv">三创园 + 科学家 + 投资家</div>
+        <div class="fs">国家级科技孵化器与人才基金</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">运动鞋服的“品牌之都”</div>
+        <div class="fs">安踏、特步、361° 等品牌的发源地</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">“飞地孵化–晋江转化”</div>
+        <div class="fs">科创飞地打通要素流动的最后一公里</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">品牌之都</div><div class="dot"></div>
+        <div class="tt">从制造强市起步</div>
+        <div class="td">晋江是福建东南沿海的县级市，诞生了安踏、特步、361° 等知名品牌，<b>全球每 5 双运动鞋就有 1 双产自晋江</b>。</div>
+      </li>
+      <li>
+        <div class="yr">跃迁</div><div class="dot"></div>
+        <div class="tt">向“科创强市”转身</div>
+        <div class="td">晋江并未止步于“制造强市”，而是经历一场向“科创强市”的深刻跃迁。跃迁的核心，是构建<b>“企业家+科学家+投资家”深度融合</b>的创新生态。</div>
+      </li>
+      <li>
+        <div class="yr">三创园</div><div class="dot"></div>
+        <div class="tt">以赛引才、飞地引才</div>
+        <div class="td">晋江三创园作为国家级科技孵化器，通过“以赛引才”和“飞地引才”双向发力，吸引了一批由国家级、省级高层次人才领衔的科学家创业项目落地；园区还与专业投资机构合作设立人才基金，推动<b>“技术+资本+市场”</b>的有机融合。</div>
+      </li>
+      <li>
+        <div class="yr">反向飞地</div><div class="dot"></div>
+        <div class="tt">科创飞地与流动机制</div>
+        <div class="td">晋江在深圳、西安、武汉、合肥等地布局反向飞地——离岸创新中心，形成<b>“飞地孵化–晋江转化”</b>的流动机制，把在外研发的成果接回本地转化。</div>
+      </li>
+      <li>
+        <div class="yr">案例</div><div class="dot"></div>
+        <div class="tt">镓创未来半导体</div>
+        <div class="td">该项目通过晋江（西安）离岸创新中心引进，<b>注册 3 个月即获千万级天使投资</b>，2026 年一季度实现氧化镓外延片小批量投产，成为在外研发、回晋转化的生动实践。</div>
+      </li>
+      <li>
+        <div class="yr">梯队</div><div class="dot"></div>
+        <div class="tt">新晋江品牌崛起</div>
+        <div class="td">依托完整的鞋服供应链和拼多多等新电商平台，公牛世家、大黄蜂、海峡虎等新品牌以细分赛道切入，年销售额突破数亿元；它们与安踏等锚定企业形成<b>代际传承</b>，构成从巨头到新创的完整创业梯队。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么资源禀赋有限的晋江仍能造出科创高地？</h3>
+        <p>这印证了生态活力的关键在于<b>要素流动与网络联结，而非资源存量</b>。晋江本地高校资源并不占优，但它通过平台与机制把分散的技术、资本与人才连接起来，弥补了禀赋短板。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么要在外地建“反向飞地”？</h3>
+        <p>当本地供给不足时，与其等待要素上门，不如主动到要素富集地设点——离岸创新中心让项目“在外研发、回晋转化”，这正是<b>创造性获取资源</b>的路径，把空间约束转化为流动优势。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么新老品牌能共生而非相斥？</h3>
+        <p>安踏等锚定企业与公牛世家等新创品牌构成<b>完整创业梯队</b>：老企业提供供应链与经验，新企业以细分赛道切入带来增量。代际传承与共生演化，正是生态走向成熟的重要标志。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>生态活力看流动，不看存量</h4>
+        <p>资源禀赋不足不是死局。打通科学家、企业家与投资家之间的“最后一公里”，比坐拥资源更能决定一个区域的创业活力。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>借地引才、异地孵化是补短板的路径</h4>
+        <p>“飞地孵化–晋江转化”把人才与项目的研发环节放到要素富集地，把转化环节留在本地，是资源约束下的主动破局。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>锚定企业与新创企业的代际传承</h4>
+        <p>从安踏到“新晋江品牌”，巨头与初创同处一城、相互补位，构成持续更新的创业梯队，让生态保有长久的活力。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-03</div>
+        <h4>创造性获取四策略</h4>
+        <p>“以赛引才”“飞地引才”本质是创造性地获取人才与技术资源——本地没有的要素，就到要素富集地去取。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-04</div>
+        <h4>资源整合四阶段模型</h4>
+        <p>“飞地孵化–晋江转化”完整呈现了资源获取、积累、配置到利用的链条，把外部要素沉淀为本地能力。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-05</div>
+        <h4>资源组合优势框架</h4>
+        <p>企业家 + 科学家 + 投资家，三方资源单独看都平常，被机制组合起来才形成差异化的区域创新生态。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自福建省人民政府网站及《中国日报》《泉州晚报》等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 4 章，第 118 页 · 教材相关事例 4-8</span>
+    <span>案例卡 4-08 · 第 4 章 创业生态系统</span>
+  </div>
+
+</div>
+</body>
+</html>

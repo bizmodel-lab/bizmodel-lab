@@ -604,6 +604,7 @@ const SITE_DIR = process.env.SITE_DIR || path.join(__dirname, "site");
 const CARDS_DIR = process.env.CARDS_DIR || path.join(__dirname, "cards");
 const CONCEPT_DIR = process.env.CONCEPT_DIR || path.join(__dirname, "concept-cards");
 const CASE_DIR = process.env.CASE_DIR || path.join(__dirname, "case-cards");
+const READING_DIR = process.env.READING_DIR || path.join(__dirname, "reading");
 
 function serveFileFrom(res, full, onMiss) {
   fs.readFile(full, (err, buf) => {
@@ -620,9 +621,11 @@ function serveFileFrom(res, full, onMiss) {
 }
 
 function dispatchStatic(req, res, pathname) {
-  // 门户站页面：/ 与四个站点页；注意 /index.html 留给 BizLab 登录页使用
+  // 门户站页面：/ 与五个站点页；注意 /index.html 留给 BizLab 登录页使用
+  // /read.html 必须显式接管，否则会落到 SPA 回退返回 BizLab 登录页
   if (pathname === "/" || pathname === "/cards.html" || pathname === "/chapter.html"
-      || pathname === "/concept-cards.html" || pathname === "/case-cards.html") {
+      || pathname === "/concept-cards.html" || pathname === "/case-cards.html"
+      || pathname === "/read.html") {
     const rel = pathname === "/" ? "index.html" : pathname.slice(1);
     return serveFileFrom(res, path.join(SITE_DIR, rel), () => serveStatic(req, res, pathname));
   }
@@ -631,8 +634,8 @@ function dispatchStatic(req, res, pathname) {
     if (pathname.includes("..")) { res.writeHead(400); res.end("Bad request"); return; }
     return serveFileFrom(res, path.join(SITE_DIR, pathname));
   }
-  // 三套卡片目录：/cards/*（方法论）/concept-cards/*（知识链接）/case-cards/*（案例）
-  for (const [prefix, dir] of [["/cards/", CARDS_DIR], ["/concept-cards/", CONCEPT_DIR], ["/case-cards/", CASE_DIR]]) {
+  // 四套内容目录：/cards/*（方法论）/concept-cards/*（知识链接）/case-cards/*（案例）/reading/*（读）
+  for (const [prefix, dir] of [["/cards/", CARDS_DIR], ["/concept-cards/", CONCEPT_DIR], ["/case-cards/", CASE_DIR], ["/reading/", READING_DIR]]) {
     if (pathname.startsWith(prefix)) {
       const rel = pathname.slice(prefix.length);
       if (!rel || rel.includes("..")) { res.writeHead(400); res.end("Bad request"); return; }

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡7-02 · 麦格米特的战略抉择</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 7 章 · 创业战略</a><span class="card-nav-meta">案例卡 7-02 · 麦格米特从电视电源到英伟达供应链</span><a class="card-nav-prev" href="案例卡7-01-美国西南航空反问为什么一定要.html">← 案例卡 7-01</a><a class="card-nav-next" href="案例卡7-03-张雪机车自主研发冲击高端市场.html">案例卡 7-03 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 7-02</span>
+    <span class="domain">教材体系 · <b>第 7 章 创业战略</b></span>
+  </div>
+  <h1>麦格米特从电视电源到英伟达供应链</h1>
+  <div class="oneliner">放弃十多年积累的资源，从零做一台电视的电源；二十年后，他成了英伟达 AI 系统里第一家来自中国大陆的电源企业。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">童永胜</div>
+        <div class="fs">时任艾默生副总裁，选择离开舒适区创业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">电源与工业自动化</div>
+        <div class="fs">平板电视电源起步，延伸至医疗、工业、AI 服务器电源</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2005 年接手小公司</div>
+        <div class="fs">注资 260 万元，接手一家亏损近 300 万元、连产品方向都没有的公司</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">切入 AI 算力供应链</div>
+        <div class="fs">2024 年成为英伟达数据中心部件供应商之一</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2005</div><div class="dot"></div>
+        <div class="tt">离开舒适区</div>
+        <div class="td">在艾默生担任副总裁的童永胜做出一个令人惊讶的决定：注资 <b>260 万元</b>接手一家濒临倒闭的小公司。这家公司就是麦格米特的前身，当时已亏损近 <b>300 万元</b>，连产品方向都没有。</div>
+      </li>
+      <li>
+        <div class="yr">2005</div><div class="dot"></div>
+        <div class="tt">先划边界：不做什么</div>
+        <div class="td">创业初期第一个战略抉择是"做什么"。他决定不碰华为和艾默生两个老东家的产品，放弃十多年积累的资源，从零开始。</div>
+      </li>
+      <li>
+        <div class="yr">2006</div><div class="dot"></div>
+        <div class="tt">聚焦平板电视电源</div>
+        <div class="td">当年 TCL、创维、长虹都想自己做电源，市场环境非常恶劣。童永胜判断：普通电视电源很多人能做，而平板电视的薄型电源是一个技术挑战，恰恰能给创业公司带来生存空间。凭借这一战略聚焦，当年销售过亿元，公司员工加上保安才 <b>41 个人</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2007</div><div class="dot"></div>
+        <div class="tt">拒绝"独角兽"路线</div>
+        <div class="td">站稳脚跟后的第二个抉择是：守住一个产品，还是拓展新领域？他的回答是"制造型公司不能做独角兽公司"——技术会不断更新，一旦价格下滑、市场饱和，就会带来灾难性问题。于是切入医疗电源，后又拓展工业自动化、电机控制，坚持做国内大公司需要的、有技术难度的定制化产品，逐步进入飞利浦、松下、西门子、ABB 等国际巨头的供应链。</div>
+      </li>
+      <li>
+        <div class="yr">2023</div><div class="dot"></div>
+        <div class="tt">转向 AI 方向</div>
+        <div class="td">麦格米特敏锐意识到 AI 算力基础设施对高性能电源的巨大需求，开始布局高功率服务器电源。</div>
+      </li>
+      <li>
+        <div class="yr">2024</div><div class="dot"></div>
+        <div class="tt">进入英伟达体系</div>
+        <div class="td">英伟达发布最新 Blackwell 架构 GPU 和 GB200 数月后，麦格米特发布公告称，作为英伟达指定的 <b>40 余家数据中心部件供应商之一</b>，其正参与 Blackwell GB200 系统的创新设计与合作建设——在英伟达这一全球顶尖 AI 系统中，它是首家来自中国大陆的电源企业。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么"不碰老东家的产品"是战略，而不只是客气？</h3>
+        <p>战略的第一动作是确立边界。华为与艾默生都是强势在位者，正面撞车意味着创业公司要用最稀缺的资源去打一场对手最擅长的仗。主动放弃十多年积累的资源看似损失，实则是<b>把有限资源投向对手不设防的技术空白区</b>——定位的本质不是"我要什么"，而是"我不在哪里竞争"。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么拒绝"独角兽"路线，转而做多领域定制化产品？</h3>
+        <p>单一产品型企业把全部身家押在一条技术路线上，一旦技术迭代叠加价格战，就会陷入饱和与下滑的双重挤压。麦格米特选择的是<b>用技术难度换取议价能力</b>：做国内大公司需要、有门槛的定制化产品，客户切换成本高、合作黏性强，企业由此嵌入客户的价值链，成为下游大企业不可或缺的关键环节，而非可被随时替换的供货商。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么它能连续跨过两次技术浪潮？</h3>
+        <p>从平板电视电源到医疗电源、工业自动化，再到 AI 服务器电源，麦格米特的选择标准始终是同一句话：在技术变革中寻找"<b>有技术难度、有发展空间</b>"的赛道。准则可迁移，具体产品会过时——正是这条稳定的判断标准，让它在 AI 算力需求爆发时能够迅速切进去，而不是被既有产品线锁死。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>战略的本质是取舍，先想清楚不做什么</h4>
+        <p>"不碰老东家的产品"这一条边界，比任何一份增长计划都更能解释麦格米特的存活。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>不做独角兽，也能建起另一种护城河</h4>
+        <p>在技术难度高的定制化环节做到极致，用稀缺性而非规模换取生存空间与议价权。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>可迁移的是判断准则，不是产品</h4>
+        <p>把"技术难度 + 发展空间"当成筛子，才能在技术换代时抓住下一张船票。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 7-03</div>
+        <h4>三种基本竞争战略情境化</h4>
+        <p>麦格米特放弃正面竞争，聚焦细分技术环节做差异化，是"聚焦 + 差异化"组合的现实样本。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-04</div>
+        <h4>市场进入四策略矩阵</h4>
+        <p>从电视电源到进入飞利浦、松下、英伟达供应链，走的正是"价值嵌入型"的进入路径。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 7-06</div>
+        <h4>安索夫情境化与增长四原则</h4>
+        <p>沿"电源 + 新领域"逐级扩展产品与市场组合，体现了有节奏而非冒进式的增长选择。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自公司公告及创始人访谈、研究报告等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 7 章，第 194 页 · 教材相关事例 7-2</span>
+    <span>案例卡 7-02 · 第 7 章 创业战略</span>
+  </div>
+
+</div>
+</body>
+</html>

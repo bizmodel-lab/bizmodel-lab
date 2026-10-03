@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡11-01 · 生物军团助力新加坡食物垃圾处理</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 11 章 · 前沿专题</a><span class="card-nav-meta">案例卡 11-01 · &quot;生物军团&quot;助力新加坡食物垃圾处理</span><a class="card-nav-prev" href="案例卡10-04-阿里巴巴从独孤九剑到新六脉神剑.html">← 案例卡 10-04</a><a class="card-nav-next" href="案例卡11-02-红松从兴趣课程到退休生活社区.html">案例卡 11-02 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 11-01</span>
+    <span class="domain">教材体系 · <b>第 11 章 前沿专题</b></span>
+  </div>
+  <h1>"生物军团"助力新加坡食物垃圾处理</h1>
+  <div class="oneliner">把城市最头疼的食物垃圾，喂给每天吃掉自身体重两倍的幼虫——废弃物在这里被重新定义为蛋白与肥料的原料。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">企业</div>
+        <div class="fv">Insect Feed Technologies</div>
+        <div class="fs">新加坡生物技术初创企业，简称 IFT</div>
+      </div>
+      <div class="fact">
+        <div class="fl">技术路径</div>
+        <div class="fv">昆虫转化</div>
+        <div class="fs">以黑水虻幼虫为核心物种</div>
+      </div>
+      <div class="fact">
+        <div class="fl">累计成效</div>
+        <div class="fv">超 3000 吨食物垃圾</div>
+        <div class="fs">转化为高蛋白动物饲料与有机肥料</div>
+      </div>
+      <div class="fact">
+        <div class="fl">转化效率</div>
+        <div class="fv">每吨厨余 → 200 公斤蛋白</div>
+        <div class="fs">同时产生 250 公斤有机肥</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">背 景</div><div class="dot"></div>
+        <div class="tt">用一支"生物军团"应对食物垃圾</div>
+        <div class="td">新加坡正借助一支特殊的"生物军团"来应对食物垃圾的挑战。生物技术初创企业 Insect Feed Technologies（IFT）利用昆虫，已将<b>超过 3000 吨食物垃圾</b>转化为高蛋白动物饲料和有机肥料。</div>
+      </li>
+      <li>
+        <div class="yr">主 力</div><div class="dot"></div>
+        <div class="tt">每天吃掉自身体重两倍的幼虫</div>
+        <div class="td">这支"军团"的主力是黑水虻。其幼虫食量惊人，每天可摄取相当于自身体重两倍的食物。每个一平方米的托盘内可饲养约 <b>6 万条幼虫</b>，在 5—7 天的喂食周期中，它们能消耗约 <b>50 公斤</b>来自食品制造商、中央厨房、酒店及医院等商业和工业渠道产生的食物垃圾。</div>
+      </li>
+      <li>
+        <div class="yr">选 育</div><div class="dot"></div>
+        <div class="tt">只有前 5% 能成为种虫</div>
+        <div class="td">黑水虻的生命周期受到严格控制：只有最活跃、发育最优的<b>前 5% 幼虫</b>被选为种虫，培育为成虫。被选中的幼虫将停止进食 7—10 天，体色逐渐加深，进入预蛹阶段，随后被转移至育种室。成虫破蛹后寿命仅 5—8 天，其唯一使命是繁育后代，确保种群的健康与持续供应。</div>
+      </li>
+      <li>
+        <div class="yr">产 出</div><div class="dot"></div>
+        <div class="tt">其余 95% 变成饲料与肥料</div>
+        <div class="td">其余 95% 的幼虫则被制成富含蛋白质的动物饲料，这种饲料可喂养鱼类、鸟类及猫狗等宠物；其排泄物则转化为有机肥料。一条"食物垃圾—昆虫—饲料 / 肥料"的链路由此闭合。</div>
+      </li>
+      <li>
+        <div class="yr">效 率</div><div class="dot"></div>
+        <div class="tt">1 吨厨余的转化账</div>
+        <div class="td">研究显示，黑水虻<b>每消化 1 吨厨余垃圾，可产生 200 公斤蛋白及 250 公斤有机肥</b>。这一组数字把"减少废弃物"的环保价值，翻译成了可核算的资源产出。</div>
+      </li>
+      <li>
+        <div class="yr">现 状</div><div class="dot"></div>
+        <div class="tt">每天处理 3—5 吨</div>
+        <div class="td">目前，该公司每天可处理 <b>3—5 吨</b>食物垃圾。创始人强调，以昆虫为媒介的循环经济模式，不仅减少了废弃物排放，也显著提高了资源利用效率。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么选择"生物转化"而不是纯机械处理？</h3>
+        <p>机械方式主要解决"减量"，处理完仍是成本；昆虫转化则在同一过程中产出蛋白饲料与有机肥料。这是<b>循环经济视角下对同一问题的重新定义</b>——不把食物垃圾当负担去消灭，而把它当原料去利用。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么只选前 5% 的幼虫作种虫？</h3>
+        <p>种群质量决定转化效率的稳定性。挑出最活跃、发育最优的个体作种虫，并对生命周期实施严格控制，本质是把<b>自然过程标准化为可复现的工业过程</b>——这是这类模式能够持续供给、规模复制的前提。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把生意落在"垃圾—饲料—肥料"的闭环上？</h3>
+        <p>输入端是城市治理的难题，输出端是水产、禽类、宠物食品与农业的刚需原料，两端都有明确的付费方。1 吨厨余换 200 公斤蛋白与 250 公斤有机肥的<b>可量化产出</b>，让这个闭环既讲得通环保逻辑，也算得清商业逻辑。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>前沿机会常藏在"负资产"里</h4>
+        <p>食物垃圾是城市的治理负担，也可以成为蛋白饲料的原料。可持续创业的机会，往往来自把成本项重新定义为资源项。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>效率证据决定循环经济能否落地</h4>
+        <p>"1 吨厨余→200 公斤蛋白 + 250 公斤有机肥"这类量化转化率，是这类模式能否规模化、能否获得资本认可的关键证据。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>技术选择要与场景约束匹配</h4>
+        <p>高密度饲养、严格选育与短周期管理，让自然的昆虫过程适配城市产业化的连续运营要求——技术不是越复杂越好，而是要贴住场景。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 11-01</div>
+        <h4>四段式专题分析框架</h4>
+        <p>本案例是"技术—社会趋势"类前沿议题的典型素材：从废弃物治理难题出发，观察技术如何改变产业解法。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-02</div>
+        <h4>可持续创业三维度机会框架</h4>
+        <p>食物垃圾治理同时具备环境、社会与经济三重价值，是可持续创业机会识别的直观样本。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 11-03</div>
+        <h4>可持续商业模式四路径</h4>
+        <p>IFT 把废弃物转化为两类可售产品，属于典型的"资源循环"式可持续商业模式设计。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自环球网〈"生物军团"助力新加坡食物垃圾处理〉（辛斌）；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 11 章，第 297 页 · 教材相关事例 11-1</span>
+    <span>案例卡 11-01 · 第 11 章 前沿专题</span>
+  </div>
+
+</div>
+</body>
+</html>

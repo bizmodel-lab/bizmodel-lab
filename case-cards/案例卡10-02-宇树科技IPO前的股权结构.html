@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡10-02 · 宇树科技IPO前的股权结构</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 10 章 · 创业组织</a><span class="card-nav-meta">案例卡 10-02 · 宇树科技 IPO 前的股权结构</span><a class="card-nav-prev" href="案例卡10-01-网飞的自由与责任工作法.html">← 案例卡 10-01</a><a class="card-nav-next" href="案例卡10-03-Block的AI驱动组织重构.html">案例卡 10-03 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 10-02</span>
+    <span class="domain">教材体系 · <b>第 10 章 创业组织</b></span>
+  </div>
+  <h1>宇树科技 IPO 前的股权结构</h1>
+  <div class="oneliner">历经十余轮融资，创始人直接持股仅 23.82%，却掌握 68.78% 表决权——一套"融资不失控"的股权与治理设计。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">企业</div>
+        <div class="fv">宇树科技</div>
+        <div class="fs">前身杭州宇树科技，2016 年 8 月成立，注册资本 10 万元</div>
+      </div>
+      <div class="fact">
+        <div class="fl">创始人</div>
+        <div class="fv">王兴兴</div>
+        <div class="fs">1990 年生，核心创始团队均为 90 后</div>
+      </div>
+      <div class="fact">
+        <div class="fl">融资</div>
+        <div class="fv">十余轮 · 投后 127 亿元</div>
+        <div class="fs">2025 年 6 月最近一次市场化股权融资</div>
+      </div>
+      <div class="fact">
+        <div class="fl">治理工具</div>
+        <div class="fv">A 类特别表决权股</div>
+        <div class="fs">每股 10 票，创始人合计控制 68.7816% 表决权</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2016</div><div class="dot"></div>
+        <div class="tt">10 万元注册资本，从民宅起步</div>
+        <div class="td">8 月 26 日，王兴兴出资设立杭州宇树科技有限公司，注册资本 <b>10 万元</b>。从一间民宅起步，这家公司用了不到 10 年时间，成长为全球高性能通用机器人领域的领军者。</div>
+      </li>
+      <li>
+        <div class="yr">融资期</div><div class="dot"></div>
+        <div class="tt">十余轮融资，没有一家外部机构过 10%</div>
+        <div class="td">红杉中国、美团、腾讯、阿里巴巴、深创投、北京机器人基金等数十家机构相继入局。单一外部机构持股均未超过 10%，公司共存在 <b>11 组一致行动人关系</b>——创始人个人、员工持股平台与外部机构之间通过一致行动安排划分阵营。</div>
+      </li>
+      <li>
+        <div class="yr">2025.5</div><div class="dot"></div>
+        <div class="tt">股改：更名为股份公司并设置特别表决权</div>
+        <div class="td">5 月 16 日，公司召开创立大会暨第一次临时股东会，完成股份制改造，更名为"杭州宇树科技股份有限公司"。会上股东同意设置特别表决权股份，为创始人的控制权提前上锁。</div>
+      </li>
+      <li>
+        <div class="yr">表决权</div><div class="dot"></div>
+        <div class="tt">A 类股每股 10 票</div>
+        <div class="td">王兴兴持有的 <b>44 074 296 股</b>为 A 类特别表决权股，每股享有 <b>10 票</b>表决权；其余股份为 B 类普通股，每股 1 票。这一安排使其以 23.8216% 的直接持股比例，合计控制 <b>63.5457%</b> 的表决权，其中 A 类股份单独对应 57.9402%。</div>
+      </li>
+      <li>
+        <div class="yr">控制权</div><div class="dot"></div>
+        <div class="tt">叠加持股平台，合计超过 2/3</div>
+        <div class="td">加上通过员工持股平台上海宇翼控制的 10.9414% 股权（对应 5.2359% 表决权），王兴兴合计控制公司 <b>68.7816%</b> 的表决权，超过 2/3。董事会共 9 人，其中 3 名为独立董事；王兴兴及其一致行动人上海宇翼合计提名了 <b>6 个董事席位</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2025.6</div><div class="dot"></div>
+        <div class="tt">投后 127 亿元估值与 IPO 募资</div>
+        <div class="td">最近一次市场化股权融资投前估值 120 亿元、投后估值 <b>127 亿元</b>。公司向上海证券交易所递交科创板 IPO 申请，计划募资 <b>42.017112 亿元</b>，投向智能机器人模型研发、机器人本体研发、新型智能机器人产品开发及制造基地建设。同时，公司将 10.9414% 的股份用于员工股权激励，已向 14 名员工授予约 592.66 万股，其中 11 名已行权。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么在股改时设置特别表决权股份？</h3>
+        <p>十余轮融资必然稀释创始人的直接持股。A 类股每股 10 票的安排，把"融到钱"与"留住控制权"两个目标拆开处理：王兴兴以 <b>23.8216% 的直接持股掌握 63.5457% 表决权</b>。这是股权结构设计中的控制权工具——让资本进入，但不让决策权随股权比例线性流失。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么用一致行动人与持股平台层层加固？</h3>
+        <p>外部机构"单一均未超过 10%"却仍有 11 组一致行动人关系，说明董事会与股东会的多数并非自然形成，而是被精心组织出来的。叠加上海宇翼的 10.9414% 股权后，表决权达到 <b>68.7816%、超过 2/3</b>——这一水平意味着在重大事项上拥有决定性话语权，治理稳定性由此得到保障。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把 10.9414% 股份用于员工股权激励？</h3>
+        <p>机器人赛道高度依赖顶尖工程师，股权激励把核心人才与企业长期价值绑定。对一支 90 后核心团队而言，激励同时承担了<b>留人与治理</b>两重功能：员工持股平台既是激励载体，也是创始人一致行动体系的一环，激励工具与股权安排在这里是同源设计。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>融资与控制权可以解耦</h4>
+        <p>十余轮融资不等于失去公司。特别表决权、一致行动人与持股平台，共同构成一套可供创业企业借鉴的控制权工具箱。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>股权结构要提前设计</h4>
+        <p>特别表决权在股改的第一次临时股东会上即完成设置，远早于 IPO 申报。治理安排应与融资节奏同步规划，而非临上市才补救。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>激励与治理同源</h4>
+        <p>员工持股既是留人手段，也是稳定股权结构与一致行动体系的组成部分，其设计质量直接影响激励效果与治理稳定。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 10-05</div>
+        <h4>股权结构设计七模块</h4>
+        <p>本案例几乎覆盖了控制权设计的全套工具：股权比例、特别表决权、一致行动、持股平台与员工激励。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-03</div>
+        <h4>决策机制四方式与分级决策</h4>
+        <p>68.7816% 表决权与 6 个董事席位，决定了公司重大决策与日常决策的分级边界和最终裁决权归属。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 10-01</div>
+        <h4>创业团队组建五原则</h4>
+        <p>90 后核心团队 + 员工股权激励，是创始人与核心人才长期绑定的组队逻辑在股权层面的落地。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自宇树科技股份有限公司科创板首次公开发行股票招股说明书（申报稿）；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 10 章，第 269 页 · 教材相关事例 10-2</span>
+    <span>案例卡 10-02 · 第 10 章 创业组织</span>
+  </div>
+
+</div>
+</body>
+</html>

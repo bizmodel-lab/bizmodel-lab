@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡3-04 · SpaceX：火箭成本重构</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 3 章 · 创业思维</a><span class="card-nav-meta">案例卡 3-04 · SpaceX：火箭成本重构</span><a class="card-nav-prev" href="案例卡3-03-亚马逊主动塑造未来.html">← 案例卡 3-03</a><a class="card-nav-next" href="案例卡3-05-唐吉诃德日本第一烂店.html">案例卡 3-05 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 3-04</span>
+    <span class="domain">教材体系 · <b>第 3 章 创业思维</b></span>
+  </div>
+  <h1>SpaceX：火箭成本重构</h1>
+  <div class="oneliner">"火箭就是昂贵的消耗品"被当作行业铁律，马斯克却追问：原料只占成本约 2%，那钱到底花在了哪里？</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">埃隆·马斯克</div>
+        <div class="fs">创办 SpaceX，主张回归基本事实思考</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">航天 · 运载火箭</div>
+        <div class="fs">长期被视为成本刚性、无法降价的行业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">火箭只能一次性使用</div>
+        <div class="fs">传统航天业视之为不可更改的行业惯例</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">边际发射成本降低 90% 以上</div>
+        <div class="fs">仅计算燃料与翻新成本</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">创办</div><div class="dot"></div>
+        <div class="tt">直面行业惯例</div>
+        <div class="td">马斯克创办 SpaceX 时，面临的核心问题是：火箭成本高昂且只能一次性使用。传统航天业认为这是行业惯例——<b>火箭就是昂贵的消耗品</b>。</div>
+      </li>
+      <li>
+        <div class="yr">拆解一</div><div class="dot"></div>
+        <div class="tt">追问原材料</div>
+        <div class="td">火箭由什么构成？航空级铝合金、钛、铜、碳纤维。这些原材料在现货市场的成本<b>仅占火箭总成本的约 2%</b>——成本的绝大部分并不在"料"上。</div>
+      </li>
+      <li>
+        <div class="yr">拆解二</div><div class="dot"></div>
+        <div class="tt">追问制造逻辑</div>
+        <div class="td">为什么成本高？因为传统航天业是<b>小批量定制生产，缺乏规模效应</b>。高成本来自生产方式，而非物理必然。</div>
+      </li>
+      <li>
+        <div class="yr">拆解三</div><div class="dot"></div>
+        <div class="tt">追问设计选择</div>
+        <div class="td">为什么火箭只能用一次？因为设计时就没有考虑回收。于是问题被重新表述：<b>这是技术约束，还是设计选择？</b></div>
+      </li>
+      <li>
+        <div class="yr">重构</div><div class="dot"></div>
+        <div class="tt">确立可重复使用目标</div>
+        <div class="td">基于这一分析，SpaceX 确立了可重复使用火箭的核心目标，通过技术创新（如垂直回收）和制造创新（如垂直整合供应链），<b>将重复使用的边际发射成本降低 90% 以上</b>（仅计算燃料与翻新成本）。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么敢悬置"火箭就是昂贵的消耗品"这条行业共识？</h3>
+        <p>这是<b>第一性原理</b>的关键动作：把行业惯例当作可质疑的假设，而不是不可动摇的前提。多数人以为自己在回归基本真理，实则只是质疑自己尚未认同的行业规则。马斯克把问题拆到原材料这一基本事实（仅占约 2%），才发现"贵"不是物理定律，而是既有生产与设计方式的产物。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把"可重复使用"而非"降低原料成本"当作核心目标？</h3>
+        <p>因为<b>拆解必须找到真正的大头</b>。原料只占约 2%，在料上省不出名堂；成本的重心落在"一次性使用"这个<b>设计选择</b>上。第一性原理的重构必须指向成本结构的根因，否则只是把力气花在了无关紧要的地方——这也避免了拆解过度导致的思维瘫痪。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么用垂直整合供应链来推动规模化？</h3>
+        <p>既然高成本源于<b>小批量定制、缺乏规模效应</b>，就用自己的制造与供应链体系替代外部定制，从系统层面重构成本结构。这是从"为什么成本高"的诊断直接推导出的对策——先找准病因，再造解法。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>行业惯例不是物理定律</h4>
+        <p>区分"技术约束"与"设计选择"，是打破同质化竞争、开辟全新价值空间的起点。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>拆解要拆到能行动的基本事实</h4>
+        <p>找到成本结构的真正大头（设计选择与生产方式），而非在占比约 2% 的原料上做无用功。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>重构之后必须用可衡量的指标验证</h4>
+        <p>"边际发射成本降低 90% 以上"是可检验的结果，而非自洽的设想——避免重构后忘记验证的陷阱。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 3-04</div>
+        <h4>第一性原理三阶段法</h4>
+        <p>拆解到原子事实、定位根因、重构方案并被结果验证——本案例是该方法的标准范本。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-10</div>
+        <h4>情境二维矩阵</h4>
+        <p>成本结构需要极限突破、渐进改进失效，正是第一性原理最适用的典型情境。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 3-06</div>
+        <h4>逆向思维两维度与闭环</h4>
+        <p>从"火箭为什么只能用一次"这一反向追问出发，倒推出可重复使用的设计目标。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      综合整理自 INC、TED、James Clear 等公开报道和资料。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 3 章，第 66 页 · 教材相关事例 3-4</span>
+    <span>案例卡 3-04 · 第 3 章 创业思维</span>
+  </div>
+
+</div>
+</body>
+</html>

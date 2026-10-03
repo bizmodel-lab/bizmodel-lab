@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡5-05 · 黑湖科技：从失败中生长</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 5 章 · 创业机会</a><span class="card-nav-meta">案例卡 5-05 · 黑湖科技：从失败中生长</span><a class="card-nav-prev" href="案例卡5-04-企查查把公开数据做成生意.html">← 案例卡 5-04</a><a class="card-nav-next" href="案例卡5-06-亚马逊Kindle从功能过剩中发现专注价值.html">案例卡 5-06 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 5-05</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>黑湖科技：从失败中生长</h1>
+  <div class="oneliner">第一版代码跑不进工厂车间——真正的机会不在算法里，而在工人白白等待的那 5 个小时里。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">周宇翔</div>
+        <div class="fs">美国达特茅斯学院毕业，2015 年回国创业</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">工业互联网 · 生产管理软件</div>
+        <div class="fs">把沉没在车间里的数据打捞出来</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">一次失败的创业</div>
+        <div class="fs">首款大数据产品研发九个月，无法落地</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">黑湖科技</div>
+        <div class="fs">截至 2025 年下半年服务超 34000 家制造企业</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2015</div><div class="dot"></div>
+        <div class="tt">九个月代码，打不开工厂的门</div>
+        <div class="td">周宇翔从美国达特茅斯学院毕业回国，与两位同样具有计算机背景的伙伴创立马达数据，希望用大数据帮助工厂实现自动化决策。团队花了九个月研发产品，可当他们拿着代码去跑客户时，产品无法落地——因为"中国企业没有数据"，工厂的生产现场还停留在 Excel 和纸质单据阶段。</div>
+      </li>
+      <li>
+        <div class="yr">2016 初</div><div class="dot"></div>
+        <div class="tt">进车间当工人</div>
+        <div class="td">首次创业失败后，周宇翔决定补上缺失的一课。他和同伴从北京出发，前往宁波、重庆、青岛、苏州等地的工厂，直接进车间当工人，与工友们同吃同住。</div>
+      </li>
+      <li>
+        <div class="yr">苏州</div><div class="dot"></div>
+        <div class="tt">看见"等 5 小时，做 5 小时"</div>
+        <div class="td">在一家化妆品包装材料工厂，他发现传统生产模式正面临转型困境：工厂过去承接欧美大牌标准化订单，<b>一个批次以 10 万件为计量单位</b>；而新兴国货品牌带来的是小批量、多品种订单，订单切换时生产线要等待 5 个小时，而生产只需 5 个小时，效率急剧下降。</div>
+      </li>
+      <li>
+        <div class="yr">洞察</div><div class="dot"></div>
+        <div class="tt">工人手里那部智能手机</div>
+        <div class="td">周宇翔注意到，年轻工人几乎人手一部智能手机。他意识到，工厂需要的不是高大上的算法预测，而是一个能让不同工种、机器设备快速互通信息的系统，让工人<b>通过手机就能实时接收任务、反馈进度</b>。</div>
+      </li>
+      <li>
+        <div class="yr">三周后</div><div class="dot"></div>
+        <div class="tt">没用软件的工人先找上门</div>
+        <div class="td">基于这一观察，团队仅用三周就编写出一套软件，在苏州工厂一个车间进行测试。三周后回访时，急着找他们的竟是<b>未使用软件的车间工人</b>——使用软件的工人每天等待时间缩短，计件工资因此增加，他们主动要求使用这个能帮自己每月多赚几百元的新工具。</div>
+      </li>
+      <li>
+        <div class="yr">2016 至今</div><div class="dot"></div>
+        <div class="tt">从漏雨招待所到 42.7%</div>
+        <div class="td">2016 年，周宇翔在上海创立黑湖科技，公司名称寓意工业领域有大量数据沉没在黑色的湖水中。团队在长宁区一个漏雨的招待所安顿，晚上写代码、白天坐高铁去浙江工厂测试产品，这种状态持续了 8 个多月。此后相继推出"黑湖智造""黑湖小工单""黑湖供应链"，截至 2025 年下半年服务超过 <b>34000 家</b>制造企业及其供应链，占据中国云化生产管理软件市场 <b>42.7%</b> 的份额；蜜雪冰城通过"黑湖智造"将整体生产运营效率提高 30%，仓库库存周转率提升 50%，生产成本下降 15%。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么失败之后，先去当工人而不是先改产品？</h3>
+        <p>团队的原始假设是"工厂有数据、缺算法"，而真实情况是这个假设的前提根本不成立。进厂同吃同住，是一次<b>把"我以为的需求"替换成"用户真实的待办任务"</b>的过程——这正是问题分析法的核心：先理解用户要完成什么，再剖析任务完成过程中的障碍。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么放弃"高大上的算法"，改做"信息互通"？</h3>
+        <p>算法预测对应的是创始人自己的技术偏好，而工人真正的障碍是<b>等待</b>。机会识别必须从需求侧而不是供给侧出发：当订单结构从"大批量"变成"小批量多品种"，生产线上的效率塌陷就是一次真实的市场不连续性，痛点越具体，机会越成立。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么把"工人每月多赚几百元"当作验证标准？</h3>
+        <p>检验机会真伪的，不是功能清单有多漂亮，而是使用者愿不愿意主动来要。计件工资增加意味着价值可以被直接量化，<b>未被纳入试点的工人主动找上门</b>，比任何市场调研都更有说服力，也为后续的规模化销售提供了最硬的证据。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>失败是机会识别的第一手数据</h4>
+        <p>九个月写出的代码敲不开工厂的门，恰恰暴露了被忽略的前提，也让下一次出发有了正确的问题。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>洞察藏在作业现场，不在办公室</h4>
+        <p>"等 5 小时、做 5 小时"这样的隐性痛点，只有进车间、与工人同吃同住才看得见。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>让使用者替你验证机会</h4>
+        <p>没被安排用软件的工人反而先找上门，用户用脚投票的结果，是机会真实性最可靠的检验。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-07</div>
+        <h4>三层痛点模型</h4>
+        <p>等待 5 小时、计件工资缩水，正落在"任务障碍—效率损失—收益受损"层层加深的痛点上。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-06</div>
+        <h4>用户功能场景三角交叉验证</h4>
+        <p>把"工人 + 计件工资 + 智能手机"三要素交叉起来，才定位出信息互通这个真实场景。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-10</div>
+        <h4>机会验证三步与转型四类型</h4>
+        <p>从马达数据到黑湖科技是一次痛点重定向式的转型，三周开发加车间测试则是典型的快速验证。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自投资界、澎湃新闻、齐鲁壹点、中国新闻网、上观新闻、群众网等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 5 章，第 140 页 · 教材相关事例 5-5</span>
+    <span>案例卡 5-05 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

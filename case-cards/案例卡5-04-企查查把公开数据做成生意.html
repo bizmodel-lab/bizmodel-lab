@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡5-04 · 企查查把公开数据做成生意</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 5 章 · 创业机会</a><span class="card-nav-meta">案例卡 5-04 · 企查查：把公开数据做成了一门生意</span><a class="card-nav-prev" href="案例卡5-03-多邻国语言学习与游戏机制融合.html">← 案例卡 5-03</a><a class="card-nav-next" href="案例卡5-05-黑湖科技从失败中生长.html">案例卡 5-05 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 5-04</span>
+    <span class="domain">教材体系 · <b>第 5 章 创业机会</b></span>
+  </div>
+  <h1>企查查：把公开数据做成了一门生意</h1>
+  <div class="oneliner">信息本身并不稀缺，稀缺的是让信息“能用”“好用”的能力。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">人物</div>
+        <div class="fv">杨京</div>
+        <div class="fs">企查查创始人，计算机专业出身</div>
+      </div>
+      <div class="fact">
+        <div class="fl">赛道</div>
+        <div class="fv">企业工商数据查询</div>
+        <div class="fs">企业征信与数据服务</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2014 年·苏州</div>
+        <div class="fs">把分散的公开数据做成一个搜索框</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">企业征信头部平台</div>
+        <div class="fs">2018 年用户破亿，2021 年 D 轮融资</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2014</div><div class="dot"></div>
+        <div class="tt">一个被忽视的日常麻烦</div>
+        <div class="td">在苏州工业园区工作的杨京发现，企业间合作、投资、招聘时，都要花大量时间去核实对方的工商信息、股权结构、司法风险。这些信息其实都公开在政府网站上，<b>只是分散、难查、看不懂</b>。</div>
+      </li>
+      <li>
+        <div class="yr">能力</div><div class="dot"></div>
+        <div class="tt">组织者本人的积累</div>
+        <div class="td">杨京是计算机专业出身，此前拥有多年企业信息化经验——识别信息、处理数据的能力，恰恰来自他已有的专业与行业积累。</div>
+      </li>
+      <li>
+        <div class="yr">洞察</div><div class="dot"></div>
+        <div class="tt">把“看不懂”变成“好用”</div>
+        <div class="td">他想到，如果能把这些分散的公开数据抓取、清洗、结构化，再通过一个简单的搜索框呈现出来，就能帮企业<b>省下大量的信息核实成本</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2014</div><div class="dot"></div>
+        <div class="tt">企查查在苏州成立</div>
+        <div class="td">企查查在苏州成立，把企业工商数据免费开放查询：用户输入公司名称，即可查到该企业的<b>股东信息、对外投资、司法诉讼、知识产权</b>等公开记录。</div>
+      </li>
+      <li>
+        <div class="yr">2018</div><div class="dot"></div>
+        <div class="tt">用户规模破亿</div>
+        <div class="td">这一模式迅速获得市场认可，至 2018 年，企查查累计用户<b>突破 1 亿</b>。</div>
+      </li>
+      <li>
+        <div class="yr">2021</div><div class="dot"></div>
+        <div class="tt">成为头部平台</div>
+        <div class="td">企查查完成数亿元 <b>D 轮融资</b>，成为国内企业征信领域的头部平台。其洞察可归结为一句话：信息本身并不稀缺，稀缺的是让信息“能用”“好用”的能力。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么“公开数据”也能做成生意？</h3>
+        <p>因为<b>信息不对称本身就是机会来源</b>。数据早已存在于政府网站，但分散、难查、看不懂，构成了实实在在的核实成本。把不对称消除掉，价值就诞生了。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么价值落在一个“简单的搜索框”上？</h3>
+        <p>这对应着<b>需求与资源俱在、却未能有效连接</b>的典型情境。把复杂数据抓取、清洗、结构化，最终收敛为一次输入即可得结果——转化能力才是稀缺资源。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么是杨京识别出了这个机会？</h3>
+        <p>机会只对有准备的眼睛敞开。<b>计算机专业出身 + 多年企业信息化经验</b>，让他既处在信息流动的关键位置，又具备把数据变成产品的实现能力。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>信息不对称本身就是机会来源</h4>
+        <p>数据公开不等于数据可用。分散、难查、看不懂的公开信息，恰恰是被效率损耗长期掩盖的价值空间。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>能力积累决定谁能看见机会</h4>
+        <p>同样的麻烦，很多人抱怨过，只有具备数据处理能力的人能把它变成产品。机会识别依赖既有的知识结构。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>把公开资源“再加工”成可用产品</h4>
+        <p>抓取、清洗、结构化，再收敛为一个搜索框——价值不来自数据的所有权，而来自对数据的加工与呈现能力。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 5-01</div>
+        <h4>机会来源分类学</h4>
+        <p>企查查的机会属于“信息不对称”这一来源：需求与资源都在，缺的是把两者连接起来的加工环节。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-05</div>
+        <h4>结构分析法三子工具</h4>
+        <p>企业在信息网络中的结构性位置，决定了谁能接触到非重叠信息、谁具备消除不对称的可能。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 5-09</div>
+        <h4>四维度两阶段机会评估框架</h4>
+        <p>从“分散难查”到“用户破亿”，验证的是需求的普遍性与可持续性，而不只是一次性的痛点发现。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例综合整理自企查查官网及《21 世纪经济报道》、腾讯新闻等公开报道；叙事与分析整理自教材相关事例栏目。
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 5 章，第 134 页 · 教材相关事例 5-4</span>
+    <span>案例卡 5-04 · 第 5 章 创业机会</span>
+  </div>
+
+</div>
+</body>
+</html>

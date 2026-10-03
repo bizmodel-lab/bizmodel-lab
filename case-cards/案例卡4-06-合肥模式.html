@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>案例卡4-06 · 合肥模式</title>
+<style>
+  :root{
+    --ink:#1e293b; --ink-2:#475569; --ink-3:#64748b;
+    --line:#e2e8f0; --bg:#f8fafc; --card:#ffffff;
+    --k1:#c2410c; --k1-bg:#fff7ed; --k1-line:#fed7aa;
+    --k2:#92400e; --k2-bg:#fffbeb; --k2-line:#fde68a;
+    --ok:#059669; --ok-bg:#ecfdf5; --ok-line:#a7f3d0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.8; padding:32px 16px 64px;
+  }
+  .page{max-width:860px;margin:0 auto;}
+
+  .kicker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .kicker .no{
+    font-size:13px;font-weight:700;letter-spacing:1px;color:#fff;
+    background:var(--k1);border-radius:6px;padding:3px 10px;
+  }
+  .kicker .domain{font-size:13px;color:var(--ink-3);}
+  .kicker .domain b{color:var(--ink-2);font-weight:600;}
+  h1{font-size:30px;line-height:1.35;font-weight:700;letter-spacing:.5px;}
+  .oneliner{
+    margin-top:10px;font-size:17px;color:var(--ink-2);
+    border-left:4px solid var(--k1);padding-left:14px;
+  }
+
+  section{margin-top:44px;}
+  h2{
+    font-size:20px;font-weight:700;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  h2::before{
+    content:"";width:8px;height:20px;border-radius:3px;background:var(--k1);flex:none;
+  }
+  p{margin-bottom:12px;color:var(--ink-2);}
+  p b, li b{color:var(--ink);}
+
+  /* ===== 案例速览 ===== */
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .fact{
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;text-align:left;
+  }
+  .fact .fl{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--k1);margin-bottom:4px;}
+  .fact .fv{font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .fact .fs{font-size:12.5px;color:var(--ink-3);margin-top:2px;line-height:1.6;}
+
+  /* ===== 叙事时间线 ===== */
+  ol.tl{list-style:none;position:relative;}
+  ol.tl::before{
+    content:"";position:absolute;left:64px;top:10px;bottom:10px;
+    width:2px;background:var(--k1-line);
+  }
+  ol.tl li{
+    position:relative;padding:0 0 20px 104px;min-height:56px;
+  }
+  ol.tl li:last-child{padding-bottom:0;}
+  ol.tl .yr{
+    position:absolute;left:0;top:2px;width:56px;text-align:right;
+    font-size:14px;font-weight:700;color:var(--k1);letter-spacing:.5px;
+  }
+  ol.tl .dot{
+    position:absolute;left:58px;top:8px;width:14px;height:14px;border-radius:50%;
+    background:var(--card);border:3px solid var(--k1);z-index:1;
+  }
+  ol.tl .tt{font-size:15.5px;font-weight:700;margin-bottom:4px;}
+  ol.tl .td{font-size:14px;color:var(--ink-2);line-height:1.8;}
+
+  /* ===== 关键决策点 ===== */
+  .decisions{display:grid;grid-template-columns:1fr;gap:14px;}
+  .dec{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--k2);
+    border-radius:0 12px 12px 0;padding:16px 20px;
+  }
+  .dec h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--k2);}
+  .dec p{font-size:14px;margin:0;}
+
+  /* ===== 案例启示 ===== */
+  .lessons{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .les{
+    background:var(--ok-bg);border:1px solid var(--ok-line);border-radius:12px;padding:18px;
+  }
+  .les .ln{font-size:12px;font-weight:700;letter-spacing:1px;color:var(--ok);margin-bottom:6px;}
+  .les h4{font-size:15px;font-weight:700;margin-bottom:8px;line-height:1.5;}
+  .les p{font-size:13px;color:var(--ink-2);margin:0;line-height:1.7;}
+
+  /* ===== 关联卡片 ===== */
+  .related{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .rel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;}
+  .rel .rn{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:1px;margin-bottom:4px;}
+  .rel h4{font-size:14.5px;font-weight:700;margin-bottom:6px;line-height:1.5;}
+  .rel p{font-size:12.5px;color:var(--ink-3);margin:0;line-height:1.7;}
+
+  /* ===== 资料来源 ===== */
+  .origin{
+    background:var(--k2-bg);border:1px solid var(--k2-line);border-radius:12px;
+    padding:14px 18px;font-size:13px;color:var(--ink-2);
+  }
+
+  .source{
+    margin-top:44px;border-top:1px solid var(--line);padding-top:18px;
+    font-size:13px;color:var(--ink-3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+
+  @media (max-width:680px){
+    .facts{grid-template-columns:repeat(2,1fr);}
+    .lessons,.related{grid-template-columns:1fr;}
+    h1{font-size:24px;}
+  }
+  @media print{
+    body{background:#fff;padding:0;}
+    .fact,.rel,.les,.dec{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<link rel="stylesheet" href="/assets/css/site.css"><header class="card-nav" data-site-nav="injected"><div class="card-nav-inner"><a href="/case-cards.html">← 创业案例</a><a href="/case-cards.html">第 4 章 · 创业生态系统</a><span class="card-nav-meta">案例卡 4-06 · 合肥模式：投了一家公司，合肥赚了一个合肥</span><a class="card-nav-prev" href="案例卡4-05-硅谷与128公路的文化差异.html">← 案例卡 4-05</a><a class="card-nav-next" href="案例卡4-07-中芯国际与半导体生态.html">案例卡 4-07 →</a><a href="/">首页</a></div></header><style>body{padding-bottom:56px}</style><script src="/assets/js/nav.js"></script>
+
+
+
+
+
+<div class="page">
+
+  <!-- ============ 卡头 ============ -->
+  <div class="kicker">
+    <span class="no">案例卡 4-06</span>
+    <span class="domain">教材体系 · <b>第 4 章 创业生态系统</b></span>
+  </div>
+  <h1>合肥模式：投了一家公司，合肥赚了一个合肥</h1>
+  <div class="oneliner">面对被三巨头垄断的 DRAM 市场，合肥用国资做“耐心资本”，十年陪跑，把一座城市的投入变成了一座城市量级的回报。</div>
+
+  <!-- ============ 案例速览 ============ -->
+  <section>
+    <h2>案例速览</h2>
+    <div class="facts">
+      <div class="fact">
+        <div class="fl">区域</div>
+        <div class="fv">安徽合肥</div>
+        <div class="fs">以国资撬动硬科技产业的城市</div>
+      </div>
+      <div class="fact">
+        <div class="fl">关键主体</div>
+        <div class="fv">合肥国资 + 长鑫科技</div>
+        <div class="fs">出资方与链主企业的组合</div>
+      </div>
+      <div class="fact">
+        <div class="fl">起点</div>
+        <div class="fv">2016 年“506 项目”</div>
+        <div class="fs">聚焦自主发展主流 DRAM</div>
+      </div>
+      <div class="fact">
+        <div class="fl">结果</div>
+        <div class="fv">全球 DRAM 第四</div>
+        <div class="fs">带动超 400 家集成电路企业</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例叙事 ============ -->
+  <section>
+    <h2>案例叙事</h2>
+    <ol class="tl">
+      <li>
+        <div class="yr">2016</div><div class="dot"></div>
+        <div class="tt">“506 项目”起步</div>
+        <div class="td">动态随机存取存储器（DRAM）市场长期被三星、SK 海力士、美光三巨头垄断。2016 年 5 月 6 日，兆易创新科技集团股份有限公司董事长朱一明与合肥市及经开区领导开展战略研讨，此次合作项目被定名为“506 项目”，聚焦自主发展主流 DRAM。</div>
+      </li>
+      <li>
+        <div class="yr">组建</div><div class="dot"></div>
+        <div class="tt">长鑫科技与国资入场</div>
+        <div class="td">长鑫科技正是这一项目的产物。翻开其股权结构，第一大股东合肥清辉集电持股 <b>21.67%</b>，第二大股东长鑫集成持股 <b>11.71%</b>，二者背后实控人正是合肥市人民政府国有资产监督管理委员会。</div>
+      </li>
+      <li>
+        <div class="yr">投入</div><div class="dot"></div>
+        <div class="tt">把真金白银做成耐心资本</div>
+        <div class="td">突围之路的每一步突破，都伴随着巨额投入。仅靠市场资本，根本扛不住长周期、高投入的硬科技攻坚战。合肥的选择是，把真金白银做成耐心资本。</div>
+      </li>
+      <li>
+        <div class="yr">布局</div><div class="dot"></div>
+        <div class="tt">不只砸钱，更要全链条布局</div>
+        <div class="td">芯片制造天然高度依赖上下游协同，一个环节掉链子，整条产业链都受影响。合肥依托长鑫科技的<b>链主效应</b>，沿着材料、设计、制造、封测等上下游，集聚起晶合集成、通富微电、汇成股份等<b>超 400 家</b>集成电路企业。</div>
+      </li>
+      <li>
+        <div class="yr">十年</div><div class="dot"></div>
+        <div class="tt">从“好种子”到“好苗子”</div>
+        <div class="td">历时 10 年，一座城市连续不断地托举，让长鑫科技从一颗“好种子”成长为“好苗子”，坐上全球 DRAM 第四把交椅。</div>
+      </li>
+      <li>
+        <div class="yr">回报</div><div class="dot"></div>
+        <div class="tt">十年陪跑，换来城市级回报</div>
+        <div class="td">存储市场周期处于上行阶段。有机构估算，一旦长鑫科技顺利上市，合肥国资账面资产可能直接冲上万亿级别——接近合肥 2025 年 GDP 总量（1.42 万亿元）。10 年陪跑，换来一座城市级别体量的回报。</div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ 关键决策点 ============ -->
+  <section>
+    <h2>关键决策点</h2>
+    <div class="decisions">
+      <div class="dec">
+        <h3>为什么这座城市敢投硬科技？</h3>
+        <p>这体现了<b>重大政策调整带来的制度红利</b>。政府的战略性决策可以显著改变生态系统的面貌——在硬科技这种市场资本难以长期承受的领域，精准的政策设计能够弥补市场失灵、降低创业与投资门槛，引导资源向特定领域集聚。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么“砸钱”之外还要“全链条布局”？</h3>
+        <p>因为硬科技是<b>共生演化的产业生态</b>：芯片制造高度依赖上下游协同，单个环节掉链子整条链都受影响。合肥没有只养一棵树，而是依托长鑫科技的链主效应，沿材料、设计、制造、封测聚集起超 400 家企业，用集群把单点突破变成系统能力。</p>
+      </div>
+      <div class="dec">
+        <h3>为什么需要“耐心资本”？</h3>
+        <p>这对应资本流动的<b>“风险—收益”阶梯式配置逻辑</b>。DRAM 攻坚长周期、高投入，与追逐短期回报的市场资本错配。合肥国资主动承担长期资本的角色，其回报也是非线性的——十年陪跑换取的是接近城市 GDP 量级的资产。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 案例启示 ============ -->
+  <section>
+    <h2>案例启示</h2>
+    <div class="lessons">
+      <div class="les">
+        <div class="ln">启示一</div>
+        <h4>政策是生态演化的显性动力</h4>
+        <p>一个战略性决策能在短期内释放巨大的制度红利，为特定领域的创业与投资创造条件——这是生态系统中可以主动设计的一环。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示二</div>
+        <h4>链主企业能牵引出产业集群</h4>
+        <p>长鑫科技的价值不止自身，而在于它作为链主，吸引并组织了上下游超 400 家企业，把一次投资放大为一片生态。</p>
+      </div>
+      <div class="les">
+        <div class="ln">启示三</div>
+        <h4>资本属性要与产业周期匹配</h4>
+        <p>长周期硬科技需要耐心资本。用短期资本的逻辑做长期事业，往往在黎明前撤出；匹配的资本结构本身是一种竞争力。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 关联方法论卡 ============ -->
+  <section>
+    <h2>关联方法论卡</h2>
+    <div class="related">
+      <div class="rel">
+        <div class="rn">卡 6-01</div>
+        <h4>关键资源识别三步法</h4>
+        <p>合肥准确识别出“长期资本 + 链主企业”才是 DRAM 攻坚的关键资源，而非设备或订单。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-02</div>
+        <h4>必要性掌控度矩阵</h4>
+        <p>国资以 21.67% 成为第一大股东——对关键资源既保持一定掌控，又为多方协同留出空间。</p>
+      </div>
+      <div class="rel">
+        <div class="rn">卡 6-05</div>
+        <h4>资源组合优势框架</h4>
+        <p>国资 + 链主 + 400 家上下游企业，单个资源都平常，组合起来才形成不可复制的产业优势。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料来源 ============ -->
+  <section>
+    <h2>资料来源</h2>
+    <div class="origin">
+      本案例整理自教材“相关事例 4-6”栏目。资料来源：“三里河”工作室. 投了一家公司，合肥赚了一个合肥. https://fund.eastmoney.com/a/202605213744525560.html，2026-05-21.
+    </div>
+  </section>
+
+  <div class="source">
+    <span>内容整理自尹开国《创业学》（北京：科学出版社，2026）第 4 章，第 111 页 · 教材相关事例 4-6</span>
+    <span>案例卡 4-06 · 第 4 章 创业生态系统</span>
+  </div>
+
+</div>
+</body>
+</html>
